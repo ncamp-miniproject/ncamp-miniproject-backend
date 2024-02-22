@@ -17,7 +17,7 @@ public abstract class DAOTemplate {
     
     protected final void prepareStatement(String sql, PreparedStatementSetter setter) throws SQLException {
         this.conn = DBUtil.getConnection();
-        this.stmt = this.conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        this.stmt = this.conn.prepareStatement(sql);
         setter.set(this.stmt);
     }
     
@@ -38,6 +38,7 @@ public abstract class DAOTemplate {
     
     protected final int executeUpdate() throws SQLException {
         int num = this.stmt.executeUpdate();
+        System.out.println("num=" + num);
         this.conn.commit();
         return num;
     }

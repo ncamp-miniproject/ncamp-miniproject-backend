@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=EUC-KR "%>
 
-<%@ page import="com.model2.mvc.service.user.domain.*" %>
+<%@ page import="com.model2.mvc.user.domain.*" %>
 
 <%
 User vo = (User)request.getAttribute("vo");

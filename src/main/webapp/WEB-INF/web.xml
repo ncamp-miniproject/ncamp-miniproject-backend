@@ -11,26 +11,47 @@
 		<param-name>pageSize</param-name>
 		<param-value>3</param-value>
 	</context-param>
-
+	
+	
 	<filter>
 		<filter-name>requestFilter</filter-name>
-		<filter-class>com.model2.mvc.filter.RequestFilter</filter-class>
+		<filter-class>com.model2.mvc.filter.common.RequestFilter</filter-class>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>requestFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	
 	<filter>
 		<filter-name>loginFilter</filter-name>
-		<filter-class>com.model2.mvc.filter.LoginFilter</filter-class>
+		<filter-class>com.model2.mvc.filter.common.LoginFilter</filter-class>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>loginFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	
+	<filter>
+		<filter-name>addProductUnauthorizedFilter</filter-name>
+		<filter-class>com.model2.mvc.filter.product.AddProductUnauthorizedFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>addProductUnauthorizedFilter</filter-name>
+		<url-pattern>/addProduct.do*</url-pattern>
+	</filter-mapping>
+	
+	
+	<filter>
+		<filter-name>addPurchasePreventMultiplePurchaseFilter</filter-name>
+		<filter-class>com.model2.mvc.filter.purchase.AddPurchasePreventMultiplePurchaseFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>addPurchasePreventMultiplePurchaseFilter</filter-name>
+		<url-pattern>/addPurchase.do*</url-pattern>
+	</filter-mapping>
+	
 
 	<servlet>
 		<servlet-name>action</servlet-name>

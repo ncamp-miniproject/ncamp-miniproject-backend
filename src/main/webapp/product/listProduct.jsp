@@ -1,4 +1,4 @@
-<%@ page import="com.model2.mvc.service.purchase.TranCode"%>
+<%@ page import="com.model2.mvc.purchase.domain.TranCode"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -100,7 +100,7 @@
                         <td></td>
                         <td align="left">
                             <c:choose>
-                                <c:when test="${ data.proTranCode == TranCode.PURCHASEABLE.getCode() }">
+                                <c:when test="${ data.proTranCode == TranCode.PURCHASEABLE.code }">
                                     <a href="/getProduct.do?prodNo=${ data.prodNo }&menu=${ menuMode }">${ data.prodName }</a>
                                 </c:when>
                                 <c:otherwise>

@@ -6,13 +6,13 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<script type="text/javascript" src="../javascript/calendar.js">
-	
-</script>
+<script type="text/javascript" src="../javascript/calendar.js"></script>
+<script type="text/javascript" src="../javascript/product/addProduct.js"></script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-    <form name="detailForm" action="/addProduct.do" method="post"> <!-- enctype="multipart/form-data" -->
+    <form name="detailForm" action="/addProduct.do" method="post">
+        <!-- enctype="multipart/form-data" -->
 
         <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
             <tr>
@@ -63,8 +63,8 @@
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
-                    <input type="text" name="prodDetail" class="ct_input_g" style="width: 100px; height: 19px"
-                        maxLength="10" minLength="6" />
+                    <input type="text" name="prodDetail" class="ct_input_g" style="width: 100px; height: 19px" maxLength="10"
+                        minLength="6" />
                 </td>
             </tr>
             <tr>
@@ -76,9 +76,8 @@
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
-                    <input type="text" name="manuDate" readonly="readonly" class="ct_input_g"
-                        style="width: 100px; height: 19px" maxLength="10" minLength="6" /> &nbsp;<img
-                        src="../images/ct_icon_date.gif" width="15" height="15"
+                    <input type="text" name="manuDate" readonly="readonly" class="ct_input_g" style="width: 100px; height: 19px"
+                        maxLength="10" minLength="6" /> &nbsp;<img src="../images/ct_icon_date.gif" width="15" height="15"
                         onclick="show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value)" />
                 </td>
             </tr>
@@ -144,46 +143,5 @@
         </table>
 
     </form>
-
-    <script type="text/javascript">
-					function fncAddProduct() {
-						const detailForm = document.detailForm;
-
-						//Form 유효성 검증
-						var name = detailForm.prodName.value;
-						var detail = detailForm.prodDetail.value;
-						var manuDate = detailForm.manuDate.value;
-						var price = detailForm.price.value;
-
-						console.log("name=" + name);
-						console.log("detail=" + detail);
-						console.log("manuDate=" + manuDate);
-						console.log("price=" + price);
-
-						if (name == null || name.length < 1) {
-							alert("상품명은 반드시 입력하여야 합니다.");
-							return;
-						}
-						if (detail == null || detail.length < 1) {
-							alert("상품상세정보는 반드시 입력하여야 합니다.");
-							return;
-						}
-						if (manuDate == null || manuDate.length < 1) {
-							alert("제조일자는 반드시 입력하셔야 합니다.");
-							return;
-						}
-						if (price == null || price.length < 1) {
-							alert("가격은 반드시 입력하셔야 합니다.");
-							return;
-						}
-
-						detailForm.submit();
-					}
-
-					function resetData() {
-						document.detailForm.reset();
-					}
-				</script>
-
 </body>
 </html>

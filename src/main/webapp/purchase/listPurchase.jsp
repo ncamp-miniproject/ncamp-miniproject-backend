@@ -1,4 +1,4 @@
-<%@ page import="com.model2.mvc.service.purchase.TranCode" %>
+<%@ page import="com.model2.mvc.purchase.domain.TranCode" %>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -72,14 +72,14 @@
                             <a href="/getUser.do?userId=${ loginUser.userId }">${ loginUser.userId }</a>
                         </td>
                         <td></td>
-                        <td align="left">${ loginUser.userName }</td>
+                        <td align="left">${ purchase.receiverName }</td>
                         <td></td>
                         <td align="left">${ purchase.receiverPhone }</td>
                         <td></td>
                         <td align="left">${ purchase.tranStatus }</td>
                         <td></td>
                         <td align="left">
-                            <c:if test="${ purchase.tranCode == TranCode.IN_DELIVERY.getCode() }">
+                            <c:if test="${ purchase.tranCode == TranCode.IN_DELIVERY.code }">
                                 <a href="/updateTranCode.do?tranNo=${ purchase.tranNo }&tranCode=3">¹°°ÇµµÂø</a>
                             </c:if>
                         </td>

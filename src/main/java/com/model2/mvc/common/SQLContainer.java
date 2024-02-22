@@ -35,6 +35,12 @@ public class SQLContainer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        for (String key : container.keySet()) {
+            System.out.println("[" + key + "]");
+            System.out.println(container.get(key));
+            System.out.println("----------------------");
+        }
     }
     
     public static Optional<String> get(String name) {
