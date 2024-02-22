@@ -5,8 +5,6 @@ SELECT
     p.manufacture_day "manufacture_day", 
     p.price "price", 
     p.image_file "image_file", 
-    p.reg_date "reg_date", 
-    NVL(t.tran_status_code, ?) "tran_status_code" 
-FROM product p 
-LEFT OUTER JOIN transaction t ON t.prod_no = p.prod_no 
-WHERE p.prod_no = ?
+    p.reg_date "reg_date"
+FROM product p
+WHERE p.prod_no = 10001
