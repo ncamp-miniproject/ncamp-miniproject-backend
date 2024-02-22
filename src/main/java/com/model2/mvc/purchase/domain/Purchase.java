@@ -1,6 +1,7 @@
 package com.model2.mvc.purchase.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Purchase {
     private Date orderDate = null;
     private String divyDate = null;
     private String tranStatus = null;
-    private List<TransactionProduction> transactionProductions = null;
+    private List<TransactionProduction> transactionProductions = new ArrayList<>();
 
     public Purchase() {
     }
@@ -133,8 +134,8 @@ public class Purchase {
         return Collections.unmodifiableList(this.transactionProductions);
     }
 
-    public void setTransactionProductions(List<TransactionProduction> transactionProductions) {
-        this.transactionProductions = transactionProductions;
+    public void addTransactionProductions(TransactionProduction transactionProductions) {
+        this.transactionProductions.add(transactionProductions);
     }
 
     @Override
