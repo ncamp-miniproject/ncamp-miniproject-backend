@@ -1,4 +1,4 @@
-package com.model2.mvc.common.util;
+package com.model2.mvc.common.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

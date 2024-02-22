@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.model2.mvc.common.SQLContainer;
+import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.exception.UnsupportedPathException;
 import com.model2.mvc.common.util.HttpUtil;
 

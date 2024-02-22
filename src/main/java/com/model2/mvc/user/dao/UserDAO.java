@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.model2.mvc.common.Search;
-import com.model2.mvc.common.util.DAOTemplate;
-import com.model2.mvc.common.util.DBUtil;
+import com.model2.mvc.common.db.DAOTemplate;
+import com.model2.mvc.common.db.DBUtil;
 import com.model2.mvc.user.domain.User;
 
 public class UserDAO extends DAOTemplate {

@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.model2.mvc.common.Search;
-import com.model2.mvc.common.SQLContainer;
-import com.model2.mvc.common.util.DAOTemplate;
-import com.model2.mvc.common.util.DBUtil;
-import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.common.db.SQLContainer;
+import com.model2.mvc.common.db.DAOTemplate;
+import com.model2.mvc.common.db.DBUtil;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranCode;
 import com.model2.mvc.user.domain.User;
@@ -26,8 +25,8 @@ public class PurchaseDAO extends DAOTemplate {
         return instance;
     }
 
-    public Purchase findPurchase(int tranNo) {
-        String sql = SQLContainer.get("findpurchase").orElse("");
+    public Purchase findById(int tranNo) {
+        String sql = SQLContainer.get("findpurchase").orElseThrow(() -> new IllegalArgumentException(""));
         
         System.out.println(sql);
 

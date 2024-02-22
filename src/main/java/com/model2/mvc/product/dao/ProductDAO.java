@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.common.SQLContainer;
-import com.model2.mvc.common.util.DAOTemplate;
+import com.model2.mvc.common.db.SQLContainer;
+import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.TranCode;
 

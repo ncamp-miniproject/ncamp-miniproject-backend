@@ -9,7 +9,6 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
-import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranCode;
@@ -38,7 +37,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public Purchase getPurchase(int tranNo) throws RecordNotFoundException {
-        Purchase purchase = this.purchaseDAO.findPurchase(tranNo);
+        Purchase purchase = this.purchaseDAO.findById(tranNo);
         if (purchase == null) {
             throw new RecordNotFoundException("No record with tranNo=" +
                                               tranNo);
