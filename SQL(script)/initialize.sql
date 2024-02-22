@@ -722,6 +722,16 @@ VALUES
 INSERT INTO transaction_prod
     (tran_no, prod_no, quantity)
 VALUES
+    (10005, 10005, 1);
+
+INSERT INTO transaction_prod
+    (tran_no, prod_no, quantity)
+VALUES
+    (10005, 10006, 2);
+
+INSERT INTO transaction_prod
+    (tran_no, prod_no, quantity)
+VALUES
     (10006, 10007, 1);
 
 INSERT INTO transaction_prod
