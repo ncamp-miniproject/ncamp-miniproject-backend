@@ -7,7 +7,7 @@ import com.model2.mvc.purchase.domain.TranCode;
 public class Product {
     private int prodNo;
     private String fileName;
-    private String manuDate;
+    private Date manuDate;
     private int price;
     private String prodDetail;
     private String prodName;
@@ -25,7 +25,7 @@ public class Product {
 
     public static class ProductVOBuilder implements Cloneable {
         private String fileName;
-        private String manuDate;
+        private Date manuDate;
         private int price;
         private String prodDetail;
         private String prodName;
@@ -67,7 +67,7 @@ public class Product {
             return instance;
         }
 
-        public ProductVOBuilder manuDate(String manuDate) {
+        public ProductVOBuilder manuDate(Date manuDate) {
             return setField(b -> b.manuDate = manuDate);
         }
 
@@ -147,11 +147,11 @@ public class Product {
         this.fileName = fileName;
     }
 
-    public String getManuDate() {
+    public Date getManuDate() {
         return manuDate;
     }
 
-    public void setManuDate(String manuDate) {
+    public void setManuDate(Date manuDate) {
         this.manuDate = manuDate;
     }
 

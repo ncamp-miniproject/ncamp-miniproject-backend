@@ -17,7 +17,8 @@ SELECT
     p.price            "price",
     p.image_file       "image_file",
     p.reg_date         "reg_date",
-    p.stock            "stock"
+    p.stock            "stock",
+    COUNT(*)           "count"
 FROM
          transaction t
     INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no

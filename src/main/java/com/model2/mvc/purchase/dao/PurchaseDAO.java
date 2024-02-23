@@ -1,19 +1,23 @@
 package com.model2.mvc.purchase.dao;
 
+import com.model2.mvc.common.Search;
+import com.model2.mvc.common.db.DAOTemplate;
+import com.model2.mvc.common.db.DBUtil;
+import com.model2.mvc.common.db.SQLContainer;
+import com.model2.mvc.common.db.SQLName;
+import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.domain.PurchaseList;
+import com.model2.mvc.purchase.domain.TranCode;
+import com.model2.mvc.purchase.domain.TransactionProduction;
+import com.model2.mvc.user.domain.User;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.model2.mvc.common.Search;
-import com.model2.mvc.common.db.SQLContainer;
-import com.model2.mvc.common.db.DAOTemplate;
-import com.model2.mvc.common.db.DBUtil;
-import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.TranCode;
-import com.model2.mvc.user.domain.User;
 
 public class PurchaseDAO extends DAOTemplate {
     private static final PurchaseDAO instance = new PurchaseDAO();
@@ -25,9 +29,11 @@ public class PurchaseDAO extends DAOTemplate {
         return instance;
     }
 
-    public Purchase findById(int tranNo) {
-        String sql = SQLContainer.get("findpurchase").orElseThrow(() -> new IllegalArgumentException(""));
-        
+    public PurchaseList findById(int tranNo) {
+        String sql = SQLContainer.get(SQLName.FIND_PURCHASE.getName())
+                                 .orElseThrow(() -> new IllegalArgumentException(
+                                         "No sql is found: " + SQLName.FIND_PURCHASE));
+
         System.out.println(sql);
 
         try {
@@ -36,65 +42,80 @@ public class PurchaseDAO extends DAOTemplate {
             });
             ResultSet rs = super.executeQuery();
 
-            if (rs.next()) {
-                Purchase purchaseVO = generateVO(rs);
-                return purchaseVO;
+            if (!rs.next()) {
+                return new PurchaseList(0, new ArrayList<>());
             }
+
+            int count = rs.getInt("count");
+
+            Map<Integer, Purchase> purchaseMap = new HashMap<>();
+
+            do {
+                forOneRow(rs, purchaseMap);
+            } while (rs.next());
+            return new PurchaseList(count,
+                                    purchaseMap.values()
+                                               .stream()
+                                               .toList());
         } catch (SQLException e) {
             e.printStackTrace();
+            return new PurchaseList(0, new ArrayList<>());
         } finally {
             super.close();
         }
-        return null;
     }
 
-    public Map<String, Object> getPurchaseList(Search searchVO, String userId) {
-        String sql = SQLContainer.get("getpurchaselist").orElse("");
-        sql = String.format(sql,
-                            (userId == null || userId.isEmpty()) ? "IS NOT NULL" : "= '" + userId + "'");
-        
+    public PurchaseList findPurchaseListByUserId(String userId, int page, int pageSize) {
+        String sql = SQLContainer.get(SQLName.GET_PURCHASE_LIST.getName())
+                                 .orElseThrow(() -> new IllegalArgumentException(
+                                         "No sql is found: " + SQLName.GET_PURCHASE_LIST));
+
         System.out.println(sql);
 
-        return getList(sql, stmt -> {
-            int page = searchVO.getPage();
-            int pageUnit = searchVO.getPageUnit();
-            stmt.setInt(1, (page - 1) * pageUnit + 1);
-            stmt.setInt(2, page * pageUnit);
-        }, searchVO.getPage(), searchVO.getPageUnit());
+        return generatePurchaseList(sql, stmt -> {
+            stmt.setString(1, userId);
+            stmt.setInt(2, (page - 1) * pageSize + 1);
+            stmt.setInt(3, page * pageSize);
+        });
     }
 
-    private Map<String, Object> getList(String sql,
-                                        PreparedStatementSetter statementSetter,
-                                        int page,
-                                        int pageUnit) {
-        Map<String, Object> resultMap = new HashMap<>();
-        List<Purchase> purchaseList = new ArrayList<>();
-        resultMap.put("purchaseList", purchaseList);
-        resultMap.put("count", 0);
+    private PurchaseList generatePurchaseList(String sql, PreparedStatementSetter statementSetter) {
         try {
             super.prepareStatement(sql, statementSetter);
             ResultSet rs = super.executeQuery();
 
             if (!rs.next()) {
-                return resultMap;
+                return new PurchaseList(0, new ArrayList<>());
             }
 
-            resultMap.put("count", rs.getInt("count"));
+            int count = rs.getInt("count");
 
+            Map<Integer, Purchase> purchaseMap = new HashMap<>();
             do {
-                Purchase singleRecord = generateVO(rs);
-                purchaseList.add(singleRecord);
+                forOneRow(rs, purchaseMap);
             } while (rs.next());
+            List<Purchase> list = purchaseMap.values()
+                                             .stream()
+                                             .toList();
+            return new PurchaseList(count, list);
         } catch (SQLException e) {
             e.printStackTrace();
+            return new PurchaseList(0, new ArrayList<>());
         } finally {
             super.close();
         }
-        System.out.println(resultMap);
-        return resultMap;
     }
 
-    private Purchase generateVO(ResultSet rs) throws SQLException {
+    private void forOneRow(ResultSet rs, Map<Integer, Purchase> resultMap) throws SQLException {
+        int tranNo = rs.getInt("tran_no");
+        if (!resultMap.containsKey(tranNo)) {
+            resultMap.put(tranNo, generatePurchase(rs));
+        }
+        Purchase purchase = resultMap.get(tranNo);
+        addTransactionProduction(rs, purchase);
+    }
+
+    private Purchase generatePurchase(ResultSet rs) throws SQLException {
         Purchase purchaseVO = new Purchase();
         purchaseVO.setTranNo(rs.getInt("tran_no"));
         User buyer = new User();
@@ -105,39 +126,61 @@ public class PurchaseDAO extends DAOTemplate {
         purchaseVO.setReceiverPhone(rs.getString("receiver_phone"));
         purchaseVO.setDivyAddr(rs.getString("demailaddr"));
         purchaseVO.setDivyRequest(rs.getString("dlvy_request"));
-        purchaseVO.setTranCode(TranCode.getTranCode(rs.getString("tran_status_code").trim()));
+        purchaseVO.setTranCode(TranCode.getTranCode(rs.getString("tran_status_code")
+                                                      .trim()));
         purchaseVO.setOrderDate(rs.getDate("order_date"));
-        purchaseVO.setDivyDate(rs.getDate("dlvy_date").toString());
+        purchaseVO.setDivyDate(rs.getDate("dlvy_date")
+                                 .toString());
         return purchaseVO;
     }
 
-    public Map<String, Object> getSaleList(Search searchVO) {
-        String sql = SQLContainer.get("getsalelist").orElse("");
-        
-        System.out.println(sql);
+    private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
+        purchase.addTransactionProduction(new TransactionProduction(Product.builder()
+                                                                           .prodNo(rs.getInt("prod_no"))
+                                                                           .prodName(rs.getString("prod_name"))
+                                                                           .prodDetail(rs.getString("prod_detail"))
+                                                                           .manuDate(rs.getDate("manufacture_day"))
+                                                                           .price(rs.getInt("price"))
+                                                                           .fileName(rs.getString("image_file"))
+                                                                           .regDate(rs.getDate("reg_date"))
+                                                                           .stock(rs.getInt("stock"))
+                                                                           .build(), rs.getInt("quantity")));
+    }
 
-        return getList(sql, stmt -> {
-            stmt.setString(1, TranCode.PURCHASEABLE.getCode());
-        }, -1, -1);
+    public Map<String, Object> getSaleList(Search searchVO) {
+//        String sql = SQLContainer.get("getsalelist")
+//                                 .orElse("");
+//
+//        System.out.println(sql);
+//
+//        return generatePurchaseList(sql, stmt -> {
+//            stmt.setString(1, TranCode.PURCHASEABLE.getCode());
+//        });
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     public void insertPurchase(Purchase data) {
-        String sql = SQLContainer.get("insertpurchase").orElse("");
-        
+        String sql = SQLContainer.get(SQLName.INSERT_PURCHASE.getName())
+                                 .orElseThrow(() -> new IllegalArgumentException(
+                                         "No sql is found: " + SQLName.INSERT_PURCHASE));
+
         System.out.println(sql);
 
         update(sql, stmt -> {
-            stmt.setString(2, data.getBuyer().getUserId());
-            stmt.setString(3, data.getPaymentOption());
-            stmt.setString(4, data.getReceiverName());
-            stmt.setString(5, data.getReceiverPhone());
-            stmt.setString(6, data.getDivyAddr());
-            stmt.setString(7, data.getDivyRequest());
-            stmt.setString(8, data.getTranCode().getCode());
-            stmt.setObject(9, data.getOrderDate());
-            stmt.setDate(10, DBUtil.parseIntoSqlDate(data.getDivyDate()));
+            stmt.setString(1,
+                           data.getBuyer()
+                               .getUserId());
+            stmt.setString(2, data.getPaymentOption());
+            stmt.setString(3, data.getReceiverName());
+            stmt.setString(4, data.getReceiverPhone());
+            stmt.setString(5, data.getDivyAddr());
+            stmt.setString(6, data.getDivyRequest());
+            stmt.setString(7,
+                           data.getTranCode()
+                               .getCode());
+            stmt.setObject(8, data.getOrderDate());
+            stmt.setDate(9, DBUtil.parseIntoSqlDate(data.getDivyDate()));
         });
-        System.out.println("here");
     }
 
     private int update(String sql, PreparedStatementSetter setter) {
@@ -154,12 +197,15 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     public void updatePurchase(Purchase data) {
-        String sql = SQLContainer.get("updatepurchase").orElse("");
-        
+        String sql = SQLContainer.get("updatepurchase")
+                                 .orElse("");
+
         System.out.println(sql);
 
         update(sql, stmt -> {
-            stmt.setString(1, data.getBuyer().getUserId());
+            stmt.setString(1,
+                           data.getBuyer()
+                               .getUserId());
             stmt.setString(2, data.getPaymentOption());
             stmt.setString(3, data.getReceiverName());
             stmt.setString(4, data.getReceiverPhone());
@@ -172,12 +218,15 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     public void updateTranCode(Purchase data) {
-        String sql = SQLContainer.get("updatetrancode").orElse("");
-        
+        String sql = SQLContainer.get("updatetrancode")
+                                 .orElse("");
+
         System.out.println(sql);
-        
+
         update(sql, stmt -> {
-            stmt.setString(1, data.getTranCode().getCode());
+            stmt.setString(1,
+                           data.getTranCode()
+                               .getCode());
             stmt.setInt(2, data.getTranNo());
         });
     }

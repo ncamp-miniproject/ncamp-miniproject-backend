@@ -51,7 +51,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Map<String, Object> getPurchaseList(Search searchVO, String userId) {
         Map<String, Object> resultMap = this.purchaseDAO
-                .getPurchaseList(searchVO, userId);
+                .findPurchaseListWithRange(searchVO, userId);
 
         ((List<Purchase>)resultMap.get("purchaseList"))
                 .forEach(p -> p.setTranStatus(p.getTranCode().getStatus()));

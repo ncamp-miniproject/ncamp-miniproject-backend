@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.model2.mvc.common.db.SQLName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -72,5 +74,11 @@ public class TestListPageUtil {
         
         assertThat(result.size()).isEqualTo(expected.size());
         assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    void temp() {
+        System.out.println(SQLName.FIND_PRODUCT.name());
+        System.out.println(SQLName.FIND_PRODUCT);
     }
 }

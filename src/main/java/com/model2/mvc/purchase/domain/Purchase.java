@@ -134,7 +134,7 @@ public class Purchase {
         return Collections.unmodifiableList(this.transactionProductions);
     }
 
-    public void addTransactionProductions(TransactionProduction transactionProductions) {
+    public void addTransactionProduction(TransactionProduction transactionProductions) {
         this.transactionProductions.add(transactionProductions);
     }
 
