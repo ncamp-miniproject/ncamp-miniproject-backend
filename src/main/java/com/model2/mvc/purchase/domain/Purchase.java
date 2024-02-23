@@ -1,5 +1,10 @@
 package com.model2.mvc.purchase.domain;
 
+<<<<<<< HEAD
+=======
+import com.model2.mvc.common.Buildable;
+import com.model2.mvc.common.BuilderTemplate;
+>>>>>>> 3_refactor
 import com.model2.mvc.user.domain.User;
 
 import java.sql.Date;
@@ -8,7 +13,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+<<<<<<< HEAD
 public class Purchase {
+=======
+public class Purchase implements Buildable {
+>>>>>>> 3_refactor
     private Integer tranNo;
     private User buyer;
     private String paymentOption;
@@ -35,11 +44,29 @@ public class Purchase {
         this.transactionProductions = builder.transactionProductions;
     }
 
+<<<<<<< HEAD
     public static Builder builder() {
         return new Builder();
     }
 
     public Builder getBuilder() {
+=======
+    private Purchase(Builder builder) {
+        this.tranNo = builder.tranNo;
+        this.buyer = builder.buyer;
+        this.paymentOption = builder.paymentOption;
+        this.receiverName = builder.receiverName;
+        this.receiverPhone = builder.receiverPhone;
+        this.divyAddr = builder.divyAddr;
+        this.divyRequest = builder.divyRequest;
+        this.tranStatusCode = builder.tranStatusCode;
+        this.orderDate = builder.orderDate;
+        this.divyDate = builder.divyDate;
+        this.transactionProductions = builder.transactionProductions;
+    }
+
+    public Builder builder() {
+>>>>>>> 3_refactor
         return new Builder(this);
     }
 
@@ -104,7 +131,11 @@ public class Purchase {
                transactionProductions + '}';
     }
 
+<<<<<<< HEAD
     public static class Builder implements Cloneable {
+=======
+    public static class Builder extends BuilderTemplate<Purchase> {
+>>>>>>> 3_refactor
         private Integer tranNo = null;
         private User buyer = null;
         private String paymentOption = null;
@@ -133,18 +164,6 @@ public class Purchase {
             this.orderDate = purchase.orderDate;
             this.divyDate = purchase.divyDate;
             this.transactionProductions = purchase.transactionProductions;
-        }
-
-        public Builder setField(Consumer<Builder> fieldSetter) {
-            Builder instance;
-            try {
-                instance = (Builder) this.clone();
-            } catch (CloneNotSupportedException e) {
-                System.err.println(e.getMessage() + ": Purchase.Builder");
-                instance = this;
-            }
-            fieldSetter.accept(instance);
-            return instance;
         }
 
         public Purchase build() {
@@ -189,12 +208,6 @@ public class Purchase {
 
         public Builder divyDate(String date) {
             return this.setField(b -> b.divyDate = date);
-        }
-
-        @Override
-        protected Object clone() throws CloneNotSupportedException {
-            return this.build()
-                       .getBuilder();
         }
     }
 }

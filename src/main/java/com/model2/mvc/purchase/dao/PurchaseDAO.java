@@ -1,10 +1,10 @@
 package com.model2.mvc.purchase.dao;
 
-import com.model2.mvc.common.Search;
 import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.common.db.DBUtil;
 import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.db.SQLName;
+import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.PurchaseList;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PurchaseDAO extends DAOTemplate {
     private static final PurchaseDAO instance = new PurchaseDAO();
@@ -29,7 +30,7 @@ public class PurchaseDAO extends DAOTemplate {
         return instance;
     }
 
-    public PurchaseList findById(int tranNo) {
+    public Optional<Purchase> findById(int tranNo) {
         String sql = SQLContainer.get(SQLName.FIND_PURCHASE.getName())
                                  .orElseThrow(() -> new IllegalArgumentException(
                                          "No sql is found: " + SQLName.FIND_PURCHASE));
@@ -43,23 +44,19 @@ public class PurchaseDAO extends DAOTemplate {
             ResultSet rs = super.executeQuery();
 
             if (!rs.next()) {
-                return new PurchaseList(0, new ArrayList<>());
+                return Optional.empty();
             }
 
-            int count = rs.getInt("count");
-
-            Map<Integer, Purchase> purchaseMap = new HashMap<>();
+            Purchase purchase = generatePurchase(rs);
 
             do {
-                forOneRow(rs, purchaseMap);
+                addTransactionProduction(rs, purchase);
             } while (rs.next());
-            return new PurchaseList(count,
-                                    purchaseMap.values()
-                                               .stream()
-                                               .toList());
+
+            return Optional.of(purchase);
         } catch (SQLException e) {
             e.printStackTrace();
-            return new PurchaseList(0, new ArrayList<>());
+            return Optional.empty();
         } finally {
             super.close();
         }
@@ -119,20 +116,20 @@ public class PurchaseDAO extends DAOTemplate {
 
         User buyer = new User();
         buyer.setUserId(rs.getString("buyer_id"));
-        return Purchase.builder()
-                       .tranNo(rs.getInt("tran_no"))
-                       .buyer(buyer)
-                       .paymentOption(rs.getString("payment_option"))
-                       .receiverName(rs.getString("receiver_name"))
-                       .receiverPhone(rs.getString("receiver_phone"))
-                       .divyAddr(rs.getString("demailaddr"))
-                       .divyRequest(rs.getString("dlvy_request"))
-                       .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code")
-                                                                    .trim()))
-                       .orderDate(rs.getDate("order_date"))
-                       .divyDate(rs.getDate("dlvy_date")
-                                   .toString())
-                       .build();
+        return new Purchase().builder()
+                             .tranNo(rs.getInt("tran_no"))
+                             .buyer(buyer)
+                             .paymentOption(rs.getString("payment_option"))
+                             .receiverName(rs.getString("receiver_name"))
+                             .receiverPhone(rs.getString("receiver_phone"))
+                             .divyAddr(rs.getString("demailaddr"))
+                             .divyRequest(rs.getString("dlvy_request"))
+                             .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code")
+                                                                          .trim()))
+                             .orderDate(rs.getDate("order_date"))
+                             .divyDate(rs.getDate("dlvy_date")
+                                         .toString())
+                             .build();
     }
 
     private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
