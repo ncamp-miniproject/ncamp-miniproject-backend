@@ -1,5 +1,7 @@
 package com.model2.mvc.purchase.domain;
 
+import com.model2.mvc.common.Buildable;
+import com.model2.mvc.common.BuilderTemplate;
 import com.model2.mvc.user.domain.User;
 
 import java.sql.Date;
@@ -8,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Purchase {
+public class Purchase implements Buildable {
     private Integer tranNo;
     private User buyer;
     private String paymentOption;
@@ -35,11 +37,7 @@ public class Purchase {
         this.transactionProductions = builder.transactionProductions;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public Builder getBuilder() {
+    public Builder builder() {
         return new Builder(this);
     }
 
@@ -104,7 +102,7 @@ public class Purchase {
                transactionProductions + '}';
     }
 
-    public static class Builder implements Cloneable {
+    public static class Builder extends BuilderTemplate<Purchase> {
         private Integer tranNo = null;
         private User buyer = null;
         private String paymentOption = null;
@@ -133,18 +131,6 @@ public class Purchase {
             this.orderDate = purchase.orderDate;
             this.divyDate = purchase.divyDate;
             this.transactionProductions = purchase.transactionProductions;
-        }
-
-        public Builder setField(Consumer<Builder> fieldSetter) {
-            Builder instance;
-            try {
-                instance = (Builder) this.clone();
-            } catch (CloneNotSupportedException e) {
-                System.err.println(e.getMessage() + ": Purchase.Builder");
-                instance = this;
-            }
-            fieldSetter.accept(instance);
-            return instance;
         }
 
         public Purchase build() {
@@ -189,12 +175,6 @@ public class Purchase {
 
         public Builder divyDate(String date) {
             return this.setField(b -> b.divyDate = date);
-        }
-
-        @Override
-        protected Object clone() throws CloneNotSupportedException {
-            return this.build()
-                       .getBuilder();
         }
     }
 }

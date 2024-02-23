@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.model2.mvc.common.CommonConstants;
-import com.model2.mvc.common.Search;
+import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.user.domain.User;
 
