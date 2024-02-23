@@ -1,10 +1,10 @@
 package com.model2.mvc.purchase.dao;
 
-import com.model2.mvc.common.Search;
 import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.common.db.DBUtil;
 import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.db.SQLName;
+import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.PurchaseList;
@@ -116,20 +116,20 @@ public class PurchaseDAO extends DAOTemplate {
 
         User buyer = new User();
         buyer.setUserId(rs.getString("buyer_id"));
-        return Purchase.builder()
-                       .tranNo(rs.getInt("tran_no"))
-                       .buyer(buyer)
-                       .paymentOption(rs.getString("payment_option"))
-                       .receiverName(rs.getString("receiver_name"))
-                       .receiverPhone(rs.getString("receiver_phone"))
-                       .divyAddr(rs.getString("demailaddr"))
-                       .divyRequest(rs.getString("dlvy_request"))
-                       .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code")
-                                                                    .trim()))
-                       .orderDate(rs.getDate("order_date"))
-                       .divyDate(rs.getDate("dlvy_date")
-                                   .toString())
-                       .build();
+        return new Purchase().builder()
+                             .tranNo(rs.getInt("tran_no"))
+                             .buyer(buyer)
+                             .paymentOption(rs.getString("payment_option"))
+                             .receiverName(rs.getString("receiver_name"))
+                             .receiverPhone(rs.getString("receiver_phone"))
+                             .divyAddr(rs.getString("demailaddr"))
+                             .divyRequest(rs.getString("dlvy_request"))
+                             .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code")
+                                                                          .trim()))
+                             .orderDate(rs.getDate("order_date"))
+                             .divyDate(rs.getDate("dlvy_date")
+                                         .toString())
+                             .build();
     }
 
     private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
