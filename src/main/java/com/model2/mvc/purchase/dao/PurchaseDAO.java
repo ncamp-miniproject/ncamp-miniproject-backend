@@ -8,7 +8,7 @@ import com.model2.mvc.common.db.SQLName;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.PurchaseList;
-import com.model2.mvc.purchase.domain.TranCode;
+import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.user.domain.User;
 
@@ -116,22 +116,23 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     private Purchase generatePurchase(ResultSet rs) throws SQLException {
-        Purchase purchaseVO = new Purchase();
-        purchaseVO.setTranNo(rs.getInt("tran_no"));
+
         User buyer = new User();
         buyer.setUserId(rs.getString("buyer_id"));
-        purchaseVO.setBuyer(buyer);
-        purchaseVO.setPaymentOption(rs.getString("payment_option"));
-        purchaseVO.setReceiverName(rs.getString("receiver_name"));
-        purchaseVO.setReceiverPhone(rs.getString("receiver_phone"));
-        purchaseVO.setDivyAddr(rs.getString("demailaddr"));
-        purchaseVO.setDivyRequest(rs.getString("dlvy_request"));
-        purchaseVO.setTranCode(TranCode.getTranCode(rs.getString("tran_status_code")
-                                                      .trim()));
-        purchaseVO.setOrderDate(rs.getDate("order_date"));
-        purchaseVO.setDivyDate(rs.getDate("dlvy_date")
-                                 .toString());
-        return purchaseVO;
+        return Purchase.builder()
+                       .tranNo(rs.getInt("tran_no"))
+                       .buyer(buyer)
+                       .paymentOption(rs.getString("payment_option"))
+                       .receiverName(rs.getString("receiver_name"))
+                       .receiverPhone(rs.getString("receiver_phone"))
+                       .divyAddr(rs.getString("demailaddr"))
+                       .divyRequest(rs.getString("dlvy_request"))
+                       .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code")
+                                                                    .trim()))
+                       .orderDate(rs.getDate("order_date"))
+                       .divyDate(rs.getDate("dlvy_date")
+                                   .toString())
+                       .build();
     }
 
     private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
@@ -148,14 +149,14 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     public Map<String, Object> getSaleList(Search searchVO) {
-//        String sql = SQLContainer.get("getsalelist")
-//                                 .orElse("");
-//
-//        System.out.println(sql);
-//
-//        return generatePurchaseList(sql, stmt -> {
-//            stmt.setString(1, TranCode.PURCHASEABLE.getCode());
-//        });
+        //        String sql = SQLContainer.get("getsalelist")
+        //                                 .orElse("");
+        //
+        //        System.out.println(sql);
+        //
+        //        return generatePurchaseList(sql, stmt -> {
+        //            stmt.setString(1, TranCode.PURCHASEABLE.getCode());
+        //        });
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -176,7 +177,7 @@ public class PurchaseDAO extends DAOTemplate {
             stmt.setString(5, data.getDivyAddr());
             stmt.setString(6, data.getDivyRequest());
             stmt.setString(7,
-                           data.getTranCode()
+                           data.getTranStatusCode()
                                .getCode());
             stmt.setObject(8, data.getOrderDate());
             stmt.setDate(9, DBUtil.parseIntoSqlDate(data.getDivyDate()));
@@ -225,7 +226,7 @@ public class PurchaseDAO extends DAOTemplate {
 
         update(sql, stmt -> {
             stmt.setString(1,
-                           data.getTranCode()
+                           data.getTranStatusCode()
                                .getCode());
             stmt.setInt(2, data.getTranNo());
         });

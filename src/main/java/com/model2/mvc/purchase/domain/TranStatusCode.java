@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TranCode {
+public enum TranStatusCode {
     PURCHASEABLE("판매중", "0"),
     PURCHASE_DONE("구매 완료", "1"),
     IN_DELIVERY("배송중", "2"),
@@ -13,7 +13,7 @@ public enum TranCode {
     private String status;
     private String code;
     
-    private TranCode(String status, String code) {
+    private TranStatusCode(String status, String code) {
         this.status = status;
         this.code = code;
     }
@@ -30,10 +30,10 @@ public enum TranCode {
         return status.equals(this.code);
     }
     
-    private static final EnumSet<TranCode> tranCodeSet = EnumSet.allOf(TranCode.class);
+    private static final EnumSet<TranStatusCode> TRAN_STATUS_CODE_SET = EnumSet.allOf(TranStatusCode.class);
     
     public static String convertCodeToStatus(String code) {
-        for (TranCode t : tranCodeSet) {
+        for (TranStatusCode t : TRAN_STATUS_CODE_SET) {
             if (t.containsCode(code)) {
                 return t.status;
             }
@@ -42,15 +42,15 @@ public enum TranCode {
         return "";
     }
     
-    private static final Map<String, TranCode> codeTable = new HashMap<>();
+    private static final Map<String, TranStatusCode> codeTable = new HashMap<>();
     
     static {
-        for (TranCode t : tranCodeSet) {
+        for (TranStatusCode t : TRAN_STATUS_CODE_SET) {
             codeTable.put(t.getCode(), t);
         }
     }
     
-    public static final TranCode getTranCode(String code) {
+    public static final TranStatusCode getTranCode(String code) {
         if (codeTable.containsKey(code)) {
             return codeTable.get(code);
         }
