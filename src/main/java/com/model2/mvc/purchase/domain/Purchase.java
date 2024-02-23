@@ -1,133 +1,90 @@
 package com.model2.mvc.purchase.domain;
 
+import com.model2.mvc.user.domain.User;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.model2.mvc.common.exception.ModifyInitializedFieldException;
-import com.model2.mvc.user.domain.User;
+import java.util.function.Consumer;
 
 public class Purchase {
-    private Integer tranNo = null;
-    private User buyer = null;
-    private String paymentOption = null;
-    private String receiverName = null;
-    private String receiverPhone = null;
-    private String divyAddr = null;
-    private String divyRequest = null;
-    private TranCode tranCode = null;
-    private Date orderDate = null;
-    private String divyDate = null;
-    private String tranStatus = null;
-    private List<TransactionProduction> transactionProductions = new ArrayList<>();
+    private Integer tranNo;
+    private User buyer;
+    private String paymentOption;
+    private String receiverName;
+    private String receiverPhone;
+    private String divyAddr;
+    private String divyRequest;
+    private TranStatusCode tranStatusCode;
+    private Date orderDate;
+    private String divyDate;
+    private List<TransactionProduction> transactionProductions;
 
-    public Purchase() {
+    private Purchase(Builder builder) {
+        this.tranNo = builder.tranNo;
+        this.buyer = builder.buyer;
+        this.paymentOption = builder.paymentOption;
+        this.receiverName = builder.receiverName;
+        this.receiverPhone = builder.receiverPhone;
+        this.divyAddr = builder.divyAddr;
+        this.divyRequest = builder.divyRequest;
+        this.tranStatusCode = builder.tranStatusCode;
+        this.orderDate = builder.orderDate;
+        this.divyDate = builder.divyDate;
+        this.transactionProductions = builder.transactionProductions;
     }
-    
-    private void setInvariant(Object toCheck) {
-        if (toCheck != null) {
-            throw new ModifyInitializedFieldException();
-        }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public Builder getBuilder() {
+        return new Builder(this);
     }
 
     public User getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(User buyer) {
-        setInvariant(this.buyer);
-        this.buyer = buyer;
-    }
-
     public String getDivyAddr() {
         return divyAddr;
-    }
-
-    public void setDivyAddr(String divyAddr) {
-        setInvariant(this.divyAddr);
-        this.divyAddr = divyAddr;
     }
 
     public String getDivyDate() {
         return divyDate;
     }
 
-    public void setDivyDate(String divyDate) {
-        setInvariant(this.divyDate);
-        this.divyDate = divyDate;
-    }
-
     public String getDivyRequest() {
         return divyRequest;
-    }
-
-    public void setDivyRequest(String divyRequest) {
-        setInvariant(this.divyRequest);
-        this.divyRequest = divyRequest;
     }
 
     public Date getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
-        setInvariant(this.orderDate);
-        this.orderDate = orderDate;
-    }
-
     public String getPaymentOption() {
         return paymentOption;
-    }
-
-    public void setPaymentOption(String paymentOption) {
-        setInvariant(this.paymentOption);
-        this.paymentOption = paymentOption;
     }
 
     public String getReceiverName() {
         return receiverName;
     }
 
-    public void setReceiverName(String receiverName) {
-        setInvariant(this.receiverName);
-        this.receiverName = receiverName;
-    }
-
     public String getReceiverPhone() {
         return receiverPhone;
     }
 
-    public void setReceiverPhone(String receiverPhone) {
-        setInvariant(this.receiverPhone);
-        this.receiverPhone = receiverPhone;
-    }
-
-    public TranCode getTranCode() {
-        return tranCode;
-    }
-
-    public void setTranCode(TranCode tranCode) {
-        setInvariant(this.tranCode);
-        this.tranCode = tranCode;
+    public TranStatusCode getTranStatusCode() {
+        return tranStatusCode;
     }
 
     public Integer getTranNo() {
         return tranNo;
     }
 
-    public void setTranNo(Integer tranNo) {
-        setInvariant(this.tranNo);
-        this.tranNo = tranNo;
-    }
-
     public String getTranStatus() {
-        return tranStatus;
-    }
-
-    public void setTranStatus(String tranStatus) {
-        setInvariant(this.tranStatus);
-        this.tranStatus = tranStatus;
+        return this.tranStatusCode.getStatus();
     }
 
     public List<TransactionProduction> getTransactionProductions() {
@@ -140,28 +97,104 @@ public class Purchase {
 
     @Override
     public String toString() {
-        return "Purchase [buyer=" +
-               buyer +
-               ", divyAddr=" +
-               divyAddr +
-               ", divyDate=" +
-               divyDate +
-               ", divyRequest=" +
-               divyRequest +
-               ", orderDate=" +
-               orderDate +
-               ", paymentOption=" +
-               paymentOption +
-               ", receiverName=" +
-               receiverName +
-               ", receiverPhone=" +
-               receiverPhone +
-               ", tranCode=" +
-               tranCode +
-               ", tranNo=" +
-               tranNo +
-               ", tranStatus=" +
-               tranStatus +
-               "]";
+        return "Purchase{" + "tranNo=" + tranNo + ", buyer=" + buyer + ", paymentOption='" + paymentOption + '\'' +
+               ", receiverName='" + receiverName + '\'' + ", receiverPhone='" + receiverPhone + '\'' + ", divyAddr='" +
+               divyAddr + '\'' + ", divyRequest='" + divyRequest + '\'' + ", tranStatusCode=" + tranStatusCode +
+               ", orderDate=" + orderDate + ", divyDate='" + divyDate + '\'' + ", transactionProductions=" +
+               transactionProductions + '}';
+    }
+
+    public static class Builder implements Cloneable {
+        private Integer tranNo = null;
+        private User buyer = null;
+        private String paymentOption = null;
+        private String receiverName = null;
+        private String receiverPhone = null;
+        private String divyAddr = null;
+        private String divyRequest = null;
+        private TranStatusCode tranStatusCode = null;
+        private Date orderDate = null;
+        private String divyDate = null;
+        private List<TransactionProduction> transactionProductions;
+
+        public Builder() {
+            this.transactionProductions = new ArrayList<>();
+        }
+
+        public Builder(Purchase purchase) {
+            this.tranNo = purchase.tranNo;
+            this.buyer = purchase.buyer;
+            this.paymentOption = purchase.paymentOption;
+            this.receiverName = purchase.receiverName;
+            this.receiverPhone = purchase.receiverPhone;
+            this.divyAddr = purchase.divyAddr;
+            this.divyRequest = purchase.divyRequest;
+            this.tranStatusCode = purchase.tranStatusCode;
+            this.orderDate = purchase.orderDate;
+            this.divyDate = purchase.divyDate;
+            this.transactionProductions = purchase.transactionProductions;
+        }
+
+        public Builder setField(Consumer<Builder> fieldSetter) {
+            Builder instance;
+            try {
+                instance = (Builder) this.clone();
+            } catch (CloneNotSupportedException e) {
+                System.err.println(e.getMessage() + ": Purchase.Builder");
+                instance = this;
+            }
+            fieldSetter.accept(instance);
+            return instance;
+        }
+
+        public Purchase build() {
+            return new Purchase(this);
+        }
+
+        public Builder tranNo(Integer no) {
+            return this.setField(b -> b.tranNo = no);
+        }
+
+        public Builder buyer(User bu) {
+            return this.setField(b -> b.buyer = bu);
+        }
+
+        public Builder paymentOption(String po) {
+            return this.setField(b -> b.paymentOption = po);
+        }
+
+        public Builder receiverName(String rn) {
+            return this.setField(b -> b.receiverName = rn);
+        }
+
+        public Builder receiverPhone(String rp) {
+            return this.setField(b -> b.receiverPhone = rp);
+        }
+
+        public Builder divyAddr(String addr) {
+            return this.setField(b -> b.divyAddr = addr);
+        }
+
+        public Builder divyRequest(String req) {
+            return this.setField(b -> b.divyRequest = req);
+        }
+
+        public Builder tranStatusCode(TranStatusCode code) {
+            return this.setField(b -> b.tranStatusCode = code);
+        }
+
+        public Builder orderDate(Date date) {
+            return this.setField(b -> b.orderDate = date);
+        }
+
+        public Builder divyDate(String date) {
+            return this.setField(b -> b.divyDate = date);
+        }
+
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return this.build()
+                       .getBuilder();
+        }
     }
 }

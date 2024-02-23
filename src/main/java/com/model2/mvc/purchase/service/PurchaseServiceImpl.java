@@ -11,7 +11,7 @@ import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.TranCode;
+import com.model2.mvc.purchase.domain.TranStatusCode;
 
 public class PurchaseServiceImpl implements PurchaseService {
     private static final PurchaseService instance = new PurchaseServiceImpl();
@@ -30,7 +30,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public Purchase addPurchase(Purchase purchaseVO) {
-        purchaseVO.setTranCode(TranCode.PURCHASE_DONE);
+        purchaseVO.setTranCode(TranStatusCode.PURCHASE_DONE);
         this.purchaseDAO.insertPurchase(purchaseVO);
         return purchaseVO;
     }
@@ -43,7 +43,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                                               tranNo);
         }
 
-        purchase.setTranStatus(purchase.getTranCode().getStatus());
+        purchase.setTranStatus(purchase.getTranStatusCode().getStatus());
 
         return purchase;
     }
@@ -54,7 +54,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .findPurchaseListWithRange(searchVO, userId);
 
         ((List<Purchase>)resultMap.get("purchaseList"))
-                .forEach(p -> p.setTranStatus(p.getTranCode().getStatus()));
+                .forEach(p -> p.setTranStatus(p.getTranStatusCode().getStatus()));
 
         int currentPage = searchVO.getPage();
         List<Integer> pagesToDisplay = ListPageUtil

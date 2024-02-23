@@ -3,9 +3,8 @@ package com.model2.mvc.purchase.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.TranCode;
+import com.model2.mvc.purchase.domain.TranStatusCode;
 
 public class UpdateTranCodeByProdAction extends PurchaseAction {
 
@@ -15,7 +14,7 @@ public class UpdateTranCodeByProdAction extends PurchaseAction {
         String tranCode = request.getParameter("tranCode");
         
         Purchase updateCondition = new Purchase();
-        updateCondition.setTranCode(TranCode.getTranCode(tranCode));
+        updateCondition.setTranCode(TranStatusCode.getTranCode(tranCode));
         updateCondition.setTranNo(-1);
         
         super.purchaseService.updateTranCode(updateCondition);
