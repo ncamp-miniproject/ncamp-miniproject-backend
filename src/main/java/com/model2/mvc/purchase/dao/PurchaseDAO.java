@@ -113,7 +113,6 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     private Purchase generatePurchase(ResultSet rs) throws SQLException {
-
         User buyer = new User().builder()
                                .userId(rs.getString("buyer_id"))
                                .build();

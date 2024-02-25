@@ -2,6 +2,7 @@ package com.model2.mvc.purchase.domain;
 
 import com.model2.mvc.common.Buildable;
 import com.model2.mvc.common.BuilderTemplate;
+
 import com.model2.mvc.user.domain.User;
 
 import java.sql.Date;
