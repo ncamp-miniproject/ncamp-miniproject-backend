@@ -13,7 +13,8 @@ public class AddPurchaseAction extends PurchaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Purchase purchaseData = new Purchase();
+        Purchase purchaseData = new Purchase().builder()
+                                              .build();
         purchaseData.setBuyer(new User(request.getParameter("buyerId")));
         purchaseData.setPaymentOption(request.getParameter("paymentOption"));
         purchaseData.setReceiverName(request.getParameter("receiverName"));

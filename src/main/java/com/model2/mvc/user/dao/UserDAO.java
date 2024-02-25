@@ -1,5 +1,10 @@
 package com.model2.mvc.user.dao;
 
+import com.model2.mvc.common.db.DAOTemplate;
+import com.model2.mvc.common.db.DBUtil;
+import com.model2.mvc.common.dto.Search;
+import com.model2.mvc.user.domain.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,11 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.model2.mvc.common.Search;
-import com.model2.mvc.common.db.DAOTemplate;
-import com.model2.mvc.common.db.DBUtil;
-import com.model2.mvc.user.domain.User;
 
 public class UserDAO extends DAOTemplate {
 
@@ -23,7 +23,7 @@ public class UserDAO extends DAOTemplate {
         Connection con = DBUtil.getConnection();
 
         String sql = "insert into USERS values (?,?,?,'user',?,?,?,?,sysdate)";
-        
+
         System.out.println(sql);
 
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class UserDAO extends DAOTemplate {
         Connection con = DBUtil.getConnection();
 
         String sql = "select * from USERS where USER_ID=?";
-        
+
         System.out.println(sql);
 
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -54,16 +54,17 @@ public class UserDAO extends DAOTemplate {
 
         User userVO = null;
         while (rs.next()) {
-            userVO = new User();
-            userVO.setUserId(rs.getString("USER_ID"));
-            userVO.setUserName(rs.getString("USER_NAME"));
-            userVO.setPassword(rs.getString("PASSWORD"));
-            userVO.setRole(rs.getString("ROLE"));
-            userVO.setSsn(rs.getString("SSN"));
-            userVO.setPhone(rs.getString("CELL_PHONE"));
-            userVO.setAddr(rs.getString("ADDR"));
-            userVO.setEmail(rs.getString("EMAIL"));
-            userVO.setRegDate(rs.getDate("REG_DATE"));
+            userVO = new User().builder()
+                               .userId(rs.getString("USER_ID"))
+                               .userName(rs.getString("USER_NAME"))
+                               .password(rs.getString("PASSWORD"))
+                               .role(rs.getString("ROLE"))
+                               .ssn(rs.getString("SSN"))
+                               .phone(rs.getString("CELL_PHONE"))
+                               .addr(rs.getString("ADDR"))
+                               .email(rs.getString("EMAIL"))
+                               .regDate(rs.getDate("REG_DATE"))
+                               .build();
         }
 
         con.close();
@@ -71,47 +72,29 @@ public class UserDAO extends DAOTemplate {
         return userVO;
     }
 
-    public Map<String, Object> getUserList(Search searchVO)
-            throws Exception {
+    public Map<String, Object> getUserList(Search searchVO) throws Exception {
 
         Connection con = DBUtil.getConnection();
 
-        String sql = "SELECT\n" +
-                     "    v.USER_ID \"user_id\",\n" +
-                     "    v.USER_NAME \"user_name\",\n" +
-                     "    v.PASSWORD \"password\",\n" +
-                     "    v.ROLE \"role\",\n" +
-                     "    v.SSN \"ssn\",\n" +
-                     "    v.CELL_PHONE \"cell_phone\",\n" +
-                     "    v.ADDR \"addr\",\n" +
-                     "    v.EMAIL \"email\",\n" +
-                     "    v.REG_DATE \"reg_date\"\n" +
-                     "    v.COUNT \"count\"" +
-                     "FROM (\n" +
-                     "    SELECT\n" +
-                     "        ROW_NUMBER() OVER (ORDER BY u.user_id ASC) ROW_NUM,\n" +
-                     "        u.user_id USER_ID,\n" +
-                     "        user_name USER_NAME,\n" +
-                     "        u.password PASSWORD,\n" +
-                     "        u.role ROLE,\n" +
-                     "        u.ssn SSN,\n" +
-                     "        u.cell_phone CELL_PHONE,\n" +
-                     "        u.addr ADDR,\n" +
-                     "        u.email EMAIL,\n" +
-                     "        u.reg_date REG_DATE\n" +
-                     "        COUNT(*) OVER () COUNT" +
-                     "    FROM users u\n" +
-                     "    %s\n" +
-                     "    ORDER BY u.user_id ASC\n" +
-                     ") v\n" +
+        String sql = "SELECT\n" + "    v.USER_ID \"user_id\",\n" + "    v.USER_NAME \"user_name\",\n" +
+                     "    v.PASSWORD \"password\",\n" + "    v.ROLE \"role\",\n" + "    v.SSN \"ssn\",\n" +
+                     "    v.CELL_PHONE \"cell_phone\",\n" + "    v.ADDR \"addr\",\n" + "    v.EMAIL \"email\",\n" +
+                     "    v.REG_DATE \"reg_date\"\n" + "    v.COUNT \"count\"" + "FROM (\n" + "    SELECT\n" +
+                     "        ROW_NUMBER() OVER (ORDER BY u.user_id ASC) ROW_NUM,\n" + "        u.user_id USER_ID,\n" +
+                     "        user_name USER_NAME,\n" + "        u.password PASSWORD,\n" + "        u.role ROLE,\n" +
+                     "        u.ssn SSN,\n" + "        u.cell_phone CELL_PHONE,\n" + "        u.addr ADDR,\n" +
+                     "        u.email EMAIL,\n" + "        u.reg_date REG_DATE\n" + "        COUNT(*) OVER () COUNT" +
+                     "    FROM users u\n" + "    %s\n" + "    ORDER BY u.user_id ASC\n" + ") v\n" +
                      "WHERE v.ROW_NUM BETWEEN ? AND ?";
-        
+
         System.out.println(sql);
-        
+
         if (searchVO.getSearchCondition() != null) {
-            if (searchVO.getSearchCondition().equals("0")) {
+            if (searchVO.getSearchCondition()
+                        .equals("0")) {
                 sql = String.format(sql, "WHERE u.user_id = '" + searchVO.getSearchKeyword() + "'");
-            } else if (searchVO.getSearchCondition().equals("1")) {
+            } else if (searchVO.getSearchCondition()
+                               .equals("1")) {
                 sql = String.format(sql, "WHERE u.user_name = '" + searchVO.getSearchKeyword() + "'");
             }
         } else {
@@ -127,32 +110,33 @@ public class UserDAO extends DAOTemplate {
         ResultSet rs = super.executeQuery();
 
         Map<String, Object> map = new HashMap<String, Object>();
-        
+
         if (!rs.next()) {
             map.put("count", 0);
             map.put("list", new ArrayList<>());
             return map;
         }
         map.put("count", rs.getInt("count"));
-        
+
         List<User> list = new ArrayList<>();
         do {
-            User vo = new User();
-            vo.setUserId(rs.getString("user_id"));
-            vo.setUserName(rs.getString("user_name"));
-            vo.setPassword(rs.getString("password"));
-            vo.setRole(rs.getString("role"));
-            vo.setSsn(rs.getString("ssn"));
-            vo.setPhone(rs.getString("cell_phone"));
-            vo.setAddr(rs.getString("addr"));
-            vo.setEmail(rs.getString("email"));
-            vo.setRegDate(rs.getDate("reg_date"));
+            User vo = new User().builder()
+                                .userId(rs.getString("user_id"))
+                                .userName(rs.getString("user_name"))
+                                .password(rs.getString("password"))
+                                .role(rs.getString("role"))
+                                .ssn(rs.getString("ssn"))
+                                .phone(rs.getString("cell_phone"))
+                                .addr(rs.getString("addr"))
+                                .email(rs.getString("email"))
+                                .regDate(rs.getDate("reg_date"))
+                                .build();
             list.add(vo);
         } while (rs.next());
         map.put("list", list);
-        
+
         super.close();
-        
+
         return map;
     }
 
@@ -161,7 +145,7 @@ public class UserDAO extends DAOTemplate {
         Connection con = DBUtil.getConnection();
 
         String sql = "update USERS set USER_NAME=?,CELL_PHONE=?,ADDR=?,EMAIL=? where USER_ID=?";
-        
+
         System.out.println(sql);
 
         PreparedStatement stmt = con.prepareStatement(sql);

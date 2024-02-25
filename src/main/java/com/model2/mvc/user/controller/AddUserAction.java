@@ -1,26 +1,27 @@
 package com.model2.mvc.user.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.service.UserService;
 import com.model2.mvc.user.service.UserServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class AddUserAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User userVO = new User();
-        userVO.setUserId(request.getParameter("userId"));
-        userVO.setPassword(request.getParameter("password"));
-        userVO.setUserName(request.getParameter("userName"));
-        userVO.setSsn(request.getParameter("ssn"));
+        User userVO = new User().builder()
+                                .userId(request.getParameter("userId"))
+                                .password(request.getParameter("password"))
+                                .userName(request.getParameter("userName"))
+                                .ssn(request.getParameter("ssn"))
 
-        userVO.setAddr(request.getParameter("addr"));
-        userVO.setPhone(request.getParameter("phone"));
-        userVO.setEmail(request.getParameter("email"));
+                                .addr(request.getParameter("addr"))
+                                .phone(request.getParameter("phone"))
+                                .email(request.getParameter("email"))
+                                .build();
 
         System.out.println(userVO);
 
