@@ -1,5 +1,6 @@
 package com.model2.mvc.purchase.dao;
 
+import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.common.db.DBUtil;
 import com.model2.mvc.common.db.SQLContainer;
@@ -7,7 +8,6 @@ import com.model2.mvc.common.db.SQLName;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.PurchaseList;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.user.domain.User;
@@ -62,7 +62,7 @@ public class PurchaseDAO extends DAOTemplate {
         }
     }
 
-    public PurchaseList findPurchaseListByUserId(String userId, int page, int pageSize) {
+    public ListData<Purchase> findPurchaseListByUserId(String userId, int page, int pageSize) {
         String sql = SQLContainer.get(SQLName.GET_PURCHASE_LIST.getName())
                                  .orElseThrow(() -> new IllegalArgumentException(
                                          "No sql is found: " + SQLName.GET_PURCHASE_LIST));
@@ -76,13 +76,13 @@ public class PurchaseDAO extends DAOTemplate {
         });
     }
 
-    private PurchaseList generatePurchaseList(String sql, PreparedStatementSetter statementSetter) {
+    private ListData<Purchase> generatePurchaseList(String sql, PreparedStatementSetter statementSetter) {
         try {
             super.prepareStatement(sql, statementSetter);
             ResultSet rs = super.executeQuery();
 
             if (!rs.next()) {
-                return new PurchaseList(0, new ArrayList<>());
+                return new ListData<>(0, new ArrayList<>());
             }
 
             int count = rs.getInt("count");
@@ -94,10 +94,10 @@ public class PurchaseDAO extends DAOTemplate {
             List<Purchase> list = purchaseMap.values()
                                              .stream()
                                              .toList();
-            return new PurchaseList(count, list);
+            return new ListData<>(count, list);
         } catch (SQLException e) {
             e.printStackTrace();
-            return new PurchaseList(0, new ArrayList<>());
+            return new ListData<>(0, new ArrayList<>());
         } finally {
             super.close();
         }
@@ -114,8 +114,9 @@ public class PurchaseDAO extends DAOTemplate {
 
     private Purchase generatePurchase(ResultSet rs) throws SQLException {
 
-        User buyer = new User();
-        buyer.setUserId(rs.getString("buyer_id"));
+        User buyer = new User().builder()
+                               .userId(rs.getString("buyer_id"))
+                               .build();
         return new Purchase().builder()
                              .tranNo(rs.getInt("tran_no"))
                              .buyer(buyer)
@@ -133,16 +134,16 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
-        purchase.addTransactionProduction(new TransactionProduction(Product.builder()
-                                                                           .prodNo(rs.getInt("prod_no"))
-                                                                           .prodName(rs.getString("prod_name"))
-                                                                           .prodDetail(rs.getString("prod_detail"))
-                                                                           .manuDate(rs.getDate("manufacture_day"))
-                                                                           .price(rs.getInt("price"))
-                                                                           .fileName(rs.getString("image_file"))
-                                                                           .regDate(rs.getDate("reg_date"))
-                                                                           .stock(rs.getInt("stock"))
-                                                                           .build(), rs.getInt("quantity")));
+        purchase.addTransactionProduction(new TransactionProduction(new Product().builder()
+                                                                                 .prodNo(rs.getInt("prod_no"))
+                                                                                 .prodName(rs.getString("prod_name"))
+                                                                                 .prodDetail(rs.getString("prod_detail"))
+                                                                                 .manuDate(rs.getDate("manufacture_day"))
+                                                                                 .price(rs.getInt("price"))
+                                                                                 .fileName(rs.getString("image_file"))
+                                                                                 .regDate(rs.getDate("reg_date"))
+                                                                                 .stock(rs.getInt("stock"))
+                                                                                 .build(), rs.getInt("quantity")));
     }
 
     public Map<String, Object> getSaleList(Search searchVO) {

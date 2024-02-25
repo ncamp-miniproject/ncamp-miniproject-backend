@@ -1,15 +1,25 @@
 package com.model2.mvc.product.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.model2.mvc.common.CommonConstants;
-import com.model2.mvc.common.Page;
-import com.model2.mvc.common.Search;
+import com.model2.mvc.common.ListData;
+import com.model2.mvc.common.dto.Page;
 import com.model2.mvc.common.util.ListPageUtil;
+import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.purchase.domain.TranCode;
+import com.model2.mvc.product.dto.request.AddProductRequestDTO;
+import com.model2.mvc.product.dto.request.ListProductRequestDTO;
+import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
+import com.model2.mvc.product.dto.response.AddProductResponseDTO;
+import com.model2.mvc.product.dto.response.GetProductResponseDTO;
+import com.model2.mvc.product.dto.response.ListProductResponseDTO;
+import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
+import com.model2.mvc.purchase.domain.TranStatusCode;
+
+import java.sql.Date;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class ProductServiceImpl implements ProductService {
     private static final ProductService instance = new ProductServiceImpl();
@@ -25,87 +35,86 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProduct(Product toInsert) {
-        toInsert.setManuDate(toInsert.getManuDate().replace("-", ""));
-        validateDataForUpdateProduct(toInsert);
-        this.productDAO.insertProduct(toInsert);
-        return toInsert;
+    public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert) {
+        Product product = new Product().builder()
+                                       .fileName(toInsert.getFileName())
+                                       .manuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"))
+                                       .price(toInsert.getPrice())
+                                       .prodDetail(toInsert.getProdDetail())
+                                       .prodName(toInsert.getProdName())
+                                       .regDate(new Date(System.currentTimeMillis()))
+                                       .stock(toInsert.getStock())
+                                       .build();
+        this.productDAO.insertProduct(product);
+        return AddProductResponseDTO.from(product);
     }
 
-    private void validateDataForUpdateProduct(Product data) {
-        if (!data.getManuDate().matches("[0-9]{8}")
-                || data.getProdName() == null || data.getProdName().isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    @Override
-    public Product getProduct(int prodNo) {
-        Product result = productDAO.findProduct(prodNo);
-        if (result == null) {
-            throw new IllegalArgumentException("No record for the given prodNo: " +
-                                               prodNo);
-        }
-
-        result.setProTranStatus(result.getProTranCode().getStatus());
-
-        System.out.println("-- ProductServiceImpl.getProduct() --");
-        System.out.println(result + "\n");
-        return result;
+    private Date parseDate(String dateStr) {
+        int[] each = Arrays.stream(dateStr.split("-"))
+                           .mapToInt(Integer::parseInt)
+                           .toArray();
+        return new Date(each[0], each[1], each[2]);
     }
 
     @Override
-    public Map<String, Object> getProductList(Search searchVO) {
-        Map<String, Object> resultMap = productDAO.getProductList(searchVO);
+    public GetProductResponseDTO getProduct(int prodNo) {
+        Optional<Product> result = productDAO.findById(prodNo);
 
-        ((List<Product>)resultMap.get("productList")).forEach(p -> p
-                .setProTranStatus(p.getProTranCode().getStatus()));
-
-        int currentPage = searchVO.getPage();
-        List<Integer> pageToDisplay = ListPageUtil
-                .getPageSet((int)resultMap.get("count"),
-                            currentPage,
-                            CommonConstants.PAGE_SIZE,
-                            CommonConstants.PAGE_DISPLAY);
-        boolean previousPageSetBtnVisible = ListPageUtil
-                .isPreviousPageSetAvailable((int)resultMap.get("count"),
-                                            currentPage,
-                                            CommonConstants.PAGE_SIZE,
-                                            CommonConstants.PAGE_DISPLAY);
-        boolean nextPageSetBtnVisible = ListPageUtil
-                .isNextPageSetAvailable((int)resultMap.get("count"),
-                                        currentPage,
-                                        CommonConstants.PAGE_SIZE,
-                                        CommonConstants.PAGE_DISPLAY);
-        resultMap
-                .put("page",
-                     new Page(previousPageSetBtnVisible,
-                              nextPageSetBtnVisible,
-                              ListPageUtil
-                                      .getPreviousPageSetEntry(currentPage,
-                                                               CommonConstants.PAGE_DISPLAY),
-                              ListPageUtil
-                                      .getNextPageSetEntry(currentPage,
-                                                           CommonConstants.PAGE_DISPLAY),
-                              pageToDisplay,
-                              currentPage,
-                              CommonConstants.PAGE_SIZE));
-
-        System.out.println("-- ProductServiceImpl.getProductList() --");
-        System.out.println(resultMap + "\n");
-        return resultMap;
+        result.ifPresent(p -> {
+            System.out.println("-- ProductServiceImpl.getProduct() --");
+            System.out.println(p + "\n");
+        });
+        return GetProductResponseDTO.from(result.orElseThrow(() -> new IllegalArgumentException(
+                "No record for the given prodNo: " + prodNo)));
     }
 
     @Override
-    public Product updateProduct(Product to) {
-        Product previous = this.productDAO.findProduct(to.getProdNo());
-        if (previous == null) {
-            throw new IllegalArgumentException("No such record for given prodNo: " +
-                                               to.getProdNo());
-        }
-        to.setManuDate(to.getManuDate().replace("-", ""));
-        validateDataForUpdateProduct(to);
+    public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
+        ListData<Product> resultMap = productDAO.findProductListByProdName(requestDTO.getSearch());
+
+
+        int currentPage = requestDTO.getPage();
+        List<Integer> pageToDisplay = ListPageUtil.getPageSet(resultMap.getCount(),
+                                                              currentPage,
+                                                              CommonConstants.PAGE_SIZE,
+                                                              CommonConstants.PAGE_DISPLAY);
+        boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(resultMap.getCount(),
+                                                                                    currentPage,
+                                                                                    CommonConstants.PAGE_SIZE,
+                                                                                    CommonConstants.PAGE_DISPLAY);
+        boolean nextPageSetBtnVisible = ListPageUtil.isNextPageSetAvailable(resultMap.getCount(),
+                                                                            currentPage,
+                                                                            CommonConstants.PAGE_SIZE,
+                                                                            CommonConstants.PAGE_DISPLAY);
+
+        Page pageInfo = new Page(previousPageSetBtnVisible,
+                                 nextPageSetBtnVisible,
+                                 ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
+                                 ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
+                                 pageToDisplay,
+                                 currentPage,
+                                 CommonConstants.PAGE_SIZE);
+
+        return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO);
+    }
+
+    @Override
+    public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
+
+        Product previous = this.productDAO.findById(requestDTO.getProdNo())
+                                          .orElseThrow(() -> new IllegalArgumentException(
+                                                  "No such record for given prodNo: " + requestDTO.getProdNo()));
+        Product to = new Product().builder()
+                                  .prodNo(requestDTO.getProdNo())
+                                  .fileName(requestDTO.getFileName())
+                                  .manuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"))
+                                  .price(requestDTO.getPrice())
+                                  .prodDetail(requestDTO.getProdDetail())
+                                  .prodName(requestDTO.getProdName())
+                                  .regDate(new Date(System.currentTimeMillis()))
+                                  .stock(requestDTO.getStock())
+                                  .build();
         this.productDAO.updateProduct(to);
-        return previous;
+        return UpdateProductResponseDTO.from(previous);
     }
 }

@@ -1,6 +1,7 @@
 package com.model2.mvc.purchase.service;
 
 import com.model2.mvc.common.CommonConstants;
+import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Page;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.exception.RecordNotFoundException;
@@ -8,7 +9,6 @@ import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.PurchaseList;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
@@ -48,9 +48,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user) {
-        PurchaseList result = this.purchaseDAO.findPurchaseListByUserId(user.getUserId(),
-                                                                        searchVO.getPage(),
-                                                                        searchVO.getPageUnit());
+        ListData<Purchase> result = this.purchaseDAO.findPurchaseListByUserId(user.getUserId(),
+                                                                    searchVO.getPage(),
+                                                                    searchVO.getPageUnit());
 
         int currentPage = searchVO.getPage();
         List<Integer> pagesToDisplay = ListPageUtil.getPageSet(result.getCount(),
@@ -67,7 +67,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                                                                             CommonConstants.PAGE_DISPLAY);
         return new ListPurchaseResponseDTO().builder()
                                             .count(result.getCount())
-                                            .purchaseList(result.getPurchaseList())
+                                            .purchaseList(result.getList())
                                             .pageInfo(new Page(previousPageSetBtnVisible,
                                                                nextPageSetBtnVisible,
                                                                ListPageUtil.getPreviousPageSetEntry(currentPage,

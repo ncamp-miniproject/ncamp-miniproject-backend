@@ -6,6 +6,7 @@ SELECT
     v.price           "price",
     v.image_file      "image_file",
     v.reg_date        "reg_date",
+    v.stock           "stock",
     v.count           "count"
 FROM
     (
@@ -22,10 +23,12 @@ FROM
             p.price           price,
             p.image_file      image_file,
             p.reg_date        reg_date,
+            p.stock           stock,
             COUNT(*)
             OVER()            count
         FROM
             product p
+        WHERE p.prod_name LIKE ?
         ORDER BY
             p.reg_date DESC -- Should be flexible
     ) v

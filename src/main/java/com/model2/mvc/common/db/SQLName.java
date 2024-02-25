@@ -2,7 +2,7 @@ package com.model2.mvc.common.db;
 
 public enum SQLName {
     FIND_PRODUCT("findproduct"),
-    GET_PRODUCT_LIST("getproductlist"),
+    FIND_PRODUCT_LIST_BY_PROD_NAME("findproductlistbyprodname"),
     INSERT_PRODUCT("insertproduct"),
     UPDATE_PRODUCT("updateproduct"),
 
