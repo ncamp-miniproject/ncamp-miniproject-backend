@@ -4,6 +4,8 @@ import java.util.Map;
 
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
+import com.model2.mvc.user.domain.User;
 
 public interface PurchaseService {
     
@@ -15,7 +17,7 @@ public interface PurchaseService {
     
     public Purchase getPurchase(int tranNo);
     
-    public Map<String, Object> getPurchaseList(Search searchVO, String userId);
+    public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user);
     
     public Map<String, Object> getSaleList(Search searchVO);
     

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
 
 public class ListPurchaseAction extends PurchaseAction {
@@ -30,15 +31,13 @@ public class ListPurchaseAction extends PurchaseAction {
                 .null2nullStr(request.getParameter("searchCondition")));
         searchInfo.setSearchKeyword(StringUtil
                 .null2nullStr(request.getParameter("searchKeyword")));
-        Map<String, Object> resultMap = super.purchaseService
-                .getPurchaseList(searchInfo, loginUser.getUserId());
 
-        System.out.println(resultMap);
-        
-        request.setAttribute("pageInfo", resultMap.get("page"));
-        request.setAttribute("count", resultMap.get("count"));
-        request.setAttribute("purchaseList", resultMap.get("purchaseList"));
-        request.setAttribute("loginUser", loginUser);
+        ListPurchaseResponseDTO result = super.purchaseService
+                .getPurchaseList(searchInfo, loginUser);
+
+        System.out.println(result);
+
+        request.setAttribute("data", result);
         return "forward:/purchase/listPurchase.jsp";
     }
 }

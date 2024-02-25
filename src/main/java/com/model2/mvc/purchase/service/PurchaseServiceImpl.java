@@ -8,16 +8,14 @@ import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
-<<<<<<< HEAD
-import com.model2.mvc.purchase.domain.TranStatusCode;
-=======
 import com.model2.mvc.purchase.domain.PurchaseList;
 import com.model2.mvc.purchase.domain.TranStatusCode;
+import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
+import com.model2.mvc.user.domain.User;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
->>>>>>> 3_refactor
 
 public class PurchaseServiceImpl implements PurchaseService {
     private static final PurchaseService instance = new PurchaseServiceImpl();
@@ -45,12 +43,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Purchase getPurchase(int tranNo) throws RecordNotFoundException {
         Optional<Purchase> purchase = this.purchaseDAO.findById(tranNo);
-        return purchase.orElseThrow(() -> new RecordNotFoundException("No record with tranNo=" + tranNo););
+        return purchase.orElseThrow(() -> new RecordNotFoundException("No record with tranNo=" + tranNo));
     }
 
     @Override
-    public Map<String, Object> getPurchaseList(Search searchVO, String userId) {
-        PurchaseList result = this.purchaseDAO.findPurchaseListByUserId(userId,
+    public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user) {
+        PurchaseList result = this.purchaseDAO.findPurchaseListByUserId(user.getUserId(),
                                                                         searchVO.getPage(),
                                                                         searchVO.getPageUnit());
 
@@ -67,15 +65,20 @@ public class PurchaseServiceImpl implements PurchaseService {
                                                                             currentPage,
                                                                             CommonConstants.PAGE_SIZE,
                                                                             CommonConstants.PAGE_DISPLAY);
-        resultMap.put("page",
-                      new Page(previousPageSetBtnVisible,
-                               nextPageSetBtnVisible,
-                               ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
-                               ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
-                               pagesToDisplay,
-                               currentPage,
-                               CommonConstants.PAGE_SIZE));
-        return resultMap;
+        return new ListPurchaseResponseDTO().builder()
+                                            .count(result.getCount())
+                                            .purchaseList(result.getPurchaseList())
+                                            .pageInfo(new Page(previousPageSetBtnVisible,
+                                                               nextPageSetBtnVisible,
+                                                               ListPageUtil.getPreviousPageSetEntry(currentPage,
+                                                                                                    CommonConstants.PAGE_DISPLAY),
+                                                               ListPageUtil.getNextPageSetEntry(currentPage,
+                                                                                                CommonConstants.PAGE_DISPLAY),
+                                                               pagesToDisplay,
+                                                               currentPage,
+                                                               CommonConstants.PAGE_SIZE))
+                                            .loginUser(user)
+                                            .build();
     }
 
     @Override

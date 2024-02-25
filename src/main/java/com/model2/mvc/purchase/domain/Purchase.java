@@ -8,9 +8,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
-public class Purchase implements Buildable {
+public class Purchase implements Buildable<Purchase.Builder> {
     private Integer tranNo;
     private User buyer;
     private String paymentOption;
@@ -22,6 +21,10 @@ public class Purchase implements Buildable {
     private Date orderDate;
     private String divyDate;
     private List<TransactionProduction> transactionProductions;
+
+    public Purchase() {
+        this.transactionProductions = new ArrayList<>();
+    }
 
     private Purchase(Builder builder) {
         this.tranNo = builder.tranNo;
@@ -114,10 +117,6 @@ public class Purchase implements Buildable {
         private Date orderDate = null;
         private String divyDate = null;
         private List<TransactionProduction> transactionProductions;
-
-        public Builder() {
-            this.transactionProductions = new ArrayList<>();
-        }
 
         public Builder(Purchase purchase) {
             this.tranNo = purchase.tranNo;

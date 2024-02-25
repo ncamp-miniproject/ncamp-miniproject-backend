@@ -1,4 +1,4 @@
-package com.model2.mvc.common;
+package com.model2.mvc.common.dto;
 
 public class Search {
 

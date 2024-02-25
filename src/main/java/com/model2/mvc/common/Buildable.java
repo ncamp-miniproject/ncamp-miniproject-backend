@@ -1,6 +1,6 @@
 package com.model2.mvc.common;
 
-public interface Buildable {
+public interface Buildable<T> {
 
-    public <T> T builder();
+    public T builder();
 }
