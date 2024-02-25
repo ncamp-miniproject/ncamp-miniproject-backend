@@ -15,6 +15,7 @@ public class GetProductResponseDTO {
     private Date regDate;
     private int stock;
     private boolean purchasable;
+    private User loginUser;
 
     private GetProductResponseDTO() {
     }
@@ -70,6 +71,14 @@ public class GetProductResponseDTO {
 
     public void setPurchasable(boolean purchasable) {
         this.purchasable = purchasable;
+    }
+
+    public User getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(User loginUser) {
+        this.loginUser = loginUser;
     }
 
     @Override

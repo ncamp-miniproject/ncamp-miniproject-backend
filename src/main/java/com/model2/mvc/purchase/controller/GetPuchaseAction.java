@@ -3,7 +3,7 @@ package com.model2.mvc.purchase.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 
 public class GetPuchaseAction extends PurchaseAction {
 
@@ -11,7 +11,7 @@ public class GetPuchaseAction extends PurchaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int tranNo = Integer.parseInt(request.getParameter("tranNo"));
         
-        Purchase purchaseData = super.purchaseService.getPurchase(tranNo);
+        GetPurchaseResponseDTO purchaseData = super.purchaseService.getPurchase(tranNo);
         request.setAttribute("purchaseData", purchaseData);
         return "forward:/purchase/getPurchase.jsp";
     }

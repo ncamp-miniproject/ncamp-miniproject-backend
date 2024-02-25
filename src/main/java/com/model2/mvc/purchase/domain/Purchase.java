@@ -2,7 +2,6 @@ package com.model2.mvc.purchase.domain;
 
 import com.model2.mvc.common.Buildable;
 import com.model2.mvc.common.BuilderTemplate;
-
 import com.model2.mvc.user.domain.User;
 
 import java.sql.Date;
@@ -13,14 +12,14 @@ import java.util.List;
 public class Purchase implements Buildable<Purchase.Builder> {
     private Integer tranNo;
     private User buyer;
-    private String paymentOption;
+    private PaymentOption paymentOption;
     private String receiverName;
     private String receiverPhone;
     private String divyAddr;
     private String divyRequest;
     private TranStatusCode tranStatusCode;
     private Date orderDate;
-    private String divyDate;
+    private Date divyDate;
     private List<TransactionProduction> transactionProductions;
 
     public Purchase() {
@@ -53,7 +52,7 @@ public class Purchase implements Buildable<Purchase.Builder> {
         return divyAddr;
     }
 
-    public String getDivyDate() {
+    public Date getDivyDate() {
         return divyDate;
     }
 
@@ -65,7 +64,7 @@ public class Purchase implements Buildable<Purchase.Builder> {
         return orderDate;
     }
 
-    public String getPaymentOption() {
+    public PaymentOption getPaymentOption() {
         return paymentOption;
     }
 
@@ -109,14 +108,14 @@ public class Purchase implements Buildable<Purchase.Builder> {
     public static class Builder extends BuilderTemplate<Purchase> {
         private Integer tranNo = null;
         private User buyer = null;
-        private String paymentOption = null;
+        private PaymentOption paymentOption = null;
         private String receiverName = null;
         private String receiverPhone = null;
         private String divyAddr = null;
         private String divyRequest = null;
         private TranStatusCode tranStatusCode = null;
         private Date orderDate = null;
-        private String divyDate = null;
+        private Date divyDate = null;
         private List<TransactionProduction> transactionProductions;
 
         public Builder(Purchase purchase) {
@@ -145,7 +144,7 @@ public class Purchase implements Buildable<Purchase.Builder> {
             return this.setField(b -> b.buyer = bu);
         }
 
-        public Builder paymentOption(String po) {
+        public Builder paymentOption(PaymentOption po) {
             return this.setField(b -> b.paymentOption = po);
         }
 
@@ -173,8 +172,12 @@ public class Purchase implements Buildable<Purchase.Builder> {
             return this.setField(b -> b.orderDate = date);
         }
 
-        public Builder divyDate(String date) {
+        public Builder divyDate(Date date) {
             return this.setField(b -> b.divyDate = date);
+        }
+
+        public Builder transactionProducts(List<TransactionProduction> t) {
+            return this.setField(b -> b.transactionProductions = t);
         }
     }
 }

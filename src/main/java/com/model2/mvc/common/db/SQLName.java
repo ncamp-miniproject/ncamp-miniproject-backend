@@ -11,7 +11,8 @@ public enum SQLName {
     GET_SALE_LIST("getsalelist"),
     INSERT_PURCHASE("insertpurchase"),
     UPDATE_PURCHASE("updatepurchase"),
-    UPDATE_TRAN_CODE("updatetrancode");
+    UPDATE_TRAN_CODE("updatetrancode"),
+    INSERT_TRAN_PRO("inserttranpro");
 
     private String name;
 

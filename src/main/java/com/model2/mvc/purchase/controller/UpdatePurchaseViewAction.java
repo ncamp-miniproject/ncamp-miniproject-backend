@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
 
 public class UpdatePurchaseViewAction extends PurchaseAction {
@@ -16,10 +17,10 @@ public class UpdatePurchaseViewAction extends PurchaseAction {
         HttpSession session = request.getSession();
         User loginUser = (User)session.getAttribute("user");
         
-        Purchase toUpdate = super.purchaseService.getPurchase(tranNo);
+        GetPurchaseResponseDTO toUpdate = super.purchaseService.getPurchase(tranNo);
         
         request.setAttribute("purchaseData", toUpdate);
         request.setAttribute("loginUser", loginUser);
-        return "forward:/purchase/updatePurchaseView.jsp"; // TODO: forward update view
+        return "forward:/purchase/updatePurchaseView.jsp";
     }
 }
