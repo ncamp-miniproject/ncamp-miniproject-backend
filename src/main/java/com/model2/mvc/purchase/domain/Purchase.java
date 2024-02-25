@@ -98,11 +98,36 @@ public class Purchase implements Buildable<Purchase.Builder> {
 
     @Override
     public String toString() {
-        return "Purchase{" + "tranNo=" + tranNo + ", buyer=" + buyer + ", paymentOption='" + paymentOption + '\'' +
-               ", receiverName='" + receiverName + '\'' + ", receiverPhone='" + receiverPhone + '\'' + ", divyAddr='" +
-               divyAddr + '\'' + ", divyRequest='" + divyRequest + '\'' + ", tranStatusCode=" + tranStatusCode +
-               ", orderDate=" + orderDate + ", divyDate='" + divyDate + '\'' + ", transactionProductions=" +
-               transactionProductions + '}';
+        return "Purchase{" +
+               "tranNo=" +
+               tranNo +
+               ", buyer=" +
+               buyer +
+               ", paymentOption='" +
+               paymentOption +
+               '\'' +
+               ", receiverName='" +
+               receiverName +
+               '\'' +
+               ", receiverPhone='" +
+               receiverPhone +
+               '\'' +
+               ", divyAddr='" +
+               divyAddr +
+               '\'' +
+               ", divyRequest='" +
+               divyRequest +
+               '\'' +
+               ", tranStatusCode=" +
+               tranStatusCode +
+               ", orderDate=" +
+               orderDate +
+               ", divyDate='" +
+               divyDate +
+               '\'' +
+               ", transactionProductions=" +
+               transactionProductions +
+               '}';
     }
 
     public static class Builder extends BuilderTemplate<Purchase> {

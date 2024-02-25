@@ -13,10 +13,9 @@ public class AddItemAction extends CartAction {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Cookie cookie = Arrays.stream(request.getCookies())
-                              .filter(c -> c.getName()
-                                            .equals("cart"))
-                              .findAny()
-                              .orElse(new Cookie("cart", ""));
+                .filter(c -> c.getName().equals("cart"))
+                .findAny()
+                .orElse(new Cookie("cart", ""));
         AddItemResponseDTO responseDTO = super.cartService.addItem(new AddItemRequestDTO(request.getParameter("prodNo"),
                                                                                          request.getParameter("quantity"),
                                                                                          cookie));

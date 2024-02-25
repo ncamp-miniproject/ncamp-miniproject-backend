@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 public class DBUtil {
-
     private final static String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private final static String JDBC_URL = "jdbc:oracle:thin:scott/tiger@localhost:1521:xe";
 
@@ -19,20 +18,18 @@ public class DBUtil {
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(JDBC_URL);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return conn;
     }
-    
+
     public static void close(Connection conn, Statement stmt, ResultSet rs) {
         close(rs);
         close(stmt);
         close(conn);
     }
-    
+
     private static void close(AutoCloseable closeable) {
         try {
             closeable.close();
@@ -42,7 +39,7 @@ public class DBUtil {
             e.printStackTrace();
         }
     }
-    
+
     public static Date parseIntoSqlDate(String dateInStr) {
         if (dateInStr == null || dateInStr.isEmpty()) {
             return new Date(System.currentTimeMillis());

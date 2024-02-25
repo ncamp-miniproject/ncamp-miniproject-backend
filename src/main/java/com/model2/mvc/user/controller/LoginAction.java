@@ -14,9 +14,9 @@ public class LoginAction extends Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User userVO = new User().builder()
-                                .userId(request.getParameter("userId"))
-                                .password(request.getParameter("password"))
-                                .build();
+                .userId(request.getParameter("userId"))
+                .password(request.getParameter("password"))
+                .build();
 
         UserService service = new UserServiceImpl();
         User dbVO = service.loginUser(userVO);

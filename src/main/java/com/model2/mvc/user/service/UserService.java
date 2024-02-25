@@ -1,9 +1,9 @@
 package com.model2.mvc.user.service;
 
-import java.util.Map;
-
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.domain.User;
+
+import java.util.Map;
 
 public interface UserService {
 

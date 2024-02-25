@@ -23,8 +23,7 @@ public class AddPurchaseResponseDTO {
 
     public static AddPurchaseResponseDTO from(Purchase purchase) {
         AddPurchaseResponseDTO dto = new AddPurchaseResponseDTO();
-        dto.buyerId = purchase.getBuyer()
-                              .getUserId();
+        dto.buyerId = purchase.getBuyer().getUserId();
         dto.paymentOption = purchase.getPaymentOption();
         dto.receiverName = purchase.getReceiverName();
         dto.receiverPhone = purchase.getReceiverPhone();
@@ -69,9 +68,29 @@ public class AddPurchaseResponseDTO {
 
     @Override
     public String toString() {
-        return "AddPurchaseResponseDTO{" + "buyerId='" + buyerId + '\'' + ", paymentOption=" + paymentOption +
-               ", receiverName='" + receiverName + '\'' + ", receiverPhone='" + receiverPhone + '\'' + ", divyAddr='" +
-               divyAddr + '\'' + ", divyRequest='" + divyRequest + '\'' + ", divyDate='" + divyDate + '\'' +
-               ", transactionProductions=" + transactionProductions + '}';
+        return "AddPurchaseResponseDTO{" +
+               "buyerId='" +
+               buyerId +
+               '\'' +
+               ", paymentOption=" +
+               paymentOption +
+               ", receiverName='" +
+               receiverName +
+               '\'' +
+               ", receiverPhone='" +
+               receiverPhone +
+               '\'' +
+               ", divyAddr='" +
+               divyAddr +
+               '\'' +
+               ", divyRequest='" +
+               divyRequest +
+               '\'' +
+               ", divyDate='" +
+               divyDate +
+               '\'' +
+               ", transactionProductions=" +
+               transactionProductions +
+               '}';
     }
 }

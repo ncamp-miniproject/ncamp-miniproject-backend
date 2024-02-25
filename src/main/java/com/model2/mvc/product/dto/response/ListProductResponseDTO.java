@@ -18,7 +18,9 @@ public class ListProductResponseDTO {
     private ListProductResponseDTO() {
     }
 
-    public static ListProductResponseDTO from(ListData<Product> listData, Page pageInfo, ListProductRequestDTO requestDTO) {
+    public static ListProductResponseDTO from(ListData<Product> listData,
+                                              Page pageInfo,
+                                              ListProductRequestDTO requestDTO) {
         ListProductResponseDTO dto = new ListProductResponseDTO();
         dto.count = listData.getCount();
         dto.products = listData.getList();
@@ -50,7 +52,18 @@ public class ListProductResponseDTO {
 
     @Override
     public String toString() {
-        return "ListProductResponseDTO{" + "count=" + count + ", products=" + products + ", pageInfo=" + pageInfo +
-               ", menuMode='" + menuMode + '\'' + ", searchInfo=" + searchInfo + '}';
+        return "ListProductResponseDTO{" +
+               "count=" +
+               count +
+               ", products=" +
+               products +
+               ", pageInfo=" +
+               pageInfo +
+               ", menuMode='" +
+               menuMode +
+               '\'' +
+               ", searchInfo=" +
+               searchInfo +
+               '}';
     }
 }

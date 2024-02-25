@@ -14,7 +14,6 @@ import com.model2.mvc.product.dto.response.AddProductResponseDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
-import com.model2.mvc.purchase.domain.TranStatusCode;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -37,22 +36,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert) {
         Product product = new Product().builder()
-                                       .fileName(toInsert.getFileName())
-                                       .manuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"))
-                                       .price(toInsert.getPrice())
-                                       .prodDetail(toInsert.getProdDetail())
-                                       .prodName(toInsert.getProdName())
-                                       .regDate(new Date(System.currentTimeMillis()))
-                                       .stock(toInsert.getStock())
-                                       .build();
+                .fileName(toInsert.getFileName())
+                .manuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"))
+                .price(toInsert.getPrice())
+                .prodDetail(toInsert.getProdDetail())
+                .prodName(toInsert.getProdName())
+                .regDate(new Date(System.currentTimeMillis()))
+                .stock(toInsert.getStock())
+                .build();
         this.productDAO.insertProduct(product);
         return AddProductResponseDTO.from(product);
     }
 
     private Date parseDate(String dateStr) {
-        int[] each = Arrays.stream(dateStr.split("-"))
-                           .mapToInt(Integer::parseInt)
-                           .toArray();
+        int[] each = Arrays.stream(dateStr.split("-")).mapToInt(Integer::parseInt).toArray();
         return new Date(each[0], each[1], each[2]);
     }
 
@@ -102,18 +99,18 @@ public class ProductServiceImpl implements ProductService {
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
 
         Product previous = this.productDAO.findById(requestDTO.getProdNo())
-                                          .orElseThrow(() -> new IllegalArgumentException(
-                                                  "No such record for given prodNo: " + requestDTO.getProdNo()));
+                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo: " +
+                                                                requestDTO.getProdNo()));
         Product to = new Product().builder()
-                                  .prodNo(requestDTO.getProdNo())
-                                  .fileName(requestDTO.getFileName())
-                                  .manuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"))
-                                  .price(requestDTO.getPrice())
-                                  .prodDetail(requestDTO.getProdDetail())
-                                  .prodName(requestDTO.getProdName())
-                                  .regDate(new Date(System.currentTimeMillis()))
-                                  .stock(requestDTO.getStock())
-                                  .build();
+                .prodNo(requestDTO.getProdNo())
+                .fileName(requestDTO.getFileName())
+                .manuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"))
+                .price(requestDTO.getPrice())
+                .prodDetail(requestDTO.getProdDetail())
+                .prodName(requestDTO.getProdName())
+                .regDate(new Date(System.currentTimeMillis()))
+                .stock(requestDTO.getStock())
+                .build();
         this.productDAO.updateProduct(to);
         return UpdateProductResponseDTO.from(previous);
     }

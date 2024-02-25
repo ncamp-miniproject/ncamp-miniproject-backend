@@ -19,9 +19,7 @@ public class AddPurchaseViewAction extends PurchaseAction {
                 "prod_no")));
 
         request.setAttribute("productToPurchase", productToPurchase);
-        request.setAttribute("loginUser",
-                             request.getSession()
-                                    .getAttribute("user"));
+        request.setAttribute("loginUser", request.getSession().getAttribute("user"));
         return "forward:/purchase/addPurchaseView.jsp";
     }
 }

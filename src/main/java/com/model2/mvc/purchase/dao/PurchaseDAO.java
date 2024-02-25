@@ -33,8 +33,7 @@ public class PurchaseDAO extends DAOTemplate {
 
     public Optional<Purchase> findById(int tranNo) {
         String sql = SQLContainer.get(SQLName.FIND_PURCHASE.getName())
-                                 .orElseThrow(() -> new IllegalArgumentException(
-                                         "No sql is found: " + SQLName.FIND_PURCHASE));
+                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.FIND_PURCHASE));
 
         System.out.println(sql);
 
@@ -65,8 +64,7 @@ public class PurchaseDAO extends DAOTemplate {
 
     public ListData<Purchase> findPurchaseListByUserId(String userId, int page, int pageSize) {
         String sql = SQLContainer.get(SQLName.GET_PURCHASE_LIST.getName())
-                                 .orElseThrow(() -> new IllegalArgumentException(
-                                         "No sql is found: " + SQLName.GET_PURCHASE_LIST));
+                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.GET_PURCHASE_LIST));
 
         System.out.println(sql);
 
@@ -92,9 +90,7 @@ public class PurchaseDAO extends DAOTemplate {
             do {
                 forOneRow(rs, purchaseMap);
             } while (rs.next());
-            List<Purchase> list = purchaseMap.values()
-                                             .stream()
-                                             .toList();
+            List<Purchase> list = purchaseMap.values().stream().toList();
             return new ListData<>(count, list);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,35 +110,32 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     private Purchase generatePurchase(ResultSet rs) throws SQLException {
-        User buyer = new User().builder()
-                               .userId(rs.getString("buyer_id"))
-                               .build();
+        User buyer = new User().builder().userId(rs.getString("buyer_id")).build();
         return new Purchase().builder()
-                             .tranNo(rs.getInt("tran_no"))
-                             .buyer(buyer)
-                             .paymentOption(PaymentOption.get(rs.getString("payment_option")))
-                             .receiverName(rs.getString("receiver_name"))
-                             .receiverPhone(rs.getString("receiver_phone"))
-                             .divyAddr(rs.getString("demailaddr"))
-                             .divyRequest(rs.getString("dlvy_request"))
-                             .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code")
-                                                                          .trim()))
-                             .orderDate(rs.getDate("order_date"))
-                             .divyDate(rs.getDate("dlvy_date"))
-                             .build();
+                .tranNo(rs.getInt("tran_no"))
+                .buyer(buyer)
+                .paymentOption(PaymentOption.get(rs.getString("payment_option")))
+                .receiverName(rs.getString("receiver_name"))
+                .receiverPhone(rs.getString("receiver_phone"))
+                .divyAddr(rs.getString("demailaddr"))
+                .divyRequest(rs.getString("dlvy_request"))
+                .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code").trim()))
+                .orderDate(rs.getDate("order_date"))
+                .divyDate(rs.getDate("dlvy_date"))
+                .build();
     }
 
     private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
         purchase.addTransactionProduction(new TransactionProduction(new Product().builder()
-                                                                                 .prodNo(rs.getInt("prod_no"))
-                                                                                 .prodName(rs.getString("prod_name"))
-                                                                                 .prodDetail(rs.getString("prod_detail"))
-                                                                                 .manuDate(rs.getDate("manufacture_day"))
-                                                                                 .price(rs.getInt("price"))
-                                                                                 .fileName(rs.getString("image_file"))
-                                                                                 .regDate(rs.getDate("reg_date"))
-                                                                                 .stock(rs.getInt("stock"))
-                                                                                 .build(), rs.getInt("quantity")));
+                                                                            .prodNo(rs.getInt("prod_no"))
+                                                                            .prodName(rs.getString("prod_name"))
+                                                                            .prodDetail(rs.getString("prod_detail"))
+                                                                            .manuDate(rs.getDate("manufacture_day"))
+                                                                            .price(rs.getInt("price"))
+                                                                            .fileName(rs.getString("image_file"))
+                                                                            .regDate(rs.getDate("reg_date"))
+                                                                            .stock(rs.getInt("stock"))
+                                                                            .build(), rs.getInt("quantity")));
     }
 
     public Map<String, Object> getSaleList(Search searchVO) {
@@ -159,25 +152,18 @@ public class PurchaseDAO extends DAOTemplate {
 
     public void insertPurchase(Purchase data) {
         String sql = SQLContainer.get(SQLName.INSERT_PURCHASE.getName())
-                                 .orElseThrow(() -> new IllegalArgumentException(
-                                         "No sql is found: " + SQLName.INSERT_PURCHASE));
+                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.INSERT_PURCHASE));
 
         System.out.println(sql);
 
         ResultSet autogeneratedKeys = update(sql, stmt -> {
-            stmt.setString(1,
-                           data.getBuyer()
-                               .getUserId());
-            stmt.setString(2,
-                           data.getPaymentOption()
-                               .paymentOption());
+            stmt.setString(1, data.getBuyer().getUserId());
+            stmt.setString(2, data.getPaymentOption().paymentOption());
             stmt.setString(3, data.getReceiverName());
             stmt.setString(4, data.getReceiverPhone());
             stmt.setString(5, data.getDivyAddr());
             stmt.setString(6, data.getDivyRequest());
-            stmt.setString(7,
-                           data.getTranStatusCode()
-                               .getCode());
+            stmt.setString(7, data.getTranStatusCode().getCode());
             stmt.setObject(8, data.getOrderDate());
             stmt.setDate(9, data.getDivyDate());
         }, Statement.RETURN_GENERATED_KEYS);
@@ -197,8 +183,7 @@ public class PurchaseDAO extends DAOTemplate {
         }
 
         String sqlForTP = SQLContainer.get(SQLName.INSERT_TRAN_PRO.getName())
-                                      .orElseThrow(() -> new IllegalArgumentException(
-                                              "No sql is found: " + SQLName.INSERT_PURCHASE));
+                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.INSERT_PURCHASE));
         final int transactionNum = tranNo;
         for (TransactionProduction tp : data.getTransactionProductions()) {
             update(sqlForTP, stmt -> {
@@ -235,18 +220,13 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     public void updatePurchase(Purchase data) {
-        String sql = SQLContainer.get(SQLName.UPDATE_PURCHASE.getName())
-                                 .orElse("");
+        String sql = SQLContainer.get(SQLName.UPDATE_PURCHASE.getName()).orElse("");
 
         System.out.println(sql);
 
         update(sql, stmt -> {
-            stmt.setString(1,
-                           data.getBuyer()
-                               .getUserId());
-            stmt.setString(2,
-                           data.getPaymentOption()
-                               .paymentOption());
+            stmt.setString(1, data.getBuyer().getUserId());
+            stmt.setString(2, data.getPaymentOption().paymentOption());
             stmt.setString(3, data.getReceiverName());
             stmt.setString(4, data.getReceiverPhone());
             stmt.setString(5, data.getDivyAddr());
@@ -258,15 +238,12 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     public void updateTranCode(Purchase data) {
-        String sql = SQLContainer.get(SQLName.UPDATE_TRAN_CODE.getName())
-                                 .orElse("");
+        String sql = SQLContainer.get(SQLName.UPDATE_TRAN_CODE.getName()).orElse("");
 
         System.out.println(sql);
 
         update(sql, stmt -> {
-            stmt.setString(1,
-                           data.getTranStatusCode()
-                               .getCode());
+            stmt.setString(1, data.getTranStatusCode().getCode());
             stmt.setInt(2, data.getTranNo());
         });
     }

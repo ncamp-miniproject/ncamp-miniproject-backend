@@ -2,11 +2,9 @@ package com.model2.mvc.purchase.controller;
 
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
-import com.model2.mvc.user.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Date;
 
 public class UpdatePurchaseAction extends PurchaseAction {
 
@@ -22,22 +20,15 @@ public class UpdatePurchaseAction extends PurchaseAction {
         String divyDate = request.getParameter("divyDate");
 
         UpdatePurchaseRequestDTO requestDTO = new UpdatePurchaseRequestDTO().builder()
-                                                                            .tranNo(Integer.parseInt(request.getParameter(
-                                                                                    "tranNo")))
-                                                                            .buyerId(request.getParameter("buyerId"))
-                                                                            .paymentOption(request.getParameter(
-                                                                                    "paymentOption"))
-                                                                            .receiverName(request.getParameter(
-                                                                                    "receiverName"))
-                                                                            .receiverPhone(request.getParameter(
-                                                                                    "receiverPhone"))
-                                                                            .divyAddr(request.getParameter(
-                                                                                    "receiverAddr"))
-                                                                            .divyRequest(request.getParameter(
-                                                                                    "receiverRequest"))
-                                                                            .divyDate(request.getParameter("divyDate"))
-                                                                            .build();
-
+                .tranNo(Integer.parseInt(request.getParameter("tranNo")))
+                .buyerId(request.getParameter("buyerId"))
+                .paymentOption(request.getParameter("paymentOption"))
+                .receiverName(request.getParameter("receiverName"))
+                .receiverPhone(request.getParameter("receiverPhone"))
+                .divyAddr(request.getParameter("receiverAddr"))
+                .divyRequest(request.getParameter("receiverRequest"))
+                .divyDate(request.getParameter("divyDate"))
+                .build();
 
 
         Purchase result = super.purchaseService.updatePurchase(requestDTO);

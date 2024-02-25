@@ -47,8 +47,16 @@ public class ListPurchaseResponseDTO implements Buildable<ListPurchaseResponseDT
 
     @Override
     public String toString() {
-        return "ListPurchaseResponseDTO{" + "pageInfo=" + pageInfo + ", count=" + count + ", purchaseList=" +
-               purchaseList + ", loginUser=" + loginUser + '}';
+        return "ListPurchaseResponseDTO{" +
+               "pageInfo=" +
+               pageInfo +
+               ", count=" +
+               count +
+               ", purchaseList=" +
+               purchaseList +
+               ", loginUser=" +
+               loginUser +
+               '}';
     }
 
     public static class Builder extends BuilderTemplate<ListPurchaseResponseDTO> {

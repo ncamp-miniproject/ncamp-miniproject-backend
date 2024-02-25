@@ -51,7 +51,7 @@ public class Page {
     public int getCurrentPage() {
         return this.currentPage;
     }
-    
+
     public int getPageSize() {
         return this.pageSize;
     }

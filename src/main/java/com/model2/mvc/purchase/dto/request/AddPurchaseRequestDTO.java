@@ -71,9 +71,28 @@ public class AddPurchaseRequestDTO implements Buildable<AddPurchaseRequestDTO.Bu
 
     @Override
     public String toString() {
-        return "AddPurchaseRequestDTO{" + "buyerId='" + buyerId + '\'' + ", paymentOption=" + paymentOption +
-               ", receiverName='" + receiverName + '\'' + ", receiverPhone='" + receiverPhone + '\'' + ", divyAddr='" +
-               divyAddr + '\'' + ", divyRequest='" + divyRequest + '\'' + ", divyDate='" + divyDate + '\'' + '}';
+        return "AddPurchaseRequestDTO{" +
+               "buyerId='" +
+               buyerId +
+               '\'' +
+               ", paymentOption=" +
+               paymentOption +
+               ", receiverName='" +
+               receiverName +
+               '\'' +
+               ", receiverPhone='" +
+               receiverPhone +
+               '\'' +
+               ", divyAddr='" +
+               divyAddr +
+               '\'' +
+               ", divyRequest='" +
+               divyRequest +
+               '\'' +
+               ", divyDate='" +
+               divyDate +
+               '\'' +
+               '}';
     }
 
     public static class Builder extends BuilderTemplate<AddPurchaseRequestDTO> {

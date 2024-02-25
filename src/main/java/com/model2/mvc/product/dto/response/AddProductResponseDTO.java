@@ -55,8 +55,24 @@ public class AddProductResponseDTO {
 
     @Override
     public String toString() {
-        return "AddProductResponseDTO{" + "fileName='" + fileName + '\'' + ", manuDate=" + manuDate + ", price=" +
-               price + ", prodDetail='" + prodDetail + '\'' + ", prodName='" + prodName + '\'' + ", regDate=" +
-               regDate + ", stock=" + stock + '}';
+        return "AddProductResponseDTO{" +
+               "fileName='" +
+               fileName +
+               '\'' +
+               ", manuDate=" +
+               manuDate +
+               ", price=" +
+               price +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", regDate=" +
+               regDate +
+               ", stock=" +
+               stock +
+               '}';
     }
 }

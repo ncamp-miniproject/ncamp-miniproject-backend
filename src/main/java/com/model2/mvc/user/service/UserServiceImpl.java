@@ -1,10 +1,10 @@
 package com.model2.mvc.user.service;
 
-import java.util.Map;
-
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
+
+import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
@@ -21,8 +21,9 @@ public class UserServiceImpl implements UserService {
     public User loginUser(User userVO) throws Exception {
         User dbUser = userDAO.findUser(userVO.getUserId());
 
-        if (!dbUser.getPassword().equals(userVO.getPassword()))
+        if (!dbUser.getPassword().equals(userVO.getPassword())) {
             throw new Exception("로그인에 실패했습니다.");
+        }
 
         return dbUser;
     }

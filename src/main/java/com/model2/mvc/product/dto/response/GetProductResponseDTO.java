@@ -83,8 +83,26 @@ public class GetProductResponseDTO {
 
     @Override
     public String toString() {
-        return "GetProductResponseDTO{" + "prodNo=" + prodNo + ", fileName='" + fileName + '\'' + ", manuDate=" +
-               manuDate + ", price=" + price + ", prodDetail='" + prodDetail + '\'' + ", prodName='" + prodName + '\'' +
-               ", regDate=" + regDate + ", stock=" + stock + '}';
+        return "GetProductResponseDTO{" +
+               "prodNo=" +
+               prodNo +
+               ", fileName='" +
+               fileName +
+               '\'' +
+               ", manuDate=" +
+               manuDate +
+               ", price=" +
+               price +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", regDate=" +
+               regDate +
+               ", stock=" +
+               stock +
+               '}';
     }
 }

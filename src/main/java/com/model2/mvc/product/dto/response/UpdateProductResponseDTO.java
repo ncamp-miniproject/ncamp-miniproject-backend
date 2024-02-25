@@ -1,7 +1,6 @@
 package com.model2.mvc.product.dto.response;
 
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.purchase.domain.TranStatusCode;
 
 import java.sql.Date;
 
@@ -13,7 +12,6 @@ public class UpdateProductResponseDTO {
     private String prodDetail;
     private String prodName;
     private Date regDate;
-    private TranStatusCode proTranCode;
     private int stock;
 
     private UpdateProductResponseDTO() {
@@ -28,7 +26,6 @@ public class UpdateProductResponseDTO {
         responseDTO.prodDetail = product.getProdDetail();
         responseDTO.prodName = product.getProdName();
         responseDTO.regDate = product.getRegDate();
-        responseDTO.proTranCode = product.getProTranCode();
         responseDTO.stock = product.getStock();
         return responseDTO;
     }
@@ -61,18 +58,32 @@ public class UpdateProductResponseDTO {
         return regDate;
     }
 
-    public TranStatusCode getProTranCode() {
-        return proTranCode;
-    }
-
     public int getStock() {
         return stock;
     }
 
     @Override
     public String toString() {
-        return "UpdateProductResponseDTO{" + "prodNo=" + prodNo + ", fileName='" + fileName + '\'' + ", manuDate=" +
-               manuDate + ", price=" + price + ", prodDetail='" + prodDetail + '\'' + ", prodName='" + prodName + '\'' +
-               ", regDate=" + regDate + ", proTranCode=" + proTranCode + ", stock=" + stock + '}';
+        return "UpdateProductResponseDTO{" +
+               "prodNo=" +
+               prodNo +
+               ", fileName='" +
+               fileName +
+               '\'' +
+               ", manuDate=" +
+               manuDate +
+               ", price=" +
+               price +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", regDate=" +
+               regDate +
+               ", stock=" +
+               stock +
+               '}';
     }
 }

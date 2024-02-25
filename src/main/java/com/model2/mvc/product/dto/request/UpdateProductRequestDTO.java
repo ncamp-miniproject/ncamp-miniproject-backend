@@ -22,6 +22,7 @@ public class UpdateProductRequestDTO implements Buildable<UpdateProductRequestDT
         this.manuDate = from.manuDate;
         this.price = from.price;
         this.fileName = from.fileName;
+        this.stock = from.stock;
     }
 
     @Override
@@ -59,9 +60,26 @@ public class UpdateProductRequestDTO implements Buildable<UpdateProductRequestDT
 
     @Override
     public String toString() {
-        return "UpdateProductRequestDTO{" + "prodNo=" + prodNo + ", prodName='" + prodName + '\'' + ", prodDetail='" +
-               prodDetail + '\'' + ", manuDate='" + manuDate + '\'' + ", price=" + price + ", fileName='" + fileName +
-               '\'' + ", stock=" + stock + '}';
+        return "UpdateProductRequestDTO{" +
+               "prodNo=" +
+               prodNo +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", manuDate='" +
+               manuDate +
+               '\'' +
+               ", price=" +
+               price +
+               ", fileName='" +
+               fileName +
+               '\'' +
+               ", stock=" +
+               stock +
+               '}';
     }
 
     public static class Builder extends BuilderTemplate<UpdateProductRequestDTO> {

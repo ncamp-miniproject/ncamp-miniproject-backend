@@ -2,10 +2,10 @@ package com.model2.mvc.common.dto;
 
 public class Search {
 
-    private int page;
     String searchCondition;
     String searchKeyword;
     int pageUnit;
+    private int page;
 
     public Search() {
     }

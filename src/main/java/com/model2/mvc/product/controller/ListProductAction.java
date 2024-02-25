@@ -22,9 +22,8 @@ public class ListProductAction extends ProductAction {
         System.out.println("searchKeyworkd=" + request.getParameter("searchKeyword"));
 
         HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute("user");
-        if (menuMode == null || (menuMode.equals("manage") && !loginUser.getRole()
-                                                                        .equals("admin"))) {
+        User loginUser = (User)session.getAttribute("user");
+        if (menuMode == null || (menuMode.equals("manage") && !loginUser.getRole().equals("admin"))) {
             return "redirect:/listProduct.do?menu=search";
         }
 

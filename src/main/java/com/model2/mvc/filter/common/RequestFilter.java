@@ -1,7 +1,6 @@
 package com.model2.mvc.filter.common;
 
-import java.io.IOException;
-import java.sql.Date;
+import com.model2.mvc.user.domain.User;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,8 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import com.model2.mvc.user.domain.User;
+import java.io.IOException;
+import java.sql.Date;
 
 public class RequestFilter implements Filter {
 
@@ -20,18 +19,18 @@ public class RequestFilter implements Filter {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    throws IOException, ServletException {
         // TODO: For test
-        HttpSession session = ((HttpServletRequest)request).getSession();
-        
-        User sampleUser = new User();
-        sampleUser.setUserId("user08");
-        sampleUser.setUserName("SCOTT");
-        sampleUser.setPassword("1234");
-        sampleUser.setRole("user");
-        sampleUser.setRegDate(new Date(System.currentTimeMillis()));
-        session.setAttribute("user", sampleUser);
-        
+//        HttpSession session = ((HttpServletRequest)request).getSession();
+//
+//        User sampleUser = new User();
+//        sampleUser.setUserId("user08");
+//        sampleUser.setUserName("SCOTT");
+//        sampleUser.setPassword("1234");
+//        sampleUser.setRole("user");
+//        sampleUser.setRegDate(new Date(System.currentTimeMillis()));
+//        session.setAttribute("user", sampleUser);
+
         request.setCharacterEncoding("euc-kr");
         chain.doFilter(request, response);
     }

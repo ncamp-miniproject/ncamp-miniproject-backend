@@ -40,22 +40,18 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public AddPurchaseResponseDTO addPurchase(AddPurchaseRequestDTO requestDTO) {
         Purchase purchase = new Purchase().builder()
-                                          .buyer(new User().builder()
-                                                           .userId(requestDTO.getBuyerId())
-                                                           .build())
-                                          .paymentOption(requestDTO.getPaymentOption())
-                                          .receiverName(requestDTO.getReceiverName())
-                                          .receiverPhone(requestDTO.getReceiverPhone())
-                                          .divyAddr(requestDTO.getDivyAddr())
-                                          .divyRequest(requestDTO.getDivyRequest())
-                                          .tranStatusCode(TranStatusCode.PURCHASE_DONE)
-                                          .orderDate(new Date(System.currentTimeMillis()))
-                                          .divyDate(requestDTO.getDivyDate())
-                                          .transactionProducts(requestDTO.getTransactionProductions())
-                                          .build();
-        this.purchaseDAO.insertPurchase(purchase.builder()
-                                                .tranStatusCode(TranStatusCode.PURCHASE_DONE)
-                                                .build());
+                .buyer(new User().builder().userId(requestDTO.getBuyerId()).build())
+                .paymentOption(requestDTO.getPaymentOption())
+                .receiverName(requestDTO.getReceiverName())
+                .receiverPhone(requestDTO.getReceiverPhone())
+                .divyAddr(requestDTO.getDivyAddr())
+                .divyRequest(requestDTO.getDivyRequest())
+                .tranStatusCode(TranStatusCode.PURCHASE_DONE)
+                .orderDate(new Date(System.currentTimeMillis()))
+                .divyDate(requestDTO.getDivyDate())
+                .transactionProducts(requestDTO.getTransactionProductions())
+                .build();
+        this.purchaseDAO.insertPurchase(purchase.builder().tranStatusCode(TranStatusCode.PURCHASE_DONE).build());
         return AddPurchaseResponseDTO.from(purchase);
     }
 
@@ -86,19 +82,17 @@ public class PurchaseServiceImpl implements PurchaseService {
                                                                             CommonConstants.PAGE_SIZE,
                                                                             CommonConstants.PAGE_DISPLAY);
         return new ListPurchaseResponseDTO().builder()
-                                            .count(result.getCount())
-                                            .purchaseList(result.getList())
-                                            .pageInfo(new Page(previousPageSetBtnVisible,
-                                                               nextPageSetBtnVisible,
-                                                               ListPageUtil.getPreviousPageSetEntry(currentPage,
-                                                                                                    CommonConstants.PAGE_DISPLAY),
-                                                               ListPageUtil.getNextPageSetEntry(currentPage,
-                                                                                                CommonConstants.PAGE_DISPLAY),
-                                                               pagesToDisplay,
-                                                               currentPage,
-                                                               CommonConstants.PAGE_SIZE))
-                                            .loginUser(user)
-                                            .build();
+                .count(result.getCount())
+                .purchaseList(result.getList())
+                .pageInfo(new Page(previousPageSetBtnVisible,
+                                   nextPageSetBtnVisible,
+                                   ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
+                                   ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
+                                   pagesToDisplay,
+                                   currentPage,
+                                   CommonConstants.PAGE_SIZE))
+                .loginUser(user)
+                .build();
     }
 
     @Override
@@ -110,18 +104,16 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Purchase updatePurchase(UpdatePurchaseRequestDTO requestDTO) {
         Purchase purchase = new Purchase().builder()
-                                          .tranNo(requestDTO.getTranNo())
-                                          .buyer(new User().builder()
-                                                           .userId(requestDTO.getBuyerId())
-                                                           .build())
-                                          .paymentOption(requestDTO.getPaymentOption())
-                                          .receiverName(requestDTO.getReceiverName())
-                                          .receiverPhone(requestDTO.getReceiverPhone())
-                                          .divyAddr(requestDTO.getDivyAddr())
-                                          .divyRequest(requestDTO.getDivyRequest())
-                                          .orderDate(new Date(System.currentTimeMillis()))
-                                          .divyDate(requestDTO.getDivyDate())
-                                          .build();
+                .tranNo(requestDTO.getTranNo())
+                .buyer(new User().builder().userId(requestDTO.getBuyerId()).build())
+                .paymentOption(requestDTO.getPaymentOption())
+                .receiverName(requestDTO.getReceiverName())
+                .receiverPhone(requestDTO.getReceiverPhone())
+                .divyAddr(requestDTO.getDivyAddr())
+                .divyRequest(requestDTO.getDivyRequest())
+                .orderDate(new Date(System.currentTimeMillis()))
+                .divyDate(requestDTO.getDivyDate())
+                .build();
         this.purchaseDAO.updatePurchase(purchase);
         return purchase;
     }

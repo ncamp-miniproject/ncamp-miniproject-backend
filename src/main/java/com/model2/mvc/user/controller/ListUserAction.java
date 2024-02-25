@@ -1,15 +1,14 @@
 package com.model2.mvc.user.controller;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.user.service.UserService;
 import com.model2.mvc.user.service.UserServiceImpl;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 public class ListUserAction extends Action {
 
@@ -18,8 +17,9 @@ public class ListUserAction extends Action {
         Search searchVO = new Search();
 
         int page = 1;
-        if (request.getParameter("page") != null)
+        if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
+        }
 
         searchVO.setPage(page);
         searchVO.setSearchCondition(request.getParameter("searchCondition"));
@@ -33,13 +33,14 @@ public class ListUserAction extends Action {
         request.setAttribute("list", map.get("list"));
         request.setAttribute("searchVO", searchVO);
         request.setAttribute("currentPage", searchVO.getPage());
-        
+
         int totalPage = 0;
         int total = (int)map.get("count");
         if (total > 0) {
             totalPage = total / searchVO.getPageUnit();
-            if (total % searchVO.getPageUnit() > 0)
+            if (total % searchVO.getPageUnit() > 0) {
                 totalPage += 1;
+            }
         }
         request.setAttribute("totalPage", totalPage);
 

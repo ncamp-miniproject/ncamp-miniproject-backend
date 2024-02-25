@@ -1,15 +1,14 @@
 package com.model2.mvc.framework;
 
-import java.io.IOException;
+import com.model2.mvc.common.db.SQLContainer;
+import com.model2.mvc.common.exception.UnsupportedPathException;
+import com.model2.mvc.common.util.HttpUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.model2.mvc.common.db.SQLContainer;
-import com.model2.mvc.common.exception.UnsupportedPathException;
-import com.model2.mvc.common.util.HttpUtil;
+import java.io.IOException;
 
 public class ActionServlet extends HttpServlet {
     private static final long serialVersionUID = 1619349383015568639L;
@@ -22,12 +21,12 @@ public class ActionServlet extends HttpServlet {
         setActionMapper();
         setSqlSetting();
     }
-    
+
     private void setActionMapper() {
         String resources = "/config/actionmapping.properties";
         mapper = RequestMapping.getInstance(resources, this.getServletContext());
     }
-    
+
     private void setSqlSetting() {
         String resource = "/config/sqldescriptor.properties";
         SQLContainer.init(resource, super.getServletContext());
@@ -35,11 +34,11 @@ public class ActionServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         String url = request.getRequestURI();
         String contextPath = request.getContextPath();
         String path = url.substring(contextPath.length());
-        
+
         System.out.println("Path: " + path);
         System.out.println("HTTP Method: " + request.getMethod());
         System.out.println("Content-Type: " + request.getHeader("Content-Type"));
@@ -53,8 +52,7 @@ public class ActionServlet extends HttpServlet {
 
             if (resultPage.startsWith("forward:")) {
                 HttpUtil.forward(request, response, result);
-            }
-            else {
+            } else {
                 HttpUtil.redirect(response, result);
             }
         } catch (UnsupportedPathException e) {
@@ -66,7 +64,7 @@ public class ActionServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public void destroy() {
         super.destroy();

@@ -21,9 +21,7 @@ public class StringUtil {
     }
 
     public static Date parseDate(String from, String separator) {
-        int[] parsed = Arrays.stream(from.split(separator))
-                             .mapToInt(Integer::parseInt)
-                             .toArray();
+        int[] parsed = Arrays.stream(from.split(separator)).mapToInt(Integer::parseInt).toArray();
         return new Date(parsed[0], parsed[1], parsed[2]);
     }
 }

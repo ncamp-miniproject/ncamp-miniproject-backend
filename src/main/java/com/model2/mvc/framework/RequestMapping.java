@@ -1,14 +1,12 @@
 package com.model2.mvc.framework;
 
+import com.model2.mvc.common.exception.UnsupportedPathException;
+
+import javax.servlet.ServletContext;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-
-import com.model2.mvc.common.exception.UnsupportedPathException;
 
 public class RequestMapping {
 
@@ -20,7 +18,7 @@ public class RequestMapping {
     private RequestMapping(String resources, ServletContext servletContext) {
         this.map = new HashMap<String, Action>();
         this.servletContext = servletContext;
-        
+
         InputStream in = null;
         try {
             in = servletContext.getResourceAsStream(resources);
@@ -52,10 +50,10 @@ public class RequestMapping {
             if (!properties.containsKey(path)) {
                 throw new UnsupportedPathException("path=" + path + " is not supported.");
             }
-            
+
             String className = properties.getProperty(path);
             className = className.trim();
-            
+
             try {
                 synchronized (this) {
                     if (!this.map.containsKey(path)) {
@@ -81,7 +79,7 @@ public class RequestMapping {
         }
         return action;
     }
-    
+
     public void destroyAllActions() {
         this.map.values().forEach(action -> action.destroy());
         this.map.clear();

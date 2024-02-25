@@ -13,14 +13,14 @@ public abstract class Action {
     public ServletContext getServletContext() {
         return servletContext;
     }
-    
-    public void init() {
-    }
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
-    
+
+    public void init() {
+    }
+
     public void destroy() {
     }
 

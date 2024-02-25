@@ -29,8 +29,22 @@ public class AddProductRequestDTO implements Buildable<AddProductRequestDTO.Buil
 
     @Override
     public String toString() {
-        return "AddProductRequestDTO{" + "fileName='" + fileName + '\'' + ", manuDate='" + manuDate + '\'' +
-               ", price=" + price + ", prodDetail='" + prodDetail + '\'' + ", prodName='" + prodName + '\'' + '}';
+        return "AddProductRequestDTO{" +
+               "fileName='" +
+               fileName +
+               '\'' +
+               ", manuDate='" +
+               manuDate +
+               '\'' +
+               ", price=" +
+               price +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               '}';
     }
 
     public String getFileName() {

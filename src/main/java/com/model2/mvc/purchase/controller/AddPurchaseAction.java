@@ -13,21 +13,16 @@ public class AddPurchaseAction extends PurchaseAction {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         AddPurchaseRequestDTO requestDTO = new AddPurchaseRequestDTO().builder()
-                                                                      .buyerId(request.getParameter("buyerId"))
-                                                                      .paymentOption(request.getParameter(
-                                                                              "paymentOption"))
-                                                                      .receiverName(request.getParameter("receiverName"))
-                                                                      .receiverPhone(request.getParameter(
-                                                                              "receiverPhone"))
-                                                                      .receiverName(request.getParameter("receiverName"))
-                                                                      .divyAddr(request.getParameter("receiverAddr"))
-                                                                      .divyRequest(request.getParameter(
-                                                                              "receiverRequest"))
-                                                                      .divyDate(StringUtil.parseDate(request.getParameter(
-                                                                              "receiverDate"), "-"))
-                                                                      .transactionProductions(TransactionProduction.from(
-                                                                              request.getParameterValues("tranProds")))
-                                                                      .build();
+                .buyerId(request.getParameter("buyerId"))
+                .paymentOption(request.getParameter("paymentOption"))
+                .receiverName(request.getParameter("receiverName"))
+                .receiverPhone(request.getParameter("receiverPhone"))
+                .receiverName(request.getParameter("receiverName"))
+                .divyAddr(request.getParameter("receiverAddr"))
+                .divyRequest(request.getParameter("receiverRequest"))
+                .divyDate(StringUtil.parseDate(request.getParameter("receiverDate"), "-"))
+                .transactionProductions(TransactionProduction.from(request.getParameterValues("tranProds")))
+                .build();
 
         System.out.println("Purchase Data: " + requestDTO);
 

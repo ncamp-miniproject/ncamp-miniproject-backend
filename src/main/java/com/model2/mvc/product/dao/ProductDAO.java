@@ -6,7 +6,6 @@ import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.db.SQLName;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.purchase.domain.TranStatusCode;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +24,7 @@ public class ProductDAO extends DAOTemplate {
     }
 
     public Optional<Product> findById(int prodNo) {
-        String sql = SQLContainer.get(SQLName.FIND_PRODUCT.getName())
-                                 .orElse("");
+        String sql = SQLContainer.get(SQLName.FIND_PRODUCT.getName()).orElse("");
 
         System.out.println(sql);
 
@@ -40,15 +38,15 @@ public class ProductDAO extends DAOTemplate {
             if (rs.next()) {
                 System.out.println("here");
                 result = new Product().builder()
-                                      .prodNo(rs.getInt("prod_no"))
-                                      .prodName(rs.getString("prod_name"))
-                                      .prodDetail(rs.getString("prod_detail"))
-                                      .manuDate(rs.getDate("manufacture_day"))
-                                      .price(rs.getInt("price"))
-                                      .fileName(rs.getString("image_file"))
-                                      .regDate(rs.getDate("reg_date"))
-                                      .stock(rs.getInt("stock"))
-                                      .build();
+                        .prodNo(rs.getInt("prod_no"))
+                        .prodName(rs.getString("prod_name"))
+                        .prodDetail(rs.getString("prod_detail"))
+                        .manuDate(rs.getDate("manufacture_day"))
+                        .price(rs.getInt("price"))
+                        .fileName(rs.getString("image_file"))
+                        .regDate(rs.getDate("reg_date"))
+                        .stock(rs.getInt("stock"))
+                        .build();
                 System.out.println(result);
             }
             return Optional.ofNullable(result);
@@ -61,8 +59,7 @@ public class ProductDAO extends DAOTemplate {
     }
 
     public ListData<Product> findProductListByProdName(Search searchVO) {
-        String sql = SQLContainer.get(SQLName.FIND_PRODUCT_LIST_BY_PROD_NAME.getName())
-                                 .orElse("");
+        String sql = SQLContainer.get(SQLName.FIND_PRODUCT_LIST_BY_PROD_NAME.getName()).orElse("");
 
         System.out.println(sql);
 
@@ -87,15 +84,15 @@ public class ProductDAO extends DAOTemplate {
             List<Product> list = new ArrayList<>();
             do {
                 Product singleResult = new Product().builder()
-                                                    .prodNo(rs.getInt("prod_no"))
-                                                    .prodName(rs.getString("prod_name"))
-                                                    .prodDetail(rs.getString("prod_detail"))
-                                                    .manuDate(rs.getDate("manufacture_day"))
-                                                    .price(rs.getInt("price"))
-                                                    .fileName(rs.getString("image_file"))
-                                                    .regDate(rs.getDate("reg_date"))
-                                                    .stock(rs.getInt("stock"))
-                                                    .build();
+                        .prodNo(rs.getInt("prod_no"))
+                        .prodName(rs.getString("prod_name"))
+                        .prodDetail(rs.getString("prod_detail"))
+                        .manuDate(rs.getDate("manufacture_day"))
+                        .price(rs.getInt("price"))
+                        .fileName(rs.getString("image_file"))
+                        .regDate(rs.getDate("reg_date"))
+                        .stock(rs.getInt("stock"))
+                        .build();
                 list.add(singleResult);
                 System.out.println("--------------------------------------");
                 System.out.println(singleResult);
@@ -112,8 +109,7 @@ public class ProductDAO extends DAOTemplate {
     }
 
     public void insertProduct(Product toInsert) {
-        String sql = SQLContainer.get("insertproduct")
-                                 .orElse("");
+        String sql = SQLContainer.get("insertproduct").orElse("");
 
         System.out.println(sql);
 
@@ -135,8 +131,7 @@ public class ProductDAO extends DAOTemplate {
     }
 
     public void updateProduct(Product to) {
-        String sql = SQLContainer.get("updateproduct")
-                                 .orElse("");
+        String sql = SQLContainer.get("updateproduct").orElse("");
 
         System.out.println(sql);
 

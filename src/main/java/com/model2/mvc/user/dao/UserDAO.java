@@ -55,16 +55,16 @@ public class UserDAO extends DAOTemplate {
         User userVO = null;
         while (rs.next()) {
             userVO = new User().builder()
-                               .userId(rs.getString("USER_ID"))
-                               .userName(rs.getString("USER_NAME"))
-                               .password(rs.getString("PASSWORD"))
-                               .role(rs.getString("ROLE"))
-                               .ssn(rs.getString("SSN"))
-                               .phone(rs.getString("CELL_PHONE"))
-                               .addr(rs.getString("ADDR"))
-                               .email(rs.getString("EMAIL"))
-                               .regDate(rs.getDate("REG_DATE"))
-                               .build();
+                    .userId(rs.getString("USER_ID"))
+                    .userName(rs.getString("USER_NAME"))
+                    .password(rs.getString("PASSWORD"))
+                    .role(rs.getString("ROLE"))
+                    .ssn(rs.getString("SSN"))
+                    .phone(rs.getString("CELL_PHONE"))
+                    .addr(rs.getString("ADDR"))
+                    .email(rs.getString("EMAIL"))
+                    .regDate(rs.getDate("REG_DATE"))
+                    .build();
         }
 
         con.close();
@@ -76,25 +76,42 @@ public class UserDAO extends DAOTemplate {
 
         Connection con = DBUtil.getConnection();
 
-        String sql = "SELECT\n" + "    v.USER_ID \"user_id\",\n" + "    v.USER_NAME \"user_name\",\n" +
-                     "    v.PASSWORD \"password\",\n" + "    v.ROLE \"role\",\n" + "    v.SSN \"ssn\",\n" +
-                     "    v.CELL_PHONE \"cell_phone\",\n" + "    v.ADDR \"addr\",\n" + "    v.EMAIL \"email\",\n" +
-                     "    v.REG_DATE \"reg_date\"\n" + "    v.COUNT \"count\"" + "FROM (\n" + "    SELECT\n" +
-                     "        ROW_NUMBER() OVER (ORDER BY u.user_id ASC) ROW_NUM,\n" + "        u.user_id USER_ID,\n" +
-                     "        user_name USER_NAME,\n" + "        u.password PASSWORD,\n" + "        u.role ROLE,\n" +
-                     "        u.ssn SSN,\n" + "        u.cell_phone CELL_PHONE,\n" + "        u.addr ADDR,\n" +
-                     "        u.email EMAIL,\n" + "        u.reg_date REG_DATE\n" + "        COUNT(*) OVER () COUNT" +
-                     "    FROM users u\n" + "    %s\n" + "    ORDER BY u.user_id ASC\n" + ") v\n" +
+        String sql = "SELECT\n" +
+                     "    v.USER_ID \"user_id\",\n" +
+                     "    v.USER_NAME \"user_name\",\n" +
+                     "    v.PASSWORD \"password\",\n" +
+                     "    v.ROLE \"role\",\n" +
+                     "    v.SSN \"ssn\",\n" +
+                     "    v.CELL_PHONE \"cell_phone\",\n" +
+                     "    v.ADDR \"addr\",\n" +
+                     "    v.EMAIL \"email\",\n" +
+                     "    v.REG_DATE \"reg_date\"\n" +
+                     "    v.COUNT \"count\"" +
+                     "FROM (\n" +
+                     "    SELECT\n" +
+                     "        ROW_NUMBER() OVER (ORDER BY u.user_id ASC) ROW_NUM,\n" +
+                     "        u.user_id USER_ID,\n" +
+                     "        user_name USER_NAME,\n" +
+                     "        u.password PASSWORD,\n" +
+                     "        u.role ROLE,\n" +
+                     "        u.ssn SSN,\n" +
+                     "        u.cell_phone CELL_PHONE,\n" +
+                     "        u.addr ADDR,\n" +
+                     "        u.email EMAIL,\n" +
+                     "        u.reg_date REG_DATE\n" +
+                     "        COUNT(*) OVER () COUNT" +
+                     "    FROM users u\n" +
+                     "    %s\n" +
+                     "    ORDER BY u.user_id ASC\n" +
+                     ") v\n" +
                      "WHERE v.ROW_NUM BETWEEN ? AND ?";
 
         System.out.println(sql);
 
         if (searchVO.getSearchCondition() != null) {
-            if (searchVO.getSearchCondition()
-                        .equals("0")) {
+            if (searchVO.getSearchCondition().equals("0")) {
                 sql = String.format(sql, "WHERE u.user_id = '" + searchVO.getSearchKeyword() + "'");
-            } else if (searchVO.getSearchCondition()
-                               .equals("1")) {
+            } else if (searchVO.getSearchCondition().equals("1")) {
                 sql = String.format(sql, "WHERE u.user_name = '" + searchVO.getSearchKeyword() + "'");
             }
         } else {
@@ -121,16 +138,16 @@ public class UserDAO extends DAOTemplate {
         List<User> list = new ArrayList<>();
         do {
             User vo = new User().builder()
-                                .userId(rs.getString("user_id"))
-                                .userName(rs.getString("user_name"))
-                                .password(rs.getString("password"))
-                                .role(rs.getString("role"))
-                                .ssn(rs.getString("ssn"))
-                                .phone(rs.getString("cell_phone"))
-                                .addr(rs.getString("addr"))
-                                .email(rs.getString("email"))
-                                .regDate(rs.getDate("reg_date"))
-                                .build();
+                    .userId(rs.getString("user_id"))
+                    .userName(rs.getString("user_name"))
+                    .password(rs.getString("password"))
+                    .role(rs.getString("role"))
+                    .ssn(rs.getString("ssn"))
+                    .phone(rs.getString("cell_phone"))
+                    .addr(rs.getString("addr"))
+                    .email(rs.getString("email"))
+                    .regDate(rs.getDate("reg_date"))
+                    .build();
             list.add(vo);
         } while (rs.next());
         map.put("list", list);

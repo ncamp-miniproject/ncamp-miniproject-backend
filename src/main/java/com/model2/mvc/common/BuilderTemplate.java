@@ -7,10 +7,10 @@ public abstract class BuilderTemplate<T extends Buildable> implements Cloneable 
     public final <U extends BuilderTemplate<T>> U setField(Consumer<U> fieldSetter) {
         U instance;
         try {
-            instance = (U) this.clone();
+            instance = (U)this.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
-            instance = (U) this;
+            instance = (U)this;
         }
         fieldSetter.accept(instance);
         return instance;

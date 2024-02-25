@@ -7,16 +7,6 @@ public enum PaymentOption {
     CASH("0"),
     CREDIT_CARD("1");
 
-    private String paymentOption;
-    
-    private PaymentOption(String paymentOption) {
-        this.paymentOption = paymentOption;
-    }
-    
-    public String paymentOption() {
-        return this.paymentOption;
-    }
-
     private static final Map<String, PaymentOption> paymentOptionTable = new HashMap<>();
 
     static {
@@ -24,7 +14,17 @@ public enum PaymentOption {
         paymentOptionTable.put("1", CREDIT_CARD);
     }
 
+    private String paymentOption;
+
+    private PaymentOption(String paymentOption) {
+        this.paymentOption = paymentOption;
+    }
+
     public static PaymentOption get(String optionCode) {
         return paymentOptionTable.get(optionCode);
+    }
+
+    public String paymentOption() {
+        return this.paymentOption;
     }
 }
