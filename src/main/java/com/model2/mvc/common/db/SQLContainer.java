@@ -14,11 +14,9 @@ public class SQLContainer {
     private static final Map<String, String> container = new HashMap<>();
 
     public static void init(String resource, ServletContext servletContext) {
-        System.out.println("resource: " + resource);
         Properties properties = new Properties();
         try (InputStream is = servletContext.getResourceAsStream(resource)) {
             properties.load(is);
-            System.out.println(properties);
 
             properties.stringPropertyNames().forEach(k -> {
                 System.out.println(properties.getProperty(k));
@@ -38,11 +36,11 @@ public class SQLContainer {
             e.printStackTrace();
         }
 
-        for (String key : container.keySet()) {
-            System.out.println("[" + key + "]");
-            System.out.println(container.get(key));
-            System.out.println("----------------------");
-        }
+//        for (String key : container.keySet()) {
+//            System.out.println("[" + key + "]");
+//            System.out.println(container.get(key));
+//            System.out.println("----------------------");
+//        }
     }
 
     public static Optional<String> get(String name) {

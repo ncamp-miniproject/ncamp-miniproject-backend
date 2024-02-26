@@ -12,8 +12,6 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<form name="detailForm" method="post">
-
 		<table width="100%" height="37" border="0" cellpadding="0"
                cellspacing="0">
 			<tr>
@@ -136,8 +134,8 @@
 
 									<form action="/addItem.do" method="POST">
 										<input type="hidden" name="prodNo" value="${ productData.prodNo }">
-										<input type="number" name="quantity" value="0">
-										<input type="submit" value="장바구니">
+										<input type="number" name="quantity" id="quantityInput" value="0">
+										<input type="submit" id="loadOnCart" value="장바구니" disabled>
 									</form>
 								</td>
                                 <td width="14"
@@ -162,7 +160,14 @@
 				</td>
 			</tr>
 		</table>
-	</form>
+
+<script>
+	const quantityInput = document.getElementById("quantityInput");
+	const loadOnCart = document.getElementById("loadOnCart");
+	quantityInput.addEventListener("change", ev => {
+		loadOnCart.disabled = parseInt(ev.target.value) <= 0;
+	});
+</script>
 
 </body>
 </html>
