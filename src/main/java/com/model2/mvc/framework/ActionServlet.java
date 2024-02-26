@@ -4,6 +4,7 @@ import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.exception.UnsupportedPathException;
 import com.model2.mvc.common.util.HttpUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,20 +17,11 @@ public class ActionServlet extends HttpServlet {
     private RequestMapping mapper;
 
     @Override
-    public void init() throws ServletException {
+    public void init(ServletConfig servletConfig) throws ServletException {
         super.init();
-        setActionMapper();
-        setSqlSetting();
-    }
-
-    private void setActionMapper() {
-        String resources = "/config/actionmapping.properties";
-        mapper = RequestMapping.getInstance(resources, this.getServletContext());
-    }
-
-    private void setSqlSetting() {
-        String resource = "/config/sqldescriptor.properties";
-        SQLContainer.init(resource, super.getServletContext());
+        this.mapper = RequestMapping.getInstance(servletConfig.getInitParameter("actionmapping"),
+                                                 this.getServletContext());
+        SQLContainer.init(servletConfig.getInitParameter("sqldescriptor"), this.getServletContext());
     }
 
     @Override

@@ -6,13 +6,23 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
   version="4.0"
   metadata-complete="true">
-	
+
 	<context-param>
 		<param-name>pageSize</param-name>
 		<param-value>3</param-value>
 	</context-param>
-	
-	
+
+	<context-param>
+		<param-name>actionmapping</param-name>
+		<param-value>/META-INF/actionmapping.properties</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>sqldescriptor</param-name>
+		<param-value>/META-INF/sqldescriptor.properties</param-value>
+	</context-param>
+
+
 	<filter>
 		<filter-name>requestFilter</filter-name>
 		<filter-class>com.model2.mvc.filter.common.RequestFilter</filter-class>
@@ -21,8 +31,8 @@
 		<filter-name>requestFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	
+
+
 	<filter>
 		<filter-name>loginFilter</filter-name>
 		<filter-class>com.model2.mvc.filter.common.LoginFilter</filter-class>
@@ -31,8 +41,8 @@
 		<filter-name>loginFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	
+
+
 	<filter>
 		<filter-name>addProductUnauthorizedFilter</filter-name>
 		<filter-class>com.model2.mvc.filter.product.AddProductUnauthorizedFilter</filter-class>
@@ -41,8 +51,8 @@
 		<filter-name>addProductUnauthorizedFilter</filter-name>
 		<url-pattern>/addProduct.do*</url-pattern>
 	</filter-mapping>
-	
-	
+
+
 	<filter>
 		<filter-name>addPurchasePreventMultiplePurchaseFilter</filter-name>
 		<filter-class>com.model2.mvc.filter.purchase.AddPurchasePreventMultiplePurchaseFilter</filter-class>
@@ -51,23 +61,23 @@
 		<filter-name>addPurchasePreventMultiplePurchaseFilter</filter-name>
 		<url-pattern>/addPurchase.do*</url-pattern>
 	</filter-mapping>
-	
+
 
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>com.model2.mvc.framework.ActionServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
-		
+
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file> 
+		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
     </welcome-file-list>
-	
+
 </web-app>
