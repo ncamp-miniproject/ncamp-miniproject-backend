@@ -99,6 +99,10 @@ if (vo != null) {
 						<td class="Depth03"><a href="/listProduct.do?menu=search"
 							target="rightFrame">상 품 검 색</a></td>
 					</tr>
+					<tr>
+						<td class="Depth03"><a href="/listCart.do"
+											   target="rightFrame">장 바 구 니</a></td>
+					</tr>
 					<%
 					if (vo != null) {
 					    if (role.equals("user")) {

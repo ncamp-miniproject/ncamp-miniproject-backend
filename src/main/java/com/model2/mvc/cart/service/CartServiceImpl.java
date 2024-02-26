@@ -2,19 +2,28 @@ package com.model2.mvc.cart.service;
 
 import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
 import com.model2.mvc.cart.dto.response.AddItemResponseDTO;
+import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
 import com.model2.mvc.common.CommonConstants;
+import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.product.domain.Product;
 
 import javax.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CartServiceImpl implements CartService {
     private static CartService instance = new CartServiceImpl();
 
+    private ProductDAO productDAO;
 
     public static CartService getInstance() {
         return instance;
+    }
+
+    public CartServiceImpl() {
+        this.productDAO = ProductDAO.getInstance();
     }
 
     @Override
@@ -51,5 +60,29 @@ public class CartServiceImpl implements CartService {
                                                        .toList()));
         }
         return new AddItemResponseDTO(newCookie);
+    }
+
+    @Override
+    public ListCartItemResponseDTO getCartItemList(String cartValue) {
+        Map<Integer, Integer> parsed = new HashMap<>();
+
+        Arrays.stream(cartValue.split(CommonConstants.COOKIE_DELIMITER))
+                .map(v -> v.split(CommonConstants.COOKIE_KEY_VALUE_DELIMITER))
+                .map(d -> new int[] { Integer.parseInt(d[0]), Integer.parseInt(d[1]) })
+                .forEach(i -> parsed.put(i[0], i[1]));
+
+        List<Integer> keyList = parsed.keySet().stream().toList();
+        Map<Integer, Product> queryResult = productDAO.findProductsByIds(keyList);
+
+        Map<Product, Integer> resultMap = new HashMap<>();
+        for (Integer key : keyList) {
+            resultMap.put(queryResult.get(key), parsed.get(key));
+        }
+
+        int priceSum = resultMap.keySet()
+                .stream()
+                .reduce(0, (i, p) -> i + p.getPrice() * resultMap.get(p), Integer::sum);
+        int itemCount = keyList.size();
+        return new ListCartItemResponseDTO(priceSum, itemCount, resultMap);
     }
 }

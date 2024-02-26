@@ -4,6 +4,7 @@ import com.model2.mvc.common.Buildable;
 import com.model2.mvc.common.BuilderTemplate;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Product implements Buildable<Product.Builder> {
     private int prodNo;
@@ -63,6 +64,48 @@ public class Product implements Buildable<Product.Builder> {
 
     public int getStock() {
         return stock;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Product product = (Product)o;
+        return prodNo == product.prodNo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prodNo);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+               "prodNo=" +
+               prodNo +
+               ", fileName='" +
+               fileName +
+               '\'' +
+               ", manuDate=" +
+               manuDate +
+               ", price=" +
+               price +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", regDate=" +
+               regDate +
+               ", stock=" +
+               stock +
+               '}';
     }
 
     public static class Builder extends BuilderTemplate<Product> {

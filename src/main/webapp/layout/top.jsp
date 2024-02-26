@@ -32,7 +32,7 @@ User vo=(User)session.getAttribute("user");
 	              <a href="/user/loginView.jsp" target="rightFrame">login</a>   
 	          <%
 	          	}
-	          %>        
+	          %>
 	          </td>
 	          <td width="14">&nbsp;</td>
 	          <td width="56">

@@ -10,8 +10,12 @@ import com.model2.mvc.product.domain.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class ProductDAO extends DAOTemplate {
     private static ProductDAO instance = new ProductDAO();
@@ -53,6 +57,47 @@ public class ProductDAO extends DAOTemplate {
         } catch (SQLException e) {
             e.printStackTrace();
             return Optional.empty();
+        } finally {
+            super.close();
+        }
+    }
+
+    public Map<Integer, Product> findProductsByIds(List<Integer> ids) {
+        String sql = SQLContainer.get(SQLName.FIND_PRODUCTS_BY_IDS.getName()).orElseThrow();
+
+        String[] qms = new String[ids.size()];
+        Arrays.fill(qms, "?");
+        String toInsertValue = String.join(",", qms);
+        sql = String.format(sql, toInsertValue);
+
+        System.out.println(sql);
+
+        try {
+            super.prepareStatement(sql, stmt -> {
+                for (int i = 0; i < ids.size(); i++) {
+                    stmt.setInt(i + 1, ids.get(i));
+                }
+            });
+            ResultSet rs = super.executeQuery();
+
+            Map<Integer, Product> resultMap = new HashMap<>();
+            while (rs.next()) {
+                Product singleResult = new Product().builder()
+                        .prodNo(rs.getInt("prod_no"))
+                        .prodName(rs.getString("prod_name"))
+                        .prodDetail(rs.getString("prod_detail"))
+                        .manuDate(rs.getDate("manufacture_day"))
+                        .price(rs.getInt("price"))
+                        .fileName(rs.getString("image_file"))
+                        .regDate(rs.getDate("reg_date"))
+                        .stock(rs.getInt("stock"))
+                        .build();
+                resultMap.put(singleResult.getProdNo(), singleResult);
+            }
+            return resultMap;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new HashMap<>();
         } finally {
             super.close();
         }

@@ -7,6 +7,7 @@ public enum SQLName {
     UPDATE_PRODUCT("updateproduct"),
 
     FIND_PURCHASE("findpurchase"),
+    FIND_PRODUCTS_BY_IDS("findproductbyids"),
     GET_PURCHASE_LIST("getpurchaselist"),
     GET_SALE_LIST("getsalelist"),
     INSERT_PURCHASE("insertpurchase"),
