@@ -21,15 +21,16 @@ public class RequestFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
     throws IOException, ServletException {
         // TODO: For test
-//        HttpSession session = ((HttpServletRequest)request).getSession();
-//
-//        User sampleUser = new User();
-//        sampleUser.setUserId("user08");
-//        sampleUser.setUserName("SCOTT");
-//        sampleUser.setPassword("1234");
-//        sampleUser.setRole("user");
-//        sampleUser.setRegDate(new Date(System.currentTimeMillis()));
-//        session.setAttribute("user", sampleUser);
+        HttpSession session = ((HttpServletRequest)request).getSession();
+
+        User sampleUser = new User().builder()
+                .userId("user08")
+                .userName("SCOTT")
+                .password("1234")
+                .role("user")
+                .regDate(new Date(System.currentTimeMillis()))
+                .build();
+        session.setAttribute("user", sampleUser);
 
         request.setCharacterEncoding("euc-kr");
         chain.doFilter(request, response);

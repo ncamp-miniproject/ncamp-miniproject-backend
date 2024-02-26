@@ -83,8 +83,8 @@
 				<td width="104" class="ct_write">
 					상품상세정보
 					<img src="/images/ct_icon_red.gif"
-						 width="3"
-						 height="3"
+                         width="3"
+                         height="3"
                          align="absmiddle"/>
 				</td>
 				<td bgcolor="D6D6D6" width="1"></td>
@@ -127,14 +127,26 @@
 
 					<table border="0" cellspacing="0" cellpadding="0">
 						<tr>
-                            <c:if test="${ purchaseable }">
+                            <c:if test="${ productData.purchasable }">
                                 <td width="17" height="23"><img src="/images/ct_btnbg01.gif"
                                                                 width="17" height="23"/></td>
-                                <td background="/images/ct_btnbg02.gif" class="ct_btn01"
-                                    style="padding-top: 3px;"><a
-                                        href="/addPurchaseView.do?prod_no=${ productData.prodNo }">구매</a></td>
-                                <td width="14" height="23"><img src="/images/ct_btnbg03.gif"
-                                                                width="14" height="23"></td>
+                                <td background="/images/ct_btnbg02.gif"
+                                    class="ct_btn01"
+                                    style="padding-top: 3px;">
+
+									<form action="/addItem.do" method="POST">
+										<input type="hidden" name="prodNo" value="${ productData.prodNo }">
+										<input type="number" name="quantity" value="0">
+										<input type="submit" value="장바구니">
+									</form>
+								</td>
+                                <td width="14"
+                                    height="23">
+
+									<img src="/images/ct_btnbg03.gif"
+                                         width="14"
+                                         height="23">
+								</td>
                             </c:if>
 
 							<td width="17" height="23"><img src="/images/ct_btnbg01.gif"

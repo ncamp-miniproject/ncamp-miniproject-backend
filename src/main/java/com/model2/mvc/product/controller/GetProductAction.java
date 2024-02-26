@@ -42,12 +42,15 @@ public class GetProductAction extends Action {
         HttpSession session = request.getSession();
         if (!session.isNew() && session.getAttribute("user") != null) {
             User loginUser = (User)session.getAttribute("user");
-            result.setPurchasable(loginUser.getRole().equals("user"));
+            result.setPurchasable(loginUser.getRole().equals("user") && result.getStock() > 0);
+            System.out.println(loginUser);
         } else {
             result.setPurchasable(false);
         }
 
-        request.setAttribute("data", result);
+        System.out.println(result);
+
+        request.setAttribute("productData", result);
         return "forward:/product/getProduct.jsp";
     }
 }

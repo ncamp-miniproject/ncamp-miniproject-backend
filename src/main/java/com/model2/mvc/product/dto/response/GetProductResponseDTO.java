@@ -103,6 +103,10 @@ public class GetProductResponseDTO {
                regDate +
                ", stock=" +
                stock +
+               ", purchasable=" +
+               purchasable +
+               ", loginUser=" +
+               loginUser +
                '}';
     }
 }
