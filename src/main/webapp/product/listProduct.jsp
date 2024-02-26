@@ -46,10 +46,10 @@
 
                     <td align="right">
                         <select name="searchCondition" class="ct_input_g" style="width: 80px">
-                            <option value="0" ${ searchInfo.searchCondition == "0" ? "selected" : "" }>상품번호</option>
-                            <option value="1" ${ searchInfo.searchCondition == "1" ? "selected" : "" }>상품명</option>
-                            <option value="2" ${ searchInfo.searchCondition == "2" ? "selected" : "" }>상품가격</option>
-                        </select> <input type="text" name="searchKeyword" class="ct_input_g" value="${ searchInfo.searchKeyword }"
+                            <option value="0" ${ data.searchInfo.searchCondition == "0" ? "selected" : "" }>상품번호</option>
+                            <option value="1" ${ data.searchInfo.searchCondition == "1" ? "selected" : "" }>상품명</option>
+                            <option value="2" ${ data.searchInfo.searchCondition == "2" ? "selected" : "" }>상품가격</option>
+                        </select> <input type="text" name="searchKeyword" class="ct_input_g" value="${ data.searchInfo.searchKeyword }"
                             style="width: 200px; height: 19px" />
                     </td>
 
@@ -86,37 +86,34 @@
                     <td class="ct_line02"></td>
                     <td class="ct_list_b">등록일</td>
                     <td class="ct_line02"></td>
-                    <td class="ct_list_b">현재상태</td>
+                    <td class="ct_list_b">재고</td>
                 </tr>
                 <tr>
                     <td colspan="11" bgcolor="808285" height="1"></td>
                 </tr>
 
-                <c:set var="number" value="${ pageInfo.pageSize }" scope="page" />
-                <c:forEach var="data" items="${ productList }">
+                <c:set var="number" value="${ data.pageInfo.pageSize }" scope="page" />
+                <c:forEach var="product" items="${ data.products }">
                     <tr class="ct_list_pop">
                         <td align="center">${ number }</td>
                         <c:set var="number" value="${ number - 1 }" scope="page" />
                         <td></td>
                         <td align="left">
                             <c:choose>
-                                <c:when test="${ data.proTranCode == TranCode.PURCHASEABLE.code }">
-                                    <a href="/getProduct.do?prodNo=${ data.prodNo }&menu=${ menuMode }">${ data.prodName }</a>
+                                <c:when test="${ product.stock != 0 }">
+                                    <a href="/getProduct.do?prodNo=${ product.prodNo }&menu=${ data.menuMode }">${ product.prodName }</a>
                                 </c:when>
                                 <c:otherwise>
-                                    ${ data.prodName }
+                                    ${ product.prodName }
                                 </c:otherwise>
                             </c:choose>
                         </td>
                         <td></td>
-                        <td align="left">${ data.price }</td>
+                        <td align="left">${ product.price }</td>
                         <td></td>
-                        <td align="left">${ data.regDate }</td>
+                        <td align="left">${ product.regDate }</td>
                         <td></td>
-                        <td align="left">${ data.proTranStatus }
-                            <c:if test="${ data.proTranCode == TranCode.PURCHASE_DONE.getCode() && menuMode == 'manage' }">
-                                <a href="/updateTranCodeByProd.do?prodNo=${ data.prodNo }&tranCode=2">배송하기</a>
-                            </c:if>
+                        <td align="left">${ product.stock }
                         </td>
                     </tr>
                     <tr>
@@ -126,7 +123,7 @@
             </table>
 
             <c:set var="url" value="/listProduct.do" scope="request" />
-            <c:set var="additionalQueryString" value="&menu=${ menuMode }&searchCondition=${ searchInfo.searchCondition }&searchKeyword=${ searchInfo.searchKeyword }" scope="request" />
+            <c:set var="additionalQueryString" value="&menu=${ data.menuMode }&searchCondition=${ data.searchInfo.searchCondition }&searchKeyword=${ data.searchInfo.searchKeyword }" scope="request" />
             <c:import var="pageNumbers" url="/common/pageNumbers.jsp" scope="request" />
             ${ pageNumbers }
             <!--  페이지 Navigator 끝 -->
