@@ -18,8 +18,10 @@ public class SQLContainer {
         Properties properties = new Properties();
         try (InputStream is = servletContext.getResourceAsStream(resource)) {
             properties.load(is);
+            System.out.println(properties);
 
             properties.stringPropertyNames().forEach(k -> {
+                System.out.println(properties.getProperty(k));
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(servletContext.getResourceAsStream(
                         properties.getProperty(k))))) {
                     StringBuilder sb = new StringBuilder();

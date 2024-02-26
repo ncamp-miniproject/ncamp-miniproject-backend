@@ -10,4 +10,4 @@ SELECT
 FROM
     product p
 WHERE
-    p.prod_no = ?;
+    p.prod_no = ?

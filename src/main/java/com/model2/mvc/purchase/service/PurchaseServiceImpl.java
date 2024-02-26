@@ -12,6 +12,7 @@ import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
+import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
@@ -119,7 +120,10 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void updateTranCode(Purchase purchaseVO) {
-        this.purchaseDAO.updateTranCode(purchaseVO);
+    public void updateTranCode(UpdateTranCodeRequestDTO requestDTO) {
+        this.purchaseDAO.updateTranCode(new Purchase().builder()
+                                                .tranNo(requestDTO.getTranNo())
+                                                .tranStatusCode(requestDTO.getTranStatusCode())
+                                                .build());
     }
 }

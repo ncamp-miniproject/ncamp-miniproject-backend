@@ -16,7 +16,7 @@ public class StringUtil {
         }
         int indexOfNextSeparator = to.indexOf(separator, indexOfTarget);
         return indexOfNextSeparator == -1
-               ? newValue + "-" + to.substring(0, indexOfTarget - 1)
+               ? newValue + "-" + to.substring(0, indexOfTarget - 1 < 0 ? 0 : indexOfTarget)
                : newValue + "-" + to.substring(0, indexOfTarget) + to.substring(indexOfNextSeparator + 1);
     }
 

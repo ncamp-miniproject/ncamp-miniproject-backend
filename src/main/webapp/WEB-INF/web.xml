@@ -14,12 +14,12 @@
 
 	<context-param>
 		<param-name>actionmapping</param-name>
-		<param-value>/META-INF/actionmapping.properties</param-value>
+		<param-value>/META-INF/config/actionmapping.properties</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>sqldescriptor</param-name>
-		<param-value>/META-INF/sqldescriptor.properties</param-value>
+		<param-value>/META-INF/config/sqldescriptor.properties</param-value>
 	</context-param>
 
 

@@ -19,6 +19,8 @@ public class RequestMapping {
         this.map = new HashMap<String, Action>();
         this.servletContext = servletContext;
 
+        System.out.println(resources);
+
         InputStream in = null;
         try {
             in = servletContext.getResourceAsStream(resources);
