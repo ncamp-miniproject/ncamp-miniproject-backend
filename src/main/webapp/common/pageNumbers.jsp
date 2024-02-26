@@ -5,13 +5,13 @@
     <tr>
 
         <td align="center">
-            <c:if test="${ pageInfo.previousPageSetAvailable }">
+            <c:if test="${ data.pageInfo.previousPageSetAvailable }">
                 <a
-                    href="${ url }?page=${ pageInfo.previousPageSetEntry }${ additionalQueryString }">이전</a>
+                    href="${ url }?page=${ data.pageInfo.previousPageSetEntry }${ additionalQueryString }">이전</a>
             </c:if>
-            <c:forEach var="pageToJump" items="${ pageInfo.pagesToDisplay }">
+            <c:forEach var="pageToJump" items="${ data.pageInfo.pagesToDisplay }">
                 <c:choose>
-                    <c:when test="${ pageToJump != pageInfo.currentPage }">
+                    <c:when test="${ pageToJump != data.pageInfo.currentPage }">
                         <a
                             href="${ url }?page=${ pageToJump }${ additionalQueryString }">${ pageToJump }</a>
                     </c:when>
@@ -20,9 +20,9 @@
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-            <c:if test="${ pageInfo.nextPageSetAvailable }">
+            <c:if test="${ data.pageInfo.nextPageSetAvailable }">
                 <a
-                    href="${ url }?page=${ pageInfo.nextPageSetEntry }${ additionalQueryString }">다음</a>
+                    href="${ url }?page=${ data.pageInfo.nextPageSetEntry }${ additionalQueryString }">다음</a>
             </c:if>
         </td>
     </tr>
