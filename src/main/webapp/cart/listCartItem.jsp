@@ -47,6 +47,8 @@
                     <td class="ct_list_b" width="150">가격</td>
                     <td class="ct_line02"></td>
                     <td class="ct_list_b">개수</td>
+                    <td class="ct_line02"></td>
+                    <td class="ct_list_b" width="150">재고</td>
                 </tr>
                 <tr>
                     <td colspan="11" bgcolor="808285" height="1"></td>
@@ -62,15 +64,16 @@
                             <a href="/getProduct.do?prodNo=${ product.key.prodNo }&menu=search">${ product.key.prodName }</a>
                         </td>
                         <td></td>
-                        <td align="left">${ product.key.price }</td>
+                        <td align="left" id="price-${product.key.prodNo}">${ product.key.price }</td>
                         <td></td>
                         <td align="left">
                             <input type="number"
                                    id="quantity-${product.key.prodNo}"
                                    value="${ product.value }"
-                                   onchange="onQuantityChange(e)"
                             >
                         </td>
+                        <td></td>
+                        <td align="left">${product.key.stock}</td>
                     </tr>
                     <tr>
                         <td colspan="11" bgcolor="D6D7D6" height="1"></td>
@@ -86,12 +89,29 @@
 <script type="text/javascript">
 
 const cartForm = document.cartForm;
+const priceSumElem = document.getElementById("priceSum");
+const priceMap = new Map();
+const stockMap = new Map();
 const items = new Map();
 
 function onQuantityChange(e) {
     const targetProdNo = parseInt(e.target.id.split("-")[1]);
     const targetQuantity = parseInt(e.target.value);
-    items.set(targetProdNo, targetQuantity);
+    if (targetQuantity < 0) {
+        items.set(targetProdNo, 0);
+        e.target.value = 0;
+    } else if (targetQuantity > stockMap.get(targetProdNo)) {
+        items.set(targetProdNo, stockMap.get(targetProdNo));
+        e.target.value = stockMap.get(targetProdNo);
+    } else {
+        items.set(targetProdNo, targetQuantity);
+    }
+
+    let sum = 0;
+    for (let key of items.keys()) {
+        sum += priceMap.get(key) * items.get(key);
+    }
+    priceSumElem.innerText = "총액 " + sum + "원";
 }
 
 function fncAddPurchaseView(url) {
@@ -106,7 +126,9 @@ function fncAddPurchaseView(url) {
 
 <c:forEach var="product" items="${ data.productsInCart }">
 items.set(${product.key.prodNo}, ${product.value});
-document.getElementById("quantity-${product.key.prodNo}").addEventListener("change", onQuantityChange)
+document.getElementById("quantity-${product.key.prodNo}").addEventListener("change", onQuantityChange);
+priceMap.set(${product.key.prodNo}, ${product.key.price});
+stockMap.set(${product.key.prodNo}, ${product.key.stock});
 </c:forEach>
 </script>
 </body>
