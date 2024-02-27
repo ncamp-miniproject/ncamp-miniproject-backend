@@ -6,8 +6,8 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<script type="text/javascript" src="../javascript/calendar.js"></script>
-<script type="text/javascript" src="../javascript/product/addProduct.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/calendar.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/product/addProduct.js"></script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">

@@ -64,6 +64,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ListCartItemResponseDTO getCartItemList(String cartValue) {
+        if (cartValue.isEmpty()) {
+            return new ListCartItemResponseDTO(0, 0, new HashMap<>());
+        }
+
         Map<Integer, Integer> parsed = new HashMap<>();
 
         Arrays.stream(cartValue.split(CommonConstants.COOKIE_DELIMITER))
