@@ -1,4 +1,4 @@
-<%@ page import="com.model2.mvc.purchase.domain.TranCode" %>
+<%@ page import="com.model2.mvc.purchase.domain.TranStatusCode" %>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -43,7 +43,7 @@
 
             <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
                 <tr>
-                    <td colspan="11">전체 ${ count } 건수, 현재 ${ pageInfo.currentPage } 페이지</td>
+                    <td colspan="11">전체 ${ data.count } 건수, 현재 ${ data.pageInfo.currentPage } 페이지</td>
                 </tr>
                 <tr>
                     <td class="ct_list_b" width="100">No</td>
@@ -62,14 +62,14 @@
                     <td colspan="11" bgcolor="808285" height="1"></td>
                 </tr>
 
-                <c:forEach var="purchase" items="${ purchaseList }">
+                <c:forEach var="purchase" items="${ data.purchaseList }">
                     <tr class="ct_list_pop">
                         <td align="center">
                             <a href="/getPurchase.do?tranNo=${ purchase.tranNo }">${ purchase.tranNo }</a>
                         </td>
                         <td></td>
                         <td align="left">
-                            <a href="/getUser.do?userId=${ loginUser.userId }">${ loginUser.userId }</a>
+                            <a href="/getUser.do?userId=${ purchase.buyer.userId }">${ purchase.buyer.userId }</a>
                         </td>
                         <td></td>
                         <td align="left">${ purchase.receiverName }</td>
@@ -79,7 +79,7 @@
                         <td align="left">${ purchase.tranStatus }</td>
                         <td></td>
                         <td align="left">
-                            <c:if test="${ purchase.tranCode == TranCode.IN_DELIVERY.code }">
+                            <c:if test="${ purchase.tranStatusCode.code == TranStatusCode.IN_DELIVERY.code }">
                                 <a href="/updateTranCode.do?tranNo=${ purchase.tranNo }&tranCode=3">물건도착</a>
                             </c:if>
                         </td>
