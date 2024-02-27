@@ -3,6 +3,7 @@ package com.model2.mvc.purchase.service;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
+import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
@@ -23,6 +24,8 @@ public interface PurchaseService {
     public GetPurchaseResponseDTO getPurchase(int tranNo);
 
     public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user);
+
+    public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap);
 
     public Map<String, Object> getSaleList(Search searchVO);
 

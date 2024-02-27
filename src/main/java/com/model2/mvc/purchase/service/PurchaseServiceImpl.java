@@ -7,10 +7,12 @@ import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
+import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
@@ -19,6 +21,7 @@ import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -94,6 +97,24 @@ public class PurchaseServiceImpl implements PurchaseService {
                                    CommonConstants.PAGE_SIZE))
                 .loginUser(user)
                 .build();
+    }
+
+    @Override
+    public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap) {
+        Map<Integer, Product> prodNoProductMap = this.productDAO.findProductsByIds(prodNoQuantityMap.keySet()
+                                                                                           .stream()
+                                                                                           .toList());
+        List<Integer> prodNumbers = prodNoProductMap.keySet().stream().toList();
+
+        int priceSum = prodNumbers.stream()
+                .reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
+        int quantitySum = prodNumbers.stream()
+                .reduce(0, (i, p) -> i + prodNoQuantityMap.get(p), Integer::sum);
+        int productCount = prodNumbers.size();
+
+        Map<Product, Integer> productQuantityMap = new HashMap<>();
+        prodNumbers.forEach(n -> productQuantityMap.put(prodNoProductMap.get(n), prodNoQuantityMap.get(n)));
+        return new AddPurchaseViewResponseDTO(priceSum, quantitySum, productCount, productQuantityMap);
     }
 
     @Override

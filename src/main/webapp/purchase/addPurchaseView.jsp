@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,8 +14,8 @@
 
 <script type="text/javascript">
 	function fncAddPurchase() {
-		document.addPurchase.submit();
-	}
+        document.addPurchase.submit();
+    }
 </script>
 </head>
 
@@ -36,84 +37,20 @@
                     </table>
                 </td>
                 <td width="12" height="37">
-                    <img src="/images/ct_ttl_img03.gif" width="12" height="37" />
+                    <img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
                 </td>
             </tr>
         </table>
 
-        <input type="hidden" name="prodNo" value="${ productToPurchase.prodNo }" />
-
         <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="margin-top: 13px;">
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
-            <tr>
-                <td width="300" class="ct_write">
-                    상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" />
-                </td>
-                <td bgcolor="D6D6D6" width="1"></td>
-                <td class="ct_write01" width="299">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td width="105">${ productToPurchase.prodNo }</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
+
             <tr>
                 <td width="104" class="ct_write">
-                    상품명 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" />
-                </td>
-                <td bgcolor="D6D6D6" width="1"></td>
-                <td class="ct_write01">${ productToPurchase.prodName }</td>
-            </tr>
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
-            <tr>
-                <td width="104" class="ct_write">
-                    상품상세정보 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" />
-                </td>
-                <td bgcolor="D6D6D6" width="1"></td>
-                <td class="ct_write01">${ productToPurchase.prodName }</td>
-            </tr>
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
-            <tr>
-                <td width="104" class="ct_write">제조일자</td>
-                <td bgcolor="D6D6D6" width="1"></td>
-                <td class="ct_write01">${ productToPurchase.manuDate }</td>
-            </tr>
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
-            <tr>
-                <td width="104" class="ct_write">가격</td>
-                <td bgcolor="D6D6D6" width="1"></td>
-                <td class="ct_write01">${ productToPurchase.price }</td>
-            </tr>
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
-            <tr>
-                <td width="104" class="ct_write">등록일자</td>
-                <td bgcolor="D6D6D6" width="1"></td>
-                <td class="ct_write01">${ productToPurchase.regDate }</td>
-            </tr>
-            <tr>
-                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
-            </tr>
-            <tr>
-                <td width="104" class="ct_write">
-                    구매자아이디 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" />
+                    구매자아이디 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">${ loginUser.userId }</td>
-                <input type="hidden" name="buyerId" value="user08" />
+                <input type="hidden" name="buyerId" value="user08"/>
             </tr>
             <tr>
                 <td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -135,8 +72,12 @@
                 <td width="104" class="ct_write">구매자이름</td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
-                    <input type="text" name="receiverName" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20"
-                        value="${ loginUser.userName }" />
+                    <input type="text"
+                           name="receiverName"
+                           class="ct_input_g"
+                           style="width: 100px; height: 19px"
+                           maxLength="20"
+                           value="${ loginUser.userName }"/>
                 </td>
             </tr>
             <tr>
@@ -146,8 +87,12 @@
                 <td width="104" class="ct_write">구매자연락처</td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
-                    <input type="text" name="receiverPhone" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20"
-                        value="${ loginUser.phone }" />
+                    <input type="text"
+                           name="receiverPhone"
+                           class="ct_input_g"
+                           style="width: 100px; height: 19px"
+                           maxLength="20"
+                           value="${ loginUser.phone }"/>
                 </td>
             </tr>
             <tr>
@@ -157,8 +102,12 @@
                 <td width="104" class="ct_write">구매자주소</td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
-                    <input type="text" name="receiverAddr" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20"
-                        value="${ loginUser.addr }" />
+                    <input type="text"
+                           name="receiverAddr"
+                           class="ct_input_g"
+                           style="width: 100px; height: 19px"
+                           maxLength="20"
+                           value="${ loginUser.addr }"/>
                 </td>
             </tr>
             <tr>
@@ -169,7 +118,7 @@
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
                     <input type="text" name="receiverRequest" class="ct_input_g" style="width: 100px; height: 19px"
-                        maxLength="20" />
+                           maxLength="20"/>
                 </td>
             </tr>
             <tr>
@@ -180,13 +129,91 @@
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td width="200" class="ct_write01">
                     <input type="text" readonly="readonly" name="receiverDate" class="ct_input_g"
-                        style="width: 100px; height: 19px" maxLength="20" /> <img src="../images/ct_icon_date.gif" width="15"
-                        height="15"
-                        onclick="show_calendar('document.addPurchase.receiverDate', document.addPurchase.receiverDate.value)" />
+                           style="width: 100px; height: 19px" maxLength="20"/> <img src="../images/ct_icon_date.gif"
+                                                                                    width="15"
+                                                                                    height="15"
+                                                                                    onclick="show_calendar('document.addPurchase.receiverDate', document.addPurchase.receiverDate.value)"/>
                 </td>
             </tr>
             <tr>
                 <td height="1" colspan="3" bgcolor="D6D6D6"></td>
+            </tr>
+        </table>
+
+        <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="margin-top: 13px;">
+            <tr>
+                <td height="1" colspan="3" bgcolor="D6D6D6">
+                    전체 ${data.productCount}종류 품목
+                </td>
+            </tr>
+            <tr>
+                <th class="ct_write">
+                    상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                </th>
+                <th class="ct_write">
+                    상품명 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                </th>
+                <th class="ct_write">
+                    상품상세정보 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                </th>
+                <th class="ct_write">
+                    제조일자
+                </th>
+                <th class="ct_write">
+                    가격
+                </th>
+                <th class="ct_write">
+                    등록일자
+                </th>
+                <th class="ct_write">
+                    수량
+                </th>
+            </tr>
+
+            <c:forEach var="product" items="${data.productsToPurchase}">
+            <input type="hidden" name="prodNo-${product.key.prodNo}" value="${ product.key.prodNo }"/>
+            <input type="hidden" name="quantity-${product.value}"/>
+            <tr>
+                <td class="ct_write01">${ product.key.prodNo }</td>
+                <td class="ct_write01">${ product.key.prodName }</td>
+                <td class="ct_write01">${ product.key.prodDetail }</td>
+                <td class="ct_write01">${ product.key.manuDate }</td>
+                <td class="ct_write01">${ product.key.price }</td>
+                <td class="ct_write01">${ product.key.regDate }</td>
+                <td class="ct_write01">${ product.value }</td>
+            </tr>
+            </c:forEach>
+            <tr>
+                <th class="ct_write">
+
+                </th>
+                <th class="ct_write">
+
+                </th>
+                <th class="ct_write">
+
+                </th>
+                <th class="ct_write">
+
+                </th>
+                <th class="ct_write">
+                    총액
+                </th>
+                <th class="ct_write">
+
+                </th>
+                <th class="ct_write">
+                    총수량
+                </th>
+            </tr>
+            <tr>
+                <td class="ct_write01"></td>
+                <td class="ct_write01"></td>
+                <td class="ct_write01"></td>
+                <td class="ct_write01"></td>
+                <td class="ct_write01">${ data.priceSum }</td>
+                <td class="ct_write01"></td>
+                <td class="ct_write01">${ data.quantitySum }</td>
             </tr>
         </table>
 
@@ -197,23 +224,23 @@
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td width="17" height="23">
-                                <img src="/images/ct_btnbg01.gif" width="17" height="23" />
+                                <img src="/images/ct_btnbg01.gif" width="17" height="23"/>
                             </td>
                             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
                                 <a href="javascript:fncAddPurchase();">구매</a>
                             </td>
                             <td width="14" height="23">
-                                <img src="/images/ct_btnbg03.gif" width="14" height="23" />
+                                <img src="/images/ct_btnbg03.gif" width="14" height="23"/>
                             </td>
                             <td width="30"></td>
                             <td width="17" height="23">
-                                <img src="/images/ct_btnbg01.gif" width="17" height="23" />
+                                <img src="/images/ct_btnbg01.gif" width="17" height="23"/>
                             </td>
                             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
                                 <a href="javascript:history.go(-1)">취소</a>
                             </td>
                             <td width="14" height="23">
-                                <img src="/images/ct_btnbg03.gif" width="14" height="23" />
+                                <img src="/images/ct_btnbg03.gif" width="14" height="23"/>
                             </td>
                         </tr>
                     </table>

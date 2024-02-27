@@ -52,6 +52,7 @@ public class ActionServlet extends HttpServlet {
             e.printStackTrace();
         } catch (NullPointerException e) {
             // TODO: handle exception
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

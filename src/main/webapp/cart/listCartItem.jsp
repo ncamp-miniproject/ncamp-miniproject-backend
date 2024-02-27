@@ -32,7 +32,7 @@
                 </tr>
             </table>
 
-        <form name="cartForm" method="GET">
+        <form name="cartForm" method="POST">
 
             <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
                 <tr>
