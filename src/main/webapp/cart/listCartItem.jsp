@@ -82,6 +82,7 @@
             </table>
 
             <button type="button" onclick="fncAddPurchaseView('/addPurchaseView.do')">구매</button>
+            <button type="button" onclick="clearCart('/clearCart.do')">초기화</button>
 
         </form>
 
@@ -121,6 +122,11 @@ function fncAddPurchaseView(url) {
     }
     const suffix = "?" + params.join("&");
     cartForm.action = url + suffix;
+    cartForm.submit();
+}
+
+function clearCart(url) {
+    cartForm.action = url;
     cartForm.submit();
 }
 
