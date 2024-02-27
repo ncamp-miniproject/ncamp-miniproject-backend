@@ -81,7 +81,8 @@
                 </c:forEach>
             </table>
 
-            <button type="button" onclick="fncAddPurchaseView('/addPurchaseView.do')">구매</button>
+
+            <button type="button" id="purchaseBtn" onclick="fncAddPurchaseView('/addPurchaseView.do')">구매</button>
             <button type="button" onclick="clearCart('/clearCart.do')">초기화</button>
 
         </form>
@@ -94,6 +95,7 @@ const priceSumElem = document.getElementById("priceSum");
 const priceMap = new Map();
 const stockMap = new Map();
 const items = new Map();
+const purchaseBtn = document.getElementById("purchaseBtn");
 
 function onQuantityChange(e) {
     const targetProdNo = parseInt(e.target.id.split("-")[1]);
@@ -113,6 +115,12 @@ function onQuantityChange(e) {
         sum += priceMap.get(key) * items.get(key);
     }
     priceSumElem.innerText = "총액 " + sum + "원";
+
+    let count = 0;
+    for (let key of items.keys()) {
+        count += items.get(key);
+    }
+    purchaseBtn.disabled = count === 0;
 }
 
 function fncAddPurchaseView(url) {
@@ -136,6 +144,11 @@ document.getElementById("quantity-${product.key.prodNo}").addEventListener("chan
 priceMap.set(${product.key.prodNo}, ${product.key.price});
 stockMap.set(${product.key.prodNo}, ${product.key.stock});
 </c:forEach>
+let count = 0;
+for (let key of items.keys()) {
+    count += items.get(key);
+}
+purchaseBtn.disabled = count === 0;
 </script>
 </body>
 </html>

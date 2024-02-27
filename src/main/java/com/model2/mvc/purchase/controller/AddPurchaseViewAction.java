@@ -13,6 +13,9 @@ public class AddPurchaseViewAction extends PurchaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (request.getParameter("purchase") == null) {
+            return "redirect:/listProduct.do";
+        }
         Map<Integer, Integer> prodNoQuantityMap = new HashMap<>();
 
         Arrays.stream(request.getParameterValues("purchase"))
