@@ -27,7 +27,7 @@ public abstract class DAOTemplate {
         return this.stmt.getGeneratedKeys();
     }
 
-    protected final void prepareStatement(String sql, String[] columnNames, PreparedStatementSetter setter)
+    protected final void prepareStatement(String sql, PreparedStatementSetter setter, String[] columnNames)
     throws SQLException {
         this.conn = DBUtil.getConnection();
         this.stmt = this.conn.prepareStatement(sql, columnNames);

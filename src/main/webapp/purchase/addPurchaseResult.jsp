@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,13 +14,8 @@
 
         <table border=1>
             <tr>
-                <td>물품번호</td>
-                <td>${ purchaseData.purchaseProd.prodNo }</td>
-                <td></td>
-            </tr>
-            <tr>
                 <td>구매자아이디</td>
-                <td>${ purchaseData.buyer.userId }</td>
+                <td>${ purchaseData.buyerId }</td>
                 <td></td>
             </tr>
             <tr>
@@ -53,6 +48,24 @@
                 <td>${ purchaseData.divyDate }</td>
                 <td></td>
             </tr>
+        </table>
+
+        <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="margin-top: 13px;">
+            <tr>
+                <th class="ct_write">
+                    상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                </th>
+                <th class="ct_write">
+                    수량
+                </th>
+            </tr>
+
+            <c:forEach var="tranProd" items="${purchaseData.transactionProductions}">
+            <tr>
+                <td class="ct_write01">${ tranProd.product.prodNo }</td>
+                <td class="ct_write01">${ tranProd.quantity }</td>
+            </tr>
+            </c:forEach>
         </table>
     </form>
 

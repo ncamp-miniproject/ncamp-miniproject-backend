@@ -21,6 +21,9 @@ public class StringUtil {
     }
 
     public static Date parseDate(String from, String separator) {
+        if (from == null || from.isEmpty()) {
+            return new Date(System.currentTimeMillis());
+        }
         int[] parsed = Arrays.stream(from.split(separator)).mapToInt(Integer::parseInt).toArray();
         return new Date(parsed[0], parsed[1], parsed[2]);
     }

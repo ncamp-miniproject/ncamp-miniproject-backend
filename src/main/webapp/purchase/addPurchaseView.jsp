@@ -171,8 +171,7 @@
             </tr>
 
             <c:forEach var="product" items="${data.productsToPurchase}">
-            <input type="hidden" name="prodNo-${product.key.prodNo}" value="${ product.key.prodNo }"/>
-            <input type="hidden" name="quantity-${product.value}"/>
+            <input type="hidden" name="tranProds" value="${product.key.prodNo}%DFS${product.value}">
             <tr>
                 <td class="ct_write01">${ product.key.prodNo }</td>
                 <td class="ct_write01">${ product.key.prodName }</td>

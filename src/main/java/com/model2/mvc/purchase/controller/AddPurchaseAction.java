@@ -7,11 +7,13 @@ import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 public class AddPurchaseAction extends PurchaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println(Arrays.toString(request.getParameterValues("tranProds")));
         AddPurchaseRequestDTO requestDTO = new AddPurchaseRequestDTO().builder()
                 .buyerId(request.getParameter("buyerId"))
                 .paymentOption(request.getParameter("paymentOption"))
@@ -31,6 +33,8 @@ public class AddPurchaseAction extends PurchaseAction {
         System.out.println("Purchase done");
 
         request.setAttribute("purchaseData", purchaseData);
+        System.out.println("purchaseData: " + purchaseData);
+        System.out.println("tranprod: " + purchaseData.getTransactionProductions());
 
         return "forward:/purchase/addPurchaseResult.jsp";
     }
