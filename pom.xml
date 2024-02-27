@@ -86,8 +86,8 @@
     </dependency>
     <dependency>
       <groupId>ref.lib</groupId>
-      <artifactId>ojdbc14</artifactId>
-      <version>14</version>
+      <artifactId>ojdbc10g</artifactId>
+      <version>1.4</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc14.jar</systemPath>
     </dependency>
