@@ -83,4 +83,36 @@ public class GetPurchaseResponseDTO {
     public List<TransactionProduction> getTransactionProductions() {
         return transactionProductions;
     }
+
+    @Override
+    public String toString() {
+        return "GetPurchaseResponseDTO{" +
+               "tranNo=" +
+               tranNo +
+               ", buyer=" +
+               buyer +
+               ", paymentOption=" +
+               paymentOption +
+               ", receiverName='" +
+               receiverName +
+               '\'' +
+               ", receiverPhone='" +
+               receiverPhone +
+               '\'' +
+               ", divyAddr='" +
+               divyAddr +
+               '\'' +
+               ", divyRequest='" +
+               divyRequest +
+               '\'' +
+               ", tranStatusCode=" +
+               tranStatusCode +
+               ", orderDate=" +
+               orderDate +
+               ", divyDate=" +
+               divyDate +
+               ", transactionProductions=" +
+               transactionProductions +
+               '}';
+    }
 }

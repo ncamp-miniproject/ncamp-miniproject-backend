@@ -13,6 +13,7 @@ public class GetPuchaseAction extends PurchaseAction {
 
         GetPurchaseResponseDTO purchaseData = super.purchaseService.getPurchase(tranNo);
         request.setAttribute("purchaseData", purchaseData);
+        System.out.println("purchaseData: " + purchaseData);
         return "forward:/purchase/getPurchase.jsp";
     }
 }
