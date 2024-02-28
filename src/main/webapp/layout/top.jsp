@@ -23,29 +23,29 @@ User vo=(User)session.getAttribute("user");
   </tr>
   <tr>
     <td height="20" align="right" background="/images/img_bg.gif">
-	    <table width="200" border="0" cellspacing="0" cellpadding="0">
-	        <tr> 
-	          <td width="115">
-	          <%
-	          	if(vo == null) {
-	          %>
-	              <a href="/user/loginView.jsp" target="rightFrame">login</a>   
-	          <%
-	          	}
-	          %>
-	          </td>
-	          <td width="14">&nbsp;</td>
-	          <td width="56">
-	          <%
-	          	if(vo != null) {
-	          %>
-	            <a href="/logout.do" target="_parent">logout</a>  
-	           <%
-	          	}
-	           %>
-	          </td>
-	        </tr>
-	    </table>
+        <table width="200" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="115">
+              <%
+                  if(vo == null) {
+              %>
+                  <a href="/user/loginView.jsp" target="rightFrame">login</a>
+              <%
+                  }
+              %>
+              </td>
+              <td width="14">&nbsp;</td>
+              <td width="56">
+              <%
+                  if(vo != null) {
+              %>
+                <a href="/logout.do" target="_parent">logout</a>
+               <%
+                  }
+               %>
+              </td>
+            </tr>
+        </table>
     </td>
     <td height="20" background="/images/img_bg.gif">&nbsp;</td>
   </tr>

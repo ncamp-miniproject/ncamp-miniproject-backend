@@ -27,7 +27,7 @@ public class RequestFilter implements Filter {
                 .userId("user08")
                 .userName("SCOTT")
                 .password("1234")
-                .role("user")
+                .role("admin")
                 .regDate(new Date(System.currentTimeMillis()))
                 .build();
         session.setAttribute("user", sampleUser);
