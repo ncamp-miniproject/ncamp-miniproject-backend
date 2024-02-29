@@ -14,9 +14,6 @@ public class ListPurchaseAction extends PurchaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
-        User loginUser = (User)session.getAttribute("user");
-
         Search searchInfo = new Search();
         String page = request.getParameter("page");
 
@@ -25,6 +22,12 @@ public class ListPurchaseAction extends PurchaseAction {
         searchInfo.setPageUnit(CommonConstants.PAGE_SIZE);
         searchInfo.setSearchCondition(StringUtil.null2nullStr(request.getParameter("searchCondition")));
         searchInfo.setSearchKeyword(StringUtil.null2nullStr(request.getParameter("searchKeyword")));
+
+        User loginUser = (User)request.getSession().getAttribute("user");
+        String menu = request.getParameter("menu");
+        if ((menu != null && menu.equals("manage")) || loginUser.getRole().equals("admin")) {
+            return "redirect:/listSale.do?menu=manage&page=" + pageNum;
+        }
 
         ListPurchaseResponseDTO result = super.purchaseService.getPurchaseList(searchInfo, loginUser);
 

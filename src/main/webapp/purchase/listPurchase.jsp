@@ -76,10 +76,13 @@
                         <td></td>
                         <td align="left">${ purchase.receiverPhone }</td>
                         <td></td>
-                        <td align="left">${ purchase.tranStatus }</td>
+                        <td align="left">${ purchase.tranStatusCode.status }</td>
                         <td></td>
                         <td align="left">
-                            <c:if test="${ purchase.tranStatusCode.code == TranStatusCode.IN_DELIVERY.code }">
+                            <c:if test="${ data.loginUser.role == 'admin' && purchase.tranStatusCode.code == TranStatusCode.PURCHASE_DONE.code }">
+                                <a href="/updateTranCode.do?tranNo=${ purchase.tranNo }&tranCode=2">배송하기</a>
+                            </c:if>
+                            <c:if test="${ data.loginUser.role == 'user' && purchase.tranStatusCode.code == TranStatusCode.IN_DELIVERY.code }">
                                 <a href="/updateTranCode.do?tranNo=${ purchase.tranNo }&tranCode=3">물건도착</a>
                             </c:if>
                         </td>

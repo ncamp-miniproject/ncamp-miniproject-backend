@@ -27,7 +27,7 @@ public interface PurchaseService {
 
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap);
 
-    public Map<String, Object> getSaleList(Search searchVO);
+    public ListPurchaseResponseDTO getSaleList(int page, User loginUser);
 
     public Purchase updatePurchase(UpdatePurchaseRequestDTO requestDTO);
 

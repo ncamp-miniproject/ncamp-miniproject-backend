@@ -4,7 +4,6 @@ import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.db.SQLName;
-import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
@@ -14,7 +13,6 @@ import com.model2.mvc.user.domain.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,9 +60,19 @@ public class PurchaseDAO extends DAOTemplate {
         }
     }
 
+    public ListData<Purchase> findAllInPageSize(int page, int pageSize) {
+        String sql = SQLContainer.get(SQLName.GET_ALL_PURCHASE_LIST.getName())
+                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.GET_PURCHASE_LIST_BY_USER_ID));
+
+        return generatePurchaseList(sql, stmt -> {
+            stmt.setInt(1, (page - 1) * pageSize + 1);
+            stmt.setInt(2, page * pageSize);
+        });
+    }
+
     public ListData<Purchase> findPurchaseListByUserId(String userId, int page, int pageSize) {
-        String sql = SQLContainer.get(SQLName.GET_PURCHASE_LIST.getName())
-                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.GET_PURCHASE_LIST));
+        String sql = SQLContainer.get(SQLName.GET_PURCHASE_LIST_BY_USER_ID.getName())
+                .orElseThrow(() -> new IllegalArgumentException("No sql is found: " + SQLName.GET_PURCHASE_LIST_BY_USER_ID));
 
         System.out.println(sql);
 
@@ -136,18 +144,6 @@ public class PurchaseDAO extends DAOTemplate {
                                                                             .regDate(rs.getDate("reg_date"))
                                                                             .stock(rs.getInt("stock"))
                                                                             .build(), rs.getInt("quantity")));
-    }
-
-    public Map<String, Object> getSaleList(Search searchVO) {
-        //        String sql = SQLContainer.get("getsalelist")
-        //                                 .orElse("");
-        //
-        //        System.out.println(sql);
-        //
-        //        return generatePurchaseList(sql, stmt -> {
-        //            stmt.setString(1, TranCode.PURCHASEABLE.getCode());
-        //        });
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     public void insertPurchase(Purchase data) {

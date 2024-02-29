@@ -71,32 +71,36 @@ public class PurchaseServiceImpl implements PurchaseService {
         ListData<Purchase> result = this.purchaseDAO.findPurchaseListByUserId(user.getUserId(),
                                                                               searchVO.getPage(),
                                                                               searchVO.getPageUnit());
-
-        int currentPage = searchVO.getPage();
-        List<Integer> pagesToDisplay = ListPageUtil.getPageSet(result.getCount(),
-                                                               currentPage,
-                                                               CommonConstants.PAGE_SIZE,
-                                                               CommonConstants.PAGE_DISPLAY);
-        boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(result.getCount(),
-                                                                                    currentPage,
-                                                                                    CommonConstants.PAGE_SIZE,
-                                                                                    CommonConstants.PAGE_DISPLAY);
-        boolean nextPageSetBtnVisible = ListPageUtil.isNextPageSetAvailable(result.getCount(),
-                                                                            currentPage,
-                                                                            CommonConstants.PAGE_SIZE,
-                                                                            CommonConstants.PAGE_DISPLAY);
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
-                .pageInfo(new Page(previousPageSetBtnVisible,
-                                   nextPageSetBtnVisible,
-                                   ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
-                                   ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
-                                   pagesToDisplay,
-                                   currentPage,
-                                   CommonConstants.PAGE_SIZE))
+                .pageInfo(getPageInfo(result.getCount(), searchVO.getPage()))
                 .loginUser(user)
                 .build();
+    }
+
+    private Page getPageInfo(int count, int currentPage) {
+        List<Integer> pagesToDisplay = ListPageUtil.getPageSet(count,
+                                                               currentPage,
+                                                               CommonConstants.PAGE_SIZE,
+                                                               CommonConstants.PAGE_DISPLAY);
+        boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(count,
+                                                                                    currentPage,
+                                                                                    CommonConstants.PAGE_SIZE,
+                                                                                    CommonConstants.PAGE_DISPLAY);
+        boolean nextPageSetBtnVisible = ListPageUtil.isNextPageSetAvailable(count,
+                                                                            currentPage,
+                                                                            CommonConstants.PAGE_SIZE,
+                                                                            CommonConstants.PAGE_DISPLAY);
+        int previousPageSetEntry = ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY);
+        int nextPageSetEntry = ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY);
+        return new Page(previousPageSetBtnVisible,
+                        nextPageSetBtnVisible,
+                        previousPageSetEntry,
+                        nextPageSetEntry,
+                        pagesToDisplay,
+                        currentPage,
+                        CommonConstants.PAGE_SIZE);
     }
 
     @Override
@@ -106,10 +110,8 @@ public class PurchaseServiceImpl implements PurchaseService {
                                                                                            .toList());
         List<Integer> prodNumbers = prodNoProductMap.keySet().stream().toList();
 
-        int priceSum = prodNumbers.stream()
-                .reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
-        int quantitySum = prodNumbers.stream()
-                .reduce(0, (i, p) -> i + prodNoQuantityMap.get(p), Integer::sum);
+        int priceSum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
+        int quantitySum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoQuantityMap.get(p), Integer::sum);
         int productCount = prodNumbers.size();
 
         Map<Product, Integer> productQuantityMap = new HashMap<>();
@@ -118,9 +120,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Map<String, Object> getSaleList(Search searchVO) {
-        //        return this.purchaseDAO.getSaleList(searchVO);
-        throw new UnsupportedOperationException();
+    public ListPurchaseResponseDTO getSaleList(int page, User loginUser) {
+        ListData<Purchase> purchases = this.purchaseDAO.findAllInPageSize(page, CommonConstants.PAGE_SIZE);
+        return new ListPurchaseResponseDTO().builder()
+                .count(purchases.getCount())
+                .purchaseList(purchases.getList())
+                .pageInfo(getPageInfo(purchases.getCount(), page))
+                .loginUser(loginUser)
+                .build();
     }
 
     @Override
