@@ -35,17 +35,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert) {
-        Product product = new Product().builder()
-                .fileName(toInsert.getFileName())
-                .manuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"))
-                .price(toInsert.getPrice())
-                .prodDetail(toInsert.getProdDetail())
-                .prodName(toInsert.getProdName())
-                .regDate(new Date(System.currentTimeMillis()))
-                .stock(toInsert.getStock())
-                .build();
-        this.productDAO.insertProduct(product);
-        return AddProductResponseDTO.from(product);
+//        Product product = new Product().builder()
+//                .fileName(toInsert.getFileName())
+//                .manuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"))
+//                .price(toInsert.getPrice())
+//                .prodDetail(toInsert.getProdDetail())
+//                .prodName(toInsert.getProdName())
+//                .regDate(new Date(System.currentTimeMillis()))
+//                .stock(toInsert.getStock())
+//                .build();
+//        this.productDAO.insertProduct(product);
+//        return AddProductResponseDTO.from(product);
+        throw new UnsupportedOperationException();
     }
 
     private Date parseDate(String dateStr) {
@@ -98,20 +99,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
 
-        Product previous = this.productDAO.findById(requestDTO.getProdNo())
-                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo: " +
-                                                                requestDTO.getProdNo()));
-        Product to = new Product().builder()
-                .prodNo(requestDTO.getProdNo())
-                .fileName(requestDTO.getFileName())
-                .manuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"))
-                .price(requestDTO.getPrice())
-                .prodDetail(requestDTO.getProdDetail())
-                .prodName(requestDTO.getProdName())
-                .regDate(new Date(System.currentTimeMillis()))
-                .stock(requestDTO.getStock())
-                .build();
-        this.productDAO.updateProduct(to);
-        return UpdateProductResponseDTO.from(previous);
+//        Product previous = this.productDAO.findById(requestDTO.getProdNo())
+//                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo: " +
+//                                                                requestDTO.getProdNo()));
+//        Product to = new Product().builder()
+//                .prodNo(requestDTO.getProdNo())
+//                .fileName(requestDTO.getFileName())
+//                .manuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"))
+//                .price(requestDTO.getPrice())
+//                .prodDetail(requestDTO.getProdDetail())
+//                .prodName(requestDTO.getProdName())
+//                .regDate(new Date(System.currentTimeMillis()))
+//                .stock(requestDTO.getStock())
+//                .build();
+//        this.productDAO.updateProduct(to);
+//        return UpdateProductResponseDTO.from(previous);
+        throw new UnsupportedOperationException();
     }
 }

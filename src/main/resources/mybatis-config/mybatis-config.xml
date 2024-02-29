@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="EUC-KR" ?>
 
 <!DOCTYPE configuration
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -10,8 +10,8 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.model2.mvc.user.domain.User" alias="user"/>
-        <typeAlias type="com.model2.mvc.common.dto.Search" alias="search"/>
+        <typeAlias type="com.model2.mvc.user.domain.User" alias="User"/>
+        <typeAlias type="com.model2.mvc.common.dto.Search" alias="Search"/>
     </typeAliases>
 
     <mappers>

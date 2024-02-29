@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 
 public class RequestFilter implements Filter {
@@ -21,19 +22,20 @@ public class RequestFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
     throws IOException, ServletException {
         // TODO: For test
-        HttpSession session = ((HttpServletRequest)request).getSession();
-
-        User sampleUser = new User().builder()
-                .userId("user08")
-                .userName("SCOTT")
-                .password("1234")
-                .role("admin")
-                .regDate(new Date(System.currentTimeMillis()))
-                .build();
-        session.setAttribute("user", sampleUser);
-
-        request.setCharacterEncoding("euc-kr");
-        chain.doFilter(request, response);
+//        HttpSession session = ((HttpServletRequest)request).getSession();
+//
+//        User sampleUser = new User().builder()
+//                .userId("user08")
+//                .userName("SCOTT")
+//                .password("1234")
+//                .role("admin")
+//                .regDate(new Date(System.currentTimeMillis()))
+//                .build();
+//        session.setAttribute("user", sampleUser);
+//
+//        request.setCharacterEncoding("euc-kr");
+//        chain.doFilter(request, response);
+        throw new UnsupportedEncodingException();
     }
 
     public void destroy() {
