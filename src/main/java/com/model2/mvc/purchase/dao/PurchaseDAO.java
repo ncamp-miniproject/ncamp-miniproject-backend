@@ -118,32 +118,33 @@ public class PurchaseDAO extends DAOTemplate {
     }
 
     private Purchase generatePurchase(ResultSet rs) throws SQLException {
-        User buyer = new User().builder().userId(rs.getString("buyer_id")).build();
-        return new Purchase().builder()
-                .tranNo(rs.getInt("tran_no"))
-                .buyer(buyer)
-                .paymentOption(PaymentOption.get(rs.getString("payment_option")))
-                .receiverName(rs.getString("receiver_name"))
-                .receiverPhone(rs.getString("receiver_phone"))
-                .divyAddr(rs.getString("demailaddr"))
-                .divyRequest(rs.getString("dlvy_request"))
-                .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code").trim()))
-                .orderDate(rs.getDate("order_date"))
-                .divyDate(rs.getDate("dlvy_date"))
-                .build();
+//        User buyer = new User().builder().userId(rs.getString("buyer_id")).build();
+//        return new Purchase().builder()
+//                .tranNo(rs.getInt("tran_no"))
+//                .buyer(buyer)
+//                .paymentOption(PaymentOption.get(rs.getString("payment_option")))
+//                .receiverName(rs.getString("receiver_name"))
+//                .receiverPhone(rs.getString("receiver_phone"))
+//                .divyAddr(rs.getString("demailaddr"))
+//                .divyRequest(rs.getString("dlvy_request"))
+//                .tranStatusCode(TranStatusCode.getTranCode(rs.getString("tran_status_code").trim()))
+//                .orderDate(rs.getDate("order_date"))
+//                .divyDate(rs.getDate("dlvy_date"))
+//                .build();
+        throw new UnsupportedOperationException();
     }
 
     private void addTransactionProduction(ResultSet rs, Purchase purchase) throws SQLException {
-        purchase.addTransactionProduction(new TransactionProduction(new Product().builder()
-                                                                            .prodNo(rs.getInt("prod_no"))
-                                                                            .prodName(rs.getString("prod_name"))
-                                                                            .prodDetail(rs.getString("prod_detail"))
-                                                                            .manuDate(rs.getDate("manufacture_day"))
-                                                                            .price(rs.getInt("price"))
-                                                                            .fileName(rs.getString("image_file"))
-                                                                            .regDate(rs.getDate("reg_date"))
-                                                                            .stock(rs.getInt("stock"))
-                                                                            .build(), rs.getInt("quantity")));
+//        purchase.addTransactionProduction(new TransactionProduction(new Product().builder()
+//                                                                            .prodNo(rs.getInt("prod_no"))
+//                                                                            .prodName(rs.getString("prod_name"))
+//                                                                            .prodDetail(rs.getString("prod_detail"))
+//                                                                            .manuDate(rs.getDate("manufacture_day"))
+//                                                                            .price(rs.getInt("price"))
+//                                                                            .fileName(rs.getString("image_file"))
+//                                                                            .regDate(rs.getDate("reg_date"))
+//                                                                            .stock(rs.getInt("stock"))
+//                                                                            .build(), rs.getInt("quantity")));
     }
 
     public void insertPurchase(Purchase data) {

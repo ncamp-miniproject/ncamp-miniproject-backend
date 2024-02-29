@@ -43,20 +43,21 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public AddPurchaseResponseDTO addPurchase(AddPurchaseRequestDTO requestDTO) {
-        Purchase purchase = new Purchase().builder()
-                .buyer(new User().builder().userId(requestDTO.getBuyerId()).build())
-                .paymentOption(requestDTO.getPaymentOption())
-                .receiverName(requestDTO.getReceiverName())
-                .receiverPhone(requestDTO.getReceiverPhone())
-                .divyAddr(requestDTO.getDivyAddr())
-                .divyRequest(requestDTO.getDivyRequest())
-                .tranStatusCode(TranStatusCode.PURCHASE_DONE)
-                .orderDate(new Date(System.currentTimeMillis()))
-                .divyDate(requestDTO.getDivyDate())
-                .transactionProducts(requestDTO.getTransactionProductions())
-                .build();
-        this.purchaseDAO.insertPurchase(purchase.builder().tranStatusCode(TranStatusCode.PURCHASE_DONE).build());
-        return AddPurchaseResponseDTO.from(purchase);
+//        Purchase purchase = new Purchase().builder()
+//                .buyer(new User().builder().userId(requestDTO.getBuyerId()).build())
+//                .paymentOption(requestDTO.getPaymentOption())
+//                .receiverName(requestDTO.getReceiverName())
+//                .receiverPhone(requestDTO.getReceiverPhone())
+//                .divyAddr(requestDTO.getDivyAddr())
+//                .divyRequest(requestDTO.getDivyRequest())
+//                .tranStatusCode(TranStatusCode.PURCHASE_DONE)
+//                .orderDate(new Date(System.currentTimeMillis()))
+//                .divyDate(requestDTO.getDivyDate())
+//                .transactionProducts(requestDTO.getTransactionProductions())
+//                .build();
+//        this.purchaseDAO.insertPurchase(purchase.builder().tranStatusCode(TranStatusCode.PURCHASE_DONE).build());
+//        return AddPurchaseResponseDTO.from(purchase);
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -132,26 +133,28 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public Purchase updatePurchase(UpdatePurchaseRequestDTO requestDTO) {
-        Purchase purchase = new Purchase().builder()
-                .tranNo(requestDTO.getTranNo())
-                .buyer(new User().builder().userId(requestDTO.getBuyerId()).build())
-                .paymentOption(requestDTO.getPaymentOption())
-                .receiverName(requestDTO.getReceiverName())
-                .receiverPhone(requestDTO.getReceiverPhone())
-                .divyAddr(requestDTO.getDivyAddr())
-                .divyRequest(requestDTO.getDivyRequest())
-                .orderDate(new Date(System.currentTimeMillis()))
-                .divyDate(requestDTO.getDivyDate())
-                .build();
-        this.purchaseDAO.updatePurchase(purchase);
-        return purchase;
+//        Purchase purchase = new Purchase().builder()
+//                .tranNo(requestDTO.getTranNo())
+//                .buyer(new User().builder().userId(requestDTO.getBuyerId()).build())
+//                .paymentOption(requestDTO.getPaymentOption())
+//                .receiverName(requestDTO.getReceiverName())
+//                .receiverPhone(requestDTO.getReceiverPhone())
+//                .divyAddr(requestDTO.getDivyAddr())
+//                .divyRequest(requestDTO.getDivyRequest())
+//                .orderDate(new Date(System.currentTimeMillis()))
+//                .divyDate(requestDTO.getDivyDate())
+//                .build();
+//        this.purchaseDAO.updatePurchase(purchase);
+//        return purchase;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void updateTranCode(UpdateTranCodeRequestDTO requestDTO) {
-        this.purchaseDAO.updateTranCode(new Purchase().builder()
-                                                .tranNo(requestDTO.getTranNo())
-                                                .tranStatusCode(requestDTO.getTranStatusCode())
-                                                .build());
+//        this.purchaseDAO.updateTranCode(new Purchase().builder()
+//                                                .tranNo(requestDTO.getTranNo())
+//                                                .tranStatusCode(requestDTO.getTranStatusCode())
+//                                                .build());
+        throw new UnsupportedOperationException();
     }
 }

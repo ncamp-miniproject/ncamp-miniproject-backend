@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=EUC-KR "%>
+<%@ page contentType="text/html; charset=EUC-KR" %>
 
 <%@ page import="com.model2.mvc.user.domain.*" %>
 
@@ -8,7 +8,7 @@ User vo = (User)request.getAttribute("vo");
 
 <html>
 <head>
-<title>È¸¿øÁ¤º¸Á¶È¸</title>
+<title>È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -24,7 +24,7 @@ User vo = (User)request.getAttribute("vo");
 		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="93%" class="ct_ttl01">È¸¿øÁ¤º¸Á¶È¸</td>
+					<td width="93%" class="ct_ttl01">È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸</td>
 					<td width="20%" align="right">&nbsp;</td>
 				</tr>
 			</table>
@@ -39,7 +39,7 @@ User vo = (User)request.getAttribute("vo");
 	</tr>
 	<tr>
 		<td width="104" class="ct_write">
-			¾ÆÀÌµð <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			ï¿½ï¿½ï¿½Ìµï¿½ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
@@ -57,7 +57,7 @@ User vo = (User)request.getAttribute("vo");
 	
 	<tr>
 		<td width="104" class="ct_write">
-			ÀÌ¸§ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			ï¿½Ì¸ï¿½ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01"><%=vo.getUserName() %></td>
@@ -66,7 +66,7 @@ User vo = (User)request.getAttribute("vo");
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">ÁÖ¼Ò</td>
+		<td width="104" class="ct_write">ï¿½Ö¼ï¿½</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01"><%=vo.getAddr() %></td>
 	</tr>
@@ -74,7 +74,7 @@ User vo = (User)request.getAttribute("vo");
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">ÈÞ´ëÀüÈ­¹øÈ£</td>
+		<td width="104" class="ct_write">ï¿½Þ´ï¿½ï¿½ï¿½È­ï¿½ï¿½È£</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01"></td>
 	</tr>
@@ -82,7 +82,7 @@ User vo = (User)request.getAttribute("vo");
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">ÀÌ¸ÞÀÏ </td>
+		<td width="104" class="ct_write">ï¿½Ì¸ï¿½ï¿½ï¿½ </td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<table border="0" cellspacing="0" cellpadding="0">
@@ -97,7 +97,7 @@ User vo = (User)request.getAttribute("vo");
 	</tr>
 	
 	<tr>
-		<td width="104" class="ct_write">°¡ÀÔÀÏÀÚ</td>
+		<td width="104" class="ct_write">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01"><%=vo.getRegDate() %></td>
 	</tr>
@@ -117,7 +117,7 @@ User vo = (User)request.getAttribute("vo");
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="/updateUserView.do?userId=<%=vo.getUserId()%>">¼öÁ¤</a>
+						<a href="/updateUserView.do?userId=<%=vo.getUserId()%>">ï¿½ï¿½ï¿½ï¿½</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -127,7 +127,7 @@ User vo = (User)request.getAttribute("vo");
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:history.go(-1);">È®ÀÎ</a>
+						<a href="javascript:history.go(-1);">È®ï¿½ï¿½</a>
 					</td>
 					<td width="14" height="23"><img src="/images/ct_btnbg03.gif" width="14" height="23"></td>
 				</tr>

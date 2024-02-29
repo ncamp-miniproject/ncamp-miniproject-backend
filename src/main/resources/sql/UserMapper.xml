@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+    <resultMap id="user" type="com.mvc.user.domain.User">
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
+        <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
+        <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="addr" property="addr" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="reg_date" property="regDate" jdbcType="DATE"/>
+        <result column="count" property="count" jdbcType="NUMERIC"/>
+    </resultMap>
+    <insert id="insertUser" parameterType="com.mvc.user.domain.User">
+        INSERT INTO users (
+            user_id,
+            user_name,
+            password,
+            role,
+            ssn,
+            cell_phone,
+            addr,
+            email,
+            reg_date
+        ) VALUES (
+            #{userId},
+            #{userName},
+            #{password},
+            <if test="role == null">
+                'user'
+            </if>
+            <if test="role != null">
+                #{role: VARCHAR}
+            </if>,
+            #{ssn: VARCHAR},
+            #{phone: VARCHAR},
+            #{addr: VARCHAR},
+            #{email: VARCHAR},
+            <if test="regDate == null">
+                SYSDATE
+            </if>
+            <if test="regDate != null">
+                #{regDate: DATE}
+            </if>
+        )
+    </insert>
+    <select id="findOneUser" parameterType="string" resultMap="user">
+        SELECT user_id,
+               user_name,
+               password,
+               role,
+               ssn,
+               cell_phone,
+               addr,
+               email,
+               reg_date
+        FROM users
+        WHERE user_id = #{value}
+    </select>
+    <select id="findUserList" parameterType="com.mvc.user.domain.Search" resultMap="user">
+        SELECT
+            v.user_id user_id,
+            v.user_name user_name,
+            v.password password,
+            v.role role,
+            v.ssn ssn,
+            v.cell_phone cell_phone,
+            v.addr addr,
+            v.email email,
+            v.reg_date reg_date,
+            v.count count
+        FROM (
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY u.user_id ASC) row_num,
+            u.user_id user_id,
+            user_name user_name,
+            u.password password,
+            u.role role,
+            u.ssn ssn,
+            u.cell_phone cell_phone,
+            u.addr addr,
+            u.email email,
+            u.reg_date reg_date,
+            COUNT(*) OVER () count
+        FROM users u
+        <where>
+            <if test="searchCondition == 0">
+                u.user_id LIKE #{searchKeyword}
+            </if>
+            <if test="searchCondition == 1">
+                u.user_name LIKE #{searchKeyword}
+            </if>
+        </where>
+        ORDER BY u.user_id ASC
+        ) v
+        <where>
+            <if test="pageFrom != 0 and pageTo != 0">
+                v.row_num BETWEEN #{pageFrom} AND #{pageTo}
+            </if>
+        </where>
+    </select>
+    <update id="updateUser" parameterType="com.mvc.user.domain.User">
+        UPDATE users
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="phone != null">
+                cell_phone = #{phone},
+            </if>
+            <if test="addr != null">
+                addr = #{addr},
+            </if>
+            <if test="email != null">
+                email = #{email}
+            </if>
+        </set>
+        <where>
+            user_id = #{userId}
+        </where>
+    </update>
+    <delete id="removeUser" parameterType="string">
+        DELETE
+        FROM users
+        WHERE user_id = #{value}
+    </delete>
+    <delete id="clear">
+        DELETE
+        FROM users
+    </delete>
+</mapper>

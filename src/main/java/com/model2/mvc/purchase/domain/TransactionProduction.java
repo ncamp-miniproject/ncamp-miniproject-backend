@@ -18,7 +18,7 @@ public class TransactionProduction {
     public static List<TransactionProduction> from(String[] values) {
         return Arrays.stream(values)
                 .map(v -> v.split(CommonConstants.QUERY_VALUE_DELIMITER))
-                .map(s -> new TransactionProduction(new Product().builder().prodNo(Integer.parseInt(s[0])).build(),
+                .map(s -> new TransactionProduction(new Product(Integer.parseInt(s[0])),
                                                     Integer.parseInt(s[1])))
                 .toList();
     }
