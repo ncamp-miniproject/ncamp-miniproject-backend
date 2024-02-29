@@ -6,21 +6,18 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.model2.mvc.common.db.SQLName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.Test;
 
 public class TestListPageUtil {
-    
+
     private static class TestCase {
         int dataCount;
         int currentPage;
         int pageSize;
         int pageSetDisplay;
         List<Integer> expectedSize;
-        
-        TestCase(int dataCount, int currentPage, int pageSize,
-                int pageSetDisplay, List<Integer> expectedSize) {
+
+        TestCase(int dataCount, int currentPage, int pageSize, int pageSetDisplay, List<Integer> expectedSize) {
             this.dataCount = dataCount;
             this.currentPage = currentPage;
             this.pageSize = pageSize;
@@ -28,8 +25,8 @@ public class TestListPageUtil {
             this.expectedSize = expectedSize;
         }
     }
-    
-    static Stream<TestCase> testGetPageSet() {
+
+    static Stream<TestCase> testGetPageSetValues() {
         int pageSize = 10;
         int pageSetDisplay = 10;
         TestCase[] testCases = {
@@ -47,37 +44,38 @@ public class TestListPageUtil {
                 new TestCase(13, 2, pageSize, pageSetDisplay, List.of(1, 2)),
                 new TestCase(108, 11, 3, 10, List.of(11, 12, 13, 14, 15, 16, 17, 18, 19, 20))
         };
-        
+
         return Stream.of(testCases);
     }
-    
+
     static int i = 1;
 
-    @MethodSource
-    @ParameterizedTest
-    void testGetPageSet(TestCase testCase) {
-        int dataCount = testCase.dataCount;
-        int currentPage = testCase.currentPage;
-        int pageSize = testCase.pageSize;
-        int pageSetDisplay = testCase.pageSetDisplay;
-        List<Integer> expected = testCase.expectedSize;
-        
-        List<Integer> result = ListPageUtil.getPageSet(dataCount, currentPage, pageSize, pageSetDisplay);
-        
-        System.out.println("------- " + i++ + " --------");
-        System.out.println("dataCount=" + dataCount);
-        System.out.println("currentPage=" + currentPage);
-        System.out.println("pageSize=" + pageSize);
-        System.out.println("pageSetDisplay=" + pageSetDisplay + "\n");
-        System.out.println("expected=" + expected);
-        System.out.println("result=" + result);
-        
-        assertThat(result.size()).isEqualTo(expected.size());
-        assertThat(result).isEqualTo(expected);
+    @Test
+    public void testGetPageSet() {
+        testGetPageSetValues().forEach(testCase -> {
+            int dataCount = testCase.dataCount;
+            int currentPage = testCase.currentPage;
+            int pageSize = testCase.pageSize;
+            int pageSetDisplay = testCase.pageSetDisplay;
+            List<Integer> expected = testCase.expectedSize;
+
+            List<Integer> result = ListPageUtil.getPageSet(dataCount, currentPage, pageSize, pageSetDisplay);
+
+            System.out.println("------- " + i++ + " --------");
+            System.out.println("dataCount=" + dataCount);
+            System.out.println("currentPage=" + currentPage);
+            System.out.println("pageSize=" + pageSize);
+            System.out.println("pageSetDisplay=" + pageSetDisplay + "\n");
+            System.out.println("expected=" + expected);
+            System.out.println("result=" + result);
+
+            assertThat(result.size()).isEqualTo(expected.size());
+            assertThat(result).isEqualTo(expected);
+        });
     }
 
     @Test
-    void temp() {
+    public void temp() {
         System.out.println(SQLName.FIND_PRODUCT.name());
         System.out.println(SQLName.FIND_PRODUCT);
     }
