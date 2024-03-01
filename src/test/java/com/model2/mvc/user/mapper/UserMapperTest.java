@@ -1,23 +1,19 @@
 package com.model2.mvc.user.mapper;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
+import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.common.Setter;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.domain.User;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -29,19 +25,12 @@ public class UserMapperTest {
 
     @Before
     public void init() {
-        try (Reader reader = Resources.getResourceAsReader("mybatis-config/mybatis-config-without-spring.xml")) {
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            this.sqlSession = sqlSessionFactory.openSession(true);
-            this.sqlSession.delete("UserMapper.clear");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("UserMapper.clear");
     }
 
     @After
     public void destroy() {
-        this.sqlSession.delete("UserMapper.clear");
-        this.sqlSession.close();
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "UserMapper.clear");
     }
 
     @Test

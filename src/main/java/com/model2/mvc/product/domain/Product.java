@@ -1,14 +1,15 @@
 package com.model2.mvc.product.domain;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Product {
     private int prodNo;
-    private String fileName;
+    private String prodName;
+    private String prodDetail;
     private Date manuDate;
     private int price;
-    private String prodDetail;
-    private String prodName;
+    private String fileName;
     private Date regDate;
     private int stock;
 
@@ -27,12 +28,20 @@ public class Product {
         this.prodNo = prodNo;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getProdName() {
+        return prodName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
+    }
+
+    public String getProdDetail() {
+        return prodDetail;
+    }
+
+    public void setProdDetail(String prodDetail) {
+        this.prodDetail = prodDetail;
     }
 
     public Date getManuDate() {
@@ -51,20 +60,12 @@ public class Product {
         this.price = price;
     }
 
-    public String getProdDetail() {
-        return prodDetail;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setProdDetail(String prodDetail) {
-        this.prodDetail = prodDetail;
-    }
-
-    public String getProdName() {
-        return prodName;
-    }
-
-    public void setProdName(String prodName) {
-        this.prodName = prodName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public Date getRegDate() {
@@ -84,22 +85,39 @@ public class Product {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Product product = (Product)o;
+        return prodNo == product.prodNo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prodNo);
+    }
+
+    @Override
     public String toString() {
         return "Product{" +
                "prodNo=" +
                prodNo +
-               ", fileName='" +
-               fileName +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", prodDetail='" +
+               prodDetail +
                '\'' +
                ", manuDate=" +
                manuDate +
                ", price=" +
                price +
-               ", prodDetail='" +
-               prodDetail +
-               '\'' +
-               ", prodName='" +
-               prodName +
+               ", fileName='" +
+               fileName +
                '\'' +
                ", regDate=" +
                regDate +
