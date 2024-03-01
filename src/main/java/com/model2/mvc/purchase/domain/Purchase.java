@@ -23,72 +23,92 @@ public class Purchase {
         this.transactionProductions = new ArrayList<>();
     }
 
-    public Purchase(Integer tranNo,
-                    User buyer,
-                    PaymentOption paymentOption,
-                    String receiverName,
-                    String receiverPhone,
-                    String divyAddr,
-                    String divyRequest,
-                    TranStatusCode tranStatusCode,
-                    Date orderDate,
-                    Date divyDate,
-                    List<TransactionProduction> transactionProductions) {
-        this.tranNo = tranNo;
-        this.buyer = buyer;
-        this.paymentOption = paymentOption;
-        this.receiverName = receiverName;
-        this.receiverPhone = receiverPhone;
-        this.divyAddr = divyAddr;
-        this.divyRequest = divyRequest;
-        this.tranStatusCode = tranStatusCode;
-        this.orderDate = orderDate;
-        this.divyDate = divyDate;
-        this.transactionProductions = transactionProductions;
-    }
-
     public Integer getTranNo() {
         return tranNo;
+    }
+
+    public void setTranNo(Integer tranNo) {
+        this.tranNo = tranNo;
     }
 
     public User getBuyer() {
         return buyer;
     }
 
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
     public PaymentOption getPaymentOption() {
         return paymentOption;
+    }
+
+    public void setPaymentOption(PaymentOption paymentOption) {
+        this.paymentOption = paymentOption;
     }
 
     public String getReceiverName() {
         return receiverName;
     }
 
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
     public String getReceiverPhone() {
         return receiverPhone;
+    }
+
+    public void setReceiverPhone(String receiverPhone) {
+        this.receiverPhone = receiverPhone;
     }
 
     public String getDivyAddr() {
         return divyAddr;
     }
 
+    public void setDivyAddr(String divyAddr) {
+        this.divyAddr = divyAddr;
+    }
+
     public String getDivyRequest() {
         return divyRequest;
+    }
+
+    public void setDivyRequest(String divyRequest) {
+        this.divyRequest = divyRequest;
     }
 
     public TranStatusCode getTranStatusCode() {
         return tranStatusCode;
     }
 
+    public void setTranStatusCode(TranStatusCode tranStatusCode) {
+        this.tranStatusCode = tranStatusCode;
+    }
+
     public Date getOrderDate() {
         return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
     public Date getDivyDate() {
         return divyDate;
     }
 
+    public void setDivyDate(Date divyDate) {
+        this.divyDate = divyDate;
+    }
+
     public List<TransactionProduction> getTransactionProductions() {
         return transactionProductions;
+    }
+
+    public void setTransactionProductions(List<TransactionProduction> transactionProductions) {
+        this.transactionProductions = transactionProductions;
     }
 
     public void addTransactionProducts(TransactionProduction transactionProduction) {

@@ -6,6 +6,9 @@ public class ListData<D> {
     private int count;
     private List<D> list;
 
+    public ListData() {
+    }
+
     public ListData(int count, List<D> list) {
         this.count = count;
         this.list = list;
@@ -15,8 +18,16 @@ public class ListData<D> {
         return count;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public List<D> getList() {
         return list;
+    }
+
+    public void setList(List<D> list) {
+        this.list = list;
     }
 
     @Override

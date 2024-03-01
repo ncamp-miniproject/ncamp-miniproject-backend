@@ -19,54 +19,68 @@ public class Product {
         this.prodNo = prodNo;
     }
 
-    public Product(int prodNo,
-                   String fileName,
-                   Date manuDate,
-                   int price,
-                   String prodDetail,
-                   String prodName,
-                   Date regDate,
-                   int stock) {
-        this.prodNo = prodNo;
-        this.fileName = fileName;
-        this.manuDate = manuDate;
-        this.price = price;
-        this.prodDetail = prodDetail;
-        this.prodName = prodName;
-        this.regDate = regDate;
-        this.stock = stock;
-    }
-
     public int getProdNo() {
         return prodNo;
+    }
+
+    public void setProdNo(int prodNo) {
+        this.prodNo = prodNo;
     }
 
     public String getFileName() {
         return fileName;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Date getManuDate() {
         return manuDate;
+    }
+
+    public void setManuDate(Date manuDate) {
+        this.manuDate = manuDate;
     }
 
     public int getPrice() {
         return price;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public String getProdDetail() {
         return prodDetail;
+    }
+
+    public void setProdDetail(String prodDetail) {
+        this.prodDetail = prodDetail;
     }
 
     public String getProdName() {
         return prodName;
     }
 
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
+    }
+
     public Date getRegDate() {
         return regDate;
     }
 
+    public void setRegDate(Date regDate) {
+        this.regDate = regDate;
+    }
+
     public int getStock() {
         return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     @Override

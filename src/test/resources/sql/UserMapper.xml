@@ -15,35 +15,35 @@
     </resultMap>
     <insert id="insertUser" parameterType="User">
         INSERT INTO users (
-        user_id,
-        user_name,
-        password,
-        role,
-        ssn,
-        cell_phone,
-        addr,
-        email,
-        reg_date
+            user_id,
+            user_name,
+            password,
+            role,
+            ssn,
+            cell_phone,
+            addr,
+            email,
+            reg_date
         ) VALUES (
-        #{userId},
-        #{userName},
-        #{password},
-        <if test="role == null">
-            'user'
-        </if>
-        <if test="role != null">
-            #{role: VARCHAR}
-        </if>,
-        #{ssn: VARCHAR},
-        #{phone: VARCHAR},
-        #{addr: VARCHAR},
-        #{email: VARCHAR},
-        <if test="regDate == null">
-            SYSDATE
-        </if>
-        <if test="regDate != null">
-            #{regDate: DATE}
-        </if>
+            #{userId},
+            #{userName},
+            #{password},
+            <if test="role == null">
+                'user'
+            </if>
+            <if test="role != null">
+                #{role: VARCHAR}
+            </if>,
+            #{ssn: VARCHAR},
+            #{phone: VARCHAR},
+            #{addr: VARCHAR},
+            #{email: VARCHAR},
+            <if test="regDate == null">
+                SYSDATE
+            </if>
+            <if test="regDate != null">
+                #{regDate: DATE}
+            </if>
         )
     </insert>
     <select id="findById" parameterType="string" resultMap="user">
@@ -59,45 +59,61 @@
         FROM users
         WHERE user_id = #{value}
     </select>
-    <select id="findUserList" parameterType="Search" resultMap="user">
+
+    <resultMap id="userListData" type="ListData">
+        <result column="count" property="count" jdbcType="NUMERIC"/>
+        <collection property="list" ofType="User">
+            <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+            <result column="password" property="password" jdbcType="VARCHAR"/>
+            <result column="role" property="role" jdbcType="VARCHAR"/>
+            <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
+            <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
+            <result column="addr" property="addr" jdbcType="VARCHAR"/>
+            <result column="email" property="email" jdbcType="VARCHAR"/>
+            <result column="reg_date" property="regDate" jdbcType="DATE"/>
+        </collection>
+    </resultMap>
+
+    <select id="findUserList" parameterType="Search" resultMap="userListData">
         SELECT
-        v.user_id user_id,
-        v.user_name user_name,
-        v.password password,
-        v.role role,
-        v.ssn ssn,
-        v.cell_phone cell_phone,
-        v.addr addr,
-        v.email email,
-        v.reg_date reg_date,
-        v.count count
+            v.user_id user_id,
+            v.user_name user_name,
+            v.password password,
+            v.role role,
+            v.ssn ssn,
+            v.cell_phone cell_phone,
+            v.addr addr,
+            v.email email,
+            v.reg_date reg_date,
+            v.count count
         FROM (
-        SELECT
-        ROW_NUMBER() OVER (ORDER BY u.user_id ASC) row_num,
-        u.user_id user_id,
-        user_name user_name,
-        u.password password,
-        u.role role,
-        u.ssn ssn,
-        u.cell_phone cell_phone,
-        u.addr addr,
-        u.email email,
-        u.reg_date reg_date,
-        COUNT(*) OVER () count
-        FROM users u
-        <where>
-            <if test="searchCondition == 0">
-                u.user_id LIKE #{searchKeyword}
-            </if>
-            <if test="searchCondition == 1">
-                u.user_name LIKE #{searchKeyword}
-            </if>
-        </where>
-        ORDER BY u.user_id ASC
+            SELECT
+                ROW_NUMBER() OVER (ORDER BY u.user_id ASC) row_num,
+                u.user_id user_id,
+                user_name user_name,
+                u.password password,
+                u.role role,
+                u.ssn ssn,
+                u.cell_phone cell_phone,
+                u.addr addr,
+                u.email email,
+                u.reg_date reg_date,
+                COUNT(*) OVER () count
+            FROM users u
+                <where>
+                    <if test="searchCondition == 0">
+                        u.user_id LIKE #{searchKeyword}
+                    </if>
+                    <if test="searchCondition == 1">
+                        u.user_name LIKE #{searchKeyword}
+                    </if>
+                </where>
+            ORDER BY u.user_id ASC
         ) v
         <where>
-            <if test="pageFrom != 0 and pageTo != 0">
-                v.row_num BETWEEN #{pageFrom} AND #{pageTo}
+            <if test="page != 0 and pageUnit != 0">
+                v.row_num BETWEEN #{page} AND #{pageUnit}
             </if>
         </where>
     </select>

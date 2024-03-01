@@ -12,6 +12,7 @@
     <typeAliases>
         <typeAlias type="com.model2.mvc.user.domain.User" alias="User"/>
         <typeAlias type="com.model2.mvc.common.dto.Search" alias="Search"/>
+        <typeAlias type="com.model2.mvc.common.ListData" alias="ListData" />
     </typeAliases>
 
     <environments default="development">
@@ -22,8 +23,8 @@
             <dataSource type="POOLED">
                 <property name="driver" value="oracle.jdbc.driver.OracleDriver" />
                 <property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
-                <property name="username" value="ibatis" />
-                <property name="password" value="ibatis" />
+                <property name="username" value="scott" />
+                <property name="password" value="tiger" />
             </dataSource>
         </environment>
     </environments>
