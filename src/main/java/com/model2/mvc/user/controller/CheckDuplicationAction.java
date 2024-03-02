@@ -8,13 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CheckDuplicationAction extends Action {
+    private final UserService userService;
+
+    public CheckDuplicationAction(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userId = request.getParameter("userId");
 
-        UserService service = new UserServiceImpl();
-        boolean result = service.checkDuplication(userId);
+        boolean result = userService.checkDuplication(userId);
 
         request.setAttribute("result", result);
         request.setAttribute("userId", userId);

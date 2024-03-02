@@ -3,7 +3,6 @@ package com.model2.mvc.user.service;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.dao.UserDAO;
-import com.model2.mvc.user.dao.impl.PlainJDBCUserDAO;
 import com.model2.mvc.user.domain.User;
 
 import java.util.HashMap;
