@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <setting name="callSettersOnNulls" value="false"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.model2.mvc.user.domain.User" alias="User"/>
+        <typeAlias type="com.model2.mvc.common.dto.Search" alias="Search"/>
+        <typeAlias type="com.model2.mvc.common.ListData" alias="ListData"/>
+        <typeAlias type="com.model2.mvc.product.domain.Product" alias="Product"/>
+        <typeAlias type="com.model2.mvc.purchase.domain.Purchase" alias="Purchase"/>
+        <typeAlias type="com.model2.mvc.purchase.domain.TransactionProduction" alias="TranProd"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.PaymentOptionTypeHandler"/>
+        <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.TranStatusCodeTypeHandler"/>
+    </typeHandlers>
+
+    <mappers>
+        <mapper resource="sql/user-mapper.xml"/>
+        <mapper resource="sql/product-mapper.xml"/>
+        <mapper resource="sql/purchase-mapper.xml"/>
+    </mappers>
+</configuration>
