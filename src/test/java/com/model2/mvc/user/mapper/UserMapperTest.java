@@ -56,7 +56,7 @@ public class UserMapperTest {
         userToInsert.setEmail(email);
         userToInsert.setRegDate(regDate);
 
-        this.sqlSession.insert("UserMapper.insertUser", userToInsert);
+        this.sqlSession.insert("UserMapper.insert", userToInsert);
 
         User queriedUser = sqlSession.selectOne("UserMapper.findById", userId);
 
@@ -87,14 +87,14 @@ public class UserMapperTest {
 
         List<User> users = Setter.get(params, testCaseGenerate);
 
-        users.forEach(e -> sqlSession.insert("UserMapper.insertUser", e));
+        users.forEach(e -> sqlSession.insert("UserMapper.insert", e));
 
         Search search1 = new Search();
         search1.setPage(1);
         search1.setPageUnit(3);
         search1.setSearchCondition("0");
         search1.setSearchKeyword("iuser%");
-        ListData<User> found1 = sqlSession.selectOne("UserMapper.findUserList", search1);
+        ListData<User> found1 = sqlSession.selectOne("UserMapper.findUsers", search1);
         log.debug(found1.toString());
         checkResult(users, found1);
 
@@ -103,7 +103,7 @@ public class UserMapperTest {
         search2.setPageUnit(3);
         search2.setSearchCondition("1");
         search2.setSearchKeyword("zxcv");
-        ListData<User> found2 = sqlSession.selectOne("UserMapper.findUserList", search2);
+        ListData<User> found2 = sqlSession.selectOne("UserMapper.findUsers", search2);
 
         assertThat(found2.getList().size()).isEqualTo(1);
         assertThat(found2.getList().get(0)).isEqualTo(users.get(2));
@@ -134,15 +134,15 @@ public class UserMapperTest {
         String id = "iuser011";
         String param = "iuser011==John==1q2w==user==aa==010-1111-1111==asdf==rr@a.kr==13";
         User user = Setter.get(param, testCaseGenerate).get(0);
-        sqlSession.insert("UserMapper.insertUser", user);
+        sqlSession.insert("UserMapper.insert", user);
 
         user.setUserName("Doe");
-        sqlSession.update("UserMapper.updateUser", user);
+        sqlSession.update("UserMapper.update", user);
         User found1 = sqlSession.selectOne("UserMapper.findById", id);
         assertThat(found1.getUserName()).isEqualTo("Doe");
 
         user.setAddr("Seoul");
-        sqlSession.update("UserMapper.updateUser", user);
+        sqlSession.update("UserMapper.update", user);
         User found2 = sqlSession.selectOne("UserMapper.findById", id);
         assertThat(found2.getAddr()).isEqualTo("Seoul");
     }

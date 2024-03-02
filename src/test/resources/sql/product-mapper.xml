@@ -18,7 +18,12 @@
                 stock )
         VALUES
             (
-                seq_product_prod_no.nextval,
+                <if test="prodNo != 0">
+                    #{prodNo}
+                </if>
+                <if test="prodNo == 0">
+                    seq_product_prod_no.nextval
+                </if>,
                 #{prodName: VARCHAR},
                 #{prodDetail: VARCHAR},
                 #{manuDate: DATE},

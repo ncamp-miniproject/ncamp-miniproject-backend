@@ -7,10 +7,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TransactionProduction {
+    private int tranNo;
     private Product product;
     private int quantity;
 
+    public TransactionProduction() {
+    }
+
     public TransactionProduction(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    public TransactionProduction(int tranNo, Product product, int quantity) {
+        this.tranNo = tranNo;
         this.product = product;
         this.quantity = quantity;
     }
@@ -18,9 +28,16 @@ public class TransactionProduction {
     public static List<TransactionProduction> from(String[] values) {
         return Arrays.stream(values)
                 .map(v -> v.split(CommonConstants.QUERY_VALUE_DELIMITER))
-                .map(s -> new TransactionProduction(new Product(Integer.parseInt(s[0])),
-                                                    Integer.parseInt(s[1])))
+                .map(s -> new TransactionProduction(new Product(Integer.parseInt(s[0])), Integer.parseInt(s[1])))
                 .toList();
+    }
+
+    public int getTranNo() {
+        return tranNo;
+    }
+
+    public void setTranNo(int tranNo) {
+        this.tranNo = tranNo;
     }
 
     public Product getProduct() {
@@ -41,6 +58,6 @@ public class TransactionProduction {
 
     @Override
     public String toString() {
-        return "TransactionProduction [product=" + product + ", quantity=" + quantity + "]";
+        return "TransactionProduction{" + "tranNo=" + tranNo + ", product=" + product + ", quantity=" + quantity + '}';
     }
 }

@@ -23,6 +23,11 @@ public class Purchase {
         this.transactionProductions = new ArrayList<>();
     }
 
+    public Purchase(Integer tranNo) {
+        this();
+        this.tranNo = tranNo;
+    }
+
     public Integer getTranNo() {
         return tranNo;
     }

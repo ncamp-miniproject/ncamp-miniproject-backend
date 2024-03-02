@@ -18,7 +18,14 @@ public class User {
     }
 
     public User(String userId) {
+        this();
         this.userId = userId;
+    }
+
+    public User(String userId, String userName, String password) {
+        this(userId);
+        this.userName = userName;
+        this.password = password;
     }
 
     public String getUserId() {

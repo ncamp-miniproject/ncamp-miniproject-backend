@@ -41,7 +41,7 @@ public enum TranStatusCode {
         if (codeTable.containsKey(code)) {
             return codeTable.get(code);
         }
-        throw new IllegalArgumentException("No such code");
+        throw new IllegalArgumentException("No such code: " + code);
     }
 
     public String getStatus() {

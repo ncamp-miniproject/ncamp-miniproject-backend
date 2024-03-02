@@ -14,17 +14,17 @@ public enum PaymentOption {
         paymentOptionTable.put("1", CREDIT_CARD);
     }
 
-    private String paymentOption;
+    private String code;
 
-    private PaymentOption(String paymentOption) {
-        this.paymentOption = paymentOption;
+    private PaymentOption(String code) {
+        this.code = code;
     }
 
     public static PaymentOption get(String optionCode) {
         return paymentOptionTable.get(optionCode);
     }
 
-    public String paymentOption() {
-        return this.paymentOption;
+    public String getCode() {
+        return this.code;
     }
 }

@@ -20,6 +20,13 @@ public class Product {
         this.prodNo = prodNo;
     }
 
+    public Product(int prodNo, String prodName, int price, int stock) {
+        this(prodNo);
+        this.prodName = prodName;
+        this.price = price;
+        this.stock = stock;
+    }
+
     public int getProdNo() {
         return prodNo;
     }

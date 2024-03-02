@@ -14,7 +14,14 @@
         <typeAlias type="com.model2.mvc.common.dto.Search" alias="Search"/>
         <typeAlias type="com.model2.mvc.common.ListData" alias="ListData"/>
         <typeAlias type="com.model2.mvc.product.domain.Product" alias="Product"/>
+        <typeAlias type="com.model2.mvc.purchase.domain.Purchase" alias="Purchase"/>
+        <typeAlias type="com.model2.mvc.purchase.domain.TransactionProduction" alias="TranProd"/>
     </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.PaymentOptionTypeHandler"/>
+        <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.TranStatusCodeTypeHandler"/>
+    </typeHandlers>
 
     <environments default="development">
         <environment id="development">
@@ -33,5 +40,6 @@
     <mappers>
         <mapper resource="sql/user-mapper.xml"/>
         <mapper resource="sql/product-mapper.xml"/>
+        <mapper resource="sql/purchase-mapper.xml"/>
     </mappers>
 </configuration>

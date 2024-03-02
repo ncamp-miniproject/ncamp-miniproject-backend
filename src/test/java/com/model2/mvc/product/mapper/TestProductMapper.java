@@ -17,7 +17,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TestProductMapper {
@@ -112,7 +111,7 @@ public class TestProductMapper {
         prods.forEach(p -> this.sqlSession.insert("ProductMapper.insert", p));
 
         Search search1 = new Search();
-        search1.setSearchKeyword("Product");
+        search1.setSearchKeyword("Product%");
         search1.setPage(1);
         search1.setPageUnit(3);
         search1.setSearchCondition("0");
@@ -130,7 +129,7 @@ public class TestProductMapper {
         findProductsByProdName_aTest(1, found2, prods);
 
         Search search3 = new Search();
-        search3.setSearchKeyword("2");
+        search3.setSearchKeyword("%2");
         search3.setPage(1);
         search3.setPageUnit(3);
         search3.setSearchCondition("0");

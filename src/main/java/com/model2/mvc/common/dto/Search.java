@@ -35,7 +35,7 @@ public class Search {
     }
 
     public String getSearchKeyword() {
-        return "%" + searchKeyword + "%";
+        return searchKeyword;
     }
 
     public void setSearchKeyword(String searchKeyword) {

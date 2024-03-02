@@ -13,7 +13,7 @@
         <result column="reg_date" property="regDate" jdbcType="DATE"/>
         <result column="count" property="count" jdbcType="NUMERIC"/>
     </resultMap>
-    <insert id="insertUser" parameterType="User">
+    <insert id="insert" parameterType="User">
         INSERT INTO users (
             user_id,
             user_name,
@@ -75,7 +75,7 @@
         </collection>
     </resultMap>
 
-    <select id="findUserList" parameterType="Search" resultMap="userListData">
+    <select id="findUsers" parameterType="Search" resultMap="userListData">
         SELECT
             v.user_id user_id,
             v.user_name user_name,
@@ -117,7 +117,7 @@
             </if>
         </where>
     </select>
-    <update id="updateUser" parameterType="User">
+    <update id="update" parameterType="User">
         UPDATE users
         <set>
             <if test="userName != null">
@@ -137,7 +137,7 @@
             user_id = #{userId}
         </where>
     </update>
-    <delete id="removeUser" parameterType="string">
+    <delete id="delete" parameterType="string">
         DELETE
         FROM users
         WHERE user_id = #{value}

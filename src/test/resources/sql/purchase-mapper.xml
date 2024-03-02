@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="EUC-KR" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PurchaseMapper">
+    <insert id="insertTransaction" parameterType="Purchase" keyProperty="tranNo" keyColumn="tran_no" useGeneratedKeys="true">
+        INSERT INTO transaction (
+            tran_no,
+            buyer_id,
+            payment_option,
+            receiver_name,
+            receiver_phone,
+            demailaddr,
+            dlvy_request,
+            tran_status_code,
+            order_date,
+            dlvy_date
+        ) VALUES (
+             seq_transaction_tran_no.NEXTVAL,
+             #{buyer.userId: VARCHAR},
+             #{paymentOption.code: CHAR},
+             #{receiverName: VARCHAR},
+             #{receiverPhone: VARCHAR},
+             #{divyAddr: VARCHAR},
+             #{divyRequest: VARCHAR},
+             #{tranStatusCode.code: CHAR},
+             #{orderDate: DATE},
+             #{divyDate: DATE}
+         )
+    </insert>
+
+    <insert id="insertTranProd" parameterType="TranProd">
+        INSERT INTO transaction_prod (
+            tran_no,
+            prod_no,
+            quantity
+        ) VALUES (
+            #{tranNo},
+            #{product.prodNo},
+            #{quantity}
+        )
+    </insert>
+
+    <resultMap id="purchase" type="Purchase">
+        <id column="tran_no" property="tranNo" jdbcType="INTEGER"/>
+        <result column="payment_option" property="paymentOption" jdbcType="CHAR"
+                typeHandler="com.model2.mvc.common.mybatis.typehandler.PaymentOptionTypeHandler"/>
+        <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
+        <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR"/>
+        <result column="demailaddr" property="divyAddr" jdbcType="VARCHAR"/>
+        <result column="dlvy_request" property="divyRequest" jdbcType="VARCHAR"/>
+        <result column="tran_status_code" property="tranStatusCode" jdbcType="CHAR"
+                typeHandler="com.model2.mvc.common.mybatis.typehandler.TranStatusCodeTypeHandler"/>
+        <result column="order_date" property="orderDate" jdbcType="DATE"/>
+        <result column="dlvy_date" property="divyDate" jdbcType="DATE"/>
+        <association property="buyer" javaType="User">
+            <id column="buyer_id" property="userId" jdbcType="VARCHAR"/>
+        </association>
+        <collection property="transactionProductions" ofType="TranProd">
+            <result column="tran_no" property="tranNo" jdbcType="NUMERIC"/>
+            <result column="quantity" property="quantity" jdbcType="NUMERIC"/>
+            <association property="product" javaType="Product">
+                <id column="prod_no" property="prodNo" jdbcType="NUMERIC"/>
+                <result column="prod_name" property="prodName" jdbcType="VARCHAR"/>
+                <result column="prod_detail" property="prodDetail" jdbcType="VARCHAR"/>
+                <result column="manufacture_day" property="manuDate" jdbcType="DATE"/>
+                <result column="price" property="price" jdbcType="NUMERIC"/>
+                <result column="image_file" property="fileName" jdbcType="VARCHAR"/>
+                <result column="reg_date" property="regDate" jdbcType="DATE"/>
+                <result column="stock" property="stock" jdbcType="NUMERIC"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="findById" parameterType="int" resultMap="purchase">
+        SELECT
+            t.tran_no          "tran_no",
+            t.buyer_id         "buyer_id",
+            t.payment_option   "payment_option",
+            t.receiver_name    "receiver_name",
+            t.receiver_phone   "receiver_phone",
+            t.demailaddr       "demailaddr",
+            t.dlvy_request     "dlvy_request",
+            t.tran_status_code "tran_status_code",
+            t.order_date       "order_date",
+            t.dlvy_date        "dlvy_date",
+            tp.prod_no         "prod_no",
+            tp.quantity        "quantity",
+            p.prod_name        "prod_name",
+            p.prod_detail      "prod_detail",
+            p.manufacture_day  "manufacture_day",
+            p.price            "price",
+            p.image_file       "image_file",
+            p.reg_date         "reg_date",
+            p.stock            "stock"
+        FROM
+            transaction t
+            LEFT OUTER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
+            LEFT OUTER JOIN product          p ON tp.prod_no = p.prod_no
+        WHERE
+            t.tran_no = #{value}
+    </select>
+
+    <resultMap id="purchaseListData" type="ListData">
+        <result column="count" property="count" jdbcType="NUMERIC"/>
+        <collection property="list" resultMap="purchase"/>
+    </resultMap>
+
+    <select id="findList" parameterType="Search" resultMap="purchaseListData">
+        SELECT
+            t.row_num          "row_num",
+            t.tran_no          "tran_no",
+            t.buyer_id         "buyer_id",
+            t.payment_option   "payment_option",
+            t.receiver_name    "receiver_name",
+            t.receiver_phone   "receiver_phone",
+            t.demailaddr       "demailaddr",
+            t.dlvy_request     "dlvy_request",
+            t.tran_status_code "tran_status_code",
+            t.order_date       "order_date",
+            t.dlvy_date        "dlvy_date",
+            t.count            "count",
+            tp.prod_no         "prod_no",
+            tp.quantity        "quantity",
+            p.prod_name        "prod_name",
+            p.prod_detail      "prod_detail",
+            p.manufacture_day  "manufacture_day",
+            p.price            "price",
+            p.image_file       "image_file",
+            p.reg_date         "reg_date",
+            p.stock            "stock"
+        FROM
+            (
+                SELECT
+                    ROW_NUMBER() OVER (ORDER BY tran_no DESC) ROW_NUM,
+                    t.tran_no tran_no,
+                    t.buyer_id buyer_id,
+                    t.payment_option payment_option,
+                    t.receiver_name receiver_name,
+                    t.receiver_phone receiver_phone,
+                    t.demailaddr demailaddr,
+                    t.dlvy_request dlvy_request,
+                    t.tran_status_code tran_status_code,
+                    t.order_date order_date,
+                    t.dlvy_date dlvy_date,
+                    COUNT(*) OVER () count
+                FROM
+                    transaction t
+                <where>
+                    <if test="searchCondition == 0">
+                        t.buyer_id = #{searchKeyword}
+                    </if>
+                </where>
+                ORDER BY
+                    tran_no DESC
+            ) t
+            INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
+            INNER JOIN product p ON tp.prod_no = p.prod_no
+        WHERE t.row_num between #{page} AND #{pageUnit}
+        ORDER BY t.row_num
+    </select>
+
+    <update id="update" parameterType="Purchase">
+        UPDATE transaction
+        <set>
+            <if test="buyer != null">
+                buyer_id = #{buyer.userId},
+            </if>
+            <if test="paymentOption != null">
+                payment_option = #{paymentOption.code},
+            </if>
+            <if test="receiverName != null">
+                receiver_name = #{receiverName},
+            </if>
+            <if test="receiverPhone != null">
+                receiver_phone = #{receiverPhone},
+            </if>
+            <if test="divyAddr != null">
+                demailaddr = #{divyAddr},
+            </if>
+            <if test="divyRequest != null">
+                dlvy_request = #{divyRequest},
+            </if>
+            <if test="tranStatusCode != null">
+                tran_status_code = #{tranStatusCode.code},
+            </if>
+            <if test="orderDate != null">
+                order_date = #{orderDate},
+            </if>
+            <if test="divyDate != null">
+                dlvy_date = #{divyDate}
+            </if>
+        </set>
+        <where>
+            tran_no = #{tranNo}
+        </where>
+    </update>
+
+    <delete id="clearTransaction">
+        DELETE FROM transaction
+    </delete>
+    <delete id="clearTranProd">
+        DELETE FROM transaction_prod
+    </delete>
+</mapper>
