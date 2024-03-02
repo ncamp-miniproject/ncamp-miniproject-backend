@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public class ListUserAction extends Action {
+    private UserService userService;
+
+    public ListUserAction(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -26,8 +31,7 @@ public class ListUserAction extends Action {
         searchVO.setSearchKeyword(request.getParameter("searchKeyword"));
         searchVO.setPageUnit(CommonConstants.PAGE_SIZE);
 
-        UserService service = new UserServiceImpl();
-        Map<String, Object> map = service.getUserList(searchVO);
+        Map<String, Object> map = this.userService.getUserList(searchVO);
 
         request.setAttribute("total", map.get("count"));
         request.setAttribute("list", map.get("list"));
