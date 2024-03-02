@@ -76,7 +76,7 @@ public class PlainJDBCUserDAO extends DAOTemplate implements UserDAO {
     }
 
     @Override
-    public ListData<User> findByUserName(String userName) throws SQLException {
+    public ListData<User> findByUserName(Search search) throws SQLException {
 //
 //        Connection con = DBUtil.getConnection();
 //

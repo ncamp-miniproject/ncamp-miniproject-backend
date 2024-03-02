@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> getUserList(Search searchVO) throws Exception {
         switch (searchVO.getSearchCondition()) {
         case "0":
-            ListData<User> userList = userDAO.findByUserName(searchVO.getSearchKeyword());
+            ListData<User> userList = userDAO.findByUserName(searchVO);
             Map<String, Object> result = new HashMap<>();
             result.put("count", userList.getCount());
             result.put("list", userList.getList());
