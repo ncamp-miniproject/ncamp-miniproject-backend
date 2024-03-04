@@ -15,11 +15,12 @@ public class RequestMapping {
     private Properties properties;
     private ServletContext servletContext;
 
+    protected RequestMapping() {
+    }
+
     private RequestMapping(String resources, ServletContext servletContext) {
         this.map = new HashMap<String, Action>();
         this.servletContext = servletContext;
-
-        System.out.println(resources);
 
         InputStream in = null;
         try {
@@ -41,7 +42,7 @@ public class RequestMapping {
 
     public synchronized static RequestMapping getInstance(String resources, ServletContext servletContext) {
         if (requestMapping == null) {
-            requestMapping = new RequestMapping(resources, servletContext);
+            requestMapping = new WiringRequestMapping(resources, servletContext);
         }
         return requestMapping;
     }

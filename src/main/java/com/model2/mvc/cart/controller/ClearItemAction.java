@@ -3,7 +3,6 @@ package com.model2.mvc.cart.controller;
 import com.model2.mvc.cart.service.CartService;
 import com.model2.mvc.framework.Action;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

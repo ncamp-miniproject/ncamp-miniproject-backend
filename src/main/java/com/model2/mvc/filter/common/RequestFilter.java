@@ -28,9 +28,8 @@ public class RequestFilter implements Filter {
 //                .build();
 //        session.setAttribute("user", sampleUser);
 //
-//        request.setCharacterEncoding("euc-kr");
-//        chain.doFilter(request, response);
-        throw new UnsupportedEncodingException();
+        request.setCharacterEncoding("euc-kr");
+        chain.doFilter(request, response);
     }
 
     public void destroy() {

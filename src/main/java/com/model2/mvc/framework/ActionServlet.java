@@ -21,7 +21,6 @@ public class ActionServlet extends HttpServlet {
         super.init();
         ServletContext servletContext = super.getServletContext();
         this.mapper = RequestMapping.getInstance(servletContext.getInitParameter("actionmapping"), servletContext);
-        SQLContainer.init(servletContext.getInitParameter("sqldescriptor"), servletContext);
     }
 
     @Override
