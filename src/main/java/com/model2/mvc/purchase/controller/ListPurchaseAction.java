@@ -8,7 +8,6 @@ import com.model2.mvc.user.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class ListPurchaseAction extends PurchaseAction {
 

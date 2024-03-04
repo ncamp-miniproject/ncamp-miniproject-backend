@@ -10,7 +10,6 @@ import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
@@ -20,25 +19,18 @@ import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class PurchaseServiceImpl implements PurchaseService {
-    private static final PurchaseService instance = new PurchaseServiceImpl();
+    private final PurchaseDAO purchaseDAO;
+    private final ProductDAO productDAO;
 
-    private PurchaseDAO purchaseDAO;
-    private ProductDAO productDAO;
-
-    private PurchaseServiceImpl() {
-        this.purchaseDAO = PurchaseDAO.getInstance();
-        this.productDAO = ProductDAO.getInstance();
-    }
-
-    public static PurchaseService getInstance() {
-        return instance;
+    private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ProductDAO productDAO) {
+        this.purchaseDAO = purchaseDAO;
+        this.productDAO = productDAO;
     }
 
     @Override

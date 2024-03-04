@@ -3,15 +3,22 @@ package com.model2.mvc.product.controller;
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.framework.Action;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
+import com.model2.mvc.product.service.ProductService;
 import com.model2.mvc.user.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class ListProductAction extends ProductAction {
+public class ListProductAction extends Action {
+    private final ProductService productService;
+
+    public ListProductAction(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -41,7 +48,7 @@ public class ListProductAction extends ProductAction {
                 .search(searchVO)
                 .build();
 
-        ListProductResponseDTO result = super.productService.getProductList(requestDTO);
+        ListProductResponseDTO result = this.productService.getProductList(requestDTO);
 
         request.setAttribute("data", result);
         return "forward:/product/listProduct.jsp";

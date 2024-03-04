@@ -1,11 +1,18 @@
 package com.model2.mvc.product.controller;
 
+import com.model2.mvc.framework.Action;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
+import com.model2.mvc.product.service.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UpdateProductAction extends ProductAction {
+public class UpdateProductAction extends Action {
+    private ProductService productService;
+
+    public UpdateProductAction(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -19,7 +26,7 @@ public class UpdateProductAction extends ProductAction {
                 .stock(Integer.parseInt(request.getParameter("stock")))
                 .build();
 
-        super.productService.updateProduct(requestDTO);
+        this.productService.updateProduct(requestDTO);
         return "redirect:/listProduct.do";
     }
 }

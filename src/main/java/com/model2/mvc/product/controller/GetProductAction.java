@@ -16,8 +16,8 @@ import java.util.Optional;
 public class GetProductAction extends Action {
     private ProductService productService;
 
-    public GetProductAction() {
-        this.productService = ProductService.getInstance();
+    public GetProductAction(ProductService productService) {
+        this.productService = productService;
     }
 
     @Override

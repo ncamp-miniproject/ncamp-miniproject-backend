@@ -9,9 +9,6 @@ import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
 
 public interface ProductService {
-    public static ProductService getInstance() {
-        return ProductServiceImpl.getInstance();
-    }
 
     public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert);
 

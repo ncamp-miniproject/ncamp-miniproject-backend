@@ -1,10 +1,10 @@
 package com.model2.mvc.user.controller;
 
+import com.model2.mvc.framework.Action;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.model2.mvc.framework.Action;
 
 public class LogoutAction extends Action {
 

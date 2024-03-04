@@ -1,6 +1,6 @@
 package com.model2.mvc.purchase.mapper;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;

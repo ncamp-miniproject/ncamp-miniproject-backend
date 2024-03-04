@@ -1,8 +1,5 @@
 package com.model2.mvc.purchase.controller;
 
-import com.model2.mvc.purchase.domain.Purchase;
-import com.model2.mvc.purchase.domain.TranStatusCode;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

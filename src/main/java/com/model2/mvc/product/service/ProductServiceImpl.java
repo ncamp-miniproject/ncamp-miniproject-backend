@@ -4,7 +4,6 @@ import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Page;
 import com.model2.mvc.common.util.ListPageUtil;
-import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
@@ -21,16 +20,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductServiceImpl implements ProductService {
-    private static final ProductService instance = new ProductServiceImpl();
+    private final ProductDAO productDAO;
 
-    private ProductDAO productDAO;
-
-    private ProductServiceImpl() {
-        this.productDAO = ProductDAO.getInstance();
-    }
-
-    public static ProductService getInstance() {
-        return instance;
+    private ProductServiceImpl(ProductDAO productDAO) {
+        this.productDAO = productDAO;
     }
 
     @Override
@@ -68,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
-        ListData<Product> resultMap = productDAO.findProductListByProdName(requestDTO.getSearch());
+        ListData<Product> resultMap = productDAO.findProductsByProdName(requestDTO.getSearch());
 
 
         int currentPage = requestDTO.getPage();

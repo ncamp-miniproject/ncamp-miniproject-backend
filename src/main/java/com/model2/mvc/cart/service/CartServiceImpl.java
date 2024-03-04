@@ -14,16 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 public class CartServiceImpl implements CartService {
-    private static CartService instance = new CartServiceImpl();
-
     private ProductDAO productDAO;
 
-    public static CartService getInstance() {
-        return instance;
-    }
-
-    public CartServiceImpl() {
-        this.productDAO = ProductDAO.getInstance();
+    public CartServiceImpl(ProductDAO productDAO) {
+        this.productDAO = productDAO;
     }
 
     @Override

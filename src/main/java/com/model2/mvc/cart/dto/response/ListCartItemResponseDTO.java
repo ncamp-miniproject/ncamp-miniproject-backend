@@ -2,7 +2,6 @@ package com.model2.mvc.cart.dto.response;
 
 import com.model2.mvc.product.domain.Product;
 
-import java.util.List;
 import java.util.Map;
 
 public class ListCartItemResponseDTO {

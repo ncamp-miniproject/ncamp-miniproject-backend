@@ -1,12 +1,12 @@
 package com.model2.mvc.common.util;
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.util.List;
-import java.util.stream.Stream;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.db.SQLName;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 public class TestListPageUtil {
 

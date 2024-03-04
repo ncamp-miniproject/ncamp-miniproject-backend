@@ -10,7 +10,6 @@ import com.model2.mvc.user.domain.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Map;
 
 @Deprecated
 public class PlainJDBCUserDAO extends DAOTemplate implements UserDAO {
