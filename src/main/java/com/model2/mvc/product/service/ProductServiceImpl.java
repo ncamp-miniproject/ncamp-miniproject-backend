@@ -3,6 +3,7 @@ package com.model2.mvc.product.service;
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Page;
+import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dao.ProductDAO;
@@ -58,7 +59,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
-        ListData<Product> resultMap = productDAO.findProductsByProdName(requestDTO.getSearch());
+        Search search = new Search();
+        int page = requestDTO.getPage();
+        int pageSize = requestDTO.getPageSize();
+        search.setStartRowNum((page - 1) * pageSize + 1);
+        search.setEndRowNum(page * pageSize);
+        search.setSearchKeyword(requestDTO.getSearchKeyword());
+        search.setSearchCondition(requestDTO.getSearchCondition());
+        ListData<Product> resultMap = productDAO.findProductsByProdName(search);
 
 
         int currentPage = requestDTO.getPage();
@@ -83,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
                                  currentPage,
                                  CommonConstants.PAGE_SIZE);
 
-        return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO);
+        return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO, search);
     }
 
     @Override

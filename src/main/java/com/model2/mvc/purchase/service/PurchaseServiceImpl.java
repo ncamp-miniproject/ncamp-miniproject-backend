@@ -9,10 +9,12 @@ import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
+import com.model2.mvc.purchase.domain.BuyerIdLimitationSearch;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
+import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
@@ -20,6 +22,7 @@ import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -28,15 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("purchaseServiceImpl")
+@Primary
 public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseDAO purchaseDAO;
     private final ProductDAO productDAO;
 
     @Autowired
-    private PurchaseServiceImpl( PurchaseDAO purchaseDAO, ProductDAO productDAO) {
+    private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ProductDAO productDAO) {
         this.purchaseDAO = purchaseDAO;
         this.productDAO = productDAO;
     }
@@ -53,6 +56,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
         purchase.setOrderDate(new Date(System.currentTimeMillis()));
         purchase.setDivyDate(requestDTO.getDivyDate());
+        purchase.setTransactionProductions(requestDTO.getTransactionProductions());
         this.purchaseDAO.insertPurchase(purchase);
         return AddPurchaseResponseDTO.from(purchase);
     }
@@ -65,15 +69,21 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user) {
-        ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(user.getUserId(),
-                                                                           searchVO.getStartRowNum(),
-                                                                           searchVO.getEndRowNum());
+    public ListPurchaseResponseDTO getPurchaseList(ListPurchaseRequestDTO requestDTO) {
+        BuyerIdLimitationSearch purchaseSearch = new BuyerIdLimitationSearch();
+        int page = requestDTO.getPage();
+        int pageSize = requestDTO.getPageSize();
+        purchaseSearch.setStartRowNum((page - 1) * pageSize + 1);
+        purchaseSearch.setEndRowNum(page * pageSize);
+        purchaseSearch.setBuyerId(requestDTO.getUserId());
+        purchaseSearch.setSearchCondition(requestDTO.getSearchCondition());
+        purchaseSearch.setSearchKeyword(requestDTO.getSearchKeyword());
+        ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(purchaseSearch);
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
-                .pageInfo(getPageInfo(result.getCount(), searchVO.getStartRowNum()))
-                .loginUser(user)
+                .pageInfo(getPageInfo(result.getCount(), page))
+                .loginUser(new User(requestDTO.getUserId()))
                 .build();
     }
 
@@ -103,7 +113,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap) {
-        Map<Integer, Product> prodNoProductMap = this.productDAO.findProductsByIds(new ArrayList<>(prodNoQuantityMap.keySet()));
+        Map<Integer, Product>
+                prodNoProductMap
+                = this.productDAO.findProductsByIds(new ArrayList<>(prodNoQuantityMap.keySet()));
         List<Integer> prodNumbers = new ArrayList<>(prodNoProductMap.keySet());
 
         int priceSum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
@@ -116,13 +128,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public ListPurchaseResponseDTO getSaleList(int page, User loginUser) {
-        ListData<Purchase> purchases = this.purchaseDAO.findAllInPageSize(page, CommonConstants.PAGE_SIZE);
+    public ListPurchaseResponseDTO getSaleList(int page, int pageSize) {
+        ListData<Purchase> purchases = this.purchaseDAO.findAllInPageSize((page - 1) * pageSize + 1, page * pageSize);
         return new ListPurchaseResponseDTO().builder()
                 .count(purchases.getCount())
                 .purchaseList(purchases.getList())
                 .pageInfo(getPageInfo(purchases.getCount(), page))
-                .loginUser(loginUser)
                 .build();
     }
 

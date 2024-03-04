@@ -134,7 +134,7 @@
         FROM
             (
                 SELECT
-                    ROW_NUMBER() OVER (ORDER BY tran_no DESC) ROW_NUM,
+                    ROW_NUMBER() OVER (ORDER BY t.order_date DESC) ROW_NUM,
                     t.tran_no tran_no,
                     t.buyer_id buyer_id,
                     t.payment_option payment_option,
@@ -154,11 +154,13 @@
                     </if>
                 </where>
                 ORDER BY
-                    tran_no DESC
+                    t.order_date DESC
             ) t
             INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
             INNER JOIN product p ON tp.prod_no = p.prod_no
-        WHERE t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
+        <where>
+            t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
+        </where>
         ORDER BY t.row_num
     </select>
 

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,9 @@ public class MyBatisMapperProductDAO implements ProductDAO {
     @Override
     public Map<Integer, Product> findProductsByIds(List<Integer> ids) {
         List<Product> productsFound = this.sqlSession.selectList("ProductMapper.findProductsByIds", ids);
+        if (productsFound == null) {
+            return new HashMap<>();
+        }
         Map<Integer, Product> idProductMap = new HashMap<>();
         productsFound.forEach(p -> idProductMap.put(p.getProdNo(), p));
         return idProductMap;
@@ -41,7 +45,8 @@ public class MyBatisMapperProductDAO implements ProductDAO {
 
     @Override
     public ListData<Product> findProductsByProdName(Search search) {
-        return this.sqlSession.selectOne("ProductMapper.findProducts", search);
+        ListData<Product> productsFound = this.sqlSession.selectOne("ProductMapper.findProducts", search);
+        return productsFound == null ? new ListData<>(0, new ArrayList<>()) : productsFound;
     }
 
     @Override

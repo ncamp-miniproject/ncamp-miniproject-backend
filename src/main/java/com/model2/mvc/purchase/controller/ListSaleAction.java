@@ -1,5 +1,6 @@
 package com.model2.mvc.purchase.controller;
 
+import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
@@ -25,8 +26,8 @@ public class ListSaleAction extends Action {
         if ((menu == null || menu.equals("search")) || !loginUser.getRole().equals("admin")) {
             return "redirect:/listPurchase.do?menu=search&page=" + currentPage;
         }
-        ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, loginUser);
-        request.setAttribute("data", responseDTO);
+        ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, CommonConstants.PAGE_SIZE);
+        request.setAttribute("data", responseDTO.builder().loginUser(loginUser).build());
         return "forward:/purchase/listPurchase.jsp";
     }
 }

@@ -20,13 +20,14 @@ public class ListProductResponseDTO {
 
     public static ListProductResponseDTO from(ListData<Product> listData,
                                               Page pageInfo,
-                                              ListProductRequestDTO requestDTO) {
+                                              ListProductRequestDTO requestDTO,
+                                              Search searchInfo) {
         ListProductResponseDTO dto = new ListProductResponseDTO();
         dto.count = listData.getCount();
         dto.products = listData.getList();
         dto.pageInfo = pageInfo;
         dto.menuMode = requestDTO.getMenuMode();
-        dto.searchInfo = requestDTO.getSearch();
+        dto.searchInfo = searchInfo;
         return dto;
     }
 

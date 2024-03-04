@@ -30,28 +30,21 @@ public class MyBatisMapperPurchaseDAO implements PurchaseDAO {
     }
 
     @Override
-    public ListData<Purchase> findAllInPageSize(int page, int pageSize) {
+    public ListData<Purchase> findAllInPageSize(int startRowNum, int endRowNum) {
         BuyerIdLimitationSearch bs = new BuyerIdLimitationSearch();
-        bs.setStartRowNum(pageSize * (page - 1) + 1);
-        bs.setEndRowNum(page * pageSize);
+        bs.setStartRowNum(startRowNum);
+        bs.setEndRowNum(endRowNum);
         return doSelectList(bs);
     }
 
     @Override
-    public ListData<Purchase> findPurchasesByUserId(String userId, int page, int pageSize) {
-        BuyerIdLimitationSearch search = new BuyerIdLimitationSearch();
-        search.setStartRowNum(pageSize * (page - 1) + 1);
-        search.setEndRowNum(page * pageSize);
-        search.setBuyerId(userId);
-        return doSelectList(search);
+    public ListData<Purchase> findPurchasesByUserId(BuyerIdLimitationSearch purchaseSearch) {
+        return doSelectList(purchaseSearch);
     }
 
     private ListData<Purchase> doSelectList(BuyerIdLimitationSearch search) {
         ListData<Purchase> result = this.sqlSession.selectOne("PurchaseMapper.findList", search);
-        if (result == null) {
-            return new ListData<>(0, new ArrayList<>());
-        }
-        return result;
+        return result == null ? new ListData<>(0, new ArrayList<>()) : result;
     }
 
     @Override

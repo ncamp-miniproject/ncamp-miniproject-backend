@@ -4,13 +4,16 @@ import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
+import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Primary
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
@@ -38,13 +41,21 @@ public class UserServiceImpl implements UserService {
         return userDAO.findByUserId(userId);
     }
 
-    public Map<String, Object> getUserList(Search searchVO) throws Exception {
-        switch (searchVO.getSearchCondition()) {
+    public Map<String, Object> getUserList(ListUserRequestDTO requestDTO) throws Exception {
+        Search search = new Search();
+        int page = requestDTO.getPage();
+        int pageSize = requestDTO.getPageSize();
+        search.setStartRowNum((page - 1) * pageSize + 1);
+        search.setEndRowNum(page * pageSize);
+        search.setSearchCondition(requestDTO.getSearchCondition());
+        search.setSearchKeyword(requestDTO.getSearchKeyword());
+        switch (requestDTO.getSearchCondition()) {
         case "0":
-            ListData<User> userList = userDAO.findByUserName(searchVO);
+            ListData<User> userList = userDAO.findByUserName(search);
             Map<String, Object> result = new HashMap<>();
             result.put("count", userList.getCount());
             result.put("list", userList.getList());
+            result.put("searchVO", search);
             return result;
         default:
             throw new IllegalArgumentException();

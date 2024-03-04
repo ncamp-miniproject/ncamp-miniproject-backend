@@ -28,7 +28,7 @@ public class ListProductAction extends Action {
         String menuMode = request.getParameter("menu");
 
         System.out.println("searchCondition=" + request.getParameter("searchCondition"));
-        System.out.println("searchKeyworkd=" + request.getParameter("searchKeyword"));
+        System.out.println("searchKeyword=" + request.getParameter("searchKeyword"));
 
         HttpSession session = request.getSession();
         User loginUser = (User)session.getAttribute("user");
@@ -37,17 +37,14 @@ public class ListProductAction extends Action {
         }
 
         int currentPage = Integer.parseInt(page == null ? "1" : page);
-        Search searchVO = new Search();
-        searchVO.setStartRowNum(currentPage);
-        searchVO.setEndRowNum(CommonConstants.PAGE_SIZE);
-        searchVO.setSearchCondition(StringUtil.null2nullStr(request.getParameter("searchCondition")));
-        searchVO.setSearchKeyword(StringUtil.null2nullStr(request.getParameter("searchKeyword")));
 
         ListProductRequestDTO requestDTO = new ListProductRequestDTO().builder()
                 .page(currentPage)
+                .pageSize(CommonConstants.PAGE_SIZE)
+                .searchCondition(StringUtil.null2nullStr(request.getParameter("searchCondition")))
+                .searchKeyword(StringUtil.null2nullStr(request.getParameter("searchKeyword")))
                 .menuMode(menuMode)
                 .loginUser(loginUser)
-                .search(searchVO)
                 .build();
 
         ListProductResponseDTO result = this.productService.getProductList(requestDTO);

@@ -7,18 +7,22 @@ import com.model2.mvc.user.domain.User;
 
 public class ListProductRequestDTO implements Buildable<ListProductRequestDTO.Builder> {
     private int page;
+    private int pageSize;
+    private String searchKeyword;
+    private String searchCondition;
     private String menuMode;
     private User loginUser;
-    private Search search;
 
     public ListProductRequestDTO() {
     }
 
     private ListProductRequestDTO(Builder from) {
         this.page = from.page;
+        this.pageSize = from.pageSize;
+        this.searchKeyword = from.searchKeyword;
+        this.searchCondition = from.searchCondition;
         this.menuMode = from.menuMode;
         this.loginUser = from.loginUser;
-        this.search = from.search;
     }
 
     @Override
@@ -30,6 +34,18 @@ public class ListProductRequestDTO implements Buildable<ListProductRequestDTO.Bu
         return page;
     }
 
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public String getSearchKeyword() {
+        return searchKeyword;
+    }
+
+    public String getSearchCondition() {
+        return searchCondition;
+    }
+
     public String getMenuMode() {
         return menuMode;
     }
@@ -38,25 +54,37 @@ public class ListProductRequestDTO implements Buildable<ListProductRequestDTO.Bu
         return loginUser;
     }
 
-    public Search getSearch() {
-        return search;
-    }
-
     public static class Builder extends BuilderTemplate<ListProductRequestDTO> {
         private int page;
+        private int pageSize;
+        private String searchKeyword;
+        private String searchCondition;
         private String menuMode;
         private User loginUser;
-        private Search search;
 
         public Builder(ListProductRequestDTO from) {
             this.page = from.page;
+            this.pageSize = from.pageSize;
+            this.searchKeyword = from.searchKeyword;
+            this.searchCondition = from.searchCondition;
             this.menuMode = from.menuMode;
             this.loginUser = from.loginUser;
-            this.search = from.search;
         }
 
         public Builder page(int p) {
             return super.setField(b -> b.page = p);
+        }
+
+        public Builder pageSize(int p) {
+            return super.setField(b -> b.pageSize = p);
+        }
+
+        public Builder searchKeyword(String s) {
+            return super.setField(b -> b.searchKeyword = s);
+        }
+
+        public Builder searchCondition(String s) {
+            return super.setField(b -> b.searchCondition = s);
         }
 
         public Builder menuMode(String m) {
@@ -65,10 +93,6 @@ public class ListProductRequestDTO implements Buildable<ListProductRequestDTO.Bu
 
         public Builder loginUser(User u) {
             return super.setField(b -> b.loginUser = u);
-        }
-
-        public Builder search(Search s) {
-            return super.setField(b -> b.search = s);
         }
 
         @Override
