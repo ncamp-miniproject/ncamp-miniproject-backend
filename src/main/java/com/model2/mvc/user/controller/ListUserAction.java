@@ -25,23 +25,23 @@ public class ListUserAction extends Action {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        searchVO.setPage(page);
+        searchVO.setStartRowNum(page);
         searchVO.setSearchCondition(request.getParameter("searchCondition"));
         searchVO.setSearchKeyword(request.getParameter("searchKeyword"));
-        searchVO.setPageUnit(CommonConstants.PAGE_SIZE);
+        searchVO.setEndRowNum(CommonConstants.PAGE_SIZE);
 
         Map<String, Object> map = this.userService.getUserList(searchVO);
 
         request.setAttribute("total", map.get("count"));
         request.setAttribute("list", map.get("list"));
         request.setAttribute("searchVO", searchVO);
-        request.setAttribute("currentPage", searchVO.getPage());
+        request.setAttribute("currentPage", searchVO.getStartRowNum());
 
         int totalPage = 0;
         int total = (int)map.get("count");
         if (total > 0) {
-            totalPage = total / searchVO.getPageUnit();
-            if (total % searchVO.getPageUnit() > 0) {
+            totalPage = total / searchVO.getEndRowNum();
+            if (total % searchVO.getEndRowNum() > 0) {
                 totalPage += 1;
             }
         }

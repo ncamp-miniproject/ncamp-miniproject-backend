@@ -158,7 +158,7 @@
             ) t
             INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
             INNER JOIN product p ON tp.prod_no = p.prod_no
-        WHERE t.row_num between #{page} AND #{pageUnit}
+        WHERE t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
         ORDER BY t.row_num
     </select>
 

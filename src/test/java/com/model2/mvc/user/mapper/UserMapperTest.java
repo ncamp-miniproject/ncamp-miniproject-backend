@@ -90,8 +90,8 @@ public class UserMapperTest {
         users.forEach(e -> sqlSession.insert("UserMapper.insert", e));
 
         Search search1 = new Search();
-        search1.setPage(1);
-        search1.setPageUnit(3);
+        search1.setStartRowNum(1);
+        search1.setEndRowNum(3);
         search1.setSearchCondition("0");
         search1.setSearchKeyword("iuser%");
         ListData<User> found1 = sqlSession.selectOne("UserMapper.findUsers", search1);
@@ -99,8 +99,8 @@ public class UserMapperTest {
         checkResult(users, found1);
 
         Search search2 = new Search();
-        search2.setPage(1);
-        search2.setPageUnit(3);
+        search2.setStartRowNum(1);
+        search2.setEndRowNum(3);
         search2.setSearchCondition("1");
         search2.setSearchKeyword("zxcv");
         ListData<User> found2 = sqlSession.selectOne("UserMapper.findUsers", search2);

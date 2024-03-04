@@ -4,26 +4,26 @@ public class Search {
 
     String searchCondition;
     String searchKeyword;
-    int pageUnit;
-    private int page;
+    int endRowNum;
+    private int startRowNum;
 
     public Search() {
     }
 
-    public int getPageUnit() {
-        return pageUnit;
+    public int getEndRowNum() {
+        return endRowNum;
     }
 
-    public void setPageUnit(int pageUnit) {
-        this.pageUnit = pageUnit;
+    public void setEndRowNum(int endRowNum) {
+        this.endRowNum = endRowNum;
     }
 
-    public int getPage() {
-        return page;
+    public int getStartRowNum() {
+        return startRowNum;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setStartRowNum(int startRowNum) {
+        this.startRowNum = startRowNum;
     }
 
     public String getSearchCondition() {

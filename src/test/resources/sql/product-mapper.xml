@@ -135,7 +135,7 @@
                     p.reg_date DESC -- Should be flexible
             ) v
         WHERE
-            v.row_num BETWEEN #{page} AND #{pageUnit}
+            v.row_num BETWEEN #{startRowNum} AND #{endRowNum}
     </select>
     
     <update id="update" parameterType="Product">

@@ -36,8 +36,8 @@ public class ListProductAction extends Action {
 
         int currentPage = Integer.parseInt(page == null ? "1" : page);
         Search searchVO = new Search();
-        searchVO.setPage(currentPage);
-        searchVO.setPageUnit(CommonConstants.PAGE_SIZE);
+        searchVO.setStartRowNum(currentPage);
+        searchVO.setEndRowNum(CommonConstants.PAGE_SIZE);
         searchVO.setSearchCondition(StringUtil.null2nullStr(request.getParameter("searchCondition")));
         searchVO.setSearchKeyword(StringUtil.null2nullStr(request.getParameter("searchKeyword")));
 

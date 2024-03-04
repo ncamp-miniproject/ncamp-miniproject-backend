@@ -121,16 +121,16 @@ public class TestPurchaseMapper {
         });
 
         Search search = new Search();
-        search.setPage(1);
-        search.setPageUnit(3);
+        search.setStartRowNum(1);
+        search.setEndRowNum(3);
         ListData<Purchase> result = this.sqlSession.selectOne("PurchaseMapper.findList", search);
 
         assertThat(result.getCount()).isEqualTo(2);
         assertThat(result.getList().size()).isEqualTo(2);
 
         Search search2 = new Search();
-        search2.setPage(1);
-        search2.setPageUnit(3);
+        search2.setStartRowNum(1);
+        search2.setEndRowNum(3);
         search2.setSearchCondition("0");
         search2.setSearchKeyword("user001");
         ListData<Purchase> result2 = this.sqlSession.selectOne("PurchaseMapper.findList", search2);

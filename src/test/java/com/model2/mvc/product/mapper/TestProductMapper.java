@@ -112,8 +112,8 @@ public class TestProductMapper {
 
         Search search1 = new Search();
         search1.setSearchKeyword("Product%");
-        search1.setPage(1);
-        search1.setPageUnit(3);
+        search1.setStartRowNum(1);
+        search1.setEndRowNum(3);
         search1.setSearchCondition("1");
         ListData<Product> found1 = this.sqlSession.selectOne("ProductMapper.findProducts", search1);
 
@@ -121,8 +121,8 @@ public class TestProductMapper {
 
         Search search2 = new Search();
         search2.setSearchKeyword("Product1");
-        search2.setPage(1);
-        search2.setPageUnit(3);
+        search2.setStartRowNum(1);
+        search2.setEndRowNum(3);
         search2.setSearchCondition("1");
         ListData<Product> found2 = this.sqlSession.selectOne("ProductMapper.findProducts", search2);
 
@@ -130,8 +130,8 @@ public class TestProductMapper {
 
         Search search3 = new Search();
         search3.setSearchKeyword("%2");
-        search3.setPage(1);
-        search3.setPageUnit(3);
+        search3.setStartRowNum(1);
+        search3.setEndRowNum(3);
         search3.setSearchCondition("1");
         ListData<Product> found3 = this.sqlSession.selectOne("ProductMapper.findProducts", search3);
 

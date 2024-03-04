@@ -62,12 +62,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user) {
         ListData<Purchase> result = this.purchaseDAO.findPurchaseListByUserId(user.getUserId(),
-                                                                              searchVO.getPage(),
-                                                                              searchVO.getPageUnit());
+                                                                              searchVO.getStartRowNum(),
+                                                                              searchVO.getEndRowNum());
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
-                .pageInfo(getPageInfo(result.getCount(), searchVO.getPage()))
+                .pageInfo(getPageInfo(result.getCount(), searchVO.getStartRowNum()))
                 .loginUser(user)
                 .build();
     }

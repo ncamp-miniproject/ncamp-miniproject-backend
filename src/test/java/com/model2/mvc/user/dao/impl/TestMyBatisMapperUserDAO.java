@@ -146,8 +146,8 @@ public class TestMyBatisMapperUserDAO extends TestCase {
         Search search = new Search();
         search.setSearchKeyword("user");
         search.setSearchCondition("1");
-        search.setPage(1);
-        search.setPageUnit(3);
+        search.setStartRowNum(1);
+        search.setEndRowNum(3);
 
         try {
             ListData<User> result = this.userDAO.findByUserName(search);

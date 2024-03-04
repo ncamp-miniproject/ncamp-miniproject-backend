@@ -112,8 +112,8 @@
             ORDER BY u.user_id ASC
         ) v
         <where>
-            <if test="page != 0 and pageUnit != 0">
-                v.row_num BETWEEN #{page} AND #{pageUnit}
+            <if test="startRowNum != 0 and endRowNum != 0">
+                v.row_num BETWEEN #{startRowNum} AND #{endRowNum}
             </if>
         </where>
     </select>

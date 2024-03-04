@@ -17,8 +17,8 @@ public class ListPurchaseAction extends PurchaseAction {
         String page = request.getParameter("page");
 
         int pageNum = page == null ? 1 : Integer.parseInt(page);
-        searchInfo.setPage(pageNum);
-        searchInfo.setPageUnit(CommonConstants.PAGE_SIZE);
+        searchInfo.setStartRowNum(pageNum);
+        searchInfo.setEndRowNum(CommonConstants.PAGE_SIZE);
         searchInfo.setSearchCondition(StringUtil.null2nullStr(request.getParameter("searchCondition")));
         searchInfo.setSearchKeyword(StringUtil.null2nullStr(request.getParameter("searchKeyword")));
 
