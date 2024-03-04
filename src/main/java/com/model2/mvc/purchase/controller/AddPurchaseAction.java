@@ -1,15 +1,22 @@
 package com.model2.mvc.purchase.controller;
 
 import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
+import com.model2.mvc.purchase.service.PurchaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
-public class AddPurchaseAction extends PurchaseAction {
+public class AddPurchaseAction extends Action {
+    private PurchaseService purchaseService;
+
+    public AddPurchaseAction(PurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -28,7 +35,7 @@ public class AddPurchaseAction extends PurchaseAction {
 
         System.out.println("Purchase Data: " + requestDTO);
 
-        AddPurchaseResponseDTO purchaseData = super.purchaseService.addPurchase(requestDTO);
+        AddPurchaseResponseDTO purchaseData = this.purchaseService.addPurchase(requestDTO);
 
         System.out.println("Purchase done");
 

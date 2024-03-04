@@ -5,6 +5,7 @@ import com.model2.mvc.product.domain.Product;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TransactionProduction {
     private int tranNo;
@@ -29,7 +30,7 @@ public class TransactionProduction {
         return Arrays.stream(values)
                 .map(v -> v.split(CommonConstants.QUERY_VALUE_DELIMITER))
                 .map(s -> new TransactionProduction(new Product(Integer.parseInt(s[0])), Integer.parseInt(s[1])))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public int getTranNo() {
