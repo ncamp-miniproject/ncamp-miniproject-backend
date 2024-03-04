@@ -24,7 +24,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring-config/common.xml", "classpath:spring-config/module/user.xml" })
+@ContextConfiguration(locations = { "classpath:spring-config/common.xml" })
 public class TestMyBatisMapperUserDAO extends TestCase {
 
     @Autowired

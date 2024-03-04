@@ -1,13 +1,20 @@
 package com.model2.mvc.cart.controller;
 
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
+import com.model2.mvc.cart.service.CartService;
+import com.model2.mvc.framework.Action;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
-public class ListCartItemAction extends CartAction {
+public class ListCartItemAction extends Action {
+    private final CartService cartService;
+
+    public ListCartItemAction(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -17,7 +24,7 @@ public class ListCartItemAction extends CartAction {
                 .orElse(new Cookie("cart", ""))
                 .getValue();
 
-        ListCartItemResponseDTO responseDTO = super.cartService.getCartItemList(cartValue);
+        ListCartItemResponseDTO responseDTO = this.cartService.getCartItemList(cartValue);
 
         System.out.println(responseDTO);
 

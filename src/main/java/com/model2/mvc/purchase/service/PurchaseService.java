@@ -15,10 +15,6 @@ import java.util.Map;
 
 public interface PurchaseService {
 
-    public static PurchaseService getInstance() {
-        return PurchaseServiceImpl.getInstance();
-    }
-
     public AddPurchaseResponseDTO addPurchase(AddPurchaseRequestDTO requestDTO);
 
     public GetPurchaseResponseDTO getPurchase(int tranNo);

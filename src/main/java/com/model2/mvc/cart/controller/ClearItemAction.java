@@ -1,10 +1,18 @@
 package com.model2.mvc.cart.controller;
 
+import com.model2.mvc.cart.service.CartService;
+import com.model2.mvc.framework.Action;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ClearItemAction extends CartAction {
+public class ClearItemAction extends Action {
+    private final CartService cartService;
+
+    public ClearItemAction(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

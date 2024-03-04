@@ -5,13 +5,18 @@ import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 
+@Repository("myBatisMapperUserDAO")
 public class MyBatisMapperUserDAO implements UserDAO {
     private SqlSession sqlSession;
 
-    public MyBatisMapperUserDAO(SqlSession sqlSession) {
+    @Autowired
+    public MyBatisMapperUserDAO(@Qualifier("sqlSessionTemplate") SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 

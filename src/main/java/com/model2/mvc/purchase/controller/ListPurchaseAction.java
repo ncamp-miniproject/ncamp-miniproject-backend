@@ -3,13 +3,20 @@ package com.model2.mvc.purchase.controller;
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
+import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ListPurchaseAction extends PurchaseAction {
+public class ListPurchaseAction extends Action {
+    private final PurchaseService purchaseService;
+
+    public ListPurchaseAction(PurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -28,7 +35,7 @@ public class ListPurchaseAction extends PurchaseAction {
             return "redirect:/listSale.do?menu=manage&page=" + pageNum;
         }
 
-        ListPurchaseResponseDTO result = super.purchaseService.getPurchaseList(searchInfo, loginUser);
+        ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(searchInfo, loginUser);
 
         System.out.println(result);
 
