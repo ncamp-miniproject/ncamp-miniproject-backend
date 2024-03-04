@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+@Repository("myBatisMapperProductDAO")
 public class MyBatisMapperProductDAO implements ProductDAO {
     private final SqlSession sqlSession;
 
@@ -55,6 +55,12 @@ public class MyBatisMapperProductDAO implements ProductDAO {
 
     @Override
     public boolean updateProduct(Product to) {
-        return false;
+        try {
+            this.sqlSession.insert("ProductMapper.update", to);
+            return true;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

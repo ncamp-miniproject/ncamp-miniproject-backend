@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PreDestroy;
 import java.sql.SQLException;
 
 @Repository("myBatisMapperUserDAO")
@@ -41,10 +42,5 @@ public class MyBatisMapperUserDAO implements UserDAO {
         User previous = this.sqlSession.selectOne("UserMapper.findById", to.getUserId());
         this.sqlSession.update("UserMapper.update", to);
         return previous;
-    }
-
-    public void destroy() {
-        System.out.println("Called PreDestroy");
-        this.sqlSession.close();
     }
 }
