@@ -4,11 +4,13 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.User;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component("updatePurchaseViewAction")
 public class UpdatePurchaseViewAction extends Action {
     private PurchaseService purchaseService;
 

@@ -4,10 +4,12 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.User;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("listSaleAction")
 public class ListSaleAction extends Action {
     private PurchaseService purchaseService;
 

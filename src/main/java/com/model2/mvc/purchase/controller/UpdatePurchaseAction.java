@@ -4,10 +4,12 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("updatePurchaseAction")
 public class UpdatePurchaseAction extends Action {
     private final PurchaseService purchaseService;
 

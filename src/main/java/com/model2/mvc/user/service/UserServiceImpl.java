@@ -4,14 +4,18 @@ import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
 
+    @Autowired
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }

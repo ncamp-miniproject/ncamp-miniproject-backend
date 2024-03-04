@@ -3,12 +3,14 @@ package com.model2.mvc.cart.controller;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
 import com.model2.mvc.cart.service.CartService;
 import com.model2.mvc.framework.Action;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
+@Component("listCartItemAction")
 public class ListCartItemAction extends Action {
     private final CartService cartService;
 

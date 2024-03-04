@@ -7,6 +7,7 @@ import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository("myBatisMapperProductDAO")
+@Primary
 public class MyBatisMapperProductDAO implements ProductDAO {
     private final SqlSession sqlSession;
 

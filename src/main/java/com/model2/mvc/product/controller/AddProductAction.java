@@ -3,10 +3,12 @@ package com.model2.mvc.product.controller;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.service.ProductService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("addProductAction")
 public class AddProductAction extends Action {
     private final ProductService productService;
 

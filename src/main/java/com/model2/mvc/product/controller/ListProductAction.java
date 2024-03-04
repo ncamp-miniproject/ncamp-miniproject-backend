@@ -8,11 +8,13 @@ import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.service.ProductService;
 import com.model2.mvc.user.domain.User;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component("listProductAction")
 public class ListProductAction extends Action {
     private final ProductService productService;
 

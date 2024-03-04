@@ -6,11 +6,13 @@ import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
+@Component("addPurchaseAction")
 public class AddPurchaseAction extends Action {
     private PurchaseService purchaseService;
 

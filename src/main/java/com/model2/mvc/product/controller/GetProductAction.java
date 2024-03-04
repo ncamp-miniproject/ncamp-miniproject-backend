@@ -5,6 +5,7 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.service.ProductService;
 import com.model2.mvc.user.domain.User;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Component("getProductAction")
 public class GetProductAction extends Action {
     private ProductService productService;
 

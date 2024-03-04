@@ -1,10 +1,12 @@
 package com.model2.mvc.user.controller;
 
 import com.model2.mvc.framework.Action;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("updateUserAction")
 public class UpdateUserAction extends Action {
 
     @Override

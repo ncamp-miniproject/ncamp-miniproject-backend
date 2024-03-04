@@ -2,10 +2,12 @@ package com.model2.mvc.user.controller;
 
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.user.service.UserService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("checkDuplicationAction")
 public class CheckDuplicationAction extends Action {
     private final UserService userService;
 

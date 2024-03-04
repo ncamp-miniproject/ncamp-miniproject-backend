@@ -7,6 +7,7 @@ import com.model2.mvc.purchase.domain.Purchase;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository("myBatisMapperPurchaseDAO")
+@Primary
 public class MyBatisMapperPurchaseDAO implements PurchaseDAO {
     private SqlSession sqlSession;
 

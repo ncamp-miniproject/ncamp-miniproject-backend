@@ -6,6 +6,8 @@ import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import java.util.Arrays;
@@ -14,9 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class CartServiceImpl implements CartService {
-    private ProductDAO productDAO;
+    private final ProductDAO productDAO;
 
+    @Autowired
     public CartServiceImpl(ProductDAO productDAO) {
         this.productDAO = productDAO;
     }

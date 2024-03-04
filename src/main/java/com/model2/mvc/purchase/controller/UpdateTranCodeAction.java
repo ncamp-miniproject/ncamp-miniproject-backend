@@ -4,10 +4,12 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("updateTranCodeAction")
 public class UpdateTranCodeAction extends Action {
     private PurchaseService purchaseService;
 

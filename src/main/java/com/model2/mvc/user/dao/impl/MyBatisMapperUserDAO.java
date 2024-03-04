@@ -7,12 +7,13 @@ import com.model2.mvc.user.domain.User;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PreDestroy;
 import java.sql.SQLException;
 
 @Repository("myBatisMapperUserDAO")
+@Primary
 public class MyBatisMapperUserDAO implements UserDAO {
     private SqlSession sqlSession;
 

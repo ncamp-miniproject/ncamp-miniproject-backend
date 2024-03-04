@@ -4,6 +4,7 @@ import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.dto.Page;
 import com.model2.mvc.common.util.ListPageUtil;
+import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
@@ -13,38 +14,34 @@ import com.model2.mvc.product.dto.response.AddProductResponseDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductServiceImpl implements ProductService {
     private final ProductDAO productDAO;
 
-    private ProductServiceImpl(ProductDAO productDAO) {
+    @Autowired
+    public ProductServiceImpl(ProductDAO productDAO) {
         this.productDAO = productDAO;
     }
 
     @Override
     public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert) {
-//        Product product = new Product().builder()
-//                .fileName(toInsert.getFileName())
-//                .manuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"))
-//                .price(toInsert.getPrice())
-//                .prodDetail(toInsert.getProdDetail())
-//                .prodName(toInsert.getProdName())
-//                .regDate(new Date(System.currentTimeMillis()))
-//                .stock(toInsert.getStock())
-//                .build();
-//        this.productDAO.insertProduct(product);
-//        return AddProductResponseDTO.from(product);
-        throw new UnsupportedOperationException();
-    }
-
-    private Date parseDate(String dateStr) {
-        int[] each = Arrays.stream(dateStr.split("-")).mapToInt(Integer::parseInt).toArray();
-        return new Date(each[0], each[1], each[2]);
+        Product product = new Product();
+        product.setFileName(toInsert.getFileName());
+        product.setManuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"));
+        product.setPrice(toInsert.getPrice());
+        product.setProdDetail(toInsert.getProdDetail());
+        product.setProdName(toInsert.getProdName());
+        product.setRegDate(new Date(System.currentTimeMillis()));
+        product.setStock(toInsert.getStock());
+        this.productDAO.insertProduct(product);
+        return AddProductResponseDTO.from(product);
     }
 
     @Override
@@ -91,22 +88,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
-
-//        Product previous = this.productDAO.findById(requestDTO.getProdNo())
-//                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo: " +
-//                                                                requestDTO.getProdNo()));
-//        Product to = new Product().builder()
-//                .prodNo(requestDTO.getProdNo())
-//                .fileName(requestDTO.getFileName())
-//                .manuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"))
-//                .price(requestDTO.getPrice())
-//                .prodDetail(requestDTO.getProdDetail())
-//                .prodName(requestDTO.getProdName())
-//                .regDate(new Date(System.currentTimeMillis()))
-//                .stock(requestDTO.getStock())
-//                .build();
-//        this.productDAO.updateProduct(to);
-//        return UpdateProductResponseDTO.from(previous);
-        throw new UnsupportedOperationException();
+        Product previous = this.productDAO.findById(requestDTO.getProdNo())
+                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" + requestDTO.getProdNo()));
+        Product to = new Product();
+        to.setProdNo(requestDTO.getProdNo());
+        to.setFileName(requestDTO.getFileName());
+        to.setManuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"));
+        to.setPrice(requestDTO.getPrice());
+        to.setProdDetail(requestDTO.getProdDetail());
+        to.setProdName(requestDTO.getProdName());
+        to.setRegDate(new Date(System.currentTimeMillis()));
+        to.setStock(requestDTO.getStock());
+        this.productDAO.updateProduct(to);
+        return UpdateProductResponseDTO.from(previous);
     }
 }

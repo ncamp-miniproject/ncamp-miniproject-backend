@@ -3,10 +3,12 @@ package com.model2.mvc.purchase.controller;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component("getPuchaseAction")
 public class GetPuchaseAction extends Action {
     private final PurchaseService purchaseService;
 

@@ -4,6 +4,7 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.User;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component("addPurchaseViewAction")
 public class AddPurchaseViewAction extends Action {
     private PurchaseService purchaseService;
 
