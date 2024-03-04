@@ -125,7 +125,7 @@ public class TestMyBatisMapperPurchaseDAO extends TestCase {
     @Test
     public void findAllInPageSize_NoResult() {
         samplePurchases.forEach(this.purchaseDAO::insertPurchase);
-        ListData<Purchase> found = this.purchaseDAO.findAllInPageSize(2, 3);
+        ListData<Purchase> found = this.purchaseDAO.findAllInPageSize(4, 6);
         assertThat(found.getCount()).isEqualTo(0);
         assertThat(found.getList()).isEmpty();
     }
