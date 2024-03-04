@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CartServiceImpl implements CartService {
     private ProductDAO productDAO;
@@ -51,7 +52,7 @@ public class CartServiceImpl implements CartService {
                                                        .map(k -> k +
                                                                  CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
                                                                  map.get(k))
-                                                       .toList()));
+                                                       .collect(Collectors.toList())));
         }
         return new AddItemResponseDTO(newCookie);
     }
@@ -69,7 +70,7 @@ public class CartServiceImpl implements CartService {
                 .map(d -> new int[] { Integer.parseInt(d[0]), Integer.parseInt(d[1]) })
                 .forEach(i -> parsed.put(i[0], i[1]));
 
-        List<Integer> keyList = parsed.keySet().stream().toList();
+        List<Integer> keyList = parsed.keySet().stream().collect(Collectors.toList());
         Map<Integer, Product> queryResult = productDAO.findProductsByIds(keyList);
 
         Map<Product, Integer> resultMap = new HashMap<>();

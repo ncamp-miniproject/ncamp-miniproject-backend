@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TestProductMapper {
     private static final Logger log = LoggerFactory.getLogger(TestProductMapper.class);
@@ -90,10 +91,10 @@ public class TestProductMapper {
 
         assertThat(products.size()).isEqualTo(3);
 
-        List<Integer> foundIds = products.stream().map(Product::getProdNo).toList();
+        List<Integer> foundIds = products.stream().map(Product::getProdNo).collect(Collectors.toList());
         assertThat(foundIds).contains(product1.getProdNo(), product2.getProdNo(), product3.getProdNo());
 
-        List<String> foundNames = products.stream().map(Product::getProdName).toList();
+        List<String> foundNames = products.stream().map(Product::getProdName).collect(Collectors.toList());
         assertThat(foundNames).contains(product1.getProdName(), product2.getProdName(), product3.getProdName());
     }
 
@@ -142,8 +143,8 @@ public class TestProductMapper {
         assertThat(found.getCount()).isEqualTo(expectedCount);
         assertThat(prods).contains(found.getList().toArray(new Product[0]));
 
-        List<String> prodNames = prods.stream().map(Product::getProdName).toList();
-        List<String> foundNames = found.getList().stream().map(Product::getProdName).toList();
+        List<String> prodNames = prods.stream().map(Product::getProdName).collect(Collectors.toList());
+        List<String> foundNames = found.getList().stream().map(Product::getProdName).collect(Collectors.toList());
 
         assertThat(prodNames).contains(foundNames.toArray(new String[0]));
     }

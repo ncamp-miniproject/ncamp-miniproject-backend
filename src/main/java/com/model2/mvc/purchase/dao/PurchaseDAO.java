@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PurchaseDAO extends DAOTemplate {
     private static final PurchaseDAO instance = new PurchaseDAO();
@@ -94,7 +95,7 @@ public class PurchaseDAO extends DAOTemplate {
             do {
                 forOneRow(rs, purchaseMap);
             } while (rs.next());
-            List<Purchase> list = purchaseMap.values().stream().toList();
+            List<Purchase> list = purchaseMap.values().stream().collect(Collectors.toList());
             return new ListData<>(count, list);
         } catch (SQLException e) {
             e.printStackTrace();

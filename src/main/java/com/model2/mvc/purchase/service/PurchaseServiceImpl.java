@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseDAO purchaseDAO;
@@ -100,8 +101,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap) {
         Map<Integer, Product> prodNoProductMap = this.productDAO.findProductsByIds(prodNoQuantityMap.keySet()
                                                                                            .stream()
-                                                                                           .toList());
-        List<Integer> prodNumbers = prodNoProductMap.keySet().stream().toList();
+                                                                                           .collect(Collectors.toList()));
+        List<Integer> prodNumbers = prodNoProductMap.keySet().stream().collect(Collectors.toList());
 
         int priceSum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
         int quantitySum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoQuantityMap.get(p), Integer::sum);

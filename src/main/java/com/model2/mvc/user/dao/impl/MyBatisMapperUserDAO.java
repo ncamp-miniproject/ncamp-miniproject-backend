@@ -44,6 +44,7 @@ public class MyBatisMapperUserDAO implements UserDAO {
     }
 
     public void destroy() {
+        System.out.println("Called PreDestroy");
         this.sqlSession.close();
     }
 }
