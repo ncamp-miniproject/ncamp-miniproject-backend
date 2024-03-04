@@ -4,7 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="myBatisMapperUserDAO"
-          class="com.model2.mvc.user.dao.impl.MyBatisMapperUserDAO">
+          class="com.model2.mvc.user.dao.impl.MyBatisMapperUserDAO"
+          destroy-method="destroy">
         <constructor-arg name="sqlSession" ref="sqlSessionTemplate"/>
     </bean>
 </beans>

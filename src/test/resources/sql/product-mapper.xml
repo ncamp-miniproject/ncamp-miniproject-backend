@@ -126,7 +126,7 @@
                     product p
                 <where>
                     <choose>
-                        <when test="searchCondition == 0">
+                        <when test="searchCondition == 1">
                             p.prod_name LIKE #{searchKeyword}
                         </when>
                     </choose>

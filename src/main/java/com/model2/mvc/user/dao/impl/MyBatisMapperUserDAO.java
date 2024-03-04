@@ -27,6 +27,7 @@ public class MyBatisMapperUserDAO implements UserDAO {
 
     @Override
     public ListData<User> findByUserName(Search search) throws SQLException {
+        search.setSearchKeyword("%" + search.getSearchKeyword() + "%");
         return this.sqlSession.selectOne("UserMapper.findUsers", search);
     }
 
@@ -35,5 +36,9 @@ public class MyBatisMapperUserDAO implements UserDAO {
         User previous = this.sqlSession.selectOne("UserMapper.findById", to.getUserId());
         this.sqlSession.update("UserMapper.update", to);
         return previous;
+    }
+
+    public void destroy() {
+        this.sqlSession.close();
     }
 }
