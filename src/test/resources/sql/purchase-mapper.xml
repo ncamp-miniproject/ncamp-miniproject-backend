@@ -108,7 +108,7 @@
         <collection property="list" resultMap="purchase"/>
     </resultMap>
 
-    <select id="findList" parameterType="Search" resultMap="purchaseListData">
+    <select id="findList" parameterType="com.model2.mvc.purchase.domain.BuyerIdLimitationSearch" resultMap="purchaseListData">
         SELECT
             t.row_num          "row_num",
             t.tran_no          "tran_no",
@@ -149,8 +149,8 @@
                 FROM
                     transaction t
                 <where>
-                    <if test="searchCondition == 0">
-                        t.buyer_id = #{searchKeyword}
+                    <if test="buyerId != null">
+                        buyer_id = #{buyerId}
                     </if>
                 </where>
                 ORDER BY

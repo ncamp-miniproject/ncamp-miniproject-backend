@@ -5,6 +5,7 @@ import com.model2.mvc.user.domain.User;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Purchase {
     private Integer tranNo;
@@ -118,6 +119,23 @@ public class Purchase {
 
     public void addTransactionProducts(TransactionProduction transactionProduction) {
         this.transactionProductions.add(transactionProduction);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Purchase purchase = (Purchase)o;
+        return Objects.equals(tranNo, purchase.tranNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tranNo);
     }
 
     @Override

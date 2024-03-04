@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
-import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
+import com.model2.mvc.purchase.domain.BuyerIdLimitationSearch;
 import com.model2.mvc.user.domain.User;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -120,7 +120,7 @@ public class TestPurchaseMapper {
             tranProds.forEach(tp -> this.sqlSession.insert("PurchaseMapper.insertTranProd", tp));
         });
 
-        Search search = new Search();
+        BuyerIdLimitationSearch search = new BuyerIdLimitationSearch();
         search.setStartRowNum(1);
         search.setEndRowNum(3);
         ListData<Purchase> result = this.sqlSession.selectOne("PurchaseMapper.findList", search);
@@ -128,11 +128,10 @@ public class TestPurchaseMapper {
         assertThat(result.getCount()).isEqualTo(2);
         assertThat(result.getList().size()).isEqualTo(2);
 
-        Search search2 = new Search();
+        BuyerIdLimitationSearch search2 = new BuyerIdLimitationSearch();
         search2.setStartRowNum(1);
         search2.setEndRowNum(3);
-        search2.setSearchCondition("0");
-        search2.setSearchKeyword("user001");
+        search2.setBuyerId("user001");
         ListData<Purchase> result2 = this.sqlSession.selectOne("PurchaseMapper.findList", search2);
 
         assertThat(result2.getCount()).isEqualTo(2);
