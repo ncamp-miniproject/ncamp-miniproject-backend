@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+@Deprecated
 public class DBUtil {
     private final static String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private final static String JDBC_URL = "jdbc:oracle:thin:scott/tiger@localhost:1521:xe";

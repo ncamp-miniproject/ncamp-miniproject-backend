@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
+@Deprecated
 public class SQLContainer {
     private static final Map<String, String> container = new HashMap<>();
 

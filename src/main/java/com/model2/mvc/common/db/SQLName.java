@@ -1,5 +1,6 @@
 package com.model2.mvc.common.db;
 
+@Deprecated
 public enum SQLName {
     FIND_PRODUCT("findproduct"),
     FIND_PRODUCT_LIST_BY_PROD_NAME("findproductlistbyprodname"),
