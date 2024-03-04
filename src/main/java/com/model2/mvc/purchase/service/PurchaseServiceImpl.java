@@ -9,6 +9,7 @@ import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
+import com.model2.mvc.purchase.dao.impl.PlainJDBCPurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
@@ -62,9 +63,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public ListPurchaseResponseDTO getPurchaseList(Search searchVO, User user) {
-        ListData<Purchase> result = this.purchaseDAO.findPurchaseListByUserId(user.getUserId(),
-                                                                              searchVO.getStartRowNum(),
-                                                                              searchVO.getEndRowNum());
+        ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(user.getUserId(),
+                                                                           searchVO.getStartRowNum(),
+                                                                           searchVO.getEndRowNum());
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
