@@ -87,27 +87,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private Page getPageInfo(int count, int currentPage) {
-        List<Integer> pagesToDisplay = ListPageUtil.getPageSet(count,
-                                                               currentPage,
-                                                               CommonConstants.PAGE_SIZE,
-                                                               CommonConstants.PAGE_DISPLAY);
-        boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(count,
-                                                                                    currentPage,
-                                                                                    CommonConstants.PAGE_SIZE,
-                                                                                    CommonConstants.PAGE_DISPLAY);
-        boolean nextPageSetBtnVisible = ListPageUtil.isNextPageSetAvailable(count,
-                                                                            currentPage,
-                                                                            CommonConstants.PAGE_SIZE,
-                                                                            CommonConstants.PAGE_DISPLAY);
-        int previousPageSetEntry = ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY);
-        int nextPageSetEntry = ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY);
-        return new Page(previousPageSetBtnVisible,
-                        nextPageSetBtnVisible,
-                        previousPageSetEntry,
-                        nextPageSetEntry,
-                        pagesToDisplay,
-                        currentPage,
-                        CommonConstants.PAGE_SIZE);
+        return Page.of(currentPage, count, CommonConstants.PAGE_SIZE, CommonConstants.PAGE_DISPLAY);
     }
 
     @Override

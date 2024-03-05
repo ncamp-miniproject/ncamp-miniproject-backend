@@ -1,5 +1,7 @@
 package com.model2.mvc.common;
 
+import com.model2.mvc.common.util.ListPageUtil;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class Page {
     private final int currentPage;
     private final int pageSize;
 
-    public Page(boolean previousPageSetBtnVisible,
+    private Page(boolean previousPageSetBtnVisible,
                 boolean nextPageSetBtnVisible,
                 int previousPageSetEntry,
                 int nextPageSetEntry,
@@ -26,6 +28,26 @@ public class Page {
         this.pagesToDisplay = pagesToDisplay;
         this.currentPage = currentPage;
         this.pageSize = pageSize;
+    }
+
+    public static Page of(int currentPage, int dataCount, int pageSize, int pageDisplay) {
+        List<Integer> pageToDisplay = ListPageUtil.getPageSet(dataCount, currentPage, pageSize, pageDisplay);
+        boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(dataCount,
+                                                                                    currentPage,
+                                                                                    pageSize,
+                                                                                    pageDisplay);
+        boolean nextPageSetBtnVisible = ListPageUtil.isNextPageSetAvailable(dataCount,
+                                                                            currentPage,
+                                                                            pageSize,
+                                                                            pageDisplay);
+
+        return new Page(previousPageSetBtnVisible,
+                        nextPageSetBtnVisible,
+                        ListPageUtil.getPreviousPageSetEntry(currentPage, pageDisplay),
+                        ListPageUtil.getNextPageSetEntry(currentPage, pageDisplay),
+                        pageToDisplay,
+                        currentPage,
+                        pageSize);
     }
 
     public boolean isPreviousPageSetAvailable() {

@@ -68,28 +68,10 @@ public class ProductServiceImpl implements ProductService {
         search.setSearchCondition(requestDTO.getSearchCondition());
         ListData<Product> resultMap = productDAO.findProductsByProdName(search);
 
-
-        int currentPage = requestDTO.getPage();
-        List<Integer> pageToDisplay = ListPageUtil.getPageSet(resultMap.getCount(),
-                                                              currentPage,
-                                                              CommonConstants.PAGE_SIZE,
-                                                              CommonConstants.PAGE_DISPLAY);
-        boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(resultMap.getCount(),
-                                                                                    currentPage,
-                                                                                    CommonConstants.PAGE_SIZE,
-                                                                                    CommonConstants.PAGE_DISPLAY);
-        boolean nextPageSetBtnVisible = ListPageUtil.isNextPageSetAvailable(resultMap.getCount(),
-                                                                            currentPage,
-                                                                            CommonConstants.PAGE_SIZE,
-                                                                            CommonConstants.PAGE_DISPLAY);
-
-        Page pageInfo = new Page(previousPageSetBtnVisible,
-                                 nextPageSetBtnVisible,
-                                 ListPageUtil.getPreviousPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
-                                 ListPageUtil.getNextPageSetEntry(currentPage, CommonConstants.PAGE_DISPLAY),
-                                 pageToDisplay,
-                                 currentPage,
-                                 CommonConstants.PAGE_SIZE);
+        Page pageInfo = Page.of(requestDTO.getPage(),
+                                resultMap.getCount(),
+                                CommonConstants.PAGE_SIZE,
+                                CommonConstants.PAGE_DISPLAY);
 
         return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO, search);
     }
@@ -97,7 +79,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
         Product previous = this.productDAO.findById(requestDTO.getProdNo())
-                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" + requestDTO.getProdNo()));
+                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" +
+                                                                requestDTO.getProdNo()));
         Product to = new Product();
         to.setProdNo(requestDTO.getProdNo());
         to.setFileName(requestDTO.getFileName());
