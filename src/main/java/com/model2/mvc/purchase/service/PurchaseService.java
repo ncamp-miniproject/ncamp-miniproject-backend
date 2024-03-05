@@ -1,6 +1,5 @@
 package com.model2.mvc.purchase.service;
 
-import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
@@ -10,7 +9,6 @@ import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
-import com.model2.mvc.user.domain.User;
 
 import java.util.Map;
 

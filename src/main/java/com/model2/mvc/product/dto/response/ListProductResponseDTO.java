@@ -1,8 +1,8 @@
 package com.model2.mvc.product.dto.response;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.dto.Page;
-import com.model2.mvc.common.dto.Search;
+import com.model2.mvc.common.Page;
+import com.model2.mvc.common.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 

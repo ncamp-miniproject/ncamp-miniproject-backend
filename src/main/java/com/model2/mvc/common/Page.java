@@ -1,4 +1,4 @@
-package com.model2.mvc.common.dto;
+package com.model2.mvc.common;
 
 import java.util.Collections;
 import java.util.List;

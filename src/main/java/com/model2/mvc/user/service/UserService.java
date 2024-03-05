@@ -1,6 +1,5 @@
 package com.model2.mvc.user.service;
 
-import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 

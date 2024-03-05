@@ -2,7 +2,7 @@ package com.model2.mvc.purchase.dto.response;
 
 import com.model2.mvc.common.Buildable;
 import com.model2.mvc.common.BuilderTemplate;
-import com.model2.mvc.common.dto.Page;
+import com.model2.mvc.common.Page;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.user.domain.User;
 

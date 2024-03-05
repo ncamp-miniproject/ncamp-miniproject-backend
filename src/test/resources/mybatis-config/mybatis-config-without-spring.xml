@@ -11,7 +11,7 @@
 
     <typeAliases>
         <typeAlias type="com.model2.mvc.user.domain.User" alias="User"/>
-        <typeAlias type="com.model2.mvc.common.dto.Search" alias="Search"/>
+        <typeAlias type="com.model2.mvc.common.Search" alias="Search"/>
         <typeAlias type="com.model2.mvc.common.ListData" alias="ListData"/>
         <typeAlias type="com.model2.mvc.product.domain.Product" alias="Product"/>
         <typeAlias type="com.model2.mvc.purchase.domain.Purchase" alias="Purchase"/>

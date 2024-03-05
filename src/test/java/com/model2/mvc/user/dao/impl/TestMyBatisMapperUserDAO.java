@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.dto.Search;
+import com.model2.mvc.common.Search;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
 import junit.framework.TestCase;

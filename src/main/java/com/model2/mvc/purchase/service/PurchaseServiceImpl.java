@@ -2,8 +2,7 @@ package com.model2.mvc.purchase.service;
 
 import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.dto.Page;
-import com.model2.mvc.common.dto.Search;
+import com.model2.mvc.common.Page;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;

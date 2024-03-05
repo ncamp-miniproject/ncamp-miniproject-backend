@@ -1,7 +1,6 @@
 package com.model2.mvc.user.controller;
 
 import com.model2.mvc.common.CommonConstants;
-import com.model2.mvc.common.dto.Search;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.service.UserService;

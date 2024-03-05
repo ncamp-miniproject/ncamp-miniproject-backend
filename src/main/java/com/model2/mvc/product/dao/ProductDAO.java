@@ -1,7 +1,7 @@
 package com.model2.mvc.product.dao;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.dto.Search;
+import com.model2.mvc.common.Search;
 import com.model2.mvc.product.domain.Product;
 
 import java.util.List;

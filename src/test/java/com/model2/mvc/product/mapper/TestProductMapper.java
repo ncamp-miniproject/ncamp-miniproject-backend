@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
-import com.model2.mvc.common.dto.Search;
+import com.model2.mvc.common.Search;
 import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
