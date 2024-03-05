@@ -4,9 +4,8 @@ import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.common.util.StringUtil;
-import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
@@ -19,16 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final ProductDAO productDAO;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductDAO productDAO) {
-        this.productDAO = productDAO;
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -41,13 +39,13 @@ public class ProductServiceImpl implements ProductService {
         product.setProdName(toInsert.getProdName());
         product.setRegDate(new Date(System.currentTimeMillis()));
         product.setStock(toInsert.getStock());
-        this.productDAO.insertProduct(product);
+        this.productRepository.insertProduct(product);
         return AddProductResponseDTO.from(product);
     }
 
     @Override
     public GetProductResponseDTO getProduct(int prodNo) {
-        Optional<Product> result = productDAO.findById(prodNo);
+        Optional<Product> result = productRepository.findById(prodNo);
 
         result.ifPresent(p -> {
             System.out.println("-- ProductServiceImpl.getProduct() --");
@@ -66,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
         search.setEndRowNum(page * pageSize);
         search.setSearchKeyword(requestDTO.getSearchKeyword());
         search.setSearchCondition(requestDTO.getSearchCondition());
-        ListData<Product> resultMap = productDAO.findProductsByProdName(search);
+        ListData<Product> resultMap = productRepository.findProductsByProdName(search);
 
         Page pageInfo = Page.of(requestDTO.getPage(),
                                 resultMap.getCount(),
@@ -78,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
-        Product previous = this.productDAO.findById(requestDTO.getProdNo())
+        Product previous = this.productRepository.findById(requestDTO.getProdNo())
                 .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" +
                                                                 requestDTO.getProdNo()));
         Product to = new Product();
@@ -90,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
         to.setProdName(requestDTO.getProdName());
         to.setRegDate(new Date(System.currentTimeMillis()));
         to.setStock(requestDTO.getStock());
-        this.productDAO.updateProduct(to);
+        this.productRepository.updateProduct(to);
         return UpdateProductResponseDTO.from(previous);
     }
 }

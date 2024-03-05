@@ -2,7 +2,7 @@ package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Repository("myBatisMapperProductDAO")
 @Primary
-public class MyBatisMapperProductDAO implements ProductDAO {
+public class MyBatisMapperProductDAO implements ProductRepository {
     private final SqlSession sqlSession;
 
     @Autowired
@@ -47,6 +47,11 @@ public class MyBatisMapperProductDAO implements ProductDAO {
     public ListData<Product> findProductsByProdName(Search search) {
         ListData<Product> productsFound = this.sqlSession.selectOne("ProductMapper.findProducts", search);
         return productsFound == null ? new ListData<>(0, new ArrayList<>()) : productsFound;
+    }
+
+    @Override
+    public ListData<Product> findProductsByPriceRange(Search search) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
