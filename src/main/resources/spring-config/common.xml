@@ -5,33 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     
-<!--    <bean id="propertyConfigurer"-->
-<!--          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-<!--        <property name="location" value="classpath:spring-config/jdbc.properties"/>-->
-<!--    </bean>-->
-
-    <context:property-placeholder location="classpath:spring-config/jdbc.properties"/>
-    
-    <bean id="dataSource"
-          class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="maxActive" value="${jdbc.maxActive}"/>
-        <property name="initialSize" value="${jdbc.initialSize}"/>
-    </bean>
-
-    <bean id="sqlSessionFactoryBean"
-          class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:mybatis-config/mybatis-config-spring.xml"/>
-    </bean>
-
-    <bean id="sqlSessionTemplate"
-          class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactoryBean"/>
-    </bean>
-    
-    <context:component-scan base-package="com.model2.mvc"/>
+    <context:component-scan base-package="com.model2.mvc">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 </beans>

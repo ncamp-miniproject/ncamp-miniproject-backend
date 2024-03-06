@@ -37,7 +37,10 @@ public class WiringRequestMapping extends RequestMapping {
             }
         }
 
-        this.applicationContext = new ClassPathXmlApplicationContext("classpath:spring-config/common.xml");
+        this.applicationContext = new ClassPathXmlApplicationContext("classpath:spring-config/common.xml",
+                                                                     "classpath:spring-config/context-aspect.xml",
+                                                                     "classpath:spring-config/context-mybatis.xml",
+                                                                     "classpath:spring-config/context-transaction.xml");
     }
 
     @Override
