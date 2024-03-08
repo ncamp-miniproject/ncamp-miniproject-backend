@@ -6,9 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletContext;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Properties;
 
+@Deprecated
 public class WiringRequestMapping extends RequestMapping {
     private Properties urlBeanMapping;
     private ServletContext servletContext;

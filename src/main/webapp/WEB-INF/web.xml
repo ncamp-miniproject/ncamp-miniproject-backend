@@ -12,26 +12,33 @@
 		<param-value>3</param-value>
 	</context-param>
 
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
 	<context-param>
-		<param-name>actionmapping</param-name>
-		<param-value>/META-INF/config/actionbeansmapping.properties</param-value>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
 	</context-param>
-
+	
 	<context-param>
-		<param-name>sqldescriptor</param-name>
-		<param-value>/META-INF/config/sqldescriptor.properties</param-value>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring-config/context-*.xml</param-value>
 	</context-param>
 
 
 	<filter>
-		<filter-name>requestFilter</filter-name>
-		<filter-class>com.model2.mvc.filter.common.RequestFilter</filter-class>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>euc_kr</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>requestFilter</filter-name>
+		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 
 	<filter>
 		<filter-name>loginFilter</filter-name>
@@ -64,13 +71,16 @@
 
 
 	<servlet>
-		<servlet-name>action</servlet-name>
-		<servlet-class>com.model2.mvc.framework.ActionServlet</servlet-class>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring-servlet.xml</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
-		<servlet-name>action</servlet-name>
+		<servlet-name>dispatcherServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 

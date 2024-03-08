@@ -9,6 +9,7 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+@Deprecated
 public class RequestFilter implements Filter {
 
     public void init(FilterConfig arg0) throws ServletException {

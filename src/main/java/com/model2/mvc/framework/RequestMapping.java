@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+@Deprecated
 public class RequestMapping {
 
     private static RequestMapping requestMapping;
