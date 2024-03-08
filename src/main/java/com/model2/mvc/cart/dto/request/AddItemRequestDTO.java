@@ -5,12 +5,12 @@ import javax.servlet.http.Cookie;
 public class AddItemRequestDTO {
     private String prodNo;
     private String quantity;
-    private Cookie cookie;
+    private String cartValue;
 
-    public AddItemRequestDTO(String prodNo, String quantity, Cookie cookie) {
+    public AddItemRequestDTO(String prodNo, String quantity, String cartValue) {
         this.prodNo = prodNo;
         this.quantity = quantity;
-        this.cookie = cookie;
+        this.cartValue = cartValue;
     }
 
     public String getProdNo() {
@@ -21,12 +21,22 @@ public class AddItemRequestDTO {
         return quantity;
     }
 
-    public Cookie getCookie() {
-        return this.cookie;
+    public String getCartValue() {
+        return this.cartValue;
     }
 
     @Override
     public String toString() {
-        return "AddItemRequestDTO{" + "prodNo=" + prodNo + ", quantity=" + quantity + '}';
+        return "AddItemRequestDTO{" +
+               "prodNo='" +
+               prodNo +
+               '\'' +
+               ", quantity='" +
+               quantity +
+               '\'' +
+               ", cartValue='" +
+               cartValue +
+               '\'' +
+               '}';
     }
 }

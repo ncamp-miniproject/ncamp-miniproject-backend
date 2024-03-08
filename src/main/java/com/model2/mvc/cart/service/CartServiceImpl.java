@@ -31,17 +31,14 @@ public class CartServiceImpl implements CartService {
             // TODO: do more things
             throw new IllegalArgumentException();
         }
-        Cookie cookie = requestDTO.getCookie();
-        String value = cookie.getValue();
-        Cookie newCookie;
-        if (value.isEmpty()) {
-            newCookie = new Cookie("cart",
-                                   requestDTO.getProdNo() +
-                                   CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
-                                   requestDTO.getQuantity());
+        String cartValue = requestDTO.getCartValue();
+        if (cartValue.isEmpty()) {
+            return new AddItemResponseDTO(requestDTO.getProdNo() +
+                                          CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
+                                          requestDTO.getQuantity());
         } else {
             Map<String, String> map = new HashMap<>();
-            Arrays.stream(value.split(CommonConstants.COOKIE_DELIMITER)).forEach(v -> {
+            Arrays.stream(cartValue.split(CommonConstants.COOKIE_DELIMITER)).forEach(v -> {
                 String[] parsed = v.split(CommonConstants.COOKIE_KEY_VALUE_DELIMITER);
                 String prodNo = parsed[0];
                 String quantity = parsed[1];
@@ -49,16 +46,14 @@ public class CartServiceImpl implements CartService {
             });
 
             map.put(requestDTO.getProdNo(), requestDTO.getQuantity());
-            newCookie = new Cookie("cart",
-                                   String.join(CommonConstants.COOKIE_DELIMITER,
-                                               map.keySet()
-                                                       .stream()
-                                                       .map(k -> k +
-                                                                 CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
-                                                                 map.get(k))
-                                                       .collect(Collectors.toList())));
+            return new AddItemResponseDTO(String.join(CommonConstants.COOKIE_DELIMITER,
+                                                      map.keySet()
+                                                              .stream()
+                                                              .map(k -> k +
+                                                                        CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
+                                                                        map.get(k))
+                                                              .collect(Collectors.toList())));
         }
-        return new AddItemResponseDTO(newCookie);
     }
 
     @Override

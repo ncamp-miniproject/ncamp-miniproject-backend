@@ -3,13 +3,13 @@ package com.model2.mvc.cart.dto.response;
 import javax.servlet.http.Cookie;
 
 public class AddItemResponseDTO {
-    private Cookie cookie;
+    private String cookie;
 
-    public AddItemResponseDTO(Cookie cookie) {
+    public AddItemResponseDTO(String cookie) {
         this.cookie = cookie;
     }
 
-    public Cookie getCookie() {
+    public String getCookie() {
         return this.cookie;
     }
 }
