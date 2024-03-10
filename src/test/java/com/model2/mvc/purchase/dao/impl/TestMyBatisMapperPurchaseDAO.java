@@ -22,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,8 +77,8 @@ public class TestMyBatisMapperPurchaseDAO extends TestCase {
         purchase1.setDivyAddr("Seoul");
         purchase1.setDivyRequest("No request");
         purchase1.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
-        purchase1.setOrderDate(new Date(2023, 3, 17));
-        purchase1.setDivyDate(new Date(2025, 3, 15));
+        purchase1.setOrderDate(LocalDate.of(2023, 3, 17));
+        purchase1.setDivyDate(LocalDate.of(2025, 3, 15));
         purchase1.setTransactionProductions(Arrays.asList(new TransactionProduction(new Product(20000), 10),
                                                           new TransactionProduction(new Product(20001), 15)));
         samplePurchases.add(purchase1);
@@ -90,8 +91,8 @@ public class TestMyBatisMapperPurchaseDAO extends TestCase {
         purchase2.setDivyAddr("Tokyo");
         purchase2.setDivyRequest("No request");
         purchase2.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
-        purchase2.setOrderDate(new Date(2023, 3, 17));
-        purchase2.setDivyDate(new Date(2025, 3, 15));
+        purchase2.setOrderDate(LocalDate.of(2023, 3, 17));
+        purchase2.setDivyDate(LocalDate.of(2025, 3, 15));
         purchase2.setTransactionProductions(Arrays.asList(new TransactionProduction(new Product(20000), 10),
                                                           new TransactionProduction(new Product(20001), 15)));
         samplePurchases.add(purchase2);

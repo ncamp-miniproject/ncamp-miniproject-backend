@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class TestMyBatisMapperProductDAO {
         Product prod = new Product();
         prod.setProdName("Product1");
         prod.setProdDetail("Detail of prod");
-        prod.setManuDate(new Date(2023, 1, 2));
+        prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
         prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));

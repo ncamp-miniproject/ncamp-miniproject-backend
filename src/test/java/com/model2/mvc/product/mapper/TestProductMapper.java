@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +40,7 @@ public class TestProductMapper {
         Product prod = new Product();
         prod.setProdName("Product1");
         prod.setProdDetail("Detail of prod");
-        prod.setManuDate(new Date(2023, 1, 2));
+        prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
         prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
@@ -52,7 +53,7 @@ public class TestProductMapper {
         Product prod = new Product();
         prod.setProdName("Product1");
         prod.setProdDetail("Detail of prod");
-        prod.setManuDate(new Date(2023, 1, 2));
+        prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
         prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
@@ -154,7 +155,7 @@ public class TestProductMapper {
         Product prod = new Product();
         prod.setProdName("Product1");
         prod.setProdDetail("Detail of prod");
-        prod.setManuDate(new Date(2023, 1, 2));
+        prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
         prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
@@ -177,7 +178,7 @@ public class TestProductMapper {
         singleUpdateTest(forUpdatePrice, Product::getPrice);
 
         Product forUpdateManuDate = new Product(prodNo);
-        forUpdateManuDate.setManuDate(new Date(2017, 01, 22));
+        forUpdateManuDate.setManuDate(LocalDate.of(2017, 01, 22));
         singleUpdateTest(forUpdateManuDate, Product::getManuDate);
     }
 
@@ -185,7 +186,7 @@ public class TestProductMapper {
         Product prototype = new Product();
         prototype.setProdName("Product1");
         prototype.setProdDetail("Detail of prod");
-        prototype.setManuDate(new Date(2023, 1, 2));
+        prototype.setManuDate(LocalDate.of(2023, 1, 2));
         prototype.setPrice(10000);
         prototype.setFileName("asdf.png");
         prototype.setRegDate(new Date(System.currentTimeMillis()));

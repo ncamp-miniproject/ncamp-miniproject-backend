@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,8 +64,8 @@ public class TestPurchaseMapper {
         purchase1.setDivyAddr("Seoul");
         purchase1.setDivyRequest("No request");
         purchase1.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
-        purchase1.setOrderDate(new Date(2023, 3, 17));
-        purchase1.setDivyDate(new Date(2025, 3, 15));
+        purchase1.setOrderDate(LocalDate.of(2023, 3, 17));
+        purchase1.setDivyDate(LocalDate.of(2025, 3, 15));
         samplePurchases.add(purchase1);
 
         Purchase purchase2 = new Purchase();
@@ -75,8 +76,8 @@ public class TestPurchaseMapper {
         purchase2.setDivyAddr("Tokyo");
         purchase2.setDivyRequest("No request");
         purchase2.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
-        purchase2.setOrderDate(new Date(2023, 3, 17));
-        purchase2.setDivyDate(new Date(2025, 3, 15));
+        purchase2.setOrderDate(LocalDate.of(2023, 3, 17));
+        purchase2.setDivyDate(LocalDate.of(2025, 3, 15));
         samplePurchases.add(purchase2);
     }
 

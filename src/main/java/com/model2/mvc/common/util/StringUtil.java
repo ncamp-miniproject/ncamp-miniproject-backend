@@ -23,9 +23,9 @@ public class StringUtil {
 
     public static LocalDate parseDate(String from, String separator) {
         if (from == null || from.isEmpty()) {
-            return new Date(System.currentTimeMillis());
+            return LocalDate.now();
         }
         int[] parsed = Arrays.stream(from.split(separator)).mapToInt(Integer::parseInt).toArray();
-        return new Date(parsed[0], parsed[1], parsed[2]);
+        return LocalDate.of(parsed[0], parsed[1], parsed[2]);
     }
 }
