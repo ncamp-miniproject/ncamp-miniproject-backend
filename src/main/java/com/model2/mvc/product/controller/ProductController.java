@@ -74,7 +74,7 @@ public class ProductController {
                               HttpSession session,
                               Model model) {
         User loginUser = (User)session.getAttribute("user");
-        if (menu == null || ((menu.equals("manage") && !loginUser.getRole().equals("admin"))) {
+        if (menu == null || ((menu.equals("manage") && !loginUser.getRole().equals("admin")))) {
             return "redirect:/listProduct.do?menu=search";
         }
 

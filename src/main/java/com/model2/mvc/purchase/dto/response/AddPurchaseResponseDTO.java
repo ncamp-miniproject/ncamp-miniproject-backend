@@ -4,7 +4,7 @@ import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class AddPurchaseResponseDTO {
     private String receiverPhone;
     private String divyAddr;
     private String divyRequest;
-    private Date divyDate;
+    private LocalDate divyDate;
     private List<TransactionProduction> transactionProductions;
 
     private AddPurchaseResponseDTO() {
@@ -58,7 +58,7 @@ public class AddPurchaseResponseDTO {
         return divyRequest;
     }
 
-    public Date getDivyDate() {
+    public LocalDate getDivyDate() {
         return divyDate;
     }
 

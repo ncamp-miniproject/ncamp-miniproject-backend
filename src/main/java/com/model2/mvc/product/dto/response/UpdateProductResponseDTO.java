@@ -3,11 +3,12 @@ package com.model2.mvc.product.dto.response;
 import com.model2.mvc.product.domain.Product;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class UpdateProductResponseDTO {
     private int prodNo;
     private String fileName;
-    private Date manuDate;
+    private LocalDate manuDate;
     private int price;
     private String prodDetail;
     private String prodName;
@@ -38,7 +39,7 @@ public class UpdateProductResponseDTO {
         return fileName;
     }
 
-    public Date getManuDate() {
+    public LocalDate getManuDate() {
         return manuDate;
     }
 

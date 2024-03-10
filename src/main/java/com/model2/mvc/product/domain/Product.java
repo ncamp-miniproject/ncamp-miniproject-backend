@@ -1,13 +1,14 @@
 package com.model2.mvc.product.domain;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Product {
     private int prodNo;
     private String prodName;
     private String prodDetail;
-    private Date manuDate;
+    private LocalDate manuDate;
     private int price;
     private String fileName;
     private Date regDate;
@@ -51,11 +52,11 @@ public class Product {
         this.prodDetail = prodDetail;
     }
 
-    public Date getManuDate() {
+    public LocalDate getManuDate() {
         return manuDate;
     }
 
-    public void setManuDate(Date manuDate) {
+    public void setManuDate(LocalDate manuDate) {
         this.manuDate = manuDate;
     }
 

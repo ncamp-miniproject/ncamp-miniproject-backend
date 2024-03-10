@@ -2,7 +2,7 @@ package com.model2.mvc.purchase.domain;
 
 import com.model2.mvc.user.domain.User;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,8 +16,8 @@ public class Purchase {
     private String divyAddr;
     private String divyRequest;
     private TranStatusCode tranStatusCode;
-    private Date orderDate;
-    private Date divyDate;
+    private LocalDate orderDate;
+    private LocalDate divyDate;
     private List<TransactionProduction> transactionProductions;
 
     public Purchase() {
@@ -93,19 +93,19 @@ public class Purchase {
         this.tranStatusCode = tranStatusCode;
     }
 
-    public Date getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Date getDivyDate() {
+    public LocalDate getDivyDate() {
         return divyDate;
     }
 
-    public void setDivyDate(Date divyDate) {
+    public void setDivyDate(LocalDate divyDate) {
         this.divyDate = divyDate;
     }
 

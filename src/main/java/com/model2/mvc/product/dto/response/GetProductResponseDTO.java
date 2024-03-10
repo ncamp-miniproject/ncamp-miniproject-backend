@@ -4,11 +4,12 @@ import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.user.domain.User;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class GetProductResponseDTO {
     private int prodNo;
     private String fileName;
-    private Date manuDate;
+    private LocalDate manuDate;
     private int price;
     private String prodDetail;
     private String prodName;
@@ -41,7 +42,7 @@ public class GetProductResponseDTO {
         return fileName;
     }
 
-    public Date getManuDate() {
+    public LocalDate getManuDate() {
         return manuDate;
     }
 

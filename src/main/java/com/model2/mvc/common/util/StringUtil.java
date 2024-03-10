@@ -1,6 +1,7 @@
 package com.model2.mvc.common.util;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public class StringUtil {
@@ -20,7 +21,7 @@ public class StringUtil {
                : newValue + "-" + to.substring(0, indexOfTarget) + to.substring(indexOfNextSeparator + 1);
     }
 
-    public static Date parseDate(String from, String separator) {
+    public static LocalDate parseDate(String from, String separator) {
         if (from == null || from.isEmpty()) {
             return new Date(System.currentTimeMillis());
         }

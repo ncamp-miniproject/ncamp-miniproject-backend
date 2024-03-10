@@ -6,7 +6,7 @@ import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.user.domain.User;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class GetPurchaseResponseDTO {
@@ -18,8 +18,8 @@ public class GetPurchaseResponseDTO {
     private String divyAddr;
     private String divyRequest;
     private TranStatusCode tranStatusCode;
-    private Date orderDate;
-    private Date divyDate;
+    private LocalDate orderDate;
+    private LocalDate divyDate;
     private List<TransactionProduction> transactionProductions;
 
     private GetPurchaseResponseDTO(Purchase from) {
@@ -72,11 +72,11 @@ public class GetPurchaseResponseDTO {
         return tranStatusCode;
     }
 
-    public Date getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public Date getDivyDate() {
+    public LocalDate getDivyDate() {
         return divyDate;
     }
 

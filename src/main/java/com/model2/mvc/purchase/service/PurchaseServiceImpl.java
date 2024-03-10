@@ -4,7 +4,6 @@ import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.exception.RecordNotFoundException;
-import com.model2.mvc.common.util.ListPageUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
@@ -24,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +52,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setDivyAddr(requestDTO.getDivyAddr());
         purchase.setDivyRequest(requestDTO.getDivyRequest());
         purchase.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
-        purchase.setOrderDate(new Date(System.currentTimeMillis()));
+        purchase.setOrderDate(LocalDate.now());
         purchase.setDivyDate(requestDTO.getDivyDate());
         purchase.setTransactionProductions(requestDTO.getTransactionProductions());
         this.purchaseDAO.insertPurchase(purchase);
@@ -126,7 +125,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setReceiverPhone(requestDTO.getReceiverPhone());
         purchase.setDivyAddr(requestDTO.getDivyAddr());
         purchase.setDivyRequest(requestDTO.getDivyRequest());
-        purchase.setOrderDate(new Date(System.currentTimeMillis()));
+        purchase.setOrderDate(LocalDate.now());
         purchase.setDivyDate(requestDTO.getDivyDate());
         this.purchaseDAO.insertPurchase(purchase);
         return purchase;
