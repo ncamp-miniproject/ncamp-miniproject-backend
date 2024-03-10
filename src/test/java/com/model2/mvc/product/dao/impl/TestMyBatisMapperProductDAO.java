@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring-config/common.xml" })
+@ContextConfiguration(locations = { "classpath:spring-config/common.xml", "classpath*:spring-config/context-*.xml" })
 public class TestMyBatisMapperProductDAO {
 
     @Autowired

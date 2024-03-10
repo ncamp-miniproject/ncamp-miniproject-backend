@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring-config/common.xml" })
+@ContextConfiguration(locations = { "classpath:spring-config/common.xml", "classpath*:spring-config/context-*.xml" })
 public class TestMyBatisMapperPurchaseDAO extends TestCase {
 
     @Autowired
