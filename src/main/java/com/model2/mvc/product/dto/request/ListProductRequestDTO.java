@@ -1,8 +1,8 @@
 package com.model2.mvc.product.dto.request;
 
 public class ListProductRequestDTO {
-    private int page;
-    private int pageSize;
+    private Integer page;
+    private Integer pageSize;
     private String searchKeyword;
     private String searchCondition;
     private String menu;
@@ -10,19 +10,19 @@ public class ListProductRequestDTO {
     public ListProductRequestDTO() {
     }
 
-    public int getPage() {
+    public Integer getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(Integer page) {
         this.page = page;
     }
 
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
 

@@ -9,10 +9,10 @@ public class Product {
     private String prodName;
     private String prodDetail;
     private LocalDate manuDate;
-    private int price;
+    private Integer price;
     private String fileName;
     private Date regDate;
-    private int stock;
+    private Integer stock;
 
     public Product() {
     }
@@ -65,11 +65,11 @@ public class Product {
         this.manuDate = manuDate;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -89,11 +89,11 @@ public class Product {
         this.regDate = regDate;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 

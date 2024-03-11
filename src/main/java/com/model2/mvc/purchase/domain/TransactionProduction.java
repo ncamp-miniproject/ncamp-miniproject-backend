@@ -3,7 +3,7 @@ package com.model2.mvc.purchase.domain;
 import com.model2.mvc.product.domain.Product;
 
 public class TransactionProduction {
-    private int tranNo;
+    private Integer tranNo;
     private Product product;
     private int quantity;
 
@@ -21,11 +21,11 @@ public class TransactionProduction {
         this.quantity = quantity;
     }
 
-    public int getTranNo() {
+    public Integer getTranNo() {
         return tranNo;
     }
 
-    public void setTranNo(int tranNo) {
+    public void setTranNo(Integer tranNo) {
         this.tranNo = tranNo;
     }
 

@@ -64,9 +64,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
         Search search = new Search();
-        int page = requestDTO.getPage();
-        page = page == 0 ? 1 : page;
-        int pageSize = requestDTO.getPageSize();
+        Integer page = requestDTO.getPage();
+        page = page == null ? 1 : page;
+        Integer pageSize = requestDTO.getPageSize();
+        pageSize = pageSize == null ? defaultPageSize : pageSize;
+
         search.setStartRowNum((page - 1) * pageSize + 1);
         search.setEndRowNum(page * pageSize);
         search.setSearchKeyword(StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
