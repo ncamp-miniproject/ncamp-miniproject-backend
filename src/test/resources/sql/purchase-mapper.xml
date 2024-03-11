@@ -61,16 +61,7 @@
         <collection property="transactionProductions" ofType="TranProd">
             <result column="tran_no" property="tranNo" jdbcType="NUMERIC"/>
             <result column="quantity" property="quantity" jdbcType="NUMERIC"/>
-            <association property="product" javaType="Product">
-                <id column="prod_no" property="prodNo" jdbcType="NUMERIC"/>
-                <result column="prod_name" property="prodName" jdbcType="VARCHAR"/>
-                <result column="prod_detail" property="prodDetail" jdbcType="VARCHAR"/>
-                <result column="manufacture_day" property="manuDate" jdbcType="DATE"/>
-                <result column="price" property="price" jdbcType="NUMERIC"/>
-                <result column="image_file" property="fileName" jdbcType="VARCHAR"/>
-                <result column="reg_date" property="regDate" jdbcType="DATE"/>
-                <result column="stock" property="stock" jdbcType="NUMERIC"/>
-            </association>
+            <association property="product" javaType="Product" resultMap="ProductMapper.product"/>
         </collection>
     </resultMap>
 
@@ -94,11 +85,14 @@
             p.price            "price",
             p.image_file       "image_file",
             p.reg_date         "reg_date",
-            p.stock            "stock"
+            p.stock            "stock",
+            c.category_no      "category_no",
+            c.category_name    "category_name"
         FROM
             transaction t
             LEFT OUTER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
             LEFT OUTER JOIN product          p ON tp.prod_no = p.prod_no
+            LEFT OUTER JOIN category         c ON c.category_no = p.category_no
         WHERE
             t.tran_no = #{value}
     </select>
@@ -130,7 +124,8 @@
             p.price            "price",
             p.image_file       "image_file",
             p.reg_date         "reg_date",
-            p.stock            "stock"
+            p.stock            "stock",
+            c.category_no      "category_no"
         FROM
             (
                 SELECT
@@ -158,6 +153,7 @@
             ) t
             INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
             INNER JOIN product p ON tp.prod_no = p.prod_no
+            LEFT OUTER JOIN category c ON c.category_no = p.category_no
         WHERE t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
         ORDER BY t.row_num
     </select>

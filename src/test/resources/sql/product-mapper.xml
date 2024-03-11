@@ -15,7 +15,8 @@
                 price,
                 image_file,
                 reg_date,
-                stock )
+                stock,
+                category_no )
         VALUES
             (
                 <if test="prodNo != 0">
@@ -35,8 +36,11 @@
                 <if test="regDate == null">
                     SYSDATE
                 </if>,
-                #{stock: NUMERIC} )
+                #{stock: NUMERIC},
+                #{category.categoryNo: NUMERIC} )
     </insert>
+
+    <resultMap id="categoryMap" type="Category" extends="CategoryMapper.categoryMap"/>
 
     <resultMap id="product" type="Product">
         <id column="prod_no" property="prodNo" jdbcType="NUMERIC"/>
@@ -47,6 +51,7 @@
         <result column="image_file" property="fileName" jdbcType="VARCHAR"/>
         <result column="reg_date" property="regDate" jdbcType="DATE"/>
         <result column="stock" property="stock" jdbcType="NUMERIC"/>
+        <association property="category" javaType="Category" resultMap="CategoryMapper.categoryMap"/>
     </resultMap>
 
     <select id="findById" parameterType="int" resultMap="product">
@@ -58,22 +63,26 @@
             p.price           price,
             p.image_file      image_file,
             p.reg_date        reg_date,
-            p.stock           stock
+            p.stock           stock,
+            c.category_no     category_no,
+            c.category_name   category_name
         FROM product p
+        LEFT OUTER JOIN category c ON c.category_no = p.category_no
         WHERE p.prod_no = #{value}
     </select>
 
     <select id="findProductsByIds" parameterType="java.util.List" resultMap="product">
         SELECT
-            prod_no,
-            prod_name,
-            prod_detail,
-            manufacture_day,
-            price,
-            image_file,
-            reg_date,
-            stock
-        FROM product
+            p.prod_no,
+            p.prod_name,
+            p.prod_detail,
+            p.manufacture_day,
+            p.price,
+            p.image_file,
+            p.reg_date,
+            p.stock
+        FROM product p
+        LEFT OUTER JOIN category c ON c.category_no = p.category_no
         <where>
             <if test="list.size != 0">
                 prod_no IN
@@ -86,16 +95,7 @@
 
     <resultMap id="productListData" type="ListData">
         <result column="count" property="count" jdbcType="NUMERIC"/>
-        <collection property="list" ofType="Product">
-            <id column="prod_no" property="prodNo" jdbcType="NUMERIC"/>
-            <result column="prod_name" property="prodName" jdbcType="VARCHAR"/>
-            <result column="prod_detail" property="prodDetail" jdbcType="VARCHAR"/>
-            <result column="manufacture_day" property="manuDate" jdbcType="DATE"/>
-            <result column="price" property="price" jdbcType="NUMERIC"/>
-            <result column="image_file" property="fileName" jdbcType="VARCHAR"/>
-            <result column="reg_date" property="regDate" jdbcType="DATE"/>
-            <result column="stock" property="stock" jdbcType="NUMERIC"/>
-        </collection>
+        <collection property="list" resultMap="product"/>
     </resultMap>
 
     <select id="findProducts" parameterType="map" resultMap="productListData">
@@ -121,15 +121,30 @@
                     p.image_file      image_file,
                     p.reg_date        reg_date,
                     p.stock           stock,
+                    c.category_no     category_no,
+                    c.category_name   category_name,
                     COUNT(*) OVER()   count
                 FROM
                     product p
+                LEFT OUTER JOIN category c ON c.category_no = p.category_no
                 <where>
-                    <choose>
-                        <when test="searchCondition == 1">
-                            p.prod_name LIKE #{searchKeyword}
-                        </when>
-                    </choose>
+                    <if test="searchCondition == 1">
+                        p.prod_name LIKE #{searchKeyword}
+                    </if>
+                    <if test="searchCondition == 2">
+                        <if test="priceLowerBound != null and priceUpperBound != null">
+                            p.price BETWEEN #{priceLowerBound} AND #{priceUpperBound}
+                        </if>
+                        <if test="priceLowerBound != null and priceUpperBound == null">
+                            p.price $gt;= #{priceLowerBound}
+                        </if>
+                        <if test="priceLowerBound == null and priceUpperBound != null">
+                            p.price $lt;= #{priceUpperBound}
+                        </if>
+                    </if>
+                    <if test="categoryNo != null">
+                        AND c.category_no = #{categoryNo}
+                    </if>
                 </where>
                 ORDER BY
                     p.reg_date DESC -- Should be flexible
@@ -160,7 +175,10 @@
                 reg_date = #{regDate},
             </if>
             <if test="stock != null">
-                stock = #{stock}
+                stock = #{stock},
+            </if>
+            <if test="category != null">
+                category_no = #{category.categoryNo}
             </if>
         </set>
         <where>

@@ -1,5 +1,7 @@
 package com.model2.mvc.product.domain;
 
+import com.model2.mvc.category.domain.Category;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,6 +15,7 @@ public class Product {
     private String fileName;
     private Date regDate;
     private Integer stock;
+    private Category category;
 
     public Product() {
     }
@@ -101,8 +104,16 @@ public class Product {
         this.stock = stock;
     }
 
-    public void decrementStock(int quantityToDecr) {
-        this.stock -= quantityToDecr;
+    public void decrementStock(int howMuch) {
+        this.stock -= howMuch;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -144,6 +155,8 @@ public class Product {
                regDate +
                ", stock=" +
                stock +
+               ", category=" +
+               category +
                '}';
     }
 }

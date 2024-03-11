@@ -2,9 +2,9 @@ DROP TABLE transaction_prod;
 
 DROP TABLE transaction;
 
-DROP TABLE category;
-
 DROP TABLE product;
+
+DROP TABLE category;
 
 DROP TABLE users;
 
@@ -403,6 +403,14 @@ VALUES
       sysdate );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       'vaio vgn FS70B',
@@ -414,6 +422,14 @@ VALUES
       10 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '자전거',
@@ -425,6 +441,14 @@ VALUES
       8 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '보르도',
@@ -436,6 +460,14 @@ VALUES
       0 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '보드세트',
@@ -447,6 +479,14 @@ VALUES
       13 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '인라인',
@@ -458,6 +498,14 @@ VALUES
       2 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '삼성센스 2G',
@@ -469,6 +517,14 @@ VALUES
       1 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '연꽃',
@@ -480,6 +536,14 @@ VALUES
       0 );
 
 INSERT INTO product
+    ( prod_no,
+      prod_name,
+      prod_detail,
+      manufacture_day,
+      price,
+      image_file,
+      reg_date,
+      stock )
 VALUES
     ( seq_product_prod_no.nextval,
       '삼성센스',

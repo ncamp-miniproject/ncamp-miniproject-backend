@@ -15,6 +15,7 @@ public class GetProductResponseDTO {
     private String prodName;
     private Date regDate;
     private int stock;
+    private String categoryName;
     private boolean purchasable;
     private User loginUser;
 
