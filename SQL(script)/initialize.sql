@@ -2,6 +2,8 @@ DROP TABLE transaction_prod;
 
 DROP TABLE transaction;
 
+DROP TABLE category;
+
 DROP TABLE product;
 
 DROP TABLE users;
@@ -29,6 +31,15 @@ CREATE TABLE users
     CONSTRAINT users_role_check CHECK (role IN ('user', 'admin'))
 );
 
+
+
+CREATE TABLE category
+(
+    category_no   NUMBER(16),
+    category_name VARCHAR2(100) NOT NULL,
+    PRIMARY KEY (category_no)
+);
+
 CREATE TABLE product
 (
     prod_no         NUMBER(16),
@@ -39,7 +50,9 @@ CREATE TABLE product
     image_file      VARCHAR2(100),
     reg_date        DATE DEFAULT sysdate,
     stock           NUMBER(10) NOT NULL,
-    CONSTRAINT product_pk PRIMARY KEY (prod_no)
+    category_no NUMBER(16) NOT NULL,
+    CONSTRAINT product_pk PRIMARY KEY (prod_no),
+    CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no)
 );
 
 CREATE TABLE transaction
