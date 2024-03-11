@@ -6,9 +6,11 @@ import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,12 +20,16 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
 
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
+
     @Autowired
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     public void addUser(User userVO) throws Exception {
+        userVO.setRegDate(new Date(System.currentTimeMillis()));
         userDAO.insertUser(userVO);
     }
 
@@ -44,7 +50,9 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> getUserList(ListUserRequestDTO requestDTO) throws Exception {
         Search search = new Search();
         int page = requestDTO.getPage();
+        page = page == 0 ? 1 : page;
         int pageSize = requestDTO.getPageSize();
+        pageSize = pageSize == 0 ? defaultPageSize : pageSize;
         search.setStartRowNum((page - 1) * pageSize + 1);
         search.setEndRowNum(page * pageSize);
         search.setSearchCondition(requestDTO.getSearchCondition());
