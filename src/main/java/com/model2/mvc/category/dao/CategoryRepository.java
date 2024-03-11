@@ -4,7 +4,7 @@ import com.model2.mvc.category.domain.Category;
 
 import java.util.List;
 
-public interface CategoryDAO {
+public interface CategoryRepository {
 
     public void insertCategory(Category categoryName);
 

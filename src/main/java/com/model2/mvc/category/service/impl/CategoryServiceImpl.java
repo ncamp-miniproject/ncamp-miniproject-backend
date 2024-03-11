@@ -1,6 +1,6 @@
 package com.model2.mvc.category.service.impl;
 
-import com.model2.mvc.category.dao.CategoryDAO;
+import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.dto.request.UpdateCategoryRequestDTO;
 import com.model2.mvc.category.service.CategoryService;
@@ -12,25 +12,25 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private CategoryDAO categoryDAO;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryServiceImpl(CategoryDAO categoryDAO) {
-        this.categoryDAO = categoryDAO;
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public void insertCategory(String categoryName) {
-        this.categoryDAO.insertCategory(new Category(categoryName));
+        this.categoryRepository.insertCategory(new Category(categoryName));
     }
 
     @Override
     public List<Category> getCategoryList() {
-        return this.categoryDAO.findAll();
+        return this.categoryRepository.findAll();
     }
 
     @Override
     public void updateCategory(UpdateCategoryRequestDTO requestDTO) {
-        this.categoryDAO.updateCategory(new Category(requestDTO.getCategoryNo(), requestDTO.getCategoryName()));
+        this.categoryRepository.updateCategory(new Category(requestDTO.getCategoryNo(), requestDTO.getCategoryName()));
     }
 }
