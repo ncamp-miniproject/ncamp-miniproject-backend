@@ -15,12 +15,12 @@ public class Page {
     private final int pageSize;
 
     private Page(boolean previousPageSetBtnVisible,
-                boolean nextPageSetBtnVisible,
-                int previousPageSetEntry,
-                int nextPageSetEntry,
-                List<Integer> pagesToDisplay,
-                int currentPage,
-                int pageSize) {
+                 boolean nextPageSetBtnVisible,
+                 int previousPageSetEntry,
+                 int nextPageSetEntry,
+                 List<Integer> pagesToDisplay,
+                 int currentPage,
+                 int pageSize) {
         this.previousPageSetAvailable = previousPageSetBtnVisible;
         this.nextPageSetAvailable = nextPageSetBtnVisible;
         this.previousPageSetEntry = previousPageSetEntry;
@@ -76,5 +76,25 @@ public class Page {
 
     public int getPageSize() {
         return this.pageSize;
+    }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+               "previousPageSetAvailable=" +
+               previousPageSetAvailable +
+               ", nextPageSetAvailable=" +
+               nextPageSetAvailable +
+               ", previousPageSetEntry=" +
+               previousPageSetEntry +
+               ", nextPageSetEntry=" +
+               nextPageSetEntry +
+               ", pagesToDisplay=" +
+               pagesToDisplay +
+               ", currentPage=" +
+               currentPage +
+               ", pageSize=" +
+               pageSize +
+               '}';
     }
 }

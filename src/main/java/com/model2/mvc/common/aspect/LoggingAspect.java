@@ -3,6 +3,7 @@ package com.model2.mvc.common.aspect;
 import static com.model2.mvc.common.aspect.ConsoleColorCode.CYAN;
 import static com.model2.mvc.common.aspect.ConsoleColorCode.GREEN;
 import static com.model2.mvc.common.aspect.ConsoleColorCode.RESET;
+import static com.model2.mvc.common.aspect.ConsoleColorCode.YELLOW;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,5 +42,18 @@ public class LoggingAspect {
         log.debug("{}Method: {}{}", GREEN.getCode(), joinPoint.getSignature().getName(), RESET.getCode());
         log.debug("{}Signature: {}{}", GREEN.getCode(), joinPoint.getSignature(), RESET.getCode());
         log.debug("{}Params: {}{}", GREEN.getCode(), Arrays.toString(joinPoint.getArgs()), RESET.getCode());
+    }
+
+    @Around("execution(* com.model2.mvc..*DAO.*(..))")
+    public Object logAroundDAO(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.debug("{}Class: {}", YELLOW.getCode(), joinPoint.getTarget().getClass().getName());
+        log.debug("Method: {}", joinPoint.getSignature().getName());
+        log.debug("Signature: {}", joinPoint.getSignature());
+        log.debug("Params: {}", Arrays.toString(joinPoint.getArgs()));
+
+        Object returnValue = joinPoint.proceed();
+
+        log.debug("Returns: {}{}", returnValue, RESET.getCode());
+        return returnValue;
     }
 }

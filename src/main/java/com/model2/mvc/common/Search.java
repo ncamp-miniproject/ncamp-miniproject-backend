@@ -41,4 +41,20 @@ public class Search {
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
     }
+
+    @Override
+    public String toString() {
+        return "Search{" +
+               "searchCondition='" +
+               searchCondition +
+               '\'' +
+               ", searchKeyword='" +
+               searchKeyword +
+               '\'' +
+               ", endRowNum=" +
+               endRowNum +
+               ", startRowNum=" +
+               startRowNum +
+               '}';
+    }
 }
