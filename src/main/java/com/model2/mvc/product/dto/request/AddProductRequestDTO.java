@@ -1,8 +1,5 @@
 package com.model2.mvc.product.dto.request;
 
-import com.model2.mvc.common.Buildable;
-import com.model2.mvc.common.BuilderTemplate;
-
 public class AddProductRequestDTO {
     private String fileName;
     private String manuDate;

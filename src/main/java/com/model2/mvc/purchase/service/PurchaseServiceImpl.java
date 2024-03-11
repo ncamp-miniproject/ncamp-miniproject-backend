@@ -1,6 +1,5 @@
 package com.model2.mvc.purchase.service;
 
-import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.exception.RecordNotFoundException;
@@ -20,6 +19,7 @@ import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,12 @@ import java.util.Optional;
 public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseDAO purchaseDAO;
     private final ProductDAO productDAO;
+
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
+
+    @Value("#{constantProperties['defaultPageDisplay']}")
+    private int defaultPageDisplay;
 
     @Autowired
     private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ProductDAO productDAO) {
@@ -86,7 +92,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private Page getPageInfo(int count, int currentPage) {
-        return Page.of(currentPage, count, CommonConstants.PAGE_SIZE, CommonConstants.PAGE_DISPLAY);
+        return Page.of(currentPage, count, defaultPageSize, defaultPageDisplay);
     }
 
     @Override

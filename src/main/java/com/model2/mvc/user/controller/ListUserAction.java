@@ -1,10 +1,10 @@
 package com.model2.mvc.user.controller;
 
-import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +14,9 @@ import java.util.Map;
 @Component("listUserAction")
 public class ListUserAction extends Action {
     private UserService userService;
+
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
 
     @Autowired
     public ListUserAction(UserService userService) {
@@ -28,7 +31,7 @@ public class ListUserAction extends Action {
         }
 
         ListUserRequestDTO requestDTO = new ListUserRequestDTO(page,
-                                                               CommonConstants.PAGE_SIZE,
+                                                               defaultPageSize,
                                                                request.getParameter("searchCondition"),
                                                                request.getParameter("searchKeyword"));
 

@@ -1,8 +1,5 @@
 package com.model2.mvc.purchase.dto.request;
 
-import com.model2.mvc.common.Buildable;
-import com.model2.mvc.common.BuilderTemplate;
-import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.purchase.domain.PaymentOption;
 
 import java.time.LocalDate;

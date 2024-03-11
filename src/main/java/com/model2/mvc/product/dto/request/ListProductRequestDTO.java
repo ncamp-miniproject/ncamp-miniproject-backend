@@ -1,9 +1,5 @@
 package com.model2.mvc.product.dto.request;
 
-import com.model2.mvc.common.Buildable;
-import com.model2.mvc.common.BuilderTemplate;
-import com.model2.mvc.user.domain.User;
-
 public class ListProductRequestDTO {
     private int page;
     private int pageSize;

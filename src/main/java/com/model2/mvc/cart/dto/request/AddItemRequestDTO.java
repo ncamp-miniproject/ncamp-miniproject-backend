@@ -1,7 +1,5 @@
 package com.model2.mvc.cart.dto.request;
 
-import javax.servlet.http.Cookie;
-
 public class AddItemRequestDTO {
     private String prodNo;
     private String quantity;

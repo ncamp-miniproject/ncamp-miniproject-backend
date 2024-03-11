@@ -1,7 +1,5 @@
 package com.model2.mvc.cart.dto.response;
 
-import javax.servlet.http.Cookie;
-
 public class AddItemResponseDTO {
     private String cookie;
 

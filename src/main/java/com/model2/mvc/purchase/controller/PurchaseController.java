@@ -1,6 +1,5 @@
 package com.model2.mvc.purchase.controller;
 
-import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
@@ -18,6 +17,7 @@ import com.model2.mvc.purchase.util.LocalDateEditor;
 import com.model2.mvc.purchase.util.TransactionProductionEditor;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +40,12 @@ public class PurchaseController {
 
     private LocalDateEditor localDateEditor;
     private TransactionProductionEditor tranProdEditor;
+
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
+
+    @Value("#{constantProperties['defaultPageDisplay']}")
+    private int defaultPageDisplay;
 
     @Autowired
     public PurchaseController(PurchaseService purchaseService,
@@ -92,7 +97,7 @@ public class PurchaseController {
             return new ModelAndView("redirect:/listPurchase.do?menu=search&page=" + currentPage);
         }
 
-        ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, CommonConstants.PAGE_SIZE);
+        ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, defaultPageSize);
 
         ModelAndView mv = new ModelAndView("/purchase/listPurchase.jsp");
         mv.addObject("data", responseDTO.builder().loginUser(loginUser).build());
@@ -118,7 +123,7 @@ public class PurchaseController {
         }
 
         ListPurchaseRequestDTO requestDTO = new ListPurchaseRequestDTO(currentPage,
-                                                                       CommonConstants.PAGE_SIZE,
+                                                                       defaultPageSize,
                                                                        loginUser.getUserId());
         requestDTO.setSearchCondition(StringUtil.null2nullStr(searchCondition));
         requestDTO.setSearchKeyword(StringUtil.null2nullStr(searchKeyword));

@@ -2,8 +2,8 @@ package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

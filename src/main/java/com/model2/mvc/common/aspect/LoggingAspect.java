@@ -1,6 +1,8 @@
 package com.model2.mvc.common.aspect;
 
-import static com.model2.mvc.common.aspect.ConsoleColorCode.*;
+import static com.model2.mvc.common.aspect.ConsoleColorCode.CYAN;
+import static com.model2.mvc.common.aspect.ConsoleColorCode.GREEN;
+import static com.model2.mvc.common.aspect.ConsoleColorCode.RESET;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

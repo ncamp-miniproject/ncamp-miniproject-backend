@@ -1,7 +1,5 @@
 package com.model2.mvc.filter.purchase;
 
-import com.model2.mvc.common.CommonConstants;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,6 +14,8 @@ import java.io.IOException;
 public class AddPurchasePreventMultiplePurchaseFilter extends HttpFilter implements Filter {
     private static final long serialVersionUID = -3397727377956275057L;
 
+    private static final int PURCHASE_TIME_GAP_IN_MILLIS = 5000;
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
     throws IOException, ServletException {
@@ -24,7 +24,7 @@ public class AddPurchasePreventMultiplePurchaseFilter extends HttpFilter impleme
 
         if (!session.isNew() && session.getAttribute("lastPurchaseTime") != null) {
             long lastPurchaseTime = (long)session.getAttribute("lastPurchaseTime");
-            if (System.currentTimeMillis() - lastPurchaseTime < CommonConstants.PURCHASE_TIME_GAP_IN_MILLIS) {
+            if (System.currentTimeMillis() - lastPurchaseTime < PURCHASE_TIME_GAP_IN_MILLIS) {
                 // TODO: Do more thing in case of multiple purchase
                 System.out.println("Multiple purchase occurred");
                 ((HttpServletResponse)response).sendRedirect("/index.jsp");

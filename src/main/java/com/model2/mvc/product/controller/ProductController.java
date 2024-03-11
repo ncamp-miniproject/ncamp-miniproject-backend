@@ -1,6 +1,5 @@
 package com.model2.mvc.product.controller;
 
-import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
@@ -10,6 +9,7 @@ import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.service.ProductService;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 public class ProductController {
 
     private final ProductService productService;
+
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -73,7 +76,7 @@ public class ProductController {
             return "redirect:/listProduct.do?menu=search";
         }
 
-        requestDTO.setPageSize(CommonConstants.PAGE_SIZE);
+        requestDTO.setPageSize(defaultPageSize);
 
         ListProductResponseDTO responseDTO = this.productService.getProductList(requestDTO);
 

@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 @Deprecated
 public class RequestFilter implements Filter {

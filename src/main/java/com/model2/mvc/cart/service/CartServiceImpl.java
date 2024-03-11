@@ -3,13 +3,12 @@ package com.model2.mvc.cart.service;
 import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
 import com.model2.mvc.cart.dto.response.AddItemResponseDTO;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
-import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,21 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl implements CartService {
     private final ProductDAO productDAO;
+
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
+
+    @Value("#{constantProperties['defaultPageDisplay']}")
+    private int defaultPageDisplay;
+
+    @Value("#{constantProperties['queryValueDelimiter']}")
+    private String queryValueDelimiter;
+
+    @Value("#{constantProperties['cookieItemDelimiter']}")
+    private String cookieItemDelimiter;
+
+    @Value("#{constantProperties['cookieKeyValueDelimiter']}")
+    private String cookieKeyValueDelimiter;
 
     @Autowired
     public CartServiceImpl(ProductDAO productDAO) {
@@ -34,23 +48,23 @@ public class CartServiceImpl implements CartService {
         String cartValue = requestDTO.getCartValue();
         if (cartValue.isEmpty()) {
             return new AddItemResponseDTO(requestDTO.getProdNo() +
-                                          CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
+                                          cookieKeyValueDelimiter +
                                           requestDTO.getQuantity());
         } else {
             Map<String, String> map = new HashMap<>();
-            Arrays.stream(cartValue.split(CommonConstants.COOKIE_DELIMITER)).forEach(v -> {
-                String[] parsed = v.split(CommonConstants.COOKIE_KEY_VALUE_DELIMITER);
+            Arrays.stream(cartValue.split(cookieItemDelimiter)).forEach(v -> {
+                String[] parsed = v.split(cookieKeyValueDelimiter);
                 String prodNo = parsed[0];
                 String quantity = parsed[1];
                 map.put(prodNo, quantity);
             });
 
             map.put(requestDTO.getProdNo(), requestDTO.getQuantity());
-            return new AddItemResponseDTO(String.join(CommonConstants.COOKIE_DELIMITER,
+            return new AddItemResponseDTO(String.join(cookieItemDelimiter,
                                                       map.keySet()
                                                               .stream()
                                                               .map(k -> k +
-                                                                        CommonConstants.COOKIE_KEY_VALUE_DELIMITER +
+                                                                        cookieKeyValueDelimiter +
                                                                         map.get(k))
                                                               .collect(Collectors.toList())));
         }
@@ -64,8 +78,8 @@ public class CartServiceImpl implements CartService {
 
         Map<Integer, Integer> parsed = new HashMap<>();
 
-        Arrays.stream(cartValue.split(CommonConstants.COOKIE_DELIMITER))
-                .map(v -> v.split(CommonConstants.COOKIE_KEY_VALUE_DELIMITER))
+        Arrays.stream(cartValue.split(cookieItemDelimiter))
+                .map(v -> v.split(cookieKeyValueDelimiter))
                 .map(d -> new int[] { Integer.parseInt(d[0]), Integer.parseInt(d[1]) })
                 .forEach(i -> parsed.put(i[0], i[1]));
 

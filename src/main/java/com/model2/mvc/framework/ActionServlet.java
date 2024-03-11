@@ -1,6 +1,5 @@
 package com.model2.mvc.framework;
 
-import com.model2.mvc.common.db.SQLContainer;
 import com.model2.mvc.common.exception.UnsupportedPathException;
 import com.model2.mvc.common.util.HttpUtil;
 

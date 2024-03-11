@@ -1,8 +1,8 @@
 package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 

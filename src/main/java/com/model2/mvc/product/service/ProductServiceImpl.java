@@ -1,11 +1,9 @@
 package com.model2.mvc.product.service;
 
-import com.model2.mvc.common.CommonConstants;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.StringUtil;
-import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
@@ -14,7 +12,9 @@ import com.model2.mvc.product.dto.response.AddProductResponseDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
+import com.model2.mvc.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -23,6 +23,12 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+
+    @Value("#{constantProperties['defaultPageSize']}")
+    private int defaultPageSize;
+
+    @Value("#{constantProperties['defaultPageDisplay']}")
+    private int defaultPageDisplay;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository) {
@@ -68,8 +74,8 @@ public class ProductServiceImpl implements ProductService {
 
         Page pageInfo = Page.of(requestDTO.getPage(),
                                 resultMap.getCount(),
-                                CommonConstants.PAGE_SIZE,
-                                CommonConstants.PAGE_DISPLAY);
+                                defaultPageSize,
+                                defaultPageDisplay);
 
         return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO, search);
     }
