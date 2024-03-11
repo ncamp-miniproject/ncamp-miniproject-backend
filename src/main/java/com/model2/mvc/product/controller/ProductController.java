@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 public class ProductController {
@@ -37,11 +36,11 @@ public class ProductController {
 
     @RequestMapping("/getProduct.do")
     public String getProduct(@RequestParam("prodNo") int prodNo,
-                             @RequestParam("menu") String menu,
-                             @CookieValue("history") String history,
-                             HttpSession session,
+                             @RequestParam(value = "menu", required = false) String menu,
+                             @CookieValue(value = "history", required = false) String history,
+                             @SessionAttribute(value = "user", required = false) User loginUser,
                              Model model) {
-        if (menu.equals("manage")) {
+        if (menu != null && menu.equals("manage")) {
             return "redirect:/updateProductView.do?prodNo=" + prodNo;
         }
 
@@ -56,8 +55,7 @@ public class ProductController {
 
         GetProductResponseDTO result = this.productService.getProduct(prodNo);
 
-        if (!session.isNew() && session.getAttribute("user") != null) {
-            User loginUser = (User)session.getAttribute("user");
+        if (loginUser != null) {
             result.setPurchasable(loginUser.getRole().equals("user") && result.getStock() > 0);
         } else {
             result.setPurchasable(false);
@@ -67,25 +65,15 @@ public class ProductController {
     }
 
     @RequestMapping("/listProduct.do")
-    public String listProduct(@RequestParam("page") int page,
-                              @RequestParam("menu") String menu,
-                              @RequestParam("searchCondition") String searchCondition,
-                              @RequestParam("searchKeyword") String searchKeyword,
-                              HttpSession session,
+    public String listProduct(@ModelAttribute("requestDTO") ListProductRequestDTO requestDTO,
+                              @SessionAttribute(value = "user", required = false) User loginUser,
                               Model model) {
-        User loginUser = (User)session.getAttribute("user");
-        if (menu == null || ((menu.equals("manage") && !loginUser.getRole().equals("admin")))) {
+        String menu = requestDTO.getMenu();
+        if (menu == null || ((menu.equals("manage") && (loginUser == null || !loginUser.getRole().equals("admin"))))) {
             return "redirect:/listProduct.do?menu=search";
         }
 
-        ListProductRequestDTO requestDTO = new ListProductRequestDTO().builder()
-                .page(page)
-                .pageSize(CommonConstants.PAGE_SIZE)
-                .searchCondition(StringUtil.null2nullStr(searchCondition))
-                .searchKeyword(StringUtil.null2nullStr(searchKeyword))
-                .menuMode(menu)
-                .loginUser(loginUser)
-                .build();
+        requestDTO.setPageSize(CommonConstants.PAGE_SIZE);
 
         ListProductResponseDTO responseDTO = this.productService.getProductList(requestDTO);
 

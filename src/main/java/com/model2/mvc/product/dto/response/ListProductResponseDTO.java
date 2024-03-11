@@ -26,7 +26,7 @@ public class ListProductResponseDTO {
         dto.count = listData.getCount();
         dto.products = listData.getList();
         dto.pageInfo = pageInfo;
-        dto.menuMode = requestDTO.getMenuMode();
+        dto.menuMode = requestDTO.getMenu();
         dto.searchInfo = searchInfo;
         return dto;
     }

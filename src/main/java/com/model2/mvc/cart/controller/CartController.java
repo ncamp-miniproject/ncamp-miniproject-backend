@@ -25,7 +25,7 @@ public class CartController {
     }
 
     @RequestMapping("/addItem.do")
-    public ModelAndView addItem(@CookieValue("cart") String cartValue,
+    public ModelAndView addItem(@CookieValue(value = "cart", required = false) String cartValue,
                                 @RequestParam("prodNo") String prodNo,
                                 @RequestParam("quantity") String quantity) {
         if (cartValue == null) {
