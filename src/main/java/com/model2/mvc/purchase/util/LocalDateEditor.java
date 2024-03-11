@@ -28,7 +28,7 @@ public class LocalDateEditor extends PropertyEditorSupport {
             LocalDate localDate = zonedDateTime.toLocalDate();
             super.setValue(localDate);
         } catch (ParseException e) {
-            throw new RuntimeException(e); // TODO
+            super.setValue(null);
         }
     }
 }

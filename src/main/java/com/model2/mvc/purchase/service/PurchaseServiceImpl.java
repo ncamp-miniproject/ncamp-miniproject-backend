@@ -61,7 +61,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
         purchase.setOrderDate(LocalDate.now());
         purchase.setDivyDate(requestDTO.getDivyDate());
-        purchase.setTransactionProductions(requestDTO.getTransactionProductions());
+        purchase.setTransactionProductions(requestDTO.getTranProds());
         this.purchaseDAO.insertPurchase(purchase);
         return AddPurchaseResponseDTO.from(purchase);
     }

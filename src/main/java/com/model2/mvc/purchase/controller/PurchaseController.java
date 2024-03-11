@@ -1,6 +1,7 @@
 package com.model2.mvc.purchase.controller;
 
 import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
@@ -14,6 +15,8 @@ import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.purchase.util.LocalDateEditor;
+import com.model2.mvc.purchase.util.PaymentOptionEditor;
+import com.model2.mvc.purchase.util.TranStatusCodeEditor;
 import com.model2.mvc.purchase.util.TransactionProductionEditor;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,8 @@ public class PurchaseController {
 
     private LocalDateEditor localDateEditor;
     private TransactionProductionEditor tranProdEditor;
+    private PaymentOptionEditor paymentOptionEditor;
+    private TranStatusCodeEditor tranStatusCodeEditor;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -50,16 +55,22 @@ public class PurchaseController {
     @Autowired
     public PurchaseController(PurchaseService purchaseService,
                               LocalDateEditor localDateEditor,
-                              TransactionProductionEditor tranProdEditor) {
+                              TransactionProductionEditor tranProdEditor,
+                              PaymentOptionEditor paymentOptionEditor,
+                              TranStatusCodeEditor tranStatusCodeEditor) {
         this.purchaseService = purchaseService;
         this.localDateEditor = localDateEditor;
         this.tranProdEditor = tranProdEditor;
+        this.paymentOptionEditor = paymentOptionEditor;
+        this.tranStatusCodeEditor = tranStatusCodeEditor;
     }
 
     @InitBinder
     public void dateBinding(WebDataBinder binder) {
-        binder.registerCustomEditor(LocalDate.class, "divyDate", this.localDateEditor);
-        binder.registerCustomEditor(TransactionProduction.class, "transactionProductions", this.tranProdEditor);
+        binder.registerCustomEditor(LocalDate.class, this.localDateEditor);
+        binder.registerCustomEditor(List.class, "tranProds", this.tranProdEditor);
+        binder.registerCustomEditor(PaymentOption.class, "paymentOption", this.paymentOptionEditor);
+        binder.registerCustomEditor(TranStatusCode.class, "tranStatusCode", this.tranStatusCodeEditor);
     }
 
     @RequestMapping("/addPurchase.do")

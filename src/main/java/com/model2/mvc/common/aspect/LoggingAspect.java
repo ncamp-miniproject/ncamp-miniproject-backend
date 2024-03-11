@@ -37,11 +37,11 @@ public class LoggingAspect {
     }
 
     @Before("execution(* com.model2.mvc..*Controller.*(..))")
-    public void logParameterOfControllers(JoinPoint joinPoint) {
-        log.debug("{}Class: {}{}", GREEN.getCode(), joinPoint.getTarget().getClass().getName(), RESET.getCode());
-        log.debug("{}Method: {}{}", GREEN.getCode(), joinPoint.getSignature().getName(), RESET.getCode());
-        log.debug("{}Signature: {}{}", GREEN.getCode(), joinPoint.getSignature(), RESET.getCode());
-        log.debug("{}Params: {}{}", GREEN.getCode(), Arrays.toString(joinPoint.getArgs()), RESET.getCode());
+    public void logBeforeControllers(JoinPoint joinPoint) {
+        log.debug("{}Class: {}", GREEN.getCode(), joinPoint.getTarget().getClass().getName());
+        log.debug("Method: {}", joinPoint.getSignature().getName());
+        log.debug("Signature: {}", joinPoint.getSignature());
+        log.debug("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
     }
 
     @Around("execution(* com.model2.mvc..*DAO.*(..))")

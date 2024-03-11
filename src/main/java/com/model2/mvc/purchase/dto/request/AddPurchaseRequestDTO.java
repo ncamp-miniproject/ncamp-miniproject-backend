@@ -14,7 +14,7 @@ public class AddPurchaseRequestDTO {
     private String divyAddr;
     private String divyRequest;
     private LocalDate divyDate;
-    private List<TransactionProduction> transactionProductions;
+    private List<TransactionProduction> tranProds;
 
     public AddPurchaseRequestDTO() {
     }
@@ -75,12 +75,12 @@ public class AddPurchaseRequestDTO {
         this.divyDate = divyDate;
     }
 
-    public List<TransactionProduction> getTransactionProductions() {
-        return transactionProductions;
+    public List<TransactionProduction> getTranProds() {
+        return tranProds;
     }
 
-    public void setTransactionProductions(List<TransactionProduction> transactionProductions) {
-        this.transactionProductions = transactionProductions;
+    public void setTranProds(List<TransactionProduction> tranProds) {
+        this.tranProds = tranProds;
     }
 
     @Override
@@ -105,8 +105,7 @@ public class AddPurchaseRequestDTO {
                '\'' +
                ", divyDate=" +
                divyDate +
-               ", transactionProductions=" +
-               transactionProductions +
+               ", transactionProductions=" + tranProds +
                '}';
     }
 }
