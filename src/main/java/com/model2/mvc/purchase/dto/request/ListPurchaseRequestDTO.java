@@ -5,12 +5,8 @@ public class ListPurchaseRequestDTO {
     private int pageSize;
     private String searchKeyword;
     private String searchCondition;
-    private String userId;
 
-    public ListPurchaseRequestDTO(int page, int pageSize, String userId) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.userId = userId;
+    public ListPurchaseRequestDTO() {
     }
 
     public int getPage() {
@@ -45,11 +41,19 @@ public class ListPurchaseRequestDTO {
         this.searchCondition = searchCondition;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public String toString() {
+        return "ListPurchaseRequestDTO{" +
+               "page=" +
+               page +
+               ", pageSize=" +
+               pageSize +
+               ", searchKeyword='" +
+               searchKeyword +
+               '\'' +
+               ", searchCondition='" +
+               searchCondition +
+               '\'' +
+               '}';
     }
 }

@@ -112,23 +112,14 @@ public class PurchaseController {
     }
 
     @RequestMapping("/listPurchase.do")
-    public ModelAndView listPurchase(@RequestParam("page") int page,
-                                     @RequestParam("menu") String menu,
-                                     @RequestParam("searchCondition") String searchCondition,
-                                     @RequestParam("searchKeyword") String searchKeyword,
+    public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDTO requestDTO,
+                                     @RequestParam(value = "menu", required = false) String menu,
                                      @SessionAttribute("user") User loginUser) {
-        int currentPage = page == 0 ? 1 : page;
         if ((menu != null && menu.equals("manage")) || loginUser.getRole().equals("admin")) {
-            return new ModelAndView("redirect:/listSale.do?menu=manage&page=" + page);
+            return new ModelAndView("redirect:/listSale.do?menu=manage&page=1");
         }
 
-        ListPurchaseRequestDTO requestDTO = new ListPurchaseRequestDTO(currentPage,
-                                                                       defaultPageSize,
-                                                                       loginUser.getUserId());
-        requestDTO.setSearchCondition(StringUtil.null2nullStr(searchCondition));
-        requestDTO.setSearchKeyword(StringUtil.null2nullStr(searchKeyword));
-
-        ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(requestDTO);
+        ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(requestDTO, loginUser.getUserId());
 
         ModelAndView mv = new ModelAndView("/purchase/listPurchase.jsp");
         mv.addObject("data", result.builder().loginUser(loginUser).build());

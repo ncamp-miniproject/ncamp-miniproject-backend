@@ -3,6 +3,7 @@ package com.model2.mvc.purchase.service;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.exception.RecordNotFoundException;
+import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
@@ -73,21 +74,26 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public ListPurchaseResponseDTO getPurchaseList(ListPurchaseRequestDTO requestDTO) {
-        BuyerIdLimitationSearch purchaseSearch = new BuyerIdLimitationSearch();
+    public ListPurchaseResponseDTO getPurchaseList(ListPurchaseRequestDTO requestDTO, String loginUserId) {
         int page = requestDTO.getPage();
+        page = page == 0 ? 1 : page;
         int pageSize = requestDTO.getPageSize();
+        pageSize = pageSize == 0 ? 1 : pageSize;
+        String searchCondition = StringUtil.null2nullStr(requestDTO.getSearchCondition());
+        String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
+
+        BuyerIdLimitationSearch purchaseSearch = new BuyerIdLimitationSearch();
         purchaseSearch.setStartRowNum((page - 1) * pageSize + 1);
         purchaseSearch.setEndRowNum(page * pageSize);
-        purchaseSearch.setBuyerId(requestDTO.getUserId());
-        purchaseSearch.setSearchCondition(requestDTO.getSearchCondition());
-        purchaseSearch.setSearchKeyword(requestDTO.getSearchKeyword());
+        purchaseSearch.setBuyerId(loginUserId);
+        purchaseSearch.setSearchCondition(searchCondition);
+        purchaseSearch.setSearchKeyword(searchKeyword);
         ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(purchaseSearch);
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
                 .pageInfo(getPageInfo(result.getCount(), page))
-                .loginUser(new User(requestDTO.getUserId()))
+                .loginUser(new User(loginUserId))
                 .build();
     }
 

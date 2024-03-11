@@ -18,7 +18,7 @@ public interface PurchaseService {
 
     public GetPurchaseResponseDTO getPurchase(int tranNo);
 
-    public ListPurchaseResponseDTO getPurchaseList(ListPurchaseRequestDTO requestDTO);
+    public ListPurchaseResponseDTO getPurchaseList(ListPurchaseRequestDTO requestDTO, String loginUserId);
 
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap);
 
