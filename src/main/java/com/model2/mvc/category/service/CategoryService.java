@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    public void insertCategory(String categoryName);
+    public Category insertCategory(String categoryName);
 
     public List<Category> getCategoryList();
 

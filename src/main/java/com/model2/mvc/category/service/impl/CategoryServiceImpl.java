@@ -20,8 +20,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void insertCategory(String categoryName) {
-        this.categoryRepository.insertCategory(new Category(categoryName));
+    public Category insertCategory(String categoryName) {
+        Category category = new Category(categoryName);
+        this.categoryRepository.insertCategory(category);
+        return category;
     }
 
     @Override
