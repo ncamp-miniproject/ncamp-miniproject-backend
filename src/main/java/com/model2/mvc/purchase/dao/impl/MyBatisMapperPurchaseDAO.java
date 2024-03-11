@@ -2,7 +2,6 @@ package com.model2.mvc.purchase.dao.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
-import com.model2.mvc.purchase.domain.BuyerIdLimitationSearch;
 import com.model2.mvc.purchase.domain.Purchase;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository("myBatisMapperPurchaseDAO")
@@ -31,18 +32,18 @@ public class MyBatisMapperPurchaseDAO implements PurchaseDAO {
 
     @Override
     public ListData<Purchase> findAllInPageSize(int startRowNum, int endRowNum) {
-        BuyerIdLimitationSearch bs = new BuyerIdLimitationSearch();
-        bs.setStartRowNum(startRowNum);
-        bs.setEndRowNum(endRowNum);
-        return doSelectList(bs);
+        Map<String, Object> search = new HashMap<>();
+        search.put("startRowNum", startRowNum);
+        search.put("endRowNum", endRowNum);
+        return doSelectList(search);
     }
 
     @Override
-    public ListData<Purchase> findPurchasesByUserId(BuyerIdLimitationSearch purchaseSearch) {
+    public ListData<Purchase> findPurchasesByUserId(Map<String, Object> purchaseSearch) {
         return doSelectList(purchaseSearch);
     }
 
-    private ListData<Purchase> doSelectList(BuyerIdLimitationSearch search) {
+    private ListData<Purchase> doSelectList(Map<String, Object> search) {
         ListData<Purchase> result = this.sqlSession.selectOne("PurchaseMapper.findList", search);
         return result == null ? new ListData<>(0, new ArrayList<>()) : result;
     }

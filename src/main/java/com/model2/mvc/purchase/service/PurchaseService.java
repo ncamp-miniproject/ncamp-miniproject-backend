@@ -22,7 +22,7 @@ public interface PurchaseService {
 
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap);
 
-    public ListPurchaseResponseDTO getSaleList(int page, int pageSize);
+    public ListPurchaseResponseDTO getSaleList(Integer page, Integer pageSize);
 
     public Purchase updatePurchase(UpdatePurchaseRequestDTO requestDTO);
 

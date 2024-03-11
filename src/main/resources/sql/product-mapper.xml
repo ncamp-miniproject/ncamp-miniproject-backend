@@ -15,7 +15,8 @@
                 price,
                 image_file,
                 reg_date,
-                stock )
+                stock,
+                category_no )
         VALUES
             (
                 <if test="prodNo != 0">
@@ -35,7 +36,8 @@
                 <if test="regDate == null">
                     SYSDATE
                 </if>,
-                #{stock: NUMERIC} )
+                #{stock: NUMERIC},
+                #{category_no: NUMERIC} )
     </insert>
 
     <resultMap id="product" type="Product">
@@ -98,7 +100,7 @@
         </collection>
     </resultMap>
 
-    <select id="findProducts" parameterType="Search" resultMap="productListData">
+    <select id="findProducts" parameterType="map" resultMap="productListData">
         SELECT
             v.prod_no         AS "prod_no",
             v.prod_name       AS "prod_name",

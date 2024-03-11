@@ -1,7 +1,6 @@
 package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Search;
 import com.model2.mvc.common.db.DAOTemplate;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
@@ -99,7 +98,7 @@ public class PlainJDBCProductDAO extends DAOTemplate implements ProductDAO {
         throw new UnsupportedOperationException();
     }
 
-    public ListData<Product> findProductsByProdName(Search searchVO) {
+    public ListData<Product> findProductsByProdName(Map<String, Object> searchVO) {
 //        String sql = SQLContainer.get(SQLName.FIND_PRODUCT_LIST_BY_PROD_NAME.getName()).orElse("");
 //
 //        System.out.println(sql);

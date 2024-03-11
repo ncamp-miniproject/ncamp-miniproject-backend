@@ -21,16 +21,20 @@ public class Product {
         this.prodNo = prodNo;
     }
 
-    public Product(int prodNo, int stock) {
+    public Product(int prodNo, Integer stock) {
         this.prodNo = prodNo;
         this.stock = stock;
     }
 
-    public Product(int prodNo, String prodName, int price, int stock) {
-        this(prodNo);
+    public Product(String prodName, Integer price, Integer stock) {
         this.prodName = prodName;
         this.price = price;
         this.stock = stock;
+    }
+
+    public Product(int prodNo, String prodName, Integer price, Integer stock) {
+        this(prodName, price, stock);
+        this.prodNo = prodNo;
     }
 
     public int getProdNo() {

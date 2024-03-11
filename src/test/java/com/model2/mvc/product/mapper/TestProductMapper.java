@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
-import com.model2.mvc.common.Search;
 import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -17,7 +16,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -74,12 +75,9 @@ public class TestProductMapper {
 
     @Test
     public void findProductsByIds() {
-        Product product1 = new Product();
-        product1.setProdName("Product1");
-        Product product2 = new Product();
-        product2.setProdName("Product2");
-        Product product3 = new Product();
-        product3.setProdName("Product3");
+        Product product1 = new Product("Product1", 3000, 24);
+        Product product2 = new Product("Product2", 2000, 12);
+        Product product3 = new Product("Product3", 50000, 120);
         this.sqlSession.insert("ProductMapper.insert", product1);
         this.sqlSession.insert("ProductMapper.insert", product2);
         this.sqlSession.insert("ProductMapper.insert", product3);
@@ -101,40 +99,37 @@ public class TestProductMapper {
 
     @Test
     public void findProductsByProdName() {
-        Product product1 = new Product();
-        product1.setProdName("Product1");
-        Product product2 = new Product();
-        product2.setProdName("Product2");
-        Product product3 = new Product();
-        product3.setProdName("Product3");
+        Product product1 = new Product("Product1", 3000, 24);
+        Product product2 = new Product("Product2", 2000, 12);
+        Product product3 = new Product("Product3", 50000, 120);
 
         List<Product> prods = Arrays.asList(product1, product2, product3);
 
         prods.forEach(p -> this.sqlSession.insert("ProductMapper.insert", p));
 
-        Search search1 = new Search();
-        search1.setSearchKeyword("Product%");
-        search1.setStartRowNum(1);
-        search1.setEndRowNum(3);
-        search1.setSearchCondition("1");
+        Map<String, Object> search1 = new HashMap<>();
+        search1.put("searchKeyword", "Product%");
+        search1.put("startRowNum", 1);
+        search1.put("endRowNum", 3);
+        search1.put("searchCondition", "1");
         ListData<Product> found1 = this.sqlSession.selectOne("ProductMapper.findProducts", search1);
 
         findProductsByProdName_aTest(3, found1, prods);
 
-        Search search2 = new Search();
-        search2.setSearchKeyword("Product1");
-        search2.setStartRowNum(1);
-        search2.setEndRowNum(3);
-        search2.setSearchCondition("1");
+        Map<String, Object> search2 = new HashMap<>();
+        search2.put("searchKeyword", "Product1");
+        search2.put("startRowNum", 1);
+        search2.put("endRowNum", 3);
+        search2.put("searchCondition", "1");
         ListData<Product> found2 = this.sqlSession.selectOne("ProductMapper.findProducts", search2);
 
         findProductsByProdName_aTest(1, found2, prods);
 
-        Search search3 = new Search();
-        search3.setSearchKeyword("%2");
-        search3.setStartRowNum(1);
-        search3.setEndRowNum(3);
-        search3.setSearchCondition("1");
+        Map<String, Object> search3 = new HashMap<>();
+        search3.put("searchKeyword", "%2");
+        search3.put("startRowNum", 1);
+        search3.put("endRowNum", 3);
+        search3.put("searchCondition", "1");
         ListData<Product> found3 = this.sqlSession.selectOne("ProductMapper.findProducts", search3);
 
         findProductsByProdName_aTest(1, found3, prods);

@@ -98,7 +98,7 @@
         </collection>
     </resultMap>
 
-    <select id="findProducts" parameterType="Search" resultMap="productListData">
+    <select id="findProducts" parameterType="map" resultMap="productListData">
         SELECT
             v.prod_no         AS "prod_no",
             v.prod_name       AS "prod_name",
@@ -150,14 +150,14 @@
             <if test="manuDate != null">
                 manufacture_day = #{manuDate},
             </if>
-            <if test="price != 0">
+            <if test="price != null">
                 price = #{price},
             </if>
             <if test="fileName != null">
                 image_file = #{fileName},
             </if>
             <if test="regDate != null">
-                reg_date = #{regDate}
+                reg_date = #{regDate},
             </if>
             <if test="stock != null">
                 stock = #{stock}

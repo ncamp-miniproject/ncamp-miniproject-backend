@@ -81,12 +81,9 @@ public class TestMyBatisMapperProductDAO {
 
     @Test
     public void findProductsByIds() {
-        Product product1 = new Product();
-        product1.setProdName("Product1");
-        Product product2 = new Product();
-        product2.setProdName("Product2");
-        Product product3 = new Product();
-        product3.setProdName("Product3");
+        Product product1 = new Product("Product1", 3000, 24);
+        Product product2 = new Product("Product2", 2000, 12);
+        Product product3 = new Product("Product3", 50000, 120);
         this.productDAO.insertProduct(product1);
         this.productDAO.insertProduct(product2);
         this.productDAO.insertProduct(product3);

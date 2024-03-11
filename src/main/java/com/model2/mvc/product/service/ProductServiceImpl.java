@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -63,16 +65,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
-        Search search = new Search();
         Integer page = requestDTO.getPage();
         page = page == null ? 1 : page;
         Integer pageSize = requestDTO.getPageSize();
         pageSize = pageSize == null ? defaultPageSize : pageSize;
 
-        search.setStartRowNum((page - 1) * pageSize + 1);
-        search.setEndRowNum(page * pageSize);
-        search.setSearchKeyword(StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
-        search.setSearchCondition(StringUtil.null2nullStr(requestDTO.getSearchCondition()));
+        Map<String, Object> search = new HashMap<>();
+        search.put("startRowNum", (page - 1) * pageSize + 1);
+        search.put("endRowNum", page * pageSize);
+        search.put("searchKeyword", StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
+        search.put("searchCondition", StringUtil.null2nullStr(requestDTO.getSearchCondition()));
         ListData<Product> resultMap = productRepository.findProductsByProdName(search);
 
         Page pageInfo = Page.of(page,
@@ -80,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
                                 defaultPageSize,
                                 defaultPageDisplay);
 
-        return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO, search);
+        return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO, Search.from(search));
     }
 
     @Override

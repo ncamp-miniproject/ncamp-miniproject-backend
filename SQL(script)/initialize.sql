@@ -50,7 +50,7 @@ CREATE TABLE product
     image_file      VARCHAR2(100),
     reg_date        DATE DEFAULT sysdate,
     stock           NUMBER(10) NOT NULL,
-    category_no NUMBER(16) NOT NULL,
+    category_no     NUMBER(16),
     CONSTRAINT product_pk PRIMARY KEY (prod_no),
     CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no)
 );

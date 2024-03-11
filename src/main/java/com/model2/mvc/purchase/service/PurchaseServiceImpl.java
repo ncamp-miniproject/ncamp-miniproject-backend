@@ -7,7 +7,6 @@ import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
-import com.model2.mvc.purchase.domain.BuyerIdLimitationSearch;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
@@ -87,13 +86,11 @@ public class PurchaseServiceImpl implements PurchaseService {
         String searchCondition = StringUtil.null2nullStr(requestDTO.getSearchCondition());
         String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
 
-        BuyerIdLimitationSearch purchaseSearch = new BuyerIdLimitationSearch();
-        purchaseSearch.setStartRowNum((page - 1) * pageSize + 1);
-        purchaseSearch.setEndRowNum(page * pageSize);
-        purchaseSearch.setBuyerId(loginUserId);
-        purchaseSearch.setSearchCondition(searchCondition);
-        purchaseSearch.setSearchKeyword(searchKeyword);
-        ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(purchaseSearch);
+        Map<String, Object> search = new HashMap<>();
+        search.put("buyerId", loginUserId);
+        search.put("startRowNum", (page - 1) * pageSize + 1);
+        search.put("endRowNum", page * pageSize);
+        ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(search);
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
@@ -123,7 +120,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public ListPurchaseResponseDTO getSaleList(int page, int pageSize) {
+    public ListPurchaseResponseDTO getSaleList(Integer page, Integer pageSize) {
+        page = page == null ? 1 : page;
+        pageSize = pageSize == null ? defaultPageSize : pageSize;
         ListData<Purchase> purchases = this.purchaseDAO.findAllInPageSize((page - 1) * pageSize + 1, page * pageSize);
         return new ListPurchaseResponseDTO().builder()
                 .count(purchases.getCount())

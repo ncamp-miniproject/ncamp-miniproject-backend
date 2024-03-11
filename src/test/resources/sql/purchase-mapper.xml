@@ -108,7 +108,7 @@
         <collection property="list" resultMap="purchase"/>
     </resultMap>
 
-    <select id="findList" parameterType="com.model2.mvc.purchase.domain.BuyerIdLimitationSearch" resultMap="purchaseListData">
+    <select id="findList" parameterType="map" resultMap="purchaseListData">
         SELECT
             t.row_num          "row_num",
             t.tran_no          "tran_no",

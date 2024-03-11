@@ -1,5 +1,7 @@
 package com.model2.mvc.common;
 
+import java.util.Map;
+
 public class Search {
 
     String searchCondition;
@@ -8,6 +10,13 @@ public class Search {
     private int startRowNum;
 
     public Search() {
+    }
+
+    public static Search from(Map<String, Object> map) {
+        Search search = new Search();
+        search.searchCondition = (String)map.get("searchCondition");
+        search.searchKeyword = (String)map.get("searchKeyword");
+        return search;
     }
 
     public int getEndRowNum() {

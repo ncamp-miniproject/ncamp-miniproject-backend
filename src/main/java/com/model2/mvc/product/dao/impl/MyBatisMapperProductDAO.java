@@ -1,7 +1,6 @@
 package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
@@ -44,13 +43,13 @@ public class MyBatisMapperProductDAO implements ProductRepository {
     }
 
     @Override
-    public ListData<Product> findProductsByProdName(Search search) {
+    public ListData<Product> findProductsByProdName(Map<String, Object> search) {
         ListData<Product> productsFound = this.sqlSession.selectOne("ProductMapper.findProducts", search);
         return productsFound == null ? new ListData<>(0, new ArrayList<>()) : productsFound;
     }
 
     @Override
-    public ListData<Product> findProductsByPriceRange(Search search) {
+    public ListData<Product> findProductsByPriceRange(Map<String, Object> search) {
         throw new UnsupportedOperationException();
     }
 
