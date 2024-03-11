@@ -1,5 +1,7 @@
 package com.model2.mvc.product.service;
 
+import com.model2.mvc.category.domain.Category;
+import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -26,6 +28,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
+    private final CategoryService categoryService;
+
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
 
@@ -33,8 +37,9 @@ public class ProductServiceImpl implements ProductService {
     private int defaultPageDisplay;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -101,5 +106,10 @@ public class ProductServiceImpl implements ProductService {
         to.setStock(requestDTO.getStock());
         this.productRepository.updateProduct(to);
         return UpdateProductResponseDTO.from(previous);
+    }
+
+    @Override
+    public Category addCategory(String categoryName) {
+        return this.categoryService.insertCategory(categoryName);
     }
 }

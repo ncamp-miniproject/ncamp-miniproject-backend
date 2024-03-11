@@ -1,5 +1,6 @@
 package com.model2.mvc.product.service;
 
+import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
@@ -17,4 +18,6 @@ public interface ProductService {
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO);
 
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO);
+
+    public Category addCategory(String categoryName);
 }
