@@ -65,14 +65,15 @@ public class ProductServiceImpl implements ProductService {
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
         Search search = new Search();
         int page = requestDTO.getPage();
+        page = page == 0 ? 1 : page;
         int pageSize = requestDTO.getPageSize();
         search.setStartRowNum((page - 1) * pageSize + 1);
         search.setEndRowNum(page * pageSize);
-        search.setSearchKeyword(requestDTO.getSearchKeyword());
-        search.setSearchCondition(requestDTO.getSearchCondition());
+        search.setSearchKeyword(StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
+        search.setSearchCondition(StringUtil.null2nullStr(requestDTO.getSearchCondition()));
         ListData<Product> resultMap = productRepository.findProductsByProdName(search);
 
-        Page pageInfo = Page.of(requestDTO.getPage(),
+        Page pageInfo = Page.of(page,
                                 resultMap.getCount(),
                                 defaultPageSize,
                                 defaultPageDisplay);
