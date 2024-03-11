@@ -5,11 +5,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="CategoryMapper">
-    <insert id="insert" parameterType="Category">
+    <insert id="insert" parameterType="Category" useGeneratedKeys="true" keyColumn="category_no" keyProperty="categoryNo">
         INSERT INTO category (
             category_no, category_name
         ) VALUES (
-            #{categoryNo}, #{categoryName}
+            seq_category_category_no.NEXTVAL, #{categoryName}
         )
     </insert>
 
@@ -32,4 +32,8 @@
         </set>
         WHERE category_no = #{categoryNo}
     </update>
+
+    <delete id="clear">
+        DELETE FROM category
+    </delete>
 </mapper>

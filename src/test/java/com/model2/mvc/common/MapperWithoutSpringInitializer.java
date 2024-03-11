@@ -10,11 +10,13 @@ import java.io.Reader;
 
 public class MapperWithoutSpringInitializer {
 
-    public static SqlSession initUnitTest(String initializingSql) {
+    public static SqlSession initUnitTest(String... initializingSql) {
         try (Reader reader = Resources.getResourceAsReader("mybatis-config/mybatis-config-without-spring.xml")) {
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession sqlSession = factory.openSession(true);
-            sqlSession.delete(initializingSql);
+            for (String sql : initializingSql) {
+                sqlSession.delete(sql);
+            }
             return sqlSession;
         } catch (IOException e) {
             e.printStackTrace();
@@ -22,8 +24,10 @@ public class MapperWithoutSpringInitializer {
         }
     }
 
-    public static void afterUnitTest(SqlSession sqlSession, String sqlId) {
-        sqlSession.delete(sqlId);
+    public static void afterUnitTest(SqlSession sqlSession, String... destroySql) {
+        for (String sql : destroySql) {
+            sqlSession.delete(sql);
+        }
         sqlSession.close();
     }
 }

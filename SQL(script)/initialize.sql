@@ -12,9 +12,13 @@ DROP SEQUENCE seq_product_prod_no;
 
 DROP SEQUENCE seq_transaction_tran_no;
 
+DROP SEQUENCE seq_category_category_no;
+
 CREATE SEQUENCE seq_product_prod_no INCREMENT BY 1 START WITH 10000;
 
 CREATE SEQUENCE seq_transaction_tran_no INCREMENT BY 1 START WITH 10000;
+
+CREATE SEQUENCE seq_category_category_no INCREMENT BY 1 START WITH 10000;
 
 CREATE TABLE users
 (
