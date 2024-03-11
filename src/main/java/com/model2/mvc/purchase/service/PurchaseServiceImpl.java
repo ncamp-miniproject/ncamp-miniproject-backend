@@ -63,6 +63,11 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setDivyDate(requestDTO.getDivyDate());
         purchase.setTransactionProductions(requestDTO.getTranProds());
         this.purchaseDAO.insertPurchase(purchase);
+        purchase.getTransactionProductions().forEach(tp -> {
+            Product product = this.productDAO.findById(tp.getProduct().getProdNo()).orElseThrow(RuntimeException::new);
+            product.decrementStock(tp.getQuantity());
+            this.productDAO.updateProduct(product);
+        });
         return AddPurchaseResponseDTO.from(purchase);
     }
 

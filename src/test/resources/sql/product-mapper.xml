@@ -159,6 +159,9 @@
             <if test="regDate != null">
                 reg_date = #{regDate}
             </if>
+            <if test="stock != null">
+                stock = #{stock}
+            </if>
         </set>
         <where>
             prod_no = #{prodNo}

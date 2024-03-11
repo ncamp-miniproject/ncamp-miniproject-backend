@@ -1,17 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>상품 목록조회</title>
+    <title>상품 목록조회</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+    <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
 	function fncGetProductList() {
-		document.detailForm.submit();
-	}
+        document.detailForm.submit();
+    }
 </script>
 </head>
 
@@ -24,7 +24,7 @@
             <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td width="15" height="37">
-                        <img src="/images/ct_ttl_img01.gif" width="15" height="37" />
+                        <img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
                     </td>
                     <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -34,7 +34,7 @@
                         </table>
                     </td>
                     <td width="12" height="37">
-                        <img src="/images/ct_ttl_img03.gif" width="12" height="37" />
+                        <img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
                     </td>
                 </tr>
             </table>
@@ -48,8 +48,11 @@
                             <option value="0" ${ data.searchInfo.searchCondition == "0" ? "selected" : "" }>상품번호</option>
                             <option value="1" ${ data.searchInfo.searchCondition == "1" ? "selected" : "" }>상품명</option>
                             <option value="2" ${ data.searchInfo.searchCondition == "2" ? "selected" : "" }>상품가격</option>
-                        </select> <input type="text" name="searchKeyword" class="ct_input_g" value="${ data.searchInfo.searchKeyword }"
-                            style="width: 200px; height: 19px" />
+                        </select> <input type="text"
+                                         name="searchKeyword"
+                                         class="ct_input_g"
+                                         value="${ data.searchInfo.searchKeyword }"
+                                         style="width: 200px; height: 19px"/>
                     </td>
 
 
@@ -91,11 +94,11 @@
                     <td colspan="11" bgcolor="808285" height="1"></td>
                 </tr>
 
-                <c:set var="number" value="${ data.pageInfo.pageSize }" scope="page" />
+                <c:set var="number" value="${ data.pageInfo.pageSize }" scope="page"/>
                 <c:forEach var="product" items="${ data.products }">
                     <tr class="ct_list_pop">
                         <td align="center">${ number }</td>
-                        <c:set var="number" value="${ number - 1 }" scope="page" />
+                        <c:set var="number" value="${ number - 1 }" scope="page"/>
                         <td></td>
                         <td align="left">
                             <c:choose>
@@ -121,9 +124,11 @@
                 </c:forEach>
             </table>
 
-            <c:set var="url" value="/listProduct.do" scope="request" />
-            <c:set var="additionalQueryString" value="&menu=${ data.menuMode }&searchCondition=${ data.searchInfo.searchCondition }&searchKeyword=${ data.searchInfo.searchKeyword }" scope="request" />
-            <c:import var="pageNumbers" url="/common/pageNumbers.jsp" scope="request" />
+            <c:set var="url" value="/listProduct.do" scope="request"/>
+            <c:set var="additionalQueryString"
+                   value="&menu=${ data.menuMode }&searchCondition=${ data.searchInfo.searchCondition }&searchKeyword=${ data.searchInfo.searchKeyword }"
+                   scope="request"/>
+            <c:import var="pageNumbers" url="/common/pageNumbers.jsp" scope="request"/>
             ${ pageNumbers }
             <!--  페이지 Navigator 끝 -->
 

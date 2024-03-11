@@ -21,6 +21,11 @@ public class Product {
         this.prodNo = prodNo;
     }
 
+    public Product(int prodNo, int stock) {
+        this.prodNo = prodNo;
+        this.stock = stock;
+    }
+
     public Product(int prodNo, String prodName, int price, int stock) {
         this(prodNo);
         this.prodName = prodName;
@@ -90,6 +95,10 @@ public class Product {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public void decrementStock(int quantityToDecr) {
+        this.stock -= quantityToDecr;
     }
 
     @Override
