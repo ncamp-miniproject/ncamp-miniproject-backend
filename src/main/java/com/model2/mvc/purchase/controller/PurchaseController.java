@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -64,7 +65,8 @@ public class PurchaseController {
     }
 
     @RequestMapping("/addPurchaseView.do")
-    public ModelAndView getPurchaseView(@RequestParam("purchase") List<String> purchase, HttpSession session) {
+    public ModelAndView getPurchaseView(@RequestParam("purchase") List<String> purchase,
+                                        @SessionAttribute("user") User loginUser) {
         if (purchase == null || purchase.isEmpty()) {
             return new ModelAndView("redirect:/listProduct.do");
         }
@@ -77,15 +79,14 @@ public class PurchaseController {
 
         ModelAndView mv = new ModelAndView("/purchase/addPurchaseView.jsp");
         mv.addObject("data", responseDTO);
-        mv.addObject("loginUser", session.getAttribute("user"));
+        mv.addObject("loginUser", loginUser);
         return mv;
     }
 
     @RequestMapping("/listSale.do")
     public ModelAndView listSale(@RequestParam("menu") String menu,
                                  @RequestParam("page") int page,
-                                 HttpSession session) {
-        User loginUser = (User)session.getAttribute("user");
+                                 @SessionAttribute("user") User loginUser) {
         int currentPage = page == 0 ? 1 : page;
         if ((menu == null || menu.equals("search")) || !loginUser.getRole().equals("admin")) {
             return new ModelAndView("redirect:/listPurchase.do?menu=search&page=" + currentPage);
@@ -110,9 +111,8 @@ public class PurchaseController {
                                      @RequestParam("menu") String menu,
                                      @RequestParam("searchCondition") String searchCondition,
                                      @RequestParam("searchKeyword") String searchKeyword,
-                                     HttpSession session) {
+                                     @SessionAttribute("user") User loginUser) {
         int currentPage = page == 0 ? 1 : page;
-        User loginUser = (User)session.getAttribute("user");
         if ((menu != null && menu.equals("manage")) || loginUser.getRole().equals("admin")) {
             return new ModelAndView("redirect:/listSale.do?menu=manage&page=" + page);
         }
@@ -131,10 +131,12 @@ public class PurchaseController {
     }
 
     @RequestMapping("/updatePurchaseView.do")
-    public String updatePurchaseView(@RequestParam("tranNo") int tranNo, HttpSession session, Model model) {
+    public String updatePurchaseView(@RequestParam("tranNo") int tranNo,
+                                     Model model,
+                                     @SessionAttribute("user") User loginUser) {
         GetPurchaseResponseDTO toUpdate = this.purchaseService.getPurchase(tranNo);
         model.addAttribute("purchaseData", toUpdate);
-        model.addAttribute("loginUser", session.getAttribute("user"));
+        model.addAttribute("loginUser", loginUser);
         return "/purchase/updatePurchaseView.jsp";
     }
 
