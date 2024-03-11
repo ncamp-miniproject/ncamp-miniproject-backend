@@ -78,7 +78,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         int page = requestDTO.getPage();
         page = page == 0 ? 1 : page;
         int pageSize = requestDTO.getPageSize();
-        pageSize = pageSize == 0 ? 1 : pageSize;
+        pageSize = pageSize == 0 ? defaultPageSize : pageSize;
         String searchCondition = StringUtil.null2nullStr(requestDTO.getSearchCondition());
         String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
 
@@ -92,13 +92,13 @@ public class PurchaseServiceImpl implements PurchaseService {
         return new ListPurchaseResponseDTO().builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
-                .pageInfo(getPageInfo(result.getCount(), page))
+                .pageInfo(getPageInfo(result.getCount(), page, pageSize))
                 .loginUser(new User(loginUserId))
                 .build();
     }
 
-    private Page getPageInfo(int count, int currentPage) {
-        return Page.of(currentPage, count, defaultPageSize, defaultPageDisplay);
+    private Page getPageInfo(int count, int currentPage, int pageSize) {
+        return Page.of(currentPage, count, pageSize, defaultPageDisplay);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         return new ListPurchaseResponseDTO().builder()
                 .count(purchases.getCount())
                 .purchaseList(purchases.getList())
-                .pageInfo(getPageInfo(purchases.getCount(), page))
+                .pageInfo(getPageInfo(purchases.getCount(), page, pageSize))
                 .build();
     }
 

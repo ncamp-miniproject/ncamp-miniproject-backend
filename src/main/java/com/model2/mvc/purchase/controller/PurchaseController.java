@@ -89,10 +89,10 @@ public class PurchaseController {
     }
 
     @RequestMapping("/listSale.do")
-    public ModelAndView listSale(@RequestParam("menu") String menu,
-                                 @RequestParam("page") int page,
+    public ModelAndView listSale(@RequestParam(value = "menu", required = false) String menu,
+                                 @RequestParam(value = "page", required = false) Integer page,
                                  @SessionAttribute("user") User loginUser) {
-        int currentPage = page == 0 ? 1 : page;
+        int currentPage = page == null ? 1 : page;
         if ((menu == null || menu.equals("search")) || !loginUser.getRole().equals("admin")) {
             return new ModelAndView("redirect:/listPurchase.do?menu=search&page=" + currentPage);
         }
