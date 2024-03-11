@@ -13,7 +13,7 @@ public class CookieSetter implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request,
                            HttpServletResponse response,
                            Object handler,
-                           ModelAndView modelAndView) throws Exception {
-        response.addCookie(new Cookie("cartCookieValue", (String)modelAndView.getModel().get("cartCookieValue")));
+                           ModelAndView modelAndView) {
+        response.addCookie(new Cookie("cart", (String)modelAndView.getModel().get("cartCookieValue")));
     }
 }

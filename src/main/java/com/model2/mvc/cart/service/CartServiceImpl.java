@@ -1,7 +1,6 @@
 package com.model2.mvc.cart.service;
 
 import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
-import com.model2.mvc.cart.dto.response.AddItemResponseDTO;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
@@ -40,16 +39,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public AddItemResponseDTO addItem(AddItemRequestDTO requestDTO) {
+    public String addItem(AddItemRequestDTO requestDTO) {
         if (Integer.parseInt(requestDTO.getQuantity()) <= 0) {
             // TODO: do more things
             throw new IllegalArgumentException();
         }
         String cartValue = requestDTO.getCartValue();
         if (cartValue.isEmpty()) {
-            return new AddItemResponseDTO(requestDTO.getProdNo() +
-                                          cookieKeyValueDelimiter +
-                                          requestDTO.getQuantity());
+            return requestDTO.getProdNo() + cookieKeyValueDelimiter + requestDTO.getQuantity();
         } else {
             Map<String, String> map = new HashMap<>();
             Arrays.stream(cartValue.split(cookieItemDelimiter)).forEach(v -> {
@@ -60,19 +57,17 @@ public class CartServiceImpl implements CartService {
             });
 
             map.put(requestDTO.getProdNo(), requestDTO.getQuantity());
-            return new AddItemResponseDTO(String.join(cookieItemDelimiter,
-                                                      map.keySet()
-                                                              .stream()
-                                                              .map(k -> k +
-                                                                        cookieKeyValueDelimiter +
-                                                                        map.get(k))
-                                                              .collect(Collectors.toList())));
+            return String.join(cookieItemDelimiter,
+                               map.keySet()
+                                       .stream()
+                                       .map(k -> k + cookieKeyValueDelimiter + map.get(k))
+                                       .collect(Collectors.toList()));
         }
     }
 
     @Override
     public ListCartItemResponseDTO getCartItemList(String cartValue) {
-        if (cartValue.isEmpty()) {
+        if (cartValue == null || cartValue.isEmpty()) {
             return new ListCartItemResponseDTO(0, 0, new HashMap<>());
         }
 

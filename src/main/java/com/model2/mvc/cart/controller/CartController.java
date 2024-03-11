@@ -1,7 +1,6 @@
 package com.model2.mvc.cart.controller;
 
 import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
-import com.model2.mvc.cart.dto.response.AddItemResponseDTO;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
 import com.model2.mvc.cart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +30,10 @@ public class CartController {
         if (cartValue == null) {
             cartValue = "";
         }
-        AddItemResponseDTO responseDTO = this.cartService.addItem(new AddItemRequestDTO(prodNo, quantity, cartValue));
+        String result = this.cartService.addItem(new AddItemRequestDTO(prodNo, quantity, cartValue));
         return new ModelAndView(String.format("redirect:/getProduct.do?prodNo=%s&menu=search", prodNo),
                                 "cartCookieValue",
-                                responseDTO);
+                                result);
     }
 
     @RequestMapping("/clearCart.do")
@@ -44,7 +43,7 @@ public class CartController {
     }
 
     @RequestMapping("/listCart.do")
-    public String listCart(@CookieValue("cart") String cartValue, Model model) {
+    public String listCart(@CookieValue(value = "cart", required = false) String cartValue, Model model) {
         ListCartItemResponseDTO responseDTO = this.cartService.getCartItemList(cartValue);
         model.addAttribute("data", responseDTO);
         return "/cart/listCartItem.jsp";
