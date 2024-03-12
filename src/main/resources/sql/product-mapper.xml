@@ -129,17 +129,17 @@
         LEFT OUTER JOIN category c ON c.category_no = p.category_no
         <where>
             <if test="searchCondition == 1">
-                p.prod_name LIKE #{searchKeyword}
+                p.prod_name LIKE #{prodName}
             </if>
             <if test="searchCondition == 2">
-                <if test="priceLowerBound != null and priceUpperBound != null">
-                    p.price BETWEEN #{priceLowerBound} AND #{priceUpperBound}
+                <if test="lowerBound != null and upperBound != null">
+                    p.price BETWEEN #{lowerBound} AND #{upperBound}
                 </if>
-                <if test="priceLowerBound != null and priceUpperBound == null">
-                    p.price $gt;= #{priceLowerBound}
+                <if test="lowerBound != null and upperBound == null">
+                    p.price $gt;= #{lowerBound}
                 </if>
-                <if test="priceLowerBound == null and priceUpperBound != null">
-                    p.price $lt;= #{priceUpperBound}
+                <if test="lowerBound == null and upperBound != null">
+                    p.price $lt;= #{upperBound}
                 </if>
             </if>
             <if test="categoryNo != null">

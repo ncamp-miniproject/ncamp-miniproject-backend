@@ -17,6 +17,7 @@ import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
 import com.model2.mvc.product.repository.ProductRepository;
+import com.model2.mvc.product.service.helper.ListQueryHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -72,58 +73,12 @@ public class ProductServiceImpl implements ProductService {
                 "No record for the given prodNo: " + prodNo)));
     }
 
-    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDTO, ListData<Product>>>
-            listTaskMapper = new OptionalHashMap<>();
-
-    static {
-        listTaskMapper.put(SearchCondition.NO_CONDITION,
-                           (repository, dto) -> repository.findAllInCategory(getOneIfNull(dto.getPage()),
-                                                                             getOneIfNull(dto.getPageSize()),
-                                                                             dto.getCategoryNo()));
-        listTaskMapper.put(SearchCondition.BY_NAME,
-                           (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
-                                                                              false,
-                                                                              getOneIfNull(dto.getPage()),
-                                                                              getOneIfNull(dto.getPageSize()),
-                                                                              dto.getCategoryNo()));
-        listTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
-            List<Integer> boundPair = Arrays.stream(dto.getSearchKeyword().split(","))
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            Integer lowerBound = null;
-            Integer upperBound = null;
-            if (boundPair.size() > 2) {
-                throw new IllegalArgumentException();
-            } else if (boundPair.size() == 2) {
-                lowerBound = boundPair.get(0);
-                upperBound = boundPair.get(1);
-            } else if (boundPair.size() == 1) {
-                if (dto.getSearchKeyword().startsWith(",")) {
-                    upperBound = boundPair.get(0);
-                } else {
-                    lowerBound = boundPair.get(0);
-                }
-            }
-            return repository.findListByPriceRange(lowerBound,
-                                                   upperBound,
-                                                   getOneIfNull(dto.getPage()),
-                                                   getOneIfNull(dto.getPageSize()),
-                                                   dto.getCategoryNo());
-        });
-    }
-
-    private static Integer getOneIfNull(Integer num) {
-        return num == null ? 1 : num;
-    }
-
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
-        ListData<Product> resultMap = listTaskMapper.getOptional(requestDTO.getSearchCondition())
-                .orElse(listTaskMapper.get(SearchCondition.NO_CONDITION))
-                .apply(this.productRepository, requestDTO);
+        ListData<Product> resultMap = ListQueryHelper.findProductList(this.productRepository, requestDTO);
 
-        Integer page = getOneIfNull(requestDTO.getPage());
-        Integer pageSize = getOneIfNull(requestDTO.getPageSize());
+        int page = resultMap.getPage();
+        int pageSize = requestDTO.getPageSize();
 
         Page pageInfo = Page.of(page, resultMap.getCount(), defaultPageSize, defaultPageDisplay);
 
