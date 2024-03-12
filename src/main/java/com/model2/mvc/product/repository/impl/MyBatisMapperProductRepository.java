@@ -70,7 +70,7 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     private ListData<Product> findList(Map<String, Object> search) {
-        ListData<Product> result = this.sqlSession.selectOne("ProductMapper.findProducts", search);
+        ListData<Product> result = this.sqlSession.selectOne("ProductMapper.findList", search);
         return result == null ? new ListData<>(0, new ArrayList<>()) : result;
     }
 

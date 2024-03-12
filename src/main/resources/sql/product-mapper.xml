@@ -98,7 +98,7 @@
         <collection property="list" resultMap="product"/>
     </resultMap>
 
-    <select id="findProducts" parameterType="map" resultMap="productListData">
+    <select id="findList" parameterType="map" resultMap="productListData">
         SELECT
         v.prod_no         AS "prod_no",
         v.prod_name       AS "prod_name",
@@ -108,6 +108,8 @@
         v.image_file      AS "image_file",
         v.reg_date        AS "reg_date",
         v.stock           AS "stock",
+        v.category_no     AS "category_no",
+        v.category_name   AS "category_name",
         v.count           AS "count"
         FROM
         (

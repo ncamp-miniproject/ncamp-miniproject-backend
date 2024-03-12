@@ -1,14 +1,13 @@
 package com.model2.mvc.product.dao.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.in;
 
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
-import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.common.ListData;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Before;
@@ -16,13 +15,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,11 +29,10 @@ import java.util.stream.Collectors;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring-config/common.xml", "classpath*:spring-config/context-*.xml" })
-public class TestMyBatisMapperProductDAO {
+public class TestMyBatisMapperSimpleProductDAO {
 
     @Autowired
-    @Qualifier("myBatisMapperProductDAO")
-    private ProductDAO productDAO;
+    private ProductRepository productRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -58,7 +53,7 @@ public class TestMyBatisMapperProductDAO {
 
     @Test
     public void insert() {
-        this.productDAO.insertProduct(generateOne());
+        this.productRepository.insertProduct(generateOne());
     }
 
     private Product generateOne() {
@@ -76,9 +71,9 @@ public class TestMyBatisMapperProductDAO {
     @Test
     public void findById() {
         Product prod = generateOne();
-        this.productDAO.insertProduct(prod);
+        this.productRepository.insertProduct(prod);
 
-        Optional<Product> prodFound = this.productDAO.findById(prod.getProdNo());
+        Optional<Product> prodFound = this.productRepository.findById(prod.getProdNo());
 
         assertThatNoException().isThrownBy(() -> prodFound.orElseThrow(RuntimeException::new));
 
@@ -95,16 +90,16 @@ public class TestMyBatisMapperProductDAO {
         Product product1 = new Product("Product1", 3000, 24);
         Product product2 = new Product("Product2", 2000, 12);
         Product product3 = new Product("Product3", 50000, 120);
-        this.productDAO.insertProduct(product1);
-        this.productDAO.insertProduct(product2);
-        this.productDAO.insertProduct(product3);
+        this.productRepository.insertProduct(product1);
+        this.productRepository.insertProduct(product2);
+        this.productRepository.insertProduct(product3);
 
         List<Integer> ids = new ArrayList<>();
         ids.add(product1.getProdNo());
         ids.add(product2.getProdNo());
         ids.add(product3.getProdNo());
 
-        Map<Integer, Product> productsByIds = this.productDAO.findProductsByIds(ids);
+        Map<Integer, Product> productsByIds = this.productRepository.findProductsByIds(ids);
 
         assertThat(productsByIds.size()).isEqualTo(3);
 
@@ -127,7 +122,7 @@ public class TestMyBatisMapperProductDAO {
     public void insertWithCategory_DataIntegrityViolationException() {
         Product product = new Product("sample-product", 13000, 25000);
         product.setCategory(new Category(10000, "category"));
-        assertThat(this.productDAO.insertProduct(product)).isFalse();
+        assertThat(this.productRepository.insertProduct(product)).isFalse();
     }
 
     @Test
@@ -140,15 +135,15 @@ public class TestMyBatisMapperProductDAO {
         Product product = new Product("sample-product", 13000, 25000);
         product.setCategory(toInsert);
         this.categoryRepository.insertCategory(toInsert);
-        this.productDAO.insertProduct(product);
+        this.productRepository.insertProduct(product);
         return product;
     }
-    
+
     @Test
     public void findWithCategory() {
         Product sampleProduct = insertSample();
 
-        Optional<Product> foundProduct = this.productDAO.findById(sampleProduct.getProdNo());
+        Optional<Product> foundProduct = this.productRepository.findById(sampleProduct.getProdNo());
 
         assertThat(foundProduct.get()).isNotNull();
 
@@ -164,25 +159,48 @@ public class TestMyBatisMapperProductDAO {
         Product product = new Product("sample-product", 13000, 25000);
         product.setCategory(toInsert);
         this.categoryRepository.insertCategory(toInsert);
-        this.productDAO.insertProduct(product);
+        this.productRepository.insertProduct(product);
 
         Category toInsert2 = new Category("category2");
         Product product2 = new Product("sample-product2", 13500, 200);
-        product.setCategory(toInsert2);
+        product2.setCategory(toInsert2);
         this.categoryRepository.insertCategory(toInsert2);
-        this.productDAO.insertProduct(product2);
+        this.productRepository.insertProduct(product2);
 
         Product product3 = new Product("sample-product3", 13600, 100);
         product3.setCategory(toInsert);
-        this.productDAO.insertProduct(product3);
+        this.productRepository.insertProduct(product3);
 
         return Arrays.asList(product, product2, product3);
     }
 
     @Test
     public void findListWithCategory_findAll() {
-        List<Product> sampleProducts = insertSampleList();
+        insertSampleList();
 
+        ListData<Product> found = this.productRepository.findAllInCategory(1, 3, null);
+        assertThat(found.getCount()).isEqualTo(3);
+        assertThat(found.getList().size()).isEqualTo(3);
+        System.out.println("============================");
+        System.out.println(found.getList());
+        System.out.println("============================");
+        assertThat((int)found.getList()
+                .stream()
+                .filter(p -> p.getCategory().getCategoryName().equals("category1"))
+                .count()).isEqualTo(2);
+    }
 
+    @Test
+    public void findListWithCategory_findAllWithSpecificCategory() {
+        List<Product> products = insertSampleList();
+        Integer categoryNo = products.get(0).getCategory().getCategoryNo();
+
+        ListData<Product> found = this.productRepository.findAllInCategory(1, 3, categoryNo);
+        assertThat(found.getCount()).isEqualTo(2);
+        assertThat(found.getList().size()).isEqualTo(2);
+        assertThat((int)found.getList()
+                .stream()
+                .filter(p -> p.getCategory().getCategoryName().equals("category1"))
+                .count()).isEqualTo(2);
     }
 }

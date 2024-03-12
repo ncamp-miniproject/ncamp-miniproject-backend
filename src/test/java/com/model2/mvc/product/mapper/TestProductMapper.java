@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
+import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -108,29 +109,29 @@ public class TestProductMapper {
         prods.forEach(p -> this.sqlSession.insert("ProductMapper.insert", p));
 
         Map<String, Object> search1 = new HashMap<>();
-        search1.put("searchKeyword", "Product%");
+        search1.put("prodName", "Product%");
         search1.put("startRowNum", 1);
         search1.put("endRowNum", 3);
-        search1.put("searchCondition", "1");
-        ListData<Product> found1 = this.sqlSession.selectOne("ProductMapper.findProducts", search1);
+        search1.put("searchCondition", SearchCondition.BY_NAME.getConditionCode());
+        ListData<Product> found1 = this.sqlSession.selectOne("ProductMapper.findList", search1);
 
         findProductsByProdName_aTest(3, found1, prods);
 
         Map<String, Object> search2 = new HashMap<>();
-        search2.put("searchKeyword", "Product1");
+        search2.put("prodName", "Product1");
         search2.put("startRowNum", 1);
         search2.put("endRowNum", 3);
-        search2.put("searchCondition", "1");
-        ListData<Product> found2 = this.sqlSession.selectOne("ProductMapper.findProducts", search2);
+        search2.put("searchCondition", SearchCondition.BY_NAME.getConditionCode());
+        ListData<Product> found2 = this.sqlSession.selectOne("ProductMapper.findList", search2);
 
         findProductsByProdName_aTest(1, found2, prods);
 
         Map<String, Object> search3 = new HashMap<>();
-        search3.put("searchKeyword", "%2");
+        search3.put("prodName", "%2");
         search3.put("startRowNum", 1);
         search3.put("endRowNum", 3);
-        search3.put("searchCondition", "1");
-        ListData<Product> found3 = this.sqlSession.selectOne("ProductMapper.findProducts", search3);
+        search3.put("searchCondition", SearchCondition.BY_NAME.getConditionCode());
+        ListData<Product> found3 = this.sqlSession.selectOne("ProductMapper.findList", search3);
 
         findProductsByProdName_aTest(1, found3, prods);
     }
