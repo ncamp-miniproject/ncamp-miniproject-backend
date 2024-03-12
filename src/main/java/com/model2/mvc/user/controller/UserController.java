@@ -29,6 +29,11 @@ public class UserController {
         return "redirect:user/loginView";
     }
 
+    @RequestMapping("/loginView.do")
+    public String addUserView() {
+        return "user/loginView";
+    }
+
     @RequestMapping("/checkDuplication.do")
     public String checkDuplication(@RequestParam("userId") String userId, Model model) throws Exception {
         boolean result = this.userService.checkDuplication(userId);

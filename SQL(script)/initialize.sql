@@ -41,7 +41,8 @@ CREATE TABLE category
 (
     category_no   NUMBER(16),
     category_name VARCHAR2(100) NOT NULL,
-    PRIMARY KEY (category_no)
+    PRIMARY KEY (category_no),
+    UNIQUE (category_name)
 );
 
 CREATE TABLE product

@@ -34,7 +34,7 @@ public class LoginFilter extends HttpFilter implements Filter {
             HttpSession session = httpRequest.getSession();
             if (session.isNew() || session.getAttribute("user") == null) {
                 System.out.println("User should log in");
-                ((HttpServletResponse)response).sendRedirect("/user/loginView.jsp");
+                ((HttpServletResponse)response).sendRedirect("/loginView.do");
                 return;
             }
         }
