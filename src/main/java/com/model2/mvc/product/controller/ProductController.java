@@ -76,7 +76,7 @@ public class ProductController {
             result.setPurchasable(false);
         }
         model.addAttribute("productData", result);
-        return "/product/getProduct.jsp";
+        return "product/getProduct";
     }
 
     @RequestMapping("/listProduct.do")
@@ -93,7 +93,7 @@ public class ProductController {
         ListProductResponseDTO responseDTO = this.productService.getProductList(requestDTO);
 
         model.addAttribute("data", responseDTO);
-        return "/product/listProduct.jsp";
+        return "product/listProduct";
     }
 
     @RequestMapping("/updateProduct.do")
@@ -106,6 +106,6 @@ public class ProductController {
     public String updateProductView(@RequestParam("prodNo") int prodNo, Model model) {
         GetProductResponseDTO responseDTO = this.productService.getProduct(prodNo);
         model.addAttribute("data", responseDTO);
-        return "/product/updateProduct.jsp";
+        return "product/updateProduct";
     }
 }

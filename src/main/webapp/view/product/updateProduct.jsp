@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<script type="text/javascript" src="../javascript/calendar.js">
+<script type="text/javascript" src="../../javascript/calendar.js">
     
 </script>
 </head>
@@ -80,7 +80,7 @@
                 <td class="ct_write01">
                     <input type="text" name="manuDate" readonly="readonly" class="ct_input_g"
                         style="width: 100px; height: 19px" maxLength="10" minLength="6" /> &nbsp;<img
-                        src="../images/ct_icon_date.gif" width="15" height="15"
+                        src="../../images/ct_icon_date.gif" width="15" height="15"
                         onclick="show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value)" />
                 </td>
             </tr>

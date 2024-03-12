@@ -28,7 +28,7 @@ public class CategoryController {
     public String addCategoryView(@SessionAttribute("user") User loginUser) {
         checkAuthorization(loginUser);
 
-        return "/category/addCategoryView.jsp";
+        return "category/addCategoryView";
     }
 
     @RequestMapping("/addCategory.do")

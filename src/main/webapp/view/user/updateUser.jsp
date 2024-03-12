@@ -75,7 +75,7 @@
             </tr>
             <tr>
                 <td width="104" class="ct_write">아이디 <img src="/images/ct_icon_red.gif" width="3" height="3"
-                    align="absmiddle">
+                                                          align="absmiddle">
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
@@ -93,7 +93,7 @@
 
             <tr>
                 <td width="104" class="ct_write">이름 <img src="/images/ct_icon_red.gif" width="3" height="3"
-                    align="absmiddle">
+                                                         align="absmiddle">
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01"><input type="text" name="userName" value="${ user.userName }" class="ct_input_g"

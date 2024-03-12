@@ -7,7 +7,7 @@
 
 <title>구매정보 수정</title>
 
-<script type="text/javascript" src="../javascript/calendar.js">
+<script type="text/javascript" src="../../javascript/calendar.js">
 	
 </script>
 
@@ -113,7 +113,7 @@
                 <td width="200" class="ct_write01">
                     <input type="text" readonly="readonly" name="divyDate" class="ct_input_g"
                         value="${ purchaseData.divyDate }"
-                        style="width: 100px; height: 19px" maxLength="20" /> <img src="../images/ct_icon_date.gif"
+                        style="width: 100px; height: 19px" maxLength="20" /> <img src="../../images/ct_icon_date.gif"
                         width="15" height="15"
                         onclick="show_calendar('document.updatePurchase.divyDate', document.updatePurchase.divyDate.value)" />
                 </td>

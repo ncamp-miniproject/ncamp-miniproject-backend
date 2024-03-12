@@ -70,7 +70,7 @@
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 3px;">
                         <tr>
                             <td width="8" style="padding-bottom: 3px;"><img src="/images/ct_bot_ttl01.gif" width="4"
-                                height="7"></td>
+                                                                            height="7"></td>
                             <td class="ct_ttl02">${ userId }${ result ? "는 사용 가능합니다." : "는 사용이 불가능합니다." }</td>
                         </tr>
                     </table>
@@ -89,7 +89,7 @@
             </tr>
             <tr>
                 <td width="104" class="ct_write">아이디 <img src="/images/ct_icon_red.gif" width="3" height="3"
-                    align="absmiddle">
+                                                          align="absmiddle">
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">

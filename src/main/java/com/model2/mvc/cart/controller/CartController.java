@@ -46,6 +46,6 @@ public class CartController {
     public String listCart(@CookieValue(value = "cart", required = false) String cartValue, Model model) {
         ListCartItemResponseDTO responseDTO = this.cartService.getCartItemList(cartValue);
         model.addAttribute("data", responseDTO);
-        return "/cart/listCartItem.jsp";
+        return "cart/listCartItem";
     }
 }

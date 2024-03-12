@@ -144,8 +144,8 @@ function resetData() {
 								<td width="4" height="21">
 									<img src="/images/ct_btng01.gif" width="4" height="21"/>
 								</td>
-								<td 	align="center" background="/images/ct_btng02.gif" class="ct_btn" 
-										style="padding-top:3px;">
+								<td align="center" background="/images/ct_btng02.gif" class="ct_btn"
+                                    style="padding-top:3px;">
 									<a href="javascript:fncCheckDuplication();" id="btnCmfID">ID중복확인</a>
 								</td>
 								<td width="4" height="21">

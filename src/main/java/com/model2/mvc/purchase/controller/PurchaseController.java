@@ -80,7 +80,7 @@ public class PurchaseController {
     public String addPurchase(@ModelAttribute("requestDTO") AddPurchaseRequestDTO requestDTO, Model model) {
         AddPurchaseResponseDTO responseDTO = this.purchaseService.addPurchase(requestDTO);
         model.addAttribute("purchaseData", responseDTO);
-        return "/purchase/addPurchaseResult.jsp";
+        return "purchase/addPurchaseResult";
     }
 
     @RequestMapping("/addPurchaseView.do")
@@ -113,7 +113,7 @@ public class PurchaseController {
 
         ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, defaultPageSize);
 
-        ModelAndView mv = new ModelAndView("/purchase/listPurchase.jsp");
+        ModelAndView mv = new ModelAndView("purchase/listPurchase");
         mv.addObject("data", responseDTO.builder().loginUser(loginUser).build());
         return mv;
     }
@@ -122,7 +122,7 @@ public class PurchaseController {
     public String getPurchase(@RequestParam("tranNo") int tranNo, Model model) {
         GetPurchaseResponseDTO responseDTO = this.purchaseService.getPurchase(tranNo);
         model.addAttribute("purchaseData", responseDTO);
-        return "/purchase/getPurchase.jsp";
+        return "purchase/getPurchase";
     }
 
     @RequestMapping("/listPurchase.do")
@@ -135,7 +135,7 @@ public class PurchaseController {
 
         ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(requestDTO, loginUser.getUserId());
 
-        ModelAndView mv = new ModelAndView("/purchase/listPurchase.jsp");
+        ModelAndView mv = new ModelAndView("purchase/listPurchase");
         mv.addObject("data", result.builder().loginUser(loginUser).build());
         return mv;
     }
@@ -147,7 +147,7 @@ public class PurchaseController {
         GetPurchaseResponseDTO toUpdate = this.purchaseService.getPurchase(tranNo);
         model.addAttribute("purchaseData", toUpdate);
         model.addAttribute("loginUser", loginUser);
-        return "/purchase/updatePurchaseView.jsp";
+        return "purchase/updatePurchaseView";
     }
 
     @RequestMapping("/updatePurchase.do")
@@ -155,7 +155,7 @@ public class PurchaseController {
         Purchase result = this.purchaseService.updatePurchase(requestDTO);
 
         model.addAttribute("purchaseData", result);
-        return "/purchase/updatePurchaseResult.jsp";
+        return "purchase/updatePurchaseResult";
     }
 
     @RequestMapping("/updateTranCode.do")
