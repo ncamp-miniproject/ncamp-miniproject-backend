@@ -66,7 +66,7 @@
             <td valign="top">
                 <table border="0" cellspacing="0" cellpadding="0" width="159">
                     <tr>
-                        <td class="Depth03"><a href="${pageContext.request.contextPath}/view/product/addProductView.jsp;"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/addProductView.do"
                                                target="rightFrame">판매상품등록</a></td>
                     </tr>
                     <tr>

@@ -748,4 +748,18 @@ VALUES
       10005,
       2 );
 
+INSERT INTO category
+VALUES
+    ( seq_category_category_no.nextval,
+      'sample-category' );
+
+UPDATE product
+SET
+    category_no = (
+        SELECT
+            category_no
+        FROM category
+        WHERE category_name = 'sample-category'
+    );
+
 COMMIT;

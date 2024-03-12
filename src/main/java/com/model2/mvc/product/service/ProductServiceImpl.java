@@ -57,7 +57,9 @@ public class ProductServiceImpl implements ProductService {
         product.setProdName(toInsert.getProdName());
         product.setRegDate(new Date(System.currentTimeMillis()));
         product.setStock(toInsert.getStock());
-        product.setCategory(this.categoryService.getCategory(toInsert.getCategoryNo()));
+        if (toInsert.getCategoryNo() != null) {
+            product.setCategory(this.categoryService.getCategory(toInsert.getCategoryNo()));
+        }
         this.productRepository.insertProduct(product);
         return AddProductResponseDTO.from(product);
     }
@@ -113,5 +115,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Category addCategory(String categoryName) {
         return this.categoryService.insertCategory(categoryName);
+    }
+
+    @Override
+    public List<Category> getCategoryList() {
+        return this.categoryService.getCategoryList();
     }
 }

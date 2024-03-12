@@ -9,6 +9,8 @@ import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
 
+import java.util.List;
+
 public interface ProductService {
 
     public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert);
@@ -20,4 +22,6 @@ public interface ProductService {
     public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO);
 
     public Category addCategory(String categoryName);
+
+    public List<Category> getCategoryList();
 }

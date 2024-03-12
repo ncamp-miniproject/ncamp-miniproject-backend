@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>ªÛ«∞µÓ∑œ</title>
+<title>ÏÉÅÌíàÎì±Î°ù</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -22,7 +23,7 @@
                 <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td width="93%" class="ct_ttl01">ªÛ«∞µÓ∑œ</td>
+                            <td width="93%" class="ct_ttl01">ÏÉÅÌíàÎì±Î°ù</td>
                             <td width="20%" align="right">&nbsp;</td>
                         </tr>
                     </table>
@@ -39,7 +40,7 @@
             </tr>
             <tr>
                 <td width="104" class="ct_write">
-                    ªÛ«∞∏Ì
+                    ÏÉÅÌíàÎ™Ö
                     <img src ="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle">
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
@@ -59,7 +60,7 @@
             </tr>
             <tr>
                 <td width="104" class="ct_write">
-                    ªÛ«∞ªÛºº¡§∫∏ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                    ÏÉÅÌíàÏÉÅÏÑ∏Ï†ïÎ≥¥ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
@@ -76,7 +77,7 @@
             </tr>
             <tr>
                 <td width="104" class="ct_write">
-                    ¡¶¡∂¿œ¿⁄ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                    Ï†úÏ°∞ÏùºÏûê <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
@@ -95,7 +96,7 @@
             </tr>
             <tr>
                 <td width="104" class="ct_write">
-                    ∞°∞› <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                    Í∞ÄÍ≤© <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
                 </td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
@@ -103,7 +104,7 @@
                            name="price"
                            class="ct_input_g"
                            style="width: 100px; height: 19px"
-                           maxLength="10">&nbsp;ø¯
+                           maxLength="10">&nbsp;Ïõê
                 </td>
             </tr>
             <tr>
@@ -111,7 +112,7 @@
             </tr>
             <!--
             <tr>
-                <td width="104" class="ct_write">ªÛ«∞¿ÃπÃ¡ˆ</td>
+                <td width="104" class="ct_write">ÏÉÅÌíàÏù¥ÎØ∏ÏßÄ</td>
                 <td bgcolor="D6D6D6" width="1"></td>
                 <td class="ct_write01">
                     <input type="file" name="fileName" class="ct_input_g" style="width: 200px; height: 19px"
@@ -122,6 +123,39 @@
                 <td height="1" colspan="3" bgcolor="D6D6D6"></td>
             </tr>
              -->
+            <tr>
+                <td width="104" class="ct_write">
+                    Ïû¨Í≥† <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                </td>
+                <td bgcolor="D6D6D6" width="1"></td>
+                <td class="ct_write01">
+                    <input type="text"
+                           name="stock"
+                           class="ct_input_g"
+                           style="width: 100px; height: 19px"
+                           maxLength="10">&nbsp;Í∞ú
+                </td>
+            </tr>
+            <tr>
+                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
+            </tr>
+            <tr>
+                <td width="104" class="ct_write">
+                    Ïπ¥ÌÖåÍ≥†Î¶¨ <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                </td>
+                <td bgcolor="D6D6D6" width="1"></td>
+                <td class="ct_write01">
+                    <select name="categoryNo">
+                        <option value="-1">&lt;ÏóÜÏùå&gt;</option>
+                        <c:forEach var="category" items="${categoryList}">
+                            <option value="${category.categoryNo}">${category.categoryName}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td height="1" colspan="3" bgcolor="D6D6D6"></td>
+            </tr>
         </table>
 
         <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
@@ -134,7 +168,7 @@
                                 <img src="/images/ct_btnbg01.gif" width="17" height="23"/>
                             </td>
                             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-                                <a href="javascript:fncAddProduct();">µÓ∑œ</a>
+                                <a href="javascript:fncAddProduct();">Îì±Î°ù</a>
                             </td>
                             <td width="14" height="23">
                                 <img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -144,7 +178,7 @@
                                 <img src="/images/ct_btnbg01.gif" width="17" height="23"/>
                             </td>
                             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-                                <a href="javascript:resetData();">√Îº“</a>
+                                <a href="javascript:resetData();">Ï∑®ÏÜå</a>
                             </td>
                             <td width="14" height="23">
                                 <img src="/images/ct_btnbg03.gif" width="14" height="23"/>
