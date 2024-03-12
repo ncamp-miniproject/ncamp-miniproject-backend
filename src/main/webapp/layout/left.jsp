@@ -66,11 +66,11 @@
             <td valign="top">
                 <table border="0" cellspacing="0" cellpadding="0" width="159">
                     <tr>
-                        <td class="Depth03"><a href="../product/addProductView.jsp;"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/view/product/addProductView.jsp;"
                                                target="rightFrame">판매상품등록</a></td>
                     </tr>
                     <tr>
-                    <td class="Depth03"><a href="/listProduct.do?menu=manage"
+                    <td class="Depth03"><a href="${pageContext.request.contextPath}/listProduct.do?menu=manage"
                                            target="rightFrame">판매상품관리</a></td>
                     </tr>
                     <tr>
@@ -86,22 +86,22 @@
             <td valign="top">
                 <table border="0" cellspacing="0" cellpadding="0" width="159">
                     <tr>
-                        <td class="Depth03"><a href="/listProduct.do?menu=search"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/listProduct.do?menu=search"
                                                target="rightFrame">상 품 검 색</a></td>
                     </tr>
                     <tr>
-                        <td class="Depth03"><a href="/listCart.do"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/listCart.do"
                                                target="rightFrame">장 바 구 니</a></td>
                     </tr>
                     <c:if test="${!empty user && role == 'user'}">
                     <tr>
-                        <td class="Depth03"><a href="/listPurchase.do?menu=search"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/listPurchase.do?menu=search"
                                                target="rightFrame">구매이력조회</a></td>
                     </tr>
                     </c:if>
                     <c:if test="${!empty user && role == 'admin'}">
                         <tr>
-                            <td class="Depth03"><a href="/listPurchase.do?menu=manage"
+                            <td class="Depth03"><a href="${pageContext.request.contextPath}/listPurchase.do?menu=manage"
                                                    target="rightFrame">판매조회</a></td>
                         </tr>
                     </c:if>

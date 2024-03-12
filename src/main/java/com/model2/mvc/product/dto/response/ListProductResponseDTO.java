@@ -16,6 +16,7 @@ public class ListProductResponseDTO {
     private Page pageInfo;
     private String menuMode;
     private Search searchInfo;
+    private Integer currentCategoryNo;
 
     private ListProductResponseDTO() {
     }
@@ -32,6 +33,7 @@ public class ListProductResponseDTO {
         dto.pageInfo = pageInfo;
         dto.menuMode = requestDTO.getMenu();
         dto.searchInfo = searchInfo;
+        dto.currentCategoryNo = requestDTO.getCategoryNo();
         return dto;
     }
 
@@ -59,6 +61,10 @@ public class ListProductResponseDTO {
         return searchInfo;
     }
 
+    public Integer getCurrentCategoryNo() {
+        return this.currentCategoryNo;
+    }
+
     @Override
     public String toString() {
         return "ListProductResponseDTO{" +
@@ -66,6 +72,8 @@ public class ListProductResponseDTO {
                count +
                ", products=" +
                products +
+               ", categories=" +
+               categories +
                ", pageInfo=" +
                pageInfo +
                ", menuMode='" +

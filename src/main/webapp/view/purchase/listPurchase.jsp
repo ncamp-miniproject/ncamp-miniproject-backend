@@ -95,7 +95,7 @@
             </table>
 
             <c:set var="url" value="/listPurchase.do" scope="request" />
-            <c:import var="pageNumbers" url="/common/pageNumbers.jsp" scope="request" />
+            <c:import var="pageNumbers" url="/fragment/pageNumbers.jsp" scope="request" />
             ${ pageNumbers }
 
             <!--  페이지 Navigator 끝 -->

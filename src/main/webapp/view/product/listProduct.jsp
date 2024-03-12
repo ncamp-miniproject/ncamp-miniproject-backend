@@ -6,7 +6,21 @@
 <head>
     <title>상품 목록조회</title>
 
-    <link rel="stylesheet" href="/css/admin.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
+    <style>
+        .category-box {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            width: auto;
+            align-items: center;
+        }
+
+        .category-item {
+            font-size: 12px;
+            width: fit-content;
+        }
+    </style>
 
 <script type="text/javascript">
 	function fncGetProductList() {
@@ -74,6 +88,32 @@
                 </tr>
             </table>
 
+            <div class="category-box">
+                <c:if test="${data.currentCategoryNo == null}">
+                    <p class="category-item">모든 항목</p>
+                </c:if>
+                <c:if test="${data.currentCategoryNo != null}">
+                    <a href="${pageContext.request.contextPath}/listProduct.do?page=1&menu=${data.menuMode}" class="category-item">
+                        모든 항목
+                    </a>
+                </c:if>
+                <c:forEach var="category" items="${data.categories}">
+                    <c:if test="${category.categoryNo == data.currentCategoryNo}">
+                        <p class="category-item">${category.categoryName}</p>
+                    </c:if>
+                    <c:if test="${category.categoryNo != data.currentCategoryNo}">
+                        <a href="${pageContext.request.contextPath}/listProduct.do?page=1&menu=${data.menuMode}&categoryNo=${category.categoryNo}" class="category-item">
+                            ${category.categoryName}
+                        </a>
+                    </c:if>
+                </c:forEach>
+            </div>
+
+            <c:if test="${!empty user && user.role == 'admin' && data.menuMode == 'manage'}">
+                <a href="${pageContext.request.contextPath}/addCategoryView.do">
+                    카테고리 생성
+                </a>
+            </c:if>
 
             <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
                 <tr>
@@ -128,7 +168,7 @@
             <c:set var="additionalQueryString"
                    value="&menu=${ data.menuMode }&searchCondition=${ data.searchInfo.searchCondition }&searchKeyword=${ data.searchInfo.searchKeyword }"
                    scope="request"/>
-            <c:import var="pageNumbers" url="/common/pageNumbers.jsp" scope="request"/>
+            <c:import var="pageNumbers" url="/fragment/pageNumbers.jsp" scope="request"/>
             ${ pageNumbers }
             <!--  페이지 Navigator 끝 -->
 

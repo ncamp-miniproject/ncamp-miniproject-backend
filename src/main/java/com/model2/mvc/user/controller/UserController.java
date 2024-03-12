@@ -26,7 +26,7 @@ public class UserController {
     @RequestMapping("/addUser.do")
     public String addUser(@ModelAttribute("user") User user) throws Exception {
         this.userService.addUser(user);
-        return "redirect:/user/loginView.jsp";
+        return "redirect:user/loginView";
     }
 
     @RequestMapping("/checkDuplication.do")
@@ -34,14 +34,14 @@ public class UserController {
         boolean result = this.userService.checkDuplication(userId);
         model.addAttribute("result", result);
         model.addAttribute("userId", userId);
-        return "/user/checkDuplication.jsp";
+        return "user/checkDuplication";
     }
 
     @RequestMapping("/getUser.do")
     public String getUser(@RequestParam("userId") String userId, Model model) throws Exception {
         User user = this.userService.getUser(userId);
         model.addAttribute("user", user);
-        return "/user/readUser.jsp";
+        return "user/readUser";
     }
 
     @RequestMapping("/listUser.do")
@@ -61,7 +61,7 @@ public class UserController {
             }
         }
         model.addAttribute("totalPage", totalPage);
-        return "/user/listUser.jsp";
+        return "user/listUser";
     }
 
     @RequestMapping("/login.do")
@@ -92,6 +92,6 @@ public class UserController {
     public String updateUserView(@RequestParam("userId") String userId, Model model) throws Exception {
         User user = this.userService.getUser(userId);
         model.addAttribute("user", user);
-        return "/user/updateUser.jsp";
+        return "user/updateUser";
     }
 }
