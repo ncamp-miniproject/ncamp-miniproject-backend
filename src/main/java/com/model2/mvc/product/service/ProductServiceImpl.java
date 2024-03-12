@@ -57,6 +57,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProdName(toInsert.getProdName());
         product.setRegDate(new Date(System.currentTimeMillis()));
         product.setStock(toInsert.getStock());
+        product.setCategory(this.categoryService.getCategory(toInsert.getCategoryNo()));
         this.productRepository.insertProduct(product);
         return AddProductResponseDTO.from(product);
     }
@@ -70,10 +71,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
+        requestDTO.setPageSize(requestDTO.getPageSize() == null ? defaultPageSize : requestDTO.getPageSize());
         ListData<Product> resultMap = ListQueryHelper.findProductList(this.productRepository, requestDTO);
 
         int page = resultMap.getPage();
-        int pageSize = requestDTO.getPageSize();
+        int pageSize = resultMap.getPageSize();
 
         Page pageInfo = Page.of(page, resultMap.getCount(), defaultPageSize, defaultPageDisplay);
 
@@ -83,8 +85,7 @@ public class ProductServiceImpl implements ProductService {
                                            categories,
                                            pageInfo,
                                            requestDTO,
-                                           new Search(StringUtil.null2nullStr(requestDTO.getSearchCondition()
-                                                                                      .getConditionCode()),
+                                           new Search(resultMap.getSearchCondition().getConditionCode(),
                                                       StringUtil.null2nullStr(requestDTO.getSearchKeyword()),
                                                       (page - 1) * pageSize + 1,
                                                       page * pageSize));
@@ -104,6 +105,7 @@ public class ProductServiceImpl implements ProductService {
         to.setProdName(requestDTO.getProdName());
         to.setRegDate(new Date(System.currentTimeMillis()));
         to.setStock(requestDTO.getStock());
+        to.setCategory(new Category(requestDTO.getCategoryNo()));
         this.productRepository.updateProduct(to);
         return UpdateProductResponseDTO.from(previous);
     }

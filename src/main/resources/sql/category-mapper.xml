@@ -25,6 +25,20 @@
         FROM category
     </select>
 
+    <select id="findById" parameterType="int" resultMap="categoryMap">
+        SELECT
+            category_no,
+            category_name
+        FROM category
+        WHERE category_no =
+              <if test="value == null">
+                  -1
+              </if>
+              <if test="value != null">
+                  #{value}
+              </if>
+    </select>
+
     <update id="update" parameterType="Category">
         UPDATE category
         <set>

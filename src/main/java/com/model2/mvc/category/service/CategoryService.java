@@ -11,5 +11,7 @@ public interface CategoryService {
 
     public List<Category> getCategoryList();
 
+    public Category getCategory(int categoryNo);
+
     public void updateCategory(UpdateCategoryRequestDTO requestDTO);
 }

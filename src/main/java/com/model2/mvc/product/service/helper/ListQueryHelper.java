@@ -67,6 +67,9 @@ public class ListQueryHelper {
                 listTaskMapper.get(SearchCondition.NO_CONDITION));
         ListData<Product> listData = func.apply(repository, dto);
         setPageAndPageSize(listData, getOneIfNull(dto.getPage()), getOneIfNull(dto.getPageSize()));
+        listData.setSearchCondition(dto.getSearchCondition() == null
+                                    ? SearchCondition.NO_CONDITION
+                                    : dto.getSearchCondition());
         return listData;
     }
 

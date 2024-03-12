@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.ListData;
+import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
@@ -28,8 +29,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring-config/common.xml", "classpath*:spring-config/context-*.xml" })
-public class TestMyBatisMapperSimpleProductDAO {
+@ContextConfiguration(locations = { "classpath*:spring-config/context-*.xml" })
+public class TestMyBatisMapperProductRepository {
 
     @Autowired
     private ProductRepository productRepository;
@@ -37,18 +38,16 @@ public class TestMyBatisMapperSimpleProductDAO {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    @Qualifier("sqlSessionTemplate")
     private SqlSession sqlSession;
 
     @Before
     public void before() {
-        this.sqlSession.delete("ProductMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @After
     public void after() {
-        this.sqlSession.delete("ProductMapper.clear");
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @Test

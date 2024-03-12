@@ -7,6 +7,7 @@ public class AddProductRequestDTO {
     private String prodDetail;
     private String prodName;
     private int stock;
+    private Integer categoryNo;
 
     public AddProductRequestDTO() {
     }
@@ -57,5 +58,37 @@ public class AddProductRequestDTO {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Integer getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(Integer categoryNo) {
+        this.categoryNo = categoryNo;
+    }
+
+    @Override
+    public String toString() {
+        return "AddProductRequestDTO{" +
+               "fileName='" +
+               fileName +
+               '\'' +
+               ", manuDate='" +
+               manuDate +
+               '\'' +
+               ", price=" +
+               price +
+               ", prodDetail='" +
+               prodDetail +
+               '\'' +
+               ", prodName='" +
+               prodName +
+               '\'' +
+               ", stock=" +
+               stock +
+               ", categoryNo=" +
+               categoryNo +
+               '}';
     }
 }

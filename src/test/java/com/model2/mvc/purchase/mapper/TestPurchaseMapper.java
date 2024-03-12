@@ -37,20 +37,21 @@ public class TestPurchaseMapper {
 
     @Before
     public void init() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("PurchaseMapper.clearTranProd");
-        this.sqlSession.delete("PurchaseMapper.clearTransaction");
-        this.sqlSession.delete("ProductMapper.clear");
-        this.sqlSession.delete("UserMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("PurchaseMapper.clearTranProd",
+                                                                      "PurchaseMapper.clearTransaction",
+                                                                      "ProductMapper.clear",
+                                                                      "UserMapper.clear");
         sampleUsers.forEach(u -> this.sqlSession.insert("UserMapper.insert", u));
         sampleProducts.forEach(p -> this.sqlSession.insert("ProductMapper.insert", p));
     }
 
     @After
     public void destroy() {
-        this.sqlSession.delete("PurchaseMapper.clearTranProd");
-        this.sqlSession.delete("PurchaseMapper.clearTransaction");
-        this.sqlSession.delete("ProductMapper.clear");
-        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "UserMapper.clear");
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession,
+                                                     "PurchaseMapper.clearTranProd",
+                                                     "PurchaseMapper.clearTransaction",
+                                                     "ProductMapper.clear",
+                                                     "UserMapper.clear");
     }
 
     private static final List<Purchase> samplePurchases = new ArrayList<>();

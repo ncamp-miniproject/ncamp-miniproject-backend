@@ -8,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -31,6 +32,11 @@ public class MyBatisMapperCategoryRepository implements CategoryRepository {
     @Override
     public List<Category> findAll() {
         return this.sqlSession.selectList("CategoryMapper.findAll");
+    }
+
+    @Override
+    public Optional<Category> findById(int categoryNo) {
+        return Optional.ofNullable(this.sqlSession.selectOne("CategoryMapper.findById", categoryNo));
     }
 
     @Override

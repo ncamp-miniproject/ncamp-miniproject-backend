@@ -32,6 +32,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getCategory(int categoryNo) {
+        return this.categoryRepository.findById(categoryNo).orElse(null);
+    }
+
+    @Override
     public void updateCategory(UpdateCategoryRequestDTO requestDTO) {
         this.categoryRepository.updateCategory(new Category(requestDTO.getCategoryNo(), requestDTO.getCategoryName()));
     }

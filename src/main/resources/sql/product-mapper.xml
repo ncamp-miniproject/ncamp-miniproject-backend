@@ -180,7 +180,9 @@
                 stock = #{stock},
             </if>
             <if test="category != null">
-                category_no = #{category.categoryNo}
+                <if test="category.categoryNo != null">
+                    category_no = #{category.categoryNo}
+                </if>
             </if>
         </set>
         <where>

@@ -19,13 +19,12 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringJUnitConfig(locations = { "classpath:spring-config/common.xml", "classpath*:spring-config/context-*.xml" })
+@SpringJUnitConfig(locations = { "classpath*:spring-config/context-*.xml" })
 public class TestCategoryServiceImpl extends TestCase {
 
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
     private SqlSession sqlSession;
 
     @Before

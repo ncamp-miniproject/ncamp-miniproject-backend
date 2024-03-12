@@ -8,6 +8,7 @@ public class UpdateProductRequestDTO {
     private int price;
     private String fileName;
     private int stock;
+    private Integer categoryNo;
 
     public UpdateProductRequestDTO() {
     }
@@ -68,6 +69,14 @@ public class UpdateProductRequestDTO {
         this.stock = stock;
     }
 
+    public Integer getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(Integer categoryNo) {
+        this.categoryNo = categoryNo;
+    }
+
     @Override
     public String toString() {
         return "UpdateProductRequestDTO{" +
@@ -89,6 +98,8 @@ public class UpdateProductRequestDTO {
                '\'' +
                ", stock=" +
                stock +
+               ", categoryNo=" +
+               categoryNo +
                '}';
     }
 }

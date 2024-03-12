@@ -32,6 +32,7 @@ public class GetProductResponseDTO {
         dto.prodName = product.getProdName();
         dto.regDate = product.getRegDate();
         dto.stock = product.getStock();
+        dto.categoryName = product.getCategory().getCategoryName();
         return dto;
     }
 
@@ -75,6 +76,14 @@ public class GetProductResponseDTO {
         this.purchasable = purchasable;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public User getLoginUser() {
         return loginUser;
     }
@@ -105,6 +114,9 @@ public class GetProductResponseDTO {
                regDate +
                ", stock=" +
                stock +
+               ", categoryName='" +
+               categoryName +
+               '\'' +
                ", purchasable=" +
                purchasable +
                ", loginUser=" +

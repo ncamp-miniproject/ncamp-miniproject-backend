@@ -7,6 +7,7 @@ public class ListData<D> {
     private List<D> list;
     private int page;
     private int pageSize;
+    private SearchCondition searchCondition;
 
     public ListData() {
     }
@@ -46,6 +47,14 @@ public class ListData<D> {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public SearchCondition getSearchCondition() {
+        return searchCondition;
+    }
+
+    public void setSearchCondition(SearchCondition searchCondition) {
+        this.searchCondition = searchCondition;
     }
 
     @Override
