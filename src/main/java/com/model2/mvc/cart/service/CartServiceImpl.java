@@ -2,8 +2,9 @@ package com.model2.mvc.cart.service;
 
 import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
-import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.product.dao.SimpleProductDAO;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.repository.ExtendedProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
-    private final ProductDAO productDAO;
+    private final ExtendedProductRepository productRepository;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -34,8 +35,8 @@ public class CartServiceImpl implements CartService {
     private String cookieKeyValueDelimiter;
 
     @Autowired
-    public CartServiceImpl(ProductDAO productDAO) {
-        this.productDAO = productDAO;
+    public CartServiceImpl(ExtendedProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -79,7 +80,7 @@ public class CartServiceImpl implements CartService {
                 .forEach(i -> parsed.put(i[0], i[1]));
 
         List<Integer> keyList = parsed.keySet().stream().collect(Collectors.toList());
-        Map<Integer, Product> queryResult = productDAO.findProductsByIds(keyList);
+        Map<Integer, Product> queryResult = productRepository.findProductsByIds(keyList);
 
         Map<Product, Integer> resultMap = new HashMap<>();
         for (Integer key : keyList) {

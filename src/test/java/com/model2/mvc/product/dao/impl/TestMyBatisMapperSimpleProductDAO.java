@@ -1,8 +1,12 @@
 package com.model2.mvc.product.dao.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.in;
 
+import com.model2.mvc.category.dao.CategoryRepository;
+import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
@@ -12,12 +16,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +38,9 @@ public class TestMyBatisMapperProductDAO {
     @Autowired
     @Qualifier("myBatisMapperProductDAO")
     private ProductDAO productDAO;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     @Qualifier("sqlSessionTemplate")
@@ -110,5 +121,68 @@ public class TestMyBatisMapperProductDAO {
                 .map(Product::getProdName)
                 .collect(Collectors.toList());
         assertThat(foundNames).contains(product1.getProdName(), product2.getProdName(), product3.getProdName());
+    }
+
+    @Test
+    public void insertWithCategory_DataIntegrityViolationException() {
+        Product product = new Product("sample-product", 13000, 25000);
+        product.setCategory(new Category(10000, "category"));
+        assertThat(this.productDAO.insertProduct(product)).isFalse();
+    }
+
+    @Test
+    public void insertWithCategory() {
+        insertSample();
+    }
+
+    private Product insertSample() {
+        Category toInsert = new Category("category1");
+        Product product = new Product("sample-product", 13000, 25000);
+        product.setCategory(toInsert);
+        this.categoryRepository.insertCategory(toInsert);
+        this.productDAO.insertProduct(product);
+        return product;
+    }
+    
+    @Test
+    public void findWithCategory() {
+        Product sampleProduct = insertSample();
+
+        Optional<Product> foundProduct = this.productDAO.findById(sampleProduct.getProdNo());
+
+        assertThat(foundProduct.get()).isNotNull();
+
+        foundProduct.ifPresent(product -> {
+            assertThat(product).isEqualTo(sampleProduct);
+            assertThat(product.getCategory()).isNotNull();
+            assertThat(product.getCategory().getCategoryName()).isEqualTo("category1");
+        });
+    }
+
+    private List<Product> insertSampleList() {
+        Category toInsert = new Category("category1");
+        Product product = new Product("sample-product", 13000, 25000);
+        product.setCategory(toInsert);
+        this.categoryRepository.insertCategory(toInsert);
+        this.productDAO.insertProduct(product);
+
+        Category toInsert2 = new Category("category2");
+        Product product2 = new Product("sample-product2", 13500, 200);
+        product.setCategory(toInsert2);
+        this.categoryRepository.insertCategory(toInsert2);
+        this.productDAO.insertProduct(product2);
+
+        Product product3 = new Product("sample-product3", 13600, 100);
+        product3.setCategory(toInsert);
+        this.productDAO.insertProduct(product3);
+
+        return Arrays.asList(product, product2, product3);
+    }
+
+    @Test
+    public void findListWithCategory_findAll() {
+        List<Product> sampleProducts = insertSampleList();
+
+
     }
 }

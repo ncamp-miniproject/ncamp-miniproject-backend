@@ -2,11 +2,10 @@ package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.repository.ProductRepository;
+import com.model2.mvc.product.repository.ExtendedProductRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Deprecated
 @Repository("myBatisMapperProductDAO")
-@Primary
-public class MyBatisMapperProductDAO implements ProductRepository {
+public class MyBatisMapperProductDAO implements ExtendedProductRepository {
     private final SqlSession sqlSession;
 
     @Autowired

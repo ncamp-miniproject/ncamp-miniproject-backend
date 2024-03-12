@@ -14,7 +14,7 @@ import com.model2.mvc.product.dto.response.AddProductResponseDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
-import com.model2.mvc.product.repository.ProductRepository;
+import com.model2.mvc.product.repository.ExtendedProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository productRepository;
+    private final ExtendedProductRepository productRepository;
 
     private final CategoryService categoryService;
 
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     private int defaultPageDisplay;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService) {
+    public ProductServiceImpl(ExtendedProductRepository productRepository, CategoryService categoryService) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
     }

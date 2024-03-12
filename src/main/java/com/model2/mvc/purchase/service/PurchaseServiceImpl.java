@@ -4,8 +4,8 @@ import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.StringUtil;
-import com.model2.mvc.product.dao.ProductDAO;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.repository.ExtendedProductRepository;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
@@ -34,7 +34,7 @@ import java.util.Optional;
 @Primary
 public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseDAO purchaseDAO;
-    private final ProductDAO productDAO;
+    private final ExtendedProductRepository productRepository;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -43,9 +43,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     private int defaultPageDisplay;
 
     @Autowired
-    private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ProductDAO productDAO) {
+    private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ExtendedProductRepository productRepository) {
         this.purchaseDAO = purchaseDAO;
-        this.productDAO = productDAO;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -63,9 +63,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTransactionProductions(requestDTO.getTranProds());
         this.purchaseDAO.insertPurchase(purchase);
         purchase.getTransactionProductions().forEach(tp -> {
-            Product product = this.productDAO.findById(tp.getProduct().getProdNo()).orElseThrow(RuntimeException::new);
+            Product product = this.productRepository.findById(tp.getProduct().getProdNo()).orElseThrow(RuntimeException::new);
             product.decrementStock(tp.getQuantity());
-            this.productDAO.updateProduct(product);
+            this.productRepository.updateProduct(product);
         });
         return AddPurchaseResponseDTO.from(purchase);
     }
@@ -107,7 +107,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap) {
         Map<Integer, Product>
                 prodNoProductMap
-                = this.productDAO.findProductsByIds(new ArrayList<>(prodNoQuantityMap.keySet()));
+                = this.productRepository.findProductsByIds(new ArrayList<>(prodNoQuantityMap.keySet()));
         List<Integer> prodNumbers = new ArrayList<>(prodNoProductMap.keySet());
 
         int priceSum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);

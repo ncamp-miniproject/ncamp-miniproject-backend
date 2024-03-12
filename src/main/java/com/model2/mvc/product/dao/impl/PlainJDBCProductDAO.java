@@ -2,7 +2,7 @@ package com.model2.mvc.product.dao.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.db.DAOTemplate;
-import com.model2.mvc.product.dao.ProductDAO;
+import com.model2.mvc.product.dao.SimpleProductDAO;
 import com.model2.mvc.product.domain.Product;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Deprecated
-public class PlainJDBCProductDAO extends DAOTemplate implements ProductDAO {
+public class PlainJDBCProductDAO extends DAOTemplate implements SimpleProductDAO {
     private static PlainJDBCProductDAO instance = new PlainJDBCProductDAO();
 
     private PlainJDBCProductDAO() {
