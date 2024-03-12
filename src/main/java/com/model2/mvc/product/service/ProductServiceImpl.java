@@ -5,6 +5,8 @@ import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.common.util.OptionalHashMap;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
@@ -14,20 +16,21 @@ import com.model2.mvc.product.dto.response.AddProductResponseDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
-import com.model2.mvc.product.repository.ExtendedProductRepository;
+import com.model2.mvc.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final ExtendedProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     private final CategoryService categoryService;
 
@@ -38,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
     private int defaultPageDisplay;
 
     @Autowired
-    public ProductServiceImpl(ExtendedProductRepository productRepository, CategoryService categoryService) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
     }
@@ -69,29 +72,72 @@ public class ProductServiceImpl implements ProductService {
                 "No record for the given prodNo: " + prodNo)));
     }
 
+    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDTO, ListData<Product>>>
+            listTaskMapper = new OptionalHashMap<>();
+
+    static {
+        listTaskMapper.put(SearchCondition.NO_CONDITION,
+                           (repository, dto) -> repository.findAllInCategory(getOneIfNull(dto.getPage()),
+                                                                             getOneIfNull(dto.getPageSize()),
+                                                                             dto.getCategoryNo()));
+        listTaskMapper.put(SearchCondition.BY_NAME,
+                           (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
+                                                                              false,
+                                                                              getOneIfNull(dto.getPage()),
+                                                                              getOneIfNull(dto.getPageSize()),
+                                                                              dto.getCategoryNo()));
+        listTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
+            List<Integer> boundPair = Arrays.stream(dto.getSearchKeyword().split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            Integer lowerBound = null;
+            Integer upperBound = null;
+            if (boundPair.size() > 2) {
+                throw new IllegalArgumentException();
+            } else if (boundPair.size() == 2) {
+                lowerBound = boundPair.get(0);
+                upperBound = boundPair.get(1);
+            } else if (boundPair.size() == 1) {
+                if (dto.getSearchKeyword().startsWith(",")) {
+                    upperBound = boundPair.get(0);
+                } else {
+                    lowerBound = boundPair.get(0);
+                }
+            }
+            return repository.findListByPriceRange(lowerBound,
+                                                   upperBound,
+                                                   getOneIfNull(dto.getPage()),
+                                                   getOneIfNull(dto.getPageSize()),
+                                                   dto.getCategoryNo());
+        });
+    }
+
+    private static Integer getOneIfNull(Integer num) {
+        return num == null ? 1 : num;
+    }
+
     @Override
     public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
-        Integer page = requestDTO.getPage();
-        page = page == null ? 1 : page;
-        Integer pageSize = requestDTO.getPageSize();
-        pageSize = pageSize == null ? defaultPageSize : pageSize;
+        ListData<Product> resultMap = listTaskMapper.getOptional(requestDTO.getSearchCondition())
+                .orElse(listTaskMapper.get(SearchCondition.NO_CONDITION))
+                .apply(this.productRepository, requestDTO);
 
-        Map<String, Object> search = new HashMap<>();
-        search.put("startRowNum", (page - 1) * pageSize + 1);
-        search.put("endRowNum", page * pageSize);
-        search.put("searchKeyword", StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
-        search.put("searchCondition", StringUtil.null2nullStr(requestDTO.getSearchCondition().getConditionCode()));
-        search.put("categoryNo", requestDTO.getCategoryNo());
-        ListData<Product> resultMap = productRepository.findProductsByProdName(search);
+        Integer page = getOneIfNull(requestDTO.getPage());
+        Integer pageSize = getOneIfNull(requestDTO.getPageSize());
 
-        Page pageInfo = Page.of(page,
-                                resultMap.getCount(),
-                                defaultPageSize,
-                                defaultPageDisplay);
+        Page pageInfo = Page.of(page, resultMap.getCount(), defaultPageSize, defaultPageDisplay);
 
         List<Category> categories = this.categoryService.getCategoryList();
 
-        return ListProductResponseDTO.from(resultMap, categories, pageInfo, requestDTO, Search.from(search));
+        return ListProductResponseDTO.from(resultMap,
+                                           categories,
+                                           pageInfo,
+                                           requestDTO,
+                                           new Search(StringUtil.null2nullStr(requestDTO.getSearchCondition()
+                                                                                      .getConditionCode()),
+                                                      StringUtil.null2nullStr(requestDTO.getSearchKeyword()),
+                                                      (page - 1) * pageSize + 1,
+                                                      page * pageSize));
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.model2.mvc.common.Page;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.repository.ExtendedProductRepository;
+import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.purchase.dao.PurchaseDAO;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
@@ -34,7 +34,7 @@ import java.util.Optional;
 @Primary
 public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseDAO purchaseDAO;
-    private final ExtendedProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -43,7 +43,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private int defaultPageDisplay;
 
     @Autowired
-    private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ExtendedProductRepository productRepository) {
+    private PurchaseServiceImpl(PurchaseDAO purchaseDAO, ProductRepository productRepository) {
         this.purchaseDAO = purchaseDAO;
         this.productRepository = productRepository;
     }

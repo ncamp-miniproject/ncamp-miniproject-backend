@@ -9,7 +9,8 @@ public enum SearchCondition {
     NO_CONDITION("-1"),
     BY_ID("0"),
     BY_NAME("1"),
-    BY_INTEGER_RANGE("2");
+    BY_INTEGER_RANGE("2"),
+    BY_JOIN_KEY("3");
 
     private final String conditionCode;
 

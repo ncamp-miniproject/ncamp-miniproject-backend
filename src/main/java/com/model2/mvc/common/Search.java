@@ -12,11 +12,11 @@ public class Search {
     public Search() {
     }
 
-    public static Search from(Map<String, Object> map) {
-        Search search = new Search();
-        search.searchCondition = (String)map.get("searchCondition");
-        search.searchKeyword = (String)map.get("searchKeyword");
-        return search;
+    public Search(String searchCondition, String searchKeyword, int endRowNum, int startRowNum) {
+        this.searchCondition = searchCondition;
+        this.searchKeyword = searchKeyword;
+        this.endRowNum = endRowNum;
+        this.startRowNum = startRowNum;
     }
 
     public int getEndRowNum() {

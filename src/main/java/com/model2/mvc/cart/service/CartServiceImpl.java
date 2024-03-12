@@ -2,9 +2,8 @@ package com.model2.mvc.cart.service;
 
 import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
-import com.model2.mvc.product.dao.SimpleProductDAO;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.repository.ExtendedProductRepository;
+import com.model2.mvc.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
-    private final ExtendedProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -35,7 +34,7 @@ public class CartServiceImpl implements CartService {
     private String cookieKeyValueDelimiter;
 
     @Autowired
-    public CartServiceImpl(ExtendedProductRepository productRepository) {
+    public CartServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
