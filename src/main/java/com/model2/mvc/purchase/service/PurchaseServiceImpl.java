@@ -83,7 +83,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         page = page == 0 ? 1 : page;
         int pageSize = requestDTO.getPageSize();
         pageSize = pageSize == 0 ? defaultPageSize : pageSize;
-        String searchCondition = StringUtil.null2nullStr(requestDTO.getSearchCondition());
+        String searchCondition = StringUtil.null2nullStr(requestDTO.getSearchCondition().getConditionCode());
         String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
 
         Map<String, Object> search = new HashMap<>();

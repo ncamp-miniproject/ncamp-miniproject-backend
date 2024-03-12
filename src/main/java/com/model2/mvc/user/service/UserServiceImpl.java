@@ -55,10 +55,10 @@ public class UserServiceImpl implements UserService {
         pageSize = pageSize == 0 ? defaultPageSize : pageSize;
         search.setStartRowNum((page - 1) * pageSize + 1);
         search.setEndRowNum(page * pageSize);
-        search.setSearchCondition(requestDTO.getSearchCondition());
+        search.setSearchCondition(requestDTO.getSearchCondition().getConditionCode());
         search.setSearchKeyword(requestDTO.getSearchKeyword());
         switch (requestDTO.getSearchCondition()) {
-        case "0":
+        case BY_ID:
             ListData<User> userList = userDAO.findByUserName(search);
             Map<String, Object> result = new HashMap<>();
             result.put("count", userList.getCount());

@@ -1,10 +1,12 @@
 package com.model2.mvc.product.dto.request;
 
+import com.model2.mvc.common.SearchCondition;
+
 public class ListProductRequestDTO {
     private Integer page;
     private Integer pageSize;
     private String searchKeyword;
-    private String searchCondition;
+    private SearchCondition searchCondition;
     private String menu;
     private Integer categoryNo;
 
@@ -35,11 +37,11 @@ public class ListProductRequestDTO {
         this.searchKeyword = searchKeyword;
     }
 
-    public String getSearchCondition() {
+    public SearchCondition getSearchCondition() {
         return searchCondition;
     }
 
-    public void setSearchCondition(String searchCondition) {
+    public void setSearchCondition(SearchCondition searchCondition) {
         this.searchCondition = searchCondition;
     }
 

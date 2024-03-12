@@ -1,10 +1,10 @@
 package com.model2.mvc.purchase.controller;
 
-import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.product.controller.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
-import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDTO;
@@ -45,6 +45,7 @@ public class PurchaseController {
     private TransactionProductionEditor tranProdEditor;
     private PaymentOptionEditor paymentOptionEditor;
     private TranStatusCodeEditor tranStatusCodeEditor;
+    private final SearchConditionEditor searchConditionEditor;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -57,12 +58,13 @@ public class PurchaseController {
                               LocalDateEditor localDateEditor,
                               TransactionProductionEditor tranProdEditor,
                               PaymentOptionEditor paymentOptionEditor,
-                              TranStatusCodeEditor tranStatusCodeEditor) {
+                              TranStatusCodeEditor tranStatusCodeEditor, SearchConditionEditor searchConditionEditor) {
         this.purchaseService = purchaseService;
         this.localDateEditor = localDateEditor;
         this.tranProdEditor = tranProdEditor;
         this.paymentOptionEditor = paymentOptionEditor;
         this.tranStatusCodeEditor = tranStatusCodeEditor;
+        this.searchConditionEditor = searchConditionEditor;
     }
 
     @InitBinder
@@ -71,6 +73,7 @@ public class PurchaseController {
         binder.registerCustomEditor(List.class, "tranProds", this.tranProdEditor);
         binder.registerCustomEditor(PaymentOption.class, "paymentOption", this.paymentOptionEditor);
         binder.registerCustomEditor(TranStatusCode.class, "tranStatusCode", this.tranStatusCodeEditor);
+        binder.registerCustomEditor(SearchCondition.class, this.searchConditionEditor);
     }
 
     @RequestMapping("/addPurchase.do")

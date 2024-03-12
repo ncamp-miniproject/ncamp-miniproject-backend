@@ -1,6 +1,8 @@
 package com.model2.mvc.product.controller;
 
+import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.StringUtil;
+import com.model2.mvc.product.controller.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,12 +27,20 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final SearchConditionEditor searchConditionEditor;
+
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, SearchConditionEditor searchConditionEditor) {
         this.productService = productService;
+        this.searchConditionEditor = searchConditionEditor;
+    }
+
+    @InitBinder
+    public void bindParameters(WebDataBinder binder) {
+        binder.registerCustomEditor(SearchCondition.class, this.searchConditionEditor);
     }
 
     @RequestMapping("/addProduct.do")

@@ -1,10 +1,12 @@
 package com.model2.mvc.purchase.dto.request;
 
+import com.model2.mvc.common.SearchCondition;
+
 public class ListPurchaseRequestDTO {
     private int page;
     private int pageSize;
     private String searchKeyword;
-    private String searchCondition;
+    private SearchCondition searchCondition;
 
     public ListPurchaseRequestDTO() {
     }
@@ -33,11 +35,11 @@ public class ListPurchaseRequestDTO {
         this.searchKeyword = searchKeyword;
     }
 
-    public String getSearchCondition() {
+    public SearchCondition getSearchCondition() {
         return searchCondition;
     }
 
-    public void setSearchCondition(String searchCondition) {
+    public void setSearchCondition(SearchCondition searchCondition) {
         this.searchCondition = searchCondition;
     }
 
