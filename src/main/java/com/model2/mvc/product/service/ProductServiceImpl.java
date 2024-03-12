@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -80,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
         search.put("endRowNum", page * pageSize);
         search.put("searchKeyword", StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
         search.put("searchCondition", StringUtil.null2nullStr(requestDTO.getSearchCondition()));
+        search.put("categoryNo", requestDTO.getCategoryNo());
         ListData<Product> resultMap = productRepository.findProductsByProdName(search);
 
         Page pageInfo = Page.of(page,
@@ -87,7 +89,9 @@ public class ProductServiceImpl implements ProductService {
                                 defaultPageSize,
                                 defaultPageDisplay);
 
-        return ListProductResponseDTO.from(resultMap, pageInfo, requestDTO, Search.from(search));
+        List<Category> categories = this.categoryService.getCategoryList();
+
+        return ListProductResponseDTO.from(resultMap, categories, pageInfo, requestDTO, Search.from(search));
     }
 
     @Override

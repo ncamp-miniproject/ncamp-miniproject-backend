@@ -6,6 +6,7 @@ public class ListProductRequestDTO {
     private String searchKeyword;
     private String searchCondition;
     private String menu;
+    private Integer categoryNo;
 
     public ListProductRequestDTO() {
     }
@@ -48,6 +49,14 @@ public class ListProductRequestDTO {
 
     public void setMenu(String menu) {
         this.menu = menu;
+    }
+
+    public Integer getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(Integer categoryNo) {
+        this.categoryNo = categoryNo;
     }
 
     @Override
