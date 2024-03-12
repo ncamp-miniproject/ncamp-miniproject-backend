@@ -64,11 +64,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public GetProductResponseDTO getProduct(int prodNo) {
         Optional<Product> result = productRepository.findById(prodNo);
-
-        result.ifPresent(p -> {
-            System.out.println("-- ProductServiceImpl.getProduct() --");
-            System.out.println(p + "\n");
-        });
         return GetProductResponseDTO.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
     }
