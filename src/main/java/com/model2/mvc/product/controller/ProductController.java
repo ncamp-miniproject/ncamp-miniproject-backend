@@ -2,7 +2,7 @@ package com.model2.mvc.product.controller;
 
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.StringUtil;
-import com.model2.mvc.product.controller.propertyeditor.SearchConditionEditor;
+import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;

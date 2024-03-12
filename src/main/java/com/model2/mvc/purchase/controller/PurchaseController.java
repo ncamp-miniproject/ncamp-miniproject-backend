@@ -1,7 +1,7 @@
 package com.model2.mvc.purchase.controller;
 
 import com.model2.mvc.common.SearchCondition;
-import com.model2.mvc.product.controller.propertyeditor.SearchConditionEditor;
+import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;

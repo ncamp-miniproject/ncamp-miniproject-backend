@@ -1,4 +1,4 @@
-package com.model2.mvc.product.controller.propertyeditor;
+package com.model2.mvc.common.propertyeditor;
 
 import com.model2.mvc.common.SearchCondition;
 import org.springframework.stereotype.Component;
