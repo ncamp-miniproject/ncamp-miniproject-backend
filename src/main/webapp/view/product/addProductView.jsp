@@ -12,7 +12,7 @@
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-    <form name="detailForm" action="${pageContext.request.contextPath}/purchases/new" method="POST">
+    <form name="detailForm" action="${pageContext.request.contextPath}/products/new" method="POST">
         <!-- enctype="multipart/form-data" -->
 
         <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
