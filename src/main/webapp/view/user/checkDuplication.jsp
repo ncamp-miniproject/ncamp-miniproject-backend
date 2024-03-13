@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-<!--
+
 	window.onload = function() {
 		document.getElementById("userId").focus();
 		document.getElementById("userId").onkeydown = function() {
@@ -22,7 +22,7 @@
 		if (document.detailForm.userId.value != null
 				&& document.detailForm.userId.value.length > 0) {
 
-			document.detailForm.action = '/checkDuplication.do';
+			document.detailForm.action = '/users/account/check-duplicate';
 			document.detailForm.submit();
 		} else {
 			alert('아이디는 반드시 입력하셔야 합니다.');
@@ -36,21 +36,21 @@
 		}
 		window.close();
 	}
-	-->
+
 </script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-    <form name="detailForm" method="post">
+    <form name="detailForm" method="POST">
 
         <input type="hidden" name="name" value="" />
 
         <!-- 타이틀 시작 -->
         <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td width="15" height="37"><img src="/images/ct_ttl_img01.gif" width="15" height="37" /></td>
-                <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
+                <td width="15" height="37"><img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37" /></td>
+                <td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td width="93%" class="ct_ttl01">ID중복확인</td>

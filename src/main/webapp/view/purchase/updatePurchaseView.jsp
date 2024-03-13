@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
 
 <title>구매정보 수정</title>
 
@@ -15,14 +15,15 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-    <form name="updatePurchase" method="post" action="/updatePurchase.do?tranNo=${ purchaseData.tranNo }">
+    <form name="updatePurchase" method="POST" action="${pageContext.request.contextPath}/purchases/update">
+        <input type="hidden" name="tranNo" value="${purchaseData.tranNo}">
 
         <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="15" height="37">
-                    <img src="/images/ct_ttl_img01.gif" width="15" height="37" />
+                    <img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37" />
                 </td>
-                <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
+                <td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td width="93%" class="ct_ttl01">구매정보수정</td>

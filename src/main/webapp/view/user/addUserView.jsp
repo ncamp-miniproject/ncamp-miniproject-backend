@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-<!--
 function fncAddUser() {
 	// Form 유효성 검증
 	var id=document.detailForm.userId.value;
@@ -44,7 +43,7 @@ function fncAddUser() {
 		document.detailForm.phone.value = "";
 	}
 		
-	document.detailForm.action='/addUser.do';
+	document.detailForm.action='/users/new';
 	document.detailForm.submit();
 }
 
@@ -85,7 +84,7 @@ function PortalJuminCheck(fieldValue){
 		sum += (num.charCodeAt(i) - 0x30) * (bases.charCodeAt(i) - 0x30);
 	}
 	var mod = sum % 11;
-	return ((11 - mod) % 10 == last) ? true : false;
+	return ((11 - mod) % 10 === last) ? true : false;
 }
 
 function fncCheckDuplication() {
@@ -95,20 +94,19 @@ function fncCheckDuplication() {
 function resetData() {
 	document.detailForm.reset();
 }
--->
 </script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm"  method="post" >
+<form name="detailForm"  method="POST" >
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
 		<td width="15" height="37">
-			<img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
+			<img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37"/>
 		</td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
+		<td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="93%" class="ct_ttl01">회원가입</td>
@@ -117,7 +115,7 @@ function resetData() {
 			</table>
 		</td>
 		<td width="12" height="37">
-			<img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
+			<img src="${pageContext.request.contextPath}/images/ct_ttl_img03.gif" width="12" height="37"/>
 		</td>
 	</tr>
 </table>
@@ -129,7 +127,7 @@ function resetData() {
 	
 	<tr>
 		<td width="104" class="ct_write">
-			아이디 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			아이디 <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">

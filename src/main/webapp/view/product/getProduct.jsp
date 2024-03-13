@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<td width="104" class="ct_write">상품번호 <img
-                        src="/images/ct_icon_red.gif" width="3" height="3"
+                        src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3"
                         align="absmiddle"/>
 				</td>
 				<td bgcolor="D6D6D6" width="1"></td>
@@ -55,7 +55,7 @@
 			</tr>
 			<tr>
 				<td width="104" class="ct_write">상품명 <img
-                        src="/images/ct_icon_red.gif" width="3" height="3"
+                        src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3"
                         align="absmiddle"/>
 				</td>
 				<td bgcolor="D6D6D6" width="1"></td>
@@ -66,7 +66,7 @@
 			</tr>
 			<tr>
 				<td width="104" class="ct_write">상품이미지 <img
-                        src="/images/ct_icon_red.gif" width="3" height="3"
+                        src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3"
                         align="absmiddle"/>
 				</td>
 				<td bgcolor="D6D6D6" width="1"></td>
@@ -80,7 +80,7 @@
 			<tr>
 				<td width="104" class="ct_write">
 					상품상세정보
-					<img src="/images/ct_icon_red.gif"
+					<img src="${pageContext.request.contextPath}/images/ct_icon_red.gif"
                          width="3"
                          height="3"
                          align="absmiddle"/>
@@ -132,7 +132,7 @@
                                     class="ct_btn01"
                                     style="padding-top: 3px;">
 
-									<form action="/addItem.do" method="POST">
+									<form action="${pageContext.request.contextPath}/cart/items/new" method="POST">
 										<input type="hidden" name="prodNo" value="${ productData.prodNo }">
 										<input type="number" name="quantity" id="quantityInput" value="0">
 										<input type="submit" id="loadOnCart" value="장바구니" disabled>

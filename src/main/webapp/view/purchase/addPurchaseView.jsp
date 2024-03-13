@@ -21,14 +21,14 @@
 
 <body>
 
-    <form name="addPurchase" method="post" action="/addPurchase.do">
+    <form name="addPurchase" method="POST" action="${pageContext.request.contextPath}/purchases/new">
 
         <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="15" height="37">
-                    <img src="/images/ct_ttl_img01.gif" width="15" height="37">
+                    <img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37">
                 </td>
-                <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
+                <td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td width="93%" class="ct_ttl01">상품상세조회</td>
@@ -37,7 +37,7 @@
                     </table>
                 </td>
                 <td width="12" height="37">
-                    <img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
+                    <img src="${pageContext.request.contextPath}/images/ct_ttl_img03.gif" width="12" height="37"/>
                 </td>
             </tr>
         </table>

@@ -18,19 +18,19 @@
 
     <div style="width: 98%; margin-left: 10px;">
 
-        <form name="detailForm" action="/listUser.do" method="post">
+        <form name="detailForm" action="/users" method="GET">
 
             <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td width="15" height="37"><img src="/images/ct_ttl_img01.gif" width="15" height="37"></td>
-                    <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
+                    <td width="15" height="37"><img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37"></td>
+                    <td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td width="93%" class="ct_ttl01">회원 목록조회</td>
                             </tr>
                         </table>
                     </td>
-                    <td width="12" height="37"><img src="/images/ct_ttl_img03.gif" width="12" height="37"></td>
+                    <td width="12" height="37"><img src="${pageContext.request.contextPath}/images/ct_ttl_img03.gif" width="12" height="37"></td>
                 </tr>
             </table>
 
@@ -88,7 +88,7 @@
                         <td align="center">${ no }</td>
                         <c:set target="no" value="${ no - 1 }" />
                         <td></td>
-                        <td align="left"><a href="/getUser.do?userId=${ data.userId }">${ data.userId }</a></td>
+                        <td align="left"><a href="/users/${ data.userId }">${ data.userId }</a></td>
                         <td></td>
                         <td align="left">${ data.userName }</td>
                         <td></td>
@@ -104,7 +104,7 @@
                 <tr>
                     <td align="center">
                         <c:forEach var="i" begin="1" end="${ totalPage }" step="1">
-                            <a href="/listUser.do?page=${ i }">${ i }</a> 
+                            <a href="/users?page=${ i }">${ i }</a>
                         </c:forEach>
                     </td>
                 </tr>

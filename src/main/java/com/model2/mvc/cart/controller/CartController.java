@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
 
@@ -23,7 +26,7 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @RequestMapping("/addItem.do")
+    @PostMapping("/items/new")
     public ModelAndView addItem(@CookieValue(value = "cart", required = false) String cartValue,
                                 @RequestParam("prodNo") String prodNo,
                                 @RequestParam("quantity") String quantity) {
@@ -31,18 +34,18 @@ public class CartController {
             cartValue = "";
         }
         String result = this.cartService.addItem(new AddItemRequestDTO(prodNo, quantity, cartValue));
-        return new ModelAndView(String.format("redirect:/getProduct.do?prodNo=%s&menu=search", prodNo),
+        return new ModelAndView(String.format("redirect:/products/%s&menu=search", prodNo),
                                 "cartCookieValue",
                                 result);
     }
 
-    @RequestMapping("/clearCart.do")
+    @PostMapping("/items/clear")
     public String clearCart(HttpServletResponse response) {
         response.addCookie(new Cookie("cart", ""));
-        return "redirect:/listCart.do";
+        return "redirect:/cart/items";
     }
 
-    @RequestMapping("/listCart.do")
+    @GetMapping("/items")
     public String listCart(@CookieValue(value = "cart", required = false) String cartValue, Model model) {
         ListCartItemResponseDTO responseDTO = this.cartService.getCartItemList(cartValue);
         model.addAttribute("data", responseDTO);

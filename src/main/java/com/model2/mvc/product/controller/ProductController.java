@@ -18,8 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -28,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -53,20 +57,20 @@ public class ProductController {
         binder.registerCustomEditor(Integer.class, "categoryNo", this.categoryNoEditor);
     }
 
-    @RequestMapping("/addProduct.do")
+    @PostMapping("/new")
     public String addProduct(@ModelAttribute("addProductDTO") AddProductRequestDTO addProductDTO) {
         this.productService.addProduct(addProductDTO);
-        return "redirect:/listProduct.do";
+        return "redirect:/products";
     }
 
-    @RequestMapping("/getProduct.do")
-    public String getProduct(@RequestParam("prodNo") int prodNo,
+    @GetMapping("/{prodNo}")
+    public String getProduct(@PathVariable("prodNo") int prodNo,
                              @RequestParam(value = "menu", required = false) String menu,
                              @CookieValue(value = "history", required = false) String history,
                              @SessionAttribute(value = "user", required = false) User loginUser,
                              Model model) {
         if (menu != null && menu.equals("manage")) {
-            return "redirect:/updateProductView.do?prodNo=" + prodNo;
+            return String.format("redirect:/products/%d/update-form", prodNo);
         }
 
         if (history == null) {
@@ -89,13 +93,13 @@ public class ProductController {
         return "product/getProduct";
     }
 
-    @RequestMapping("/listProduct.do")
+    @GetMapping("")
     public String listProduct(@ModelAttribute("requestDTO") ListProductRequestDTO requestDTO,
                               @SessionAttribute(value = "user", required = false) User loginUser,
                               Model model) {
         String menu = requestDTO.getMenu();
         if (menu == null || ((menu.equals("manage") && (loginUser == null || !loginUser.getRole().equals("admin"))))) {
-            return "redirect:/listProduct.do?menu=search";
+            return "redirect:/products?menu=search";
         }
 
         requestDTO.setPageSize(defaultPageSize);
@@ -106,20 +110,20 @@ public class ProductController {
         return "product/listProduct";
     }
 
-    @RequestMapping("/updateProduct.do")
+    @PostMapping("/update")
     public String updateProduct(@ModelAttribute("requestDTO") UpdateProductRequestDTO requestDTO) {
         this.productService.updateProduct(requestDTO);
-        return "redirect:/listProduct.do";
+        return "redirect:/products";
     }
 
-    @RequestMapping("/updateProductView.do")
-    public String updateProductView(@RequestParam("prodNo") int prodNo, Model model) {
+    @GetMapping("/{prodNo}/update-form")
+    public String updateProductView(@PathVariable("prodNo") int prodNo, Model model) {
         GetProductResponseDTO responseDTO = this.productService.getProduct(prodNo);
         model.addAttribute("data", responseDTO);
         return "product/updateProduct";
     }
 
-    @RequestMapping("/addProductView.do")
+    @GetMapping("/add-form")
     public ModelAndView addProductView() {
         List<Category> categoryList = this.productService.getCategoryList();
         ModelAndView mv = new ModelAndView("product/addProductView");

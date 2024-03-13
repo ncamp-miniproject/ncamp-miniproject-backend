@@ -2,10 +2,10 @@ function fncAddProduct() {
 	const detailForm = document.detailForm;
 
 	//Form 유효성 검증
-	var name = detailForm.prodName.value;
-	var detail = detailForm.prodDetail.value;
-	var manuDate = detailForm.manuDate.value;
-	var price = detailForm.price.value;
+	const name = detailForm.prodName.value;
+	const detail = detailForm.prodDetail.value;
+	const manuDate = detailForm.manuDate.value;
+	const price = detailForm.price.value;
 
 	console.log("name=" + name);
 	console.log("detail=" + detail);

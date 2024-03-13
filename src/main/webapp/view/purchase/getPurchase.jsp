@@ -6,7 +6,7 @@
 <head>
 <title>구매상세조회</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
 
 </head>
 
@@ -15,9 +15,9 @@
     <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <td width="15" height="37">
-                <img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
+                <img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37"/>
             </td>
-            <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
+            <td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="93%" class="ct_ttl01">구매상세조회</td>
@@ -26,7 +26,7 @@
                 </table>
             </td>
             <td width="12" height="37">
-                <img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
+                <img src="${pageContext.request.contextPath}/images/ct_ttl_img03.gif" width="12" height="37"/>
             </td>
         </tr>
     </table>
@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <td width="104" class="ct_write">
-                구매번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                구매번호 <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
             </td>
             <td bgcolor="D6D6D6" width="1"></td>
             <td class="ct_write01">
@@ -54,7 +54,7 @@
         </tr>
         <tr>
             <td width="104" class="ct_write">
-                구매자아이디 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+                구매자아이디 <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
             </td>
             <td bgcolor="D6D6D6" width="1"></td>
             <td class="ct_write01">${ purchaseData.buyer.userId }</td>
@@ -140,7 +140,7 @@
         <c:forEach var="tranProd" items="${ purchaseData.transactionProductions }">
         <tr class="ct_list_pop">
             <td align="left">
-                <a href="/getProduct.do?prodNo=${ tranProd.product.prodNo }&menu=search">${ tranProd.product.prodName }</a>
+                <a href="/products/${ tranProd.product.prodNo }&menu=search">${ tranProd.product.prodName }</a>
             </td>
             <td></td>
             <td align="left">${ tranProd.product.price }</td>
@@ -160,13 +160,13 @@
                 <table border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="17" height="23">
-                            <img src="/images/ct_btnbg01.gif" width="17" height="23"/>
+                            <img src="${pageContext.request.contextPath}/images/ct_btnbg01.gif" width="17" height="23"/>
                         </td>
-                        <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-                            <a href="/updatePurchaseView.do?tranNo=${ purchaseData.tranNo }">수정</a>
+                        <td background="${pageContext.request.contextPath}/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
+                            <a href="/purchases/${ purchaseData.tranNo }/update-form">수정</a>
                         </td>
                         <td width="14" height="23">
-                            <img src="/images/ct_btnbg03.gif" width="14" height="23"/>
+                            <img src="${pageContext.request.contextPath}/images/ct_btnbg03.gif" width="14" height="23"/>
                         </td>
                         <td width="30"></td>
                         <td width="17" height="23">

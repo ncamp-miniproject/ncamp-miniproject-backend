@@ -10,7 +10,7 @@ User vo=(User)session.getAttribute("user");
 <head>
 <title>Model2 MVC Shop</title>
 
-<link href="/css/left.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/left.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -29,7 +29,9 @@ User vo=(User)session.getAttribute("user");
               <%
                   if(vo == null) {
               %>
-                  <a href="/user/loginView.jsp" target="rightFrame">login</a>
+                <form action="${pageContext.request.contextPath}/users/account/sign-in" method="POST">
+                    <input type="submit" value="login"/>
+                </form>
               <%
                   }
               %>
@@ -39,7 +41,9 @@ User vo=(User)session.getAttribute("user");
               <%
                   if(vo != null) {
               %>
-                <a href="/logout.do" target="_parent">logout</a>
+                  <form action="${pageContext.request.contextPath}/users/account/sign-out" method="POST">
+                    <input type="submit" value="logout"/>
+                  </form>
                <%
                   }
                %>

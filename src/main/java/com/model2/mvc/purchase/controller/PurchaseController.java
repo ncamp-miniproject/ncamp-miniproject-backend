@@ -24,8 +24,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -37,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/purchases")
 public class PurchaseController {
 
     private PurchaseService purchaseService;
@@ -76,18 +80,18 @@ public class PurchaseController {
         binder.registerCustomEditor(SearchCondition.class, this.searchConditionEditor);
     }
 
-    @RequestMapping("/addPurchase.do")
+    @PostMapping("/new")
     public String addPurchase(@ModelAttribute("requestDTO") AddPurchaseRequestDTO requestDTO, Model model) {
         AddPurchaseResponseDTO responseDTO = this.purchaseService.addPurchase(requestDTO);
         model.addAttribute("purchaseData", responseDTO);
         return "purchase/addPurchaseResult";
     }
 
-    @RequestMapping("/addPurchaseView.do")
+    @GetMapping("/new-form")
     public ModelAndView getPurchaseView(@RequestParam("purchase") List<String> purchase,
                                         @SessionAttribute("user") User loginUser) {
         if (purchase == null || purchase.isEmpty()) {
-            return new ModelAndView("redirect:/listProduct.do");
+            return new ModelAndView("redirect:/products");
         }
         Map<Integer, Integer> prodNoQuantityMap = new HashMap<>();
 
@@ -96,19 +100,19 @@ public class PurchaseController {
                 .forEach(m -> prodNoQuantityMap.put(Integer.parseInt(m[0]), Integer.parseInt(m[1])));
         AddPurchaseViewResponseDTO responseDTO = this.purchaseService.getProductsWithQuantity(prodNoQuantityMap);
 
-        ModelAndView mv = new ModelAndView("/purchase/addPurchaseView.jsp");
+        ModelAndView mv = new ModelAndView("/purchase/addPurchaseView");
         mv.addObject("data", responseDTO);
         mv.addObject("loginUser", loginUser);
         return mv;
     }
 
-    @RequestMapping("/listSale.do")
+    @GetMapping("/sale")
     public ModelAndView listSale(@RequestParam(value = "menu", required = false) String menu,
                                  @RequestParam(value = "page", required = false) Integer page,
                                  @SessionAttribute("user") User loginUser) {
         int currentPage = page == null ? 1 : page;
         if ((menu == null || menu.equals("search")) || !loginUser.getRole().equals("admin")) {
-            return new ModelAndView("redirect:/listPurchase.do?menu=search&page=" + currentPage);
+            return new ModelAndView("redirect:/products?menu=search&page=" + currentPage);
         }
 
         ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, defaultPageSize);
@@ -118,19 +122,19 @@ public class PurchaseController {
         return mv;
     }
 
-    @RequestMapping("/getPurchase.do")
-    public String getPurchase(@RequestParam("tranNo") int tranNo, Model model) {
+    @GetMapping("/{tranNo}")
+    public String getPurchase(@PathVariable("tranNo") int tranNo, Model model) {
         GetPurchaseResponseDTO responseDTO = this.purchaseService.getPurchase(tranNo);
         model.addAttribute("purchaseData", responseDTO);
         return "purchase/getPurchase";
     }
 
-    @RequestMapping("/listPurchase.do")
+    @GetMapping("")
     public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDTO requestDTO,
                                      @RequestParam(value = "menu", required = false) String menu,
                                      @SessionAttribute("user") User loginUser) {
         if ((menu != null && menu.equals("manage")) || loginUser.getRole().equals("admin")) {
-            return new ModelAndView("redirect:/listSale.do?menu=manage&page=1");
+            return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 
         ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(requestDTO, loginUser.getUserId());
@@ -140,8 +144,8 @@ public class PurchaseController {
         return mv;
     }
 
-    @RequestMapping("/updatePurchaseView.do")
-    public String updatePurchaseView(@RequestParam("tranNo") int tranNo,
+    @GetMapping("/{tranNo}/update-form")
+    public String updatePurchaseView(@PathVariable("tranNo") int tranNo,
                                      Model model,
                                      @SessionAttribute("user") User loginUser) {
         GetPurchaseResponseDTO toUpdate = this.purchaseService.getPurchase(tranNo);
@@ -150,7 +154,7 @@ public class PurchaseController {
         return "purchase/updatePurchaseView";
     }
 
-    @RequestMapping("/updatePurchase.do")
+    @PostMapping("/update")
     public String updatePurchase(@ModelAttribute("requestDTO") UpdatePurchaseRequestDTO requestDTO, Model model) {
         Purchase result = this.purchaseService.updatePurchase(requestDTO);
 
@@ -158,10 +162,10 @@ public class PurchaseController {
         return "purchase/updatePurchaseResult";
     }
 
-    @RequestMapping("/updateTranCode.do")
+    @PostMapping("/tran-code/update")
     public String updateTranCode(@RequestParam("tranNo") int tranNo, @RequestParam("tranCode") String tranCode) {
         this.purchaseService.updateTranCode(new UpdateTranCodeRequestDTO(tranNo, TranStatusCode.getTranCode(tranCode)));
-        return "redirect:/listPurchase.do";
+        return "redirect:/purchases";
     }
 
     @RequestMapping("/updateTranCodeByProd.do")

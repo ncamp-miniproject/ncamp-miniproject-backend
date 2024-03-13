@@ -5,7 +5,7 @@
 </head>
 <body>
 
-    <form action="${pageContext.request.contextPath}/addCategory.do" method="POST">
+    <form action="${pageContext.request.contextPath}/categories/new" method="POST">
         Category name: <input type="text" name="categoryName">
         <input type="submit" value="Submit"/>
     </form>

@@ -12,20 +12,20 @@
 <head>
 <title>Model2 MVC Shop</title>
 
-<link href="/css/left.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/left.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
     function history() {
         popWin = window
             .open(
-                "/history.jsp",
+                "history.jsp",
                 "popWin",
                 "left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
     }
 </script>
 </head>
 
-<body background="/images/left/imgLeftBg.gif" leftmargin="0"
+<body background="${pageContext.request.contextPath}/images/left/imgLeftBg.gif" leftmargin="0"
       topmargin="0" marginwidth="0" marginheight="0">
 
     <table width="159" border="0" cellspacing="0" cellpadding="0">
@@ -39,13 +39,13 @@
 
                     <tr>
                         <td class="Depth03"><a
-                                href="/getUser.do?userId=${user.userId}" target="rightFrame">개인정보조회</a></td>
+                                href="${pageContext.request.contextPath}/users/${user.userId}" target="rightFrame">개인정보조회</a></td>
                     </tr>
                     </c:if>
                     <c:if test="${role == 'admin'}">
                     <tr>
                         <td class="Depth03">
-                            <a href="/listUser.do"
+                            <a href="${pageContext.request.contextPath}/users"
                                target="rightFrame">회원정보조회</a>
                         </td>
                     </tr>
@@ -66,11 +66,11 @@
             <td valign="top">
                 <table border="0" cellspacing="0" cellpadding="0" width="159">
                     <tr>
-                        <td class="Depth03"><a href="${pageContext.request.contextPath}/addProductView.do"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/products/add-form"
                                                target="rightFrame">판매상품등록</a></td>
                     </tr>
                     <tr>
-                    <td class="Depth03"><a href="${pageContext.request.contextPath}/listProduct.do?menu=manage"
+                    <td class="Depth03"><a href="${pageContext.request.contextPath}/products?menu=manage"
                                            target="rightFrame">판매상품관리</a></td>
                     </tr>
                     <tr>
@@ -86,22 +86,22 @@
             <td valign="top">
                 <table border="0" cellspacing="0" cellpadding="0" width="159">
                     <tr>
-                        <td class="Depth03"><a href="${pageContext.request.contextPath}/listProduct.do?menu=search"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/products?menu=search"
                                                target="rightFrame">상 품 검 색</a></td>
                     </tr>
                     <tr>
-                        <td class="Depth03"><a href="${pageContext.request.contextPath}/listCart.do"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/cart/items"
                                                target="rightFrame">장 바 구 니</a></td>
                     </tr>
                     <c:if test="${!empty user && role == 'user'}">
                     <tr>
-                        <td class="Depth03"><a href="${pageContext.request.contextPath}/listPurchase.do?menu=search"
+                        <td class="Depth03"><a href="${pageContext.request.contextPath}/products?menu=search"
                                                target="rightFrame">구매이력조회</a></td>
                     </tr>
                     </c:if>
                     <c:if test="${!empty user && role == 'admin'}">
                         <tr>
-                            <td class="Depth03"><a href="${pageContext.request.contextPath}/listPurchase.do?menu=manage"
+                            <td class="Depth03"><a href="${pageContext.request.contextPath}/purchases?menu=manage"
                                                    target="rightFrame">판매조회</a></td>
                         </tr>
                     </c:if>

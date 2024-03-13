@@ -82,8 +82,8 @@
             </table>
 
 
-            <button type="button" id="purchaseBtn" onclick="fncAddPurchaseView('/addPurchaseView.do')">구매</button>
-            <button type="button" onclick="clearCart('/clearCart.do')">초기화</button>
+            <button type="button" id="purchaseBtn" onclick="fncAddPurchaseView('${pageContext.request.contextPath}/purchases/new-form')">구매</button>
+            <button type="button" onclick="clearCart('${pageContext.request.contextPath}/cart/items/clear')">초기화</button>
 
         </form>
 
@@ -129,6 +129,7 @@ function fncAddPurchaseView(url) {
         params.push("purchase=" + k + "-" + items.get(k));
     }
     const suffix = "?" + params.join("&");
+    cartForm.method = "GET";
     cartForm.action = url + suffix;
     cartForm.submit();
 }

@@ -33,14 +33,14 @@
 
     <div style="width: 98%; margin-left: 10px;">
 
-        <form name="detailForm" action="/listProduct.do?menu=search" method="post">
+        <form name="detailForm" action="${pageContext.request.contextPath}/products?menu=search" method="post">
 
             <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td width="15" height="37">
-                        <img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
+                        <img src="${pageContext.request.contextPath}/images/ct_ttl_img01.gif" width="15" height="37"/>
                     </td>
-                    <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
+                    <td background="${pageContext.request.contextPath}/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td width="93%" class="ct_ttl01">상품 목록조회</td>
@@ -48,7 +48,7 @@
                         </table>
                     </td>
                     <td width="12" height="37">
-                        <img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
+                        <img src="${pageContext.request.contextPath}/images/ct_ttl_img03.gif" width="12" height="37"/>
                     </td>
                 </tr>
             </table>
@@ -74,13 +74,13 @@
                         <table border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td width="17" height="23">
-                                    <img src="/images/ct_btnbg01.gif" width="17" height="23">
+                                    <img src="${pageContext.request.contextPath}/images/ct_btnbg01.gif" width="17" height="23">
                                 </td>
-                                <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
+                                <td background="${pageContext.request.contextPath}/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
                                     <a href="javascript:fncGetProductList();">검색</a>
                                 </td>
                                 <td width="14" height="23">
-                                    <img src="/images/ct_btnbg03.gif" width="14" height="23">
+                                    <img src="${pageContext.request.contextPath}/images/ct_btnbg03.gif" width="14" height="23">
                                 </td>
                             </tr>
                         </table>
@@ -93,7 +93,7 @@
                     <p class="category-item">모든 항목</p>
                 </c:if>
                 <c:if test="${data.currentCategoryNo != null}">
-                    <a href="${pageContext.request.contextPath}/listProduct.do?page=1&menu=${data.menuMode}" class="category-item">
+                    <a href="${pageContext.request.contextPath}/products?page=1&menu=${data.menuMode}" class="category-item">
                         모든 항목
                     </a>
                 </c:if>
@@ -102,7 +102,7 @@
                         <p class="category-item">${category.categoryName}</p>
                     </c:if>
                     <c:if test="${category.categoryNo != data.currentCategoryNo}">
-                        <a href="${pageContext.request.contextPath}/listProduct.do?page=1&menu=${data.menuMode}&categoryNo=${category.categoryNo}" class="category-item">
+                        <a href="${pageContext.request.contextPath}/products?page=1&menu=${data.menuMode}&categoryNo=${category.categoryNo}" class="category-item">
                             ${category.categoryName}
                         </a>
                     </c:if>
@@ -110,7 +110,7 @@
             </div>
 
             <c:if test="${!empty user && user.role == 'admin' && data.menuMode == 'manage'}">
-                <a href="${pageContext.request.contextPath}/addCategoryView.do">
+                <a href="${pageContext.request.contextPath}/categories/new-form">
                     카테고리 생성
                 </a>
             </c:if>
@@ -143,7 +143,7 @@
                         <td align="left">
                             <c:choose>
                                 <c:when test="${ product.stock != 0 }">
-                                    <a href="/getProduct.do?prodNo=${ product.prodNo }&menu=${ data.menuMode }">${ product.prodName }</a>
+                                    <a href="${pageContext.request.contextPath}/products/${ product.prodNo }?menu=${ data.menuMode }">${ product.prodName }</a>
                                 </c:when>
                                 <c:otherwise>
                                     ${ product.prodName }
@@ -164,11 +164,11 @@
                 </c:forEach>
             </table>
 
-            <c:set var="url" value="/listProduct.do" scope="request"/>
+            <c:set var="url" value="${pageContext.request.contextPath}/products" scope="request"/>
             <c:set var="additionalQueryString"
                    value="&menu=${ data.menuMode }&searchCondition=${ data.searchInfo.searchCondition }&searchKeyword=${ data.searchInfo.searchKeyword }"
                    scope="request"/>
-            <c:import var="pageNumbers" url="/fragment/pageNumbers.jsp" scope="request"/>
+            <c:import var="pageNumbers" url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp" scope="request"/>
             ${ pageNumbers }
             <!--  페이지 Navigator 끝 -->
 

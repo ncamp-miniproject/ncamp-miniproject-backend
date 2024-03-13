@@ -27,7 +27,7 @@
 			document.detailForm.phone.value = "";
 		}
 
-		document.detailForm.action = '/updateUser.do';
+		document.detailForm.action = '/users/update';
 		document.detailForm.submit();
 	}
 
@@ -50,7 +50,7 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-    <form name="detailForm" method="post">
+    <form name="detailForm" method="POST">
 
         <input type="hidden" name="userId" value="${ user.userId }">
 
