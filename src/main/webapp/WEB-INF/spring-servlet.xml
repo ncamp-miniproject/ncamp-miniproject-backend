@@ -3,12 +3,25 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="com.model2.mvc" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <bean id="controllerLoggingAspect" class="com.model2.mvc.common.aspect.ControllerLoggingAspect"/>
+
+    <bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator"/>
+
+    <!-- Change to the following configuration -->
+    <!-- which is able to use every function based on annotation -->
+    <!-- like RequestMappingHandlerMapping -->
+    <mvc:annotation-driven/>
+
+    <!-- Since using <mvc:annotation-driven/> restricts injecting interceptor into -->
+    <!-- RequestMappingHandlerMapping, injects interceptor as follows -->
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/addItem.do"/>
@@ -16,8 +29,29 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+<!--     Annotation based HandlerMapping-->
+<!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">-->
+<!--        <property name="order" value="0"/>-->
+<!--        <property name="interceptors" ref="cookieSetterInterceptor"/>-->
+<!--    </bean>-->
+
+<!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>-->
+
+<!--    <bean id="cookieSetterInterceptor" class="com.model2.mvc.cart.interceptor.CookieSetter"/>-->
+
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/view/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+    <!-- "/" formatted mapping is responsible for every request including both static and dynamic resources -->
+    <!-- Configuring url mapping of DispatcherServlet as "/" makes every request be processes by controllers -->
+    <!-- including even static resources. -->
+    <!-- Designates following url patterns to process static resources (in case of requests including URIs below) -->
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/javascript/**" location="/javascript/"/>
+
+    <!-- Bundling static resources. We follow the following mapping in real project. -->
+    <!--    <mvc:resources mapping="/resources/**" location="/resources/"/>-->
 </beans>
