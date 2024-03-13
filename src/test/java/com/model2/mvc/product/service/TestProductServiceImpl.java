@@ -1,10 +1,9 @@
 package com.model2.mvc.product.service;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;

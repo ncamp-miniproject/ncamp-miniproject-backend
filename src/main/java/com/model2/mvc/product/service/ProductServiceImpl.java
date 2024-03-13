@@ -5,8 +5,6 @@ import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.common.SearchCondition;
-import com.model2.mvc.common.util.OptionalHashMap;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
@@ -23,11 +21,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {

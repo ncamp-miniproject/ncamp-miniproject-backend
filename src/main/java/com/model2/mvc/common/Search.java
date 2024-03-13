@@ -1,7 +1,5 @@
 package com.model2.mvc.common;
 
-import java.util.Map;
-
 public class Search {
 
     String searchCondition;

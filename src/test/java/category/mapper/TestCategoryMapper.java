@@ -1,6 +1,6 @@
 package category.mapper;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
