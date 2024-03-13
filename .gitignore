@@ -124,3 +124,6 @@ buildNumber.properties
 # Eclipse m2e generated files
 # Eclipse Core
 # JDT-specific (Eclipse Java Development Tools)
+
+# secret
+src/main/resources/secret/*
