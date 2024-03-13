@@ -12,8 +12,7 @@
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-    <form name="detailForm" action="${pageContext.request.contextPath}/products/new" method="POST">
-        <!-- enctype="multipart/form-data" -->
+    <form name="detailForm" action="${pageContext.request.contextPath}/products/new" method="POST" enctype="multipart/form-data">
 
         <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
             <tr>
@@ -110,7 +109,6 @@
             <tr>
                 <td height="1" colspan="3" bgcolor="D6D6D6"></td>
             </tr>
-            <!--
             <tr>
                 <td width="104" class="ct_write">상품이미지</td>
                 <td bgcolor="D6D6D6" width="1"></td>
@@ -122,7 +120,6 @@
             <tr>
                 <td height="1" colspan="3" bgcolor="D6D6D6"></td>
             </tr>
-             -->
             <tr>
                 <td width="104" class="ct_write">
                     재고 <img src="${pageContext.request.contextPath}/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
