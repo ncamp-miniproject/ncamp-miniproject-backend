@@ -6,7 +6,7 @@
 
     <context:property-placeholder location="classpath:spring-config/jdbc.properties"/>
 
-    <util:properties id="javaMailProperties" location="classpath:secret/brevo-mail-auth.properties"/>
+    <util:properties id="javaMailConfig" location="classpath:secret/mail-config.properties"/>
 
     <util:properties id="constantProperties" location="classpath:constants/common-constants.properties"/>
 </beans>
