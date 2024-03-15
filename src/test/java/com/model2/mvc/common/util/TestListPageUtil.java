@@ -2,7 +2,6 @@ package com.model2.mvc.common.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.common.db.SQLName;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -74,11 +73,5 @@ public class TestListPageUtil {
             assertThat(result.size()).isEqualTo(expected.size());
             assertThat(result).isEqualTo(expected);
         });
-    }
-
-    @Test
-    public void temp() {
-        System.out.println(SQLName.FIND_PRODUCT.name());
-        System.out.println(SQLName.FIND_PRODUCT);
     }
 }
