@@ -15,4 +15,6 @@ public interface UserDAO {
     public ListData<User> findByUserName(Search search) throws SQLException;
 
     public User updateUser(User to) throws SQLException;
+
+    public void removeByUserId(String userId) throws SQLException;
 }

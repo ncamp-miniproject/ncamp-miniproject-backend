@@ -51,6 +51,10 @@ public class BasicJSONResponse {
         return new ResponseEntity<>(from(HttpStatus.SEE_OTHER, data), headers, HttpStatus.SEE_OTHER);
     }
 
+    public static ResponseEntity<BasicJSONResponse> unauthorized() {
+        return new ResponseEntity<>(from(HttpStatus.UNAUTHORIZED, ""), HttpStatus.UNAUTHORIZED);
+    }
+
     private static BasicJSONResponse from(HttpStatus httpStatus, Object data) {
         return new BasicJSONResponse(httpStatus.value(), httpStatus.getReasonPhrase(), data);
     }

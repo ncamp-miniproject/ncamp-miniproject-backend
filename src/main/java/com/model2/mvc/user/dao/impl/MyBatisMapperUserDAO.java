@@ -44,4 +44,9 @@ public class MyBatisMapperUserDAO implements UserDAO {
         this.sqlSession.update("UserMapper.update", to);
         return previous;
     }
+
+    @Override
+    public void removeByUserId(String userId) throws SQLException {
+        this.sqlSession.delete("UserMapper.delete", userId);
+    }
 }

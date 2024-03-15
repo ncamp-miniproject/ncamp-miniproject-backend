@@ -19,4 +19,5 @@ public interface UserService {
 
     public boolean checkDuplication(String userId) throws Exception;
 
+    public User deleteUser(String userId) throws Exception;
 }

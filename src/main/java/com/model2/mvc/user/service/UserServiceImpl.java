@@ -82,4 +82,14 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
+    @Override
+    public User deleteUser(String userId) throws Exception {
+        User found = this.userDAO.findByUserId(userId);
+        if (found == null) {
+            throw new Exception(); // TODO
+        }
+        this.userDAO.removeByUserId(userId);
+        return found;
+    }
 }
