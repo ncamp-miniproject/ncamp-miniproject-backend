@@ -29,7 +29,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserClientEndController {
 
     private final UserService userService;
 
