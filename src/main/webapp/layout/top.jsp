@@ -29,7 +29,7 @@ User vo=(User)session.getAttribute("user");
               <%
                   if(vo == null) {
               %>
-                <form action="${pageContext.request.contextPath}/users/account/sign-in" method="POST">
+                <form action="${pageContext.request.contextPath}/users/account/sign-in" method="GET">
                     <input type="submit" value="login"/>
                 </form>
               <%

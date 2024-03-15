@@ -9,8 +9,8 @@ import com.model2.mvc.user.dto.response.ListUserResponseDTO;
 import com.model2.mvc.user.dto.response.SignInResponseDTO;
 import com.model2.mvc.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +38,8 @@ public class UserRestController {
     @PostMapping(value = "/account/new")
     public ResponseEntity<BasicJSONResponse> createUser(@RequestBody User toCreate, HttpSession session)
     throws Exception {
-        boolean authenticated = (boolean)session.getAttribute("authenticated");
-        if (!authenticated) {
+        Boolean authenticated = (Boolean)session.getAttribute("authenticated");
+        if (authenticated == null || !authenticated) {
             return BasicJSONResponse.forbidden();
         }
         this.userService.addUser(toCreate);
@@ -110,7 +111,7 @@ public class UserRestController {
     }
 
     @PostMapping("/account/authentication/start")
-    public ResponseEntity<BasicJSONResponse> requestAuthenticationMail(@RequestBody String emailAddress,
+    public ResponseEntity<BasicJSONResponse> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress,
                                                                        HttpSession session)
     throws MailTransferException {
         String generatedCode = this.userService.sendAuthenticateMail(emailAddress);
@@ -121,7 +122,7 @@ public class UserRestController {
     @PostMapping("/account/authentication")
     public ResponseEntity<BasicJSONResponse> validateAuthentication(@RequestParam("code") String code,
                                                                     HttpSession session) {
-        String authenticationCode = (String)session.getAttribute("authenticationCode");
+        Object authenticationCode = session.getAttribute("authenticationCode");
         if (authenticationCode == null) {
             return BasicJSONResponse.forbidden();
         }

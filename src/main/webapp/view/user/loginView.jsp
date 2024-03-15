@@ -99,7 +99,7 @@
                             </td>
                             <td width="10">&nbsp;</td>
                             <td width="70">
-                            	<a href="addUserView.jsp;">
+                            	<a href="${pageContext.request.contextPath}/users/account/email-auth">
                             		<img src="/images/btn_add.gif" width="70" height="20" border="0">
                             	</a>
                             </td>

@@ -1,40 +1,110 @@
 package com.model2.mvc.user.controller;
 
+import com.model2.mvc.common.dto.BasicJSONResponse;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping("/new")
-    public String addUser(@ModelAttribute("user") User user) throws Exception {
-        this.userService.addUser(user);
-        return "redirect:/users/account/sign-in";
+    public String addUser(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
+    throws Exception {
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/account/new")
+                .build();
+        RequestEntity<User> requestEntity = RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Cookie", "JSESSIONID=" + jSessionId)
+                .body(user);
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+        } catch (HttpClientErrorException.Forbidden e) {
+            return "redirect:/users/account/email-auth";
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/account/email-auth")
+    public String emailAuthForm() {
+        return "user/email-auth";
+    }
+
+    @PostMapping("/account/email-auth")
+    public String emailAuth(@RequestParam("emailAddress") String emailAddress,
+                            @CookieValue("JSESSIONID") String jSessionId) throws URISyntaxException {
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/account/authentication/start")
+                .setParameter("emailAddress", emailAddress)
+                .build();
+        RequestEntity<Void> requestEntity = RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Cookie", "JSESSIONID=" + jSessionId)
+                .build();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+        return "user/email-send-notification";
+    }
+
+    @GetMapping("/account/authentication/code")
+    public ModelAndView authenticationCodeValidation(@RequestParam("code") String authenticationCode,
+                                                     @CookieValue("JSESSIONID") String jSessionId)
+    throws URISyntaxException {
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/account/authentication")
+                .setParameter("code", authenticationCode)
+                .build();
+        RequestEntity<Void> requestEntity = RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Cookie", "JSESSIONID=" + jSessionId)
+                .build();
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+        } catch (HttpClientErrorException.Forbidden | HttpClientErrorException.Unauthorized e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/");
+        }
+        return new ModelAndView("redirect:/users/account/signup-form");
     }
 
     @GetMapping("/account/signup-form")
-    public String addUserView() {
+    public String signUpForm() {
         return "user/addUserView";
     }
 
@@ -74,9 +144,24 @@ public class UserController {
     }
 
     @PostMapping("/account/sign-in")
-    public String login(@ModelAttribute("user") User user, HttpSession session) throws Exception {
-        User dbVO = this.userService.loginUser(user);
-        session.setAttribute("user", dbVO);
+    public String login(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
+    throws Exception {
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/account/sign-in")
+                .build();
+        RequestEntity<User> requestEntity = RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Cookie", "JSESSIONID=" + jSessionId)
+                .body(user);
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+        } catch (HttpClientErrorException.Unauthorized e) {
+            System.err.println(e.getStatusCode());
+            System.err.println(e.getResponseBodyAsString());
+        }
         return "redirect:/";
     }
 

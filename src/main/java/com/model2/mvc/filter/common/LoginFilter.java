@@ -22,7 +22,7 @@ public class LoginFilter extends HttpFilter implements Filter {
     throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest)request;
 
-        login(httpRequest);
+//        login(httpRequest);
 
         String uri = httpRequest.getRequestURI();
         if (uri.endsWith(".do") &&

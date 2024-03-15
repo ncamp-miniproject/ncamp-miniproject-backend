@@ -16,13 +16,22 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class TestUserRestController {
@@ -122,5 +131,26 @@ public class TestUserRestController {
         String result = getRequestResult(uri, "send-authentication-mail.txt", "post");
         BasicJSONResponse resultObj = objectMapper.readValue(result, BasicJSONResponse.class);
         assertThat(resultObj.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    public void validateAuthentication_invokeForbidden() throws URISyntaxException {
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/account/authentication")
+                .addParameter("code", "123")
+                .build();
+        RequestEntity<String> requestEntity = RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON).body("");
+        for (int i = 0; i < 5; i++) {
+            try {
+                restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+            } catch (HttpClientErrorException.Forbidden e) {
+                System.out.println(e.getStatusCode());
+                System.out.println(e.getMessage());
+                System.out.println(e.getResponseBodyAsString());
+            }
+        }
     }
 }
