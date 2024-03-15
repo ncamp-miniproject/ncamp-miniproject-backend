@@ -91,7 +91,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         search.put("startRowNum", (page - 1) * pageSize + 1);
         search.put("endRowNum", page * pageSize);
         ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(search);
-        return new ListPurchaseResponseDTO().builder()
+        return ListPurchaseResponseDTO.builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
                 .pageInfo(getPageInfo(result.getCount(), page, pageSize))
@@ -124,7 +124,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         page = page == null ? 1 : page;
         pageSize = pageSize == null ? defaultPageSize : pageSize;
         ListData<Purchase> purchases = this.purchaseDAO.findAllInPageSize((page - 1) * pageSize + 1, page * pageSize);
-        return new ListPurchaseResponseDTO().builder()
+        return ListPurchaseResponseDTO.builder()
                 .count(purchases.getCount())
                 .purchaseList(purchases.getList())
                 .pageInfo(getPageInfo(purchases.getCount(), page, pageSize))

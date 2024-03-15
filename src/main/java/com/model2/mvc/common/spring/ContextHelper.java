@@ -3,6 +3,7 @@ package com.model2.mvc.common.spring;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+@Deprecated
 public class ContextHelper {
     private static ClassPathXmlApplicationContext applicationContext;
     private static Object lock = new Object();

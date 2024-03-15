@@ -5,10 +5,14 @@ import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.user.domain.User;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
+@ToString
 public class GetPurchaseResponseDTO {
     private Integer tranNo;
     private User buyer;
@@ -38,81 +42,5 @@ public class GetPurchaseResponseDTO {
 
     public static GetPurchaseResponseDTO from(Purchase purchase) {
         return new GetPurchaseResponseDTO(purchase);
-    }
-
-    public Integer getTranNo() {
-        return tranNo;
-    }
-
-    public User getBuyer() {
-        return buyer;
-    }
-
-    public PaymentOption getPaymentOption() {
-        return paymentOption;
-    }
-
-    public String getReceiverName() {
-        return receiverName;
-    }
-
-    public String getReceiverPhone() {
-        return receiverPhone;
-    }
-
-    public String getDivyAddr() {
-        return divyAddr;
-    }
-
-    public String getDivyRequest() {
-        return divyRequest;
-    }
-
-    public TranStatusCode getTranStatusCode() {
-        return tranStatusCode;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public LocalDate getDivyDate() {
-        return divyDate;
-    }
-
-    public List<TransactionProduction> getTransactionProductions() {
-        return transactionProductions;
-    }
-
-    @Override
-    public String toString() {
-        return "GetPurchaseResponseDTO{" +
-               "tranNo=" +
-               tranNo +
-               ", buyer=" +
-               buyer +
-               ", paymentOption=" +
-               paymentOption +
-               ", receiverName='" +
-               receiverName +
-               '\'' +
-               ", receiverPhone='" +
-               receiverPhone +
-               '\'' +
-               ", divyAddr='" +
-               divyAddr +
-               '\'' +
-               ", divyRequest='" +
-               divyRequest +
-               '\'' +
-               ", tranStatusCode=" +
-               tranStatusCode +
-               ", orderDate=" +
-               orderDate +
-               ", divyDate=" +
-               divyDate +
-               ", transactionProductions=" +
-               transactionProductions +
-               '}';
     }
 }

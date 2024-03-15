@@ -2,10 +2,14 @@ package com.model2.mvc.product.dto.response;
 
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.user.domain.User;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
+@Getter
+@ToString
 public class GetProductResponseDTO {
     private int prodNo;
     private String fileName;
@@ -36,91 +40,15 @@ public class GetProductResponseDTO {
         return dto;
     }
 
-    public int getProdNo() {
-        return prodNo;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public LocalDate getManuDate() {
-        return manuDate;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public String getProdDetail() {
-        return prodDetail;
-    }
-
-    public String getProdName() {
-        return prodName;
-    }
-
-    public Date getRegDate() {
-        return regDate;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public boolean isPurchasable() {
-        return purchasable;
-    }
-
     public void setPurchasable(boolean purchasable) {
         this.purchasable = purchasable;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
-    public User getLoginUser() {
-        return loginUser;
-    }
-
     public void setLoginUser(User loginUser) {
         this.loginUser = loginUser;
-    }
-
-    @Override
-    public String toString() {
-        return "GetProductResponseDTO{" +
-               "prodNo=" +
-               prodNo +
-               ", fileName='" +
-               fileName +
-               '\'' +
-               ", manuDate=" +
-               manuDate +
-               ", price=" +
-               price +
-               ", prodDetail='" +
-               prodDetail +
-               '\'' +
-               ", prodName='" +
-               prodName +
-               '\'' +
-               ", regDate=" +
-               regDate +
-               ", stock=" +
-               stock +
-               ", categoryName='" +
-               categoryName +
-               '\'' +
-               ", purchasable=" +
-               purchasable +
-               ", loginUser=" +
-               loginUser +
-               '}';
     }
 }

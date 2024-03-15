@@ -117,8 +117,9 @@ public class PurchaseController {
 
         ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, defaultPageSize);
 
+        responseDTO.setLoginUser(loginUser);
         ModelAndView mv = new ModelAndView("purchase/listPurchase");
-        mv.addObject("data", responseDTO.builder().loginUser(loginUser).build());
+        mv.addObject("data", responseDTO);
         return mv;
     }
 

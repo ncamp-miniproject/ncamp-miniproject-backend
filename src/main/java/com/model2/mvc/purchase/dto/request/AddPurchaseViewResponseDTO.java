@@ -2,9 +2,13 @@ package com.model2.mvc.purchase.dto.request;
 
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.user.domain.User;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Map;
 
+@Getter
+@ToString
 public class AddPurchaseViewResponseDTO {
     private int priceSum;
     private int quantitySum;
@@ -22,41 +26,7 @@ public class AddPurchaseViewResponseDTO {
         this.productsToPurchase = productsToPurchase;
     }
 
-    public int getPriceSum() {
-        return priceSum;
-    }
-
-    public int getQuantitySum() {
-        return quantitySum;
-    }
-
-    public int getProductCount() {
-        return productCount;
-    }
-
-    public Map<Product, Integer> getProductsToPurchase() {
-        return productsToPurchase;
-    }
-
-    public User getPurchaseUser() {
-        return purchaseUser;
-    }
-
     public void setPurchaseUser(User loginUser) {
         this.purchaseUser = loginUser;
-    }
-
-    @Override
-    public String toString() {
-        return "AddPurchaseViewResponseDTO{" +
-               "priceSum=" +
-               priceSum +
-               ", quantitySum=" +
-               quantitySum +
-               ", productCount=" +
-               productCount +
-               ", productsToPurchase=" +
-               productsToPurchase +
-               '}';
     }
 }

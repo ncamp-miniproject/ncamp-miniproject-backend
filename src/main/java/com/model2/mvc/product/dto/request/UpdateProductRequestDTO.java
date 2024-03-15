@@ -1,5 +1,14 @@
 package com.model2.mvc.product.dto.request;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class UpdateProductRequestDTO {
     private int prodNo;
     private String prodName;
@@ -9,97 +18,4 @@ public class UpdateProductRequestDTO {
     private String fileName;
     private int stock;
     private Integer categoryNo;
-
-    public UpdateProductRequestDTO() {
-    }
-
-    public int getProdNo() {
-        return prodNo;
-    }
-
-    public void setProdNo(int prodNo) {
-        this.prodNo = prodNo;
-    }
-
-    public String getProdName() {
-        return prodName;
-    }
-
-    public void setProdName(String prodName) {
-        this.prodName = prodName;
-    }
-
-    public String getProdDetail() {
-        return prodDetail;
-    }
-
-    public void setProdDetail(String prodDetail) {
-        this.prodDetail = prodDetail;
-    }
-
-    public String getManuDate() {
-        return manuDate;
-    }
-
-    public void setManuDate(String manuDate) {
-        this.manuDate = manuDate;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public Integer getCategoryNo() {
-        return categoryNo;
-    }
-
-    public void setCategoryNo(Integer categoryNo) {
-        this.categoryNo = categoryNo;
-    }
-
-    @Override
-    public String toString() {
-        return "UpdateProductRequestDTO{" +
-               "prodNo=" +
-               prodNo +
-               ", prodName='" +
-               prodName +
-               '\'' +
-               ", prodDetail='" +
-               prodDetail +
-               '\'' +
-               ", manuDate='" +
-               manuDate +
-               '\'' +
-               ", price=" +
-               price +
-               ", fileName='" +
-               fileName +
-               '\'' +
-               ", stock=" +
-               stock +
-               ", categoryNo=" +
-               categoryNo +
-               '}';
-    }
 }

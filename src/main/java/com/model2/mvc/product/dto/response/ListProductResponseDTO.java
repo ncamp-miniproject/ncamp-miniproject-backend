@@ -6,9 +6,13 @@ import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
+@Getter
+@ToString
 public class ListProductResponseDTO {
     private int count;
     private List<Product> products;
@@ -35,52 +39,5 @@ public class ListProductResponseDTO {
         dto.searchInfo = searchInfo;
         dto.currentCategoryNo = requestDTO.getCategoryNo();
         return dto;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public Page getPageInfo() {
-        return pageInfo;
-    }
-
-    public String getMenuMode() {
-        return menuMode;
-    }
-
-    public Search getSearchInfo() {
-        return searchInfo;
-    }
-
-    public Integer getCurrentCategoryNo() {
-        return this.currentCategoryNo;
-    }
-
-    @Override
-    public String toString() {
-        return "ListProductResponseDTO{" +
-               "count=" +
-               count +
-               ", products=" +
-               products +
-               ", categories=" +
-               categories +
-               ", pageInfo=" +
-               pageInfo +
-               ", menuMode='" +
-               menuMode +
-               '\'' +
-               ", searchInfo=" +
-               searchInfo +
-               '}';
     }
 }

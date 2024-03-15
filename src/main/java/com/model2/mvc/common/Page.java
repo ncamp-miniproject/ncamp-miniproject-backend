@@ -1,10 +1,13 @@
 package com.model2.mvc.common;
 
 import com.model2.mvc.common.util.ListPageUtil;
+import lombok.Getter;
+import lombok.ToString;
 
-import java.util.Collections;
 import java.util.List;
 
+@Getter
+@ToString
 public class Page {
     private final boolean previousPageSetAvailable;
     private final boolean nextPageSetAvailable;
@@ -48,53 +51,5 @@ public class Page {
                         pageToDisplay,
                         currentPage,
                         pageSize);
-    }
-
-    public boolean isPreviousPageSetAvailable() {
-        return this.previousPageSetAvailable;
-    }
-
-    public boolean isNextPageSetAvailable() {
-        return this.nextPageSetAvailable;
-    }
-
-    public int getPreviousPageSetEntry() {
-        return previousPageSetEntry;
-    }
-
-    public int getNextPageSetEntry() {
-        return nextPageSetEntry;
-    }
-
-    public List<Integer> getPagesToDisplay() {
-        return Collections.unmodifiableList(this.pagesToDisplay);
-    }
-
-    public int getCurrentPage() {
-        return this.currentPage;
-    }
-
-    public int getPageSize() {
-        return this.pageSize;
-    }
-
-    @Override
-    public String toString() {
-        return "Page{" +
-               "previousPageSetAvailable=" +
-               previousPageSetAvailable +
-               ", nextPageSetAvailable=" +
-               nextPageSetAvailable +
-               ", previousPageSetEntry=" +
-               previousPageSetEntry +
-               ", nextPageSetEntry=" +
-               nextPageSetEntry +
-               ", pagesToDisplay=" +
-               pagesToDisplay +
-               ", currentPage=" +
-               currentPage +
-               ", pageSize=" +
-               pageSize +
-               '}';
     }
 }

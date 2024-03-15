@@ -1,40 +1,25 @@
 package com.model2.mvc.category.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Objects;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Category {
     private Integer categoryNo;
     private String categoryName;
-
-    public Category() {
-    }
 
     public Category(Integer categoryNo) {
         this.categoryNo = categoryNo;
     }
 
     public Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Category(Integer categoryNo, String categoryName) {
-        this.categoryNo = categoryNo;
-        this.categoryName = categoryName;
-    }
-
-    public Integer getCategoryNo() {
-        return categoryNo;
-    }
-
-    public void setCategoryNo(Integer categoryNo) {
-        this.categoryNo = categoryNo;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
@@ -53,10 +38,5 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hash(categoryNo);
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" + "categoryNo=" + categoryNo + ", categoryName='" + categoryName + '\'' + '}';
     }
 }
