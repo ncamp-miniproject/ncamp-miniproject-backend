@@ -2,31 +2,38 @@ package com.model2.mvc.user.service;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.common.util.RandomSerialGenerator;
+import com.model2.mvc.common.util.mail.MailAgent;
+import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 @Primary
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
+    private final MailAgent mailAgent;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
-
-    @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
 
     public void addUser(User userVO) throws Exception {
         userVO.setRegDate(new Date(System.currentTimeMillis()));
@@ -91,5 +98,28 @@ public class UserServiceImpl implements UserService {
         }
         this.userDAO.removeByUserId(userId);
         return found;
+    }
+
+    @Override
+    public String sendAuthenticateMail(String receiverMailAddress) throws MailTransferException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("constants/authenticate-mail.json");
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+        JSONObject metadata = (JSONObject)JSONValue.parse(sb.toString());
+        String generatedCode = RandomSerialGenerator.generate(40);
+        this.mailAgent.send(receiverMailAddress,
+                            new java.util.Date(),
+                            (String)metadata.get("subject"),
+                            (String)metadata.get("message"),
+                            (String)metadata.get("authenticationURL") + generatedCode);
+        return generatedCode;
     }
 }

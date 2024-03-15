@@ -1,5 +1,6 @@
 package com.model2.mvc.user.service;
 
+import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 
@@ -20,4 +21,6 @@ public interface UserService {
     public boolean checkDuplication(String userId) throws Exception;
 
     public User deleteUser(String userId) throws Exception;
+
+    public String sendAuthenticateMail(String receiverMailAddress) throws MailTransferException;
 }

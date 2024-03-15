@@ -16,6 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -63,7 +64,7 @@ public class TestUserRestController {
         getOrPost = getOrPost.trim().toLowerCase();
         HttpRequestBase requestBase = getRequestBase(uri, getOrPost);
         if (resourceName != null && getOrPost.equals("post")) {
-            String testCase = readTestCaseBody(resourceName + ".json");
+            String testCase = readTestCaseBody(resourceName);
             HttpEntity requestEntity = new StringEntity(testCase);
             ((HttpPost)requestBase).setEntity(requestEntity);
         }
@@ -71,6 +72,10 @@ public class TestUserRestController {
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(requestBase)) {
             HttpEntity responseEntity = response.getEntity();
+
+            if (responseEntity == null) {
+                return null;
+            }
 
             StringBuilder sb = new StringBuilder();
             String line;
@@ -87,9 +92,7 @@ public class TestUserRestController {
     public void createUser() throws Exception {
         URI uri = new URIBuilder(basicURI).setPath("/app/users/account/new").build();
 
-        System.out.println(uri);
-
-        String result = getRequestResult(uri, "create-user", "post");
+        String result = getRequestResult(uri, "create-user.json", "post");
 
         URI deleteURI = new URIBuilder(basicURI).setPath("/app/users/account/user0001/delete").build();
 
@@ -111,5 +114,13 @@ public class TestUserRestController {
         System.out.println(removedUser);
 
         assertThat(removedUser.get("userId")).isEqualTo(resultUser.get("userId"));
+    }
+
+    @Test
+    public void sendAuthenticationMail() throws Exception {
+        URI uri = new URIBuilder(basicURI).setPath("/app/users/account/authentication/start").build();
+        String result = getRequestResult(uri, "send-authentication-mail.txt", "post");
+        BasicJSONResponse resultObj = objectMapper.readValue(result, BasicJSONResponse.class);
+        assertThat(resultObj.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

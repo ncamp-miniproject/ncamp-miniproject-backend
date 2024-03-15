@@ -22,9 +22,13 @@ public class RandomSerialGenerator {
     public static final int DEFAULT_LENGTH = 25;
 
     public static String generate() {
+        return generate(DEFAULT_LENGTH);
+    }
+
+    public static String generate(int length) {
         Random random = new Random();
 
-        char[] serial = new char[DEFAULT_LENGTH];
+        char[] serial = new char[length];
         int size = asciiSet.size();
         for (int i = 0; i < serial.length; i++) {
             serial[i] = asciiSet.get(Math.abs(random.nextInt()) % size);

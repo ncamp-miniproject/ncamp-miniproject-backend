@@ -2,6 +2,7 @@ package com.model2.mvc.user.controller;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.common.dto.BasicJSONResponse;
+import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.dto.response.ListUserResponseDTO;
@@ -101,5 +102,13 @@ public class UserRestController {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    @PostMapping("/account/authentication/start")
+    public ResponseEntity<BasicJSONResponse> requestAuthenticationMail(@RequestBody String emailAddress, HttpSession session)
+    throws MailTransferException {
+        String generatedCode = this.userService.sendAuthenticateMail(emailAddress);
+        session.setAttribute("authentication", generatedCode);
+        return BasicJSONResponse.noContent();
     }
 }
