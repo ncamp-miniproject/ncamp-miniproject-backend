@@ -55,6 +55,10 @@ public class BasicJSONResponse {
         return new ResponseEntity<>(from(HttpStatus.UNAUTHORIZED, ""), HttpStatus.UNAUTHORIZED);
     }
 
+    public static ResponseEntity<BasicJSONResponse> forbidden() {
+        return new ResponseEntity<>(from(HttpStatus.FORBIDDEN, ""), HttpStatus.FORBIDDEN);
+    }
+
     private static BasicJSONResponse from(HttpStatus httpStatus, Object data) {
         return new BasicJSONResponse(httpStatus.value(), httpStatus.getReasonPhrase(), data);
     }

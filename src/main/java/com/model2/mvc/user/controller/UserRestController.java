@@ -35,7 +35,12 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/account/new")
-    public ResponseEntity<BasicJSONResponse> createUser(@RequestBody User toCreate) throws Exception {
+    public ResponseEntity<BasicJSONResponse> createUser(@RequestBody User toCreate, HttpSession session)
+    throws Exception {
+        boolean authenticated = (boolean)session.getAttribute("authenticated");
+        if (!authenticated) {
+            return BasicJSONResponse.forbidden();
+        }
         this.userService.addUser(toCreate);
         return BasicJSONResponse.created(toCreate);
     }
@@ -105,10 +110,26 @@ public class UserRestController {
     }
 
     @PostMapping("/account/authentication/start")
-    public ResponseEntity<BasicJSONResponse> requestAuthenticationMail(@RequestBody String emailAddress, HttpSession session)
+    public ResponseEntity<BasicJSONResponse> requestAuthenticationMail(@RequestBody String emailAddress,
+                                                                       HttpSession session)
     throws MailTransferException {
         String generatedCode = this.userService.sendAuthenticateMail(emailAddress);
-        session.setAttribute("authentication", generatedCode);
+        session.setAttribute("authenticationCode", generatedCode);
         return BasicJSONResponse.noContent();
+    }
+
+    @PostMapping("/account/authentication")
+    public ResponseEntity<BasicJSONResponse> validateAuthentication(@RequestParam("code") String code,
+                                                                    HttpSession session) {
+        String authenticationCode = (String)session.getAttribute("authenticationCode");
+        if (authenticationCode == null) {
+            return BasicJSONResponse.forbidden();
+        }
+        if (!code.equals(authenticationCode)) {
+            return BasicJSONResponse.unauthorized();
+        }
+        session.removeAttribute("authenticationCode");
+        session.setAttribute("authenticated", true);
+        return BasicJSONResponse.ok(true);
     }
 }
