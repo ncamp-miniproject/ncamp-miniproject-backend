@@ -48,8 +48,7 @@ public class UserRestController {
     @PostMapping("/account/check-duplicate")
     public ResponseEntity<CheckDuplicateResponseDTO> checkDuplication(@RequestParam("userId") String userId)
     throws Exception {
-        boolean result = this.userService.checkDuplication(userId);
-        return new ResponseEntity<>(new CheckDuplicateResponseDTO(result, userId), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.checkDuplication(userId), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
@@ -62,31 +61,9 @@ public class UserRestController {
     }
 
     @GetMapping("")
-    public ResponseEntity<ListUserResponseDTO> getUsers(@ModelAttribute ListUserRequestDTO requestDTO)
+    public ResponseEntity<ListUserResponseDTO> listUser(@ModelAttribute ListUserRequestDTO requestDTO)
     throws Exception {
-        Map<String, Object> result = this.userService.getUserList(requestDTO);
-
-        int page = requestDTO.getPage() == null ? 1 : requestDTO.getPage();
-        int pageSize = requestDTO.getPageSize() == null ? 1 : requestDTO.getPageSize();
-
-        int totalPage = 0;
-        int total = (int)result.get("count");
-        if (total > 0) {
-            totalPage = total / pageSize;
-            if (total % pageSize > 0) {
-                totalPage += 1;
-            }
-        }
-
-        ListUserResponseDTO responseData = ListUserResponseDTO.builder()
-                .total((int)result.get("count"))
-                .list((List<User>)result.get("list"))
-                .searchVO((Search)result.get("searchVO"))
-                .currentPage(page)
-                .totalPage(totalPage)
-                .build();
-
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.getUserList(requestDTO), HttpStatus.OK);
     }
 
     @PostMapping("/account/sign-in")

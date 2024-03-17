@@ -10,6 +10,8 @@ import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.dao.UserDAO;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
+import com.model2.mvc.user.dto.response.ListUserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.findByUserId(userId).orElseThrow(Exception::new);
     }
 
-    public Map<String, Object> getUserList(ListUserRequestDTO requestDTO) throws Exception {
+    public ListUserResponseDTO getUserList(ListUserRequestDTO requestDTO) throws Exception {
         Integer page = requestDTO.getPage();
         page = page == null ? 1 : page;
         Integer pageSize = requestDTO.getPageSize();
@@ -80,7 +82,21 @@ public class UserServiceImpl implements UserService {
             result.put("count", userList.getCount());
             result.put("list", userList.getList());
             result.put("searchVO", search);
-            return result;
+            int totalPage = 0;
+            int total = (int)result.get("count");
+            if (total > 0) {
+                totalPage = total / pageSize;
+                if (total % pageSize > 0) {
+                    totalPage += 1;
+                }
+            }
+            return ListUserResponseDTO.builder()
+                    .total(userList.getCount())
+                    .list(userList.getList())
+                    .searchVO(search)
+                    .currentPage(page)
+                    .totalPage(totalPage)
+                    .build();
         default:
             throw new IllegalArgumentException();
         }
@@ -90,13 +106,13 @@ public class UserServiceImpl implements UserService {
         userDAO.updateUser(user);
     }
 
-    public boolean checkDuplication(String userId) throws Exception {
+    public CheckDuplicateResponseDTO checkDuplication(String userId) throws Exception {
         boolean result = true;
         Optional<User> userVO = userDAO.findByUserId(userId);
         if (userVO.isPresent()) {
             result = false;
         }
-        return result;
+        return new CheckDuplicateResponseDTO(result, userId);
     }
 
     @Override
