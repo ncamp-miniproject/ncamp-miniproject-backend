@@ -34,7 +34,14 @@ CREATE TABLE users
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
-
+CREATE TABLE subscription
+(
+    subscriber_id VARCHAR(20),
+    seller_id     VARCHAR(20),
+    CONSTRAINT subscription_pk PRIMARY KEY (subscriber_id, seller_id),
+    CONSTRAINT subscription_subscriber_fk FOREIGN KEY (subscriber_id) REFERENCES users (user_id),
+    CONSTRAINT subscription_seller_fk FOREIGN KEY (seller_id) REFERENCES users (user_id)
+);
 
 CREATE TABLE category
 (
@@ -47,6 +54,7 @@ CREATE TABLE category
 CREATE TABLE product
 (
     prod_no         NUMBER(16),
+    register        VARCHAR2(20),
     prod_name       VARCHAR2(100) NOT NULL,
     prod_detail     VARCHAR2(200),
     manufacture_day DATE DEFAULT sysdate,
@@ -56,7 +64,8 @@ CREATE TABLE product
     stock           NUMBER(10) NOT NULL,
     category_no     NUMBER(16),
     CONSTRAINT product_pk PRIMARY KEY (prod_no),
-    CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no)
+    CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no),
+    CONSTRAINT prod_register_fk FOREIGN KEY (register) REFERENCES users (user_id)
 );
 
 CREATE TABLE transaction
