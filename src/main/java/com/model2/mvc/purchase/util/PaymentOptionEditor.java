@@ -1,12 +1,18 @@
 package com.model2.mvc.purchase.util;
 
 import com.model2.mvc.purchase.domain.PaymentOption;
-import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
 
-@Component
 public class PaymentOptionEditor extends PropertyEditorSupport {
+    private static final PaymentOptionEditor singleton = new PaymentOptionEditor();
+
+    private PaymentOptionEditor() {
+    }
+
+    public static PaymentOptionEditor getInstance() {
+        return singleton;
+    }
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {

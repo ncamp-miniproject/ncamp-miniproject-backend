@@ -11,12 +11,17 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-@Component
 public class LocalDateEditor extends PropertyEditorSupport {
+    private static final LocalDateEditor singleton = new LocalDateEditor();
+
     private final SimpleDateFormat simpleDateFormat;
 
-    public LocalDateEditor(SimpleDateFormat simpleDateFormat) {
-        this.simpleDateFormat = simpleDateFormat;
+    private LocalDateEditor() {
+        this.simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    public static LocalDateEditor getInstance() {
+        return singleton;
     }
 
     @Override

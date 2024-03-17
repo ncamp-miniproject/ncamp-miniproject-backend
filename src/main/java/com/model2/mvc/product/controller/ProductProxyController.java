@@ -47,13 +47,15 @@ import java.util.Map;
 public class ProductProxyController {
 
     private final ProductService productService;
+    private final ServletContext servletContext;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
 
     @Autowired
-    public ProductProxyController(ProductService productService) {
+    public ProductProxyController(ProductService productService, ServletContext servletContext) {
         this.productService = productService;
+        this.servletContext = servletContext;
     }
 
     @InitBinder
@@ -63,49 +65,8 @@ public class ProductProxyController {
     }
 
     @PostMapping("/new")
-    public String addProduct(HttpServletRequest request) {
-        AddProductRequestDTO dto = new AddProductRequestDTO();
-
-        ServletContext servletContext = request.getServletContext();
-        File repository = new File(servletContext.getRealPath("/images/uploadFiles"));
-
-        final int megabyte = 1024 * 1024;
-
-        DiskFileItemFactory factory = new DiskFileItemFactory(megabyte * 10, repository);
-
-        ServletFileUpload fileUpload = new ServletFileUpload(factory);
-
-        Map<String, String> formData = new HashMap<>();
-        String fileName = null;
-        try {
-            List<FileItem> fileItems = fileUpload.parseRequest(request);
-            for (FileItem fileItem : fileItems) {
-                if (fileItem.isFormField()) {
-                    formData.put(fileItem.getFieldName(), fileItem.getString("EUC-KR"));
-                } else {
-                    try {
-                        String fileItemName = fileItem.getName();
-                        int idx = fileItemName.lastIndexOf(".");
-                        fileName = RandomSerialGenerator.generate() + fileItemName.substring(idx);
-                        File imageFile = new File(repository, fileName);
-                        fileItem.write(imageFile);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } catch (FileUploadException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        dto.setFileName(fileName);
-        dto.setManuDate(formData.get("manuDate"));
-        dto.setPrice(Integer.parseInt(formData.get("price")));
-        dto.setProdDetail(formData.get("prodDetail"));
-        dto.setProdName(formData.get("prodName"));
-        dto.setStock(Integer.parseInt(formData.get("stock")));
-        dto.setCategoryNo(Integer.parseInt(formData.get("categoryNo")));
-        this.productService.addProduct(dto);
+    public String addProduct(@ModelAttribute("productDTO") AddProductRequestDTO productDTO) {
+        this.productService.addProduct(productDTO, this.servletContext.getRealPath("/images/uploadFiles"));
         return "redirect:/products";
     }
 

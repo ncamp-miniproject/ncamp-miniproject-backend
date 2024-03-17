@@ -54,4 +54,7 @@
 
     <!-- Bundling static resources. We follow the following mapping in real project. -->
     <!--    <mvc:resources mapping="/resources/**" location="/resources/"/>-->
+
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 </beans>

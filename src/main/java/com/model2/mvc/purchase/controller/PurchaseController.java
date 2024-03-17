@@ -44,13 +44,8 @@ import java.util.Map;
 @RequestMapping("/purchases")
 public class PurchaseController {
 
-    private PurchaseService purchaseService;
+    private final PurchaseService purchaseService;
 
-    private LocalDateEditor localDateEditor;
-    private TransactionProductionEditor tranProdEditor;
-    private PaymentOptionEditor paymentOptionEditor;
-    private TranStatusCodeEditor tranStatusCodeEditor;
-    private final SearchConditionEditor searchConditionEditor;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -59,26 +54,17 @@ public class PurchaseController {
     private int defaultPageDisplay;
 
     @Autowired
-    public PurchaseController(PurchaseService purchaseService,
-                              LocalDateEditor localDateEditor,
-                              TransactionProductionEditor tranProdEditor,
-                              PaymentOptionEditor paymentOptionEditor,
-                              TranStatusCodeEditor tranStatusCodeEditor, SearchConditionEditor searchConditionEditor) {
+    public PurchaseController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
-        this.localDateEditor = localDateEditor;
-        this.tranProdEditor = tranProdEditor;
-        this.paymentOptionEditor = paymentOptionEditor;
-        this.tranStatusCodeEditor = tranStatusCodeEditor;
-        this.searchConditionEditor = searchConditionEditor;
     }
 
     @InitBinder
     public void dateBinding(WebDataBinder binder) {
-        binder.registerCustomEditor(LocalDate.class, this.localDateEditor);
-        binder.registerCustomEditor(List.class, "tranProds", this.tranProdEditor);
-        binder.registerCustomEditor(PaymentOption.class, "paymentOption", this.paymentOptionEditor);
-        binder.registerCustomEditor(TranStatusCode.class, "tranStatusCode", this.tranStatusCodeEditor);
-        binder.registerCustomEditor(SearchCondition.class, this.searchConditionEditor);
+        binder.registerCustomEditor(LocalDate.class, LocalDateEditor.getInstance());
+        binder.registerCustomEditor(List.class, "tranProds", TransactionProductionEditor.getInstance());
+        binder.registerCustomEditor(PaymentOption.class, "paymentOption", PaymentOptionEditor.getInstance());
+        binder.registerCustomEditor(TranStatusCode.class, "tranStatusCode", TranStatusCodeEditor.getInstance());
+        binder.registerCustomEditor(SearchCondition.class, SearchConditionEditor.getInstance());
     }
 
     @PostMapping("/new")

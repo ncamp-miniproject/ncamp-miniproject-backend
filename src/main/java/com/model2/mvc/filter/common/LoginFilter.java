@@ -23,7 +23,7 @@ public class LoginFilter extends HttpFilter implements Filter {
     throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest)request;
 
-//        login(httpRequest);
+        login(httpRequest);
 
         String uri = httpRequest.getRequestURI();
         if (uri.endsWith(".do") &&
@@ -50,7 +50,7 @@ public class LoginFilter extends HttpFilter implements Filter {
         sampleUser.setUserId("user08");
         sampleUser.setUserName("SCOTT");
         sampleUser.setPassword("1234");
-        sampleUser.setRole(Role.ADMIN);
+        sampleUser.setRole(Role.SELLER);
         sampleUser.setRegDate(new Date(System.currentTimeMillis()));
         session.setAttribute("user", sampleUser);
     }

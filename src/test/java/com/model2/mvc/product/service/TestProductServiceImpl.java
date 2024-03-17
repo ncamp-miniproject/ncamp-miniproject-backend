@@ -60,7 +60,6 @@ public class TestProductServiceImpl extends TestCase {
         Category category1 = this.categoryService.insertCategory("category1");
         Category category2 = this.categoryService.insertCategory("category2");
         AddProductRequestDTO req1 = new AddProductRequestDTO();
-        req1.setFileName("sample-file");
         req1.setManuDate("2017-02-11");
         req1.setPrice(1000);
         req1.setProdName("prod1");
@@ -72,8 +71,8 @@ public class TestProductServiceImpl extends TestCase {
         req2.setStock(30);
         req2.setCategoryNo(category2.getCategoryNo());
 
-        AddProductResponseDTO resp1 = this.productService.addProduct(req1);
-        AddProductResponseDTO resp2 = this.productService.addProduct(req2);
+        AddProductResponseDTO resp1 = this.productService.addProduct(req1, "");
+        AddProductResponseDTO resp2 = this.productService.addProduct(req2, "");
         Product prod1 = new Product();
         prod1.setProdNo(resp1.getProdNo());
         prod1.setProdDetail(resp1.getProdDetail());

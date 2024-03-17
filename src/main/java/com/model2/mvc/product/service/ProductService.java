@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert);
+    public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert, String contextRealPath);
 
     public GetProductResponseDTO getProduct(int prodNo);
 

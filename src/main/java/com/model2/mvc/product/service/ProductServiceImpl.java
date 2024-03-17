@@ -5,6 +5,7 @@ import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.AddProductRequestDTO;
@@ -19,7 +20,13 @@ import com.model2.mvc.product.service.helper.ListQueryHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +50,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert) {
+    public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert, String contextRealPath) {
         Product product = new Product();
-        product.setFileName(toInsert.getFileName());
+        product.setFileName(storeFile(toInsert.getImageFile(), contextRealPath));
         product.setManuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"));
         product.setPrice(toInsert.getPrice());
         product.setProdDetail(toInsert.getProdDetail());
@@ -57,6 +64,25 @@ public class ProductServiceImpl implements ProductService {
         }
         this.productRepository.insertProduct(product);
         return AddProductResponseDTO.from(product);
+    }
+
+    private String storeFile(MultipartFile file, String contextRealPath) {
+        System.out.println(file.getSize());
+        if (file.getSize() == 0) {
+            return null;
+        }
+        int extensionIndex = file.getOriginalFilename().lastIndexOf(".");
+        String extension = file.getOriginalFilename().substring(extensionIndex);
+        String filename = RandomSerialGenerator.generate() + extension;
+        String uploadPath = contextRealPath + File.separator + filename;
+        try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(new File(uploadPath).toPath()))) {
+            byte[] fileData = file.getBytes();
+            bos.write(fileData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(); // TODO
+        }
+        return filename;
     }
 
     @Override

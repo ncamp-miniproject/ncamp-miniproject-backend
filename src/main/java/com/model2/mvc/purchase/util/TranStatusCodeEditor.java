@@ -5,8 +5,15 @@ import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
 
-@Component
 public class TranStatusCodeEditor extends PropertyEditorSupport {
+    private static final TranStatusCodeEditor singleton = new TranStatusCodeEditor();
+
+    private TranStatusCodeEditor() {
+    }
+
+    public static TranStatusCodeEditor getInstance() {
+        return singleton;
+    }
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {

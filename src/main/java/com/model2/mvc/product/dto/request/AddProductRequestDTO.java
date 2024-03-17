@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class AddProductRequestDTO {
-    private String fileName;
+    private MultipartFile imageFile;
     private String manuDate;
     private int price;
     private String prodDetail;

@@ -10,10 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class TransactionProductionEditor extends PropertyEditorSupport {
+    private static final TransactionProductionEditor singleton = new TransactionProductionEditor();
 
     private static final String MULTI_PARAM_DELIMITER = ",";
+
+    private TransactionProductionEditor() {
+    }
+
+    public static TransactionProductionEditor getInstance() {
+        return singleton;
+    }
 
     @Value("#{constantProperties['queryValueDelimiter']}")
     private String queryValueDelimiter;
