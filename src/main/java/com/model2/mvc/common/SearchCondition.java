@@ -30,6 +30,9 @@ public enum SearchCondition {
     }
 
     public static Optional<SearchCondition> getSearchCondition(String conditionCode) {
-        return Optional.ofNullable(codeTable.get(conditionCode));
+        if (conditionCode == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(codeTable.get(conditionCode.trim()));
     }
 }

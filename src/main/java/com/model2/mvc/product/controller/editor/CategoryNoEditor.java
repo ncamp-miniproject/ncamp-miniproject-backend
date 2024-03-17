@@ -9,7 +9,7 @@ public class CategoryNoEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        if (text.equals("-1")) {
+        if (text == null || text.equals("-1")) {
             this.setValue(null);
         } else {
             this.setValue(Integer.parseInt(text));

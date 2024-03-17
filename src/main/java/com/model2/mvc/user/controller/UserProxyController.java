@@ -2,12 +2,15 @@ package com.model2.mvc.user.controller;
 
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
+import com.model2.mvc.user.dto.response.ListUserResponseDTO;
 import com.model2.mvc.user.dto.response.SignInResponseDTO;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -24,12 +27,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserClientEndController {
+public class UserProxyController {
 
     private final UserService userService;
 
@@ -108,36 +110,83 @@ public class UserClientEndController {
 
     @PostMapping("/account/check-duplicate")
     public String checkDuplication(@RequestParam("userId") String userId, Model model) throws Exception {
-        boolean result = this.userService.checkDuplication(userId);
-        model.addAttribute("result", result);
-        model.addAttribute("userId", userId);
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/account/check-duplicate")
+                .setParameter("userId", userId)
+                .build();
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<CheckDuplicateResponseDTO> response = restTemplate.exchange(RequestEntity.post(uri)
+                                                                                               .contentType(MediaType.APPLICATION_JSON)
+                                                                                               .build(),
+                                                                                       CheckDuplicateResponseDTO.class);
+            CheckDuplicateResponseDTO body = response.getBody();
+            if (body != null) {
+                model.addAttribute("result", body.getResult());
+                model.addAttribute("userId", body.getUserId());
+            }
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace(); // TODO
+        }
         return "user/checkDuplication";
     }
 
     @GetMapping("/{userId}")
     public String getUser(@PathVariable("userId") String userId, Model model) throws Exception {
-        User user = this.userService.getUser(userId);
-        model.addAttribute("user", user);
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users/" + userId)
+                .build();
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<User> response = restTemplate.exchange(RequestEntity.get(uri)
+                                                                          .accept(MediaType.APPLICATION_JSON)
+                                                                          .build(), User.class);
+            model.addAttribute("user", response.getBody());
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new RuntimeException();
+        }
         return "user/readUser";
     }
 
     @GetMapping("")
     public String listUser(@ModelAttribute("requestDTO") ListUserRequestDTO requestDTO, Model model) throws Exception {
-        Map<String, Object> map = this.userService.getUserList(requestDTO);
-        model.addAttribute("total", map.get("count"));
-        model.addAttribute("list", map.get("list"));
-        model.addAttribute("searchVO", map.get("searchVO"));
-        model.addAttribute("currentPage", requestDTO.getPage() == 0 ? 1 : requestDTO.getPage());
-
-        int totalPage = 0;
-        int total = (int)map.get("count");
-        if (total > 0) {
-            totalPage = total / requestDTO.getPageSize();
-            if (total % requestDTO.getPageSize() > 0) {
-                totalPage += 1;
-            }
+        URIBuilder uriBuilder = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/app/users");
+        if (requestDTO.getPage() != null) {
+            uriBuilder.addParameter("page", requestDTO.getPage().toString());
         }
-        model.addAttribute("totalPage", totalPage);
+        if (requestDTO.getPageSize() != null) {
+            uriBuilder.addParameter("pageSize", requestDTO.getPageSize().toString());
+        }
+        if (requestDTO.getSearchKeyword() != null) {
+            uriBuilder.addParameter("searchKeyword", requestDTO.getSearchKeyword());
+        }
+        if (requestDTO.getSearchCondition() != null) {
+            uriBuilder.addParameter("searchCondition", requestDTO.getSearchCondition().getConditionCode());
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<ListUserResponseDTO> response = restTemplate.exchange(RequestEntity.get(uriBuilder.build())
+                                                                                         .accept(MediaType.APPLICATION_JSON)
+                                                                                         .build(),
+                                                                                 ListUserResponseDTO.class);
+            ListUserResponseDTO result = response.getBody();
+            if (result != null) {
+                model.addAttribute("total", result.getTotal());
+                model.addAttribute("list", result.getList());
+                model.addAttribute("searchVO", result.getSearchVO());
+                model.addAttribute("currentPage", result.getCurrentPage());
+                model.addAttribute("totalPage", result.getTotalPage());
+            }
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+        }
         return "user/listUser";
     }
 

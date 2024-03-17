@@ -2,7 +2,9 @@ package com.model2.mvc.user.service;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.RandomSerialGenerator;
+import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.common.util.mail.MailAgent;
 import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.dao.UserDAO;
@@ -54,17 +56,20 @@ public class UserServiceImpl implements UserService {
     }
 
     public Map<String, Object> getUserList(ListUserRequestDTO requestDTO) throws Exception {
+        Integer page = requestDTO.getPage();
+        page = page == null ? 1 : page;
+        Integer pageSize = requestDTO.getPageSize();
+        pageSize = pageSize == null ? defaultPageSize : pageSize;
+        SearchCondition searchCondition = requestDTO.getSearchCondition() == null
+                                          ? SearchCondition.BY_NAME
+                                          : requestDTO.getSearchCondition();
         Search search = new Search();
-        int page = requestDTO.getPage();
-        page = page == 0 ? 1 : page;
-        int pageSize = requestDTO.getPageSize();
-        pageSize = pageSize == 0 ? defaultPageSize : pageSize;
         search.setStartRowNum((page - 1) * pageSize + 1);
         search.setEndRowNum(page * pageSize);
-        search.setSearchCondition(requestDTO.getSearchCondition().getConditionCode());
-        search.setSearchKeyword(requestDTO.getSearchKeyword());
-        switch (requestDTO.getSearchCondition()) {
-        case BY_ID:
+        search.setSearchCondition(searchCondition.getConditionCode());
+        search.setSearchKeyword(StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
+        switch (searchCondition) {
+        case BY_NAME:
             ListData<User> userList = userDAO.findByUserName(search);
             Map<String, Object> result = new HashMap<>();
             result.put("count", userList.getCount());

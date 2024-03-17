@@ -38,11 +38,11 @@ public class LoggingAspect {
         log.debug("{}Class: {}", YELLOW.getCode(), joinPoint.getTarget().getClass().getName());
         log.debug("Method: {}", joinPoint.getSignature().getName());
         log.debug("Signature: {}", joinPoint.getSignature());
-        log.debug("Params: {}", Arrays.toString(joinPoint.getArgs()));
+        log.debug("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
 
         Object returnValue = joinPoint.proceed();
 
-        log.debug("Returns: {}{}", returnValue, RESET.getCode());
+        log.debug("{}Returns: {}{}", YELLOW.getCode(), returnValue, RESET.getCode());
         return returnValue;
     }
 }

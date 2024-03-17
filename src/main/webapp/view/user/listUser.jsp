@@ -82,11 +82,11 @@
                     <td colspan="11" bgcolor="808285" height="1"></td>
                 </tr>
 
-                <c:set var="no" value="${ list.size() }" />
+                <c:set var="no" value="${ list.size() }" scope="page" />
                 <c:forEach var="data" items="${ list }">
                     <tr class="ct_list_pop">
                         <td align="center">${ no }</td>
-                        <c:set target="no" value="${ no - 1 }" />
+                        <c:set var="no" value="${ no - 1 }" scope="page" />
                         <td></td>
                         <td align="left"><a href="/users/${ data.userId }">${ data.userId }</a></td>
                         <td></td>

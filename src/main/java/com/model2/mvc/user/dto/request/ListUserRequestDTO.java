@@ -11,8 +11,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ListUserRequestDTO {
-    private int page;
-    private int pageSize;
+    private Integer page;
+    private Integer pageSize;
     private SearchCondition searchCondition;
     private String searchKeyword;
 }
