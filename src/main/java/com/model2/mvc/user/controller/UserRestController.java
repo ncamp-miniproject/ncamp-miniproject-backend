@@ -38,10 +38,17 @@ public class UserRestController {
     @PostMapping(value = "/account/new")
     public ResponseEntity<User> createUser(@RequestBody User toCreate, HttpSession session) throws Exception {
         Boolean authenticated = (Boolean)session.getAttribute("authenticated");
-        if (authenticated == null || !authenticated) {
+        String authenticatedEmail = (String)session.getAttribute("authenticatedEmail");
+        if (authenticated == null ||
+            !authenticated ||
+            authenticatedEmail == null ||
+            !authenticatedEmail.equals(toCreate.getEmail())) {
+
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         this.userService.addUser(toCreate);
+        session.removeAttribute("authenticated");
+        session.removeAttribute("authenticatedEmail");
         return new ResponseEntity<>(toCreate, HttpStatus.CREATED);
     }
 
@@ -103,7 +110,9 @@ public class UserRestController {
     }
 
     @PostMapping("/account/authentication")
-    public ResponseEntity<Void> validateAuthentication(@RequestParam("code") String code, HttpSession session) {
+    public ResponseEntity<Void> validateAuthentication(@RequestParam("code") String code,
+                                                       @RequestParam("authenticatedEmail") String authenticatedEmail,
+                                                       HttpSession session) {
         Object authenticationCode = session.getAttribute("authenticationCode");
         if (authenticationCode == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -113,6 +122,7 @@ public class UserRestController {
         }
         session.removeAttribute("authenticationCode");
         session.setAttribute("authenticated", true);
+        session.setAttribute("authenticatedEmail", authenticatedEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

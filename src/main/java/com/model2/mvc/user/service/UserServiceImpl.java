@@ -125,6 +125,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String sendAuthenticateMail(String receiverMailAddress) throws MailTransferException {
+        JSONObject metadata = readMailMetadata();
+        String generatedCode = RandomSerialGenerator.generate(40);
+        this.mailAgent.send(receiverMailAddress,
+                            new java.util.Date(),
+                            (String)metadata.get("subject"),
+                            (String)metadata.get("message"),
+                            (String)metadata.get("authenticationURL") +
+                            generatedCode +
+                            "&authenticatedEmail=" +
+                            receiverMailAddress);
+        return generatedCode;
+    }
+
+    private JSONObject readMailMetadata() {
         InputStream is = getClass().getClassLoader().getResourceAsStream("constants/authenticate-mail.json");
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -136,13 +150,6 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             throw new RuntimeException();
         }
-        JSONObject metadata = (JSONObject)JSONValue.parse(sb.toString());
-        String generatedCode = RandomSerialGenerator.generate(40);
-        this.mailAgent.send(receiverMailAddress,
-                            new java.util.Date(),
-                            (String)metadata.get("subject"),
-                            (String)metadata.get("message"),
-                            (String)metadata.get("authenticationURL") + generatedCode);
-        return generatedCode;
+        return (JSONObject)JSONValue.parse(sb.toString());
     }
 }

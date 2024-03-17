@@ -8,6 +8,7 @@ import com.model2.mvc.user.dto.response.SignInResponseDTO;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -81,13 +82,15 @@ public class UserProxyController {
 
     @GetMapping("/account/authentication/code")
     public ModelAndView authenticationCodeValidation(@RequestParam("code") String authenticationCode,
+                                                     @RequestParam("authenticatedEmail") String authenticatedEmail,
                                                      @CookieValue("JSESSIONID") String jSessionId)
     throws URISyntaxException {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
                 .setPath("/app/users/account/authentication")
-                .setParameter("code", authenticationCode)
+                .setParameters(new BasicNameValuePair("code", authenticationCode),
+                               new BasicNameValuePair("authenticatedEmail", authenticatedEmail))
                 .build();
         RequestEntity<Void> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
@@ -100,11 +103,12 @@ public class UserProxyController {
             e.printStackTrace();
             return new ModelAndView("redirect:/");
         }
-        return new ModelAndView("redirect:/users/account/signup-form");
+        return new ModelAndView("redirect:/users/account/signup-form", "authenticatedEmail", authenticatedEmail);
     }
 
     @GetMapping("/account/signup-form")
-    public String signUpForm() {
+    public String signUpForm(@RequestParam("authenticatedEmail") String authenticatedEmail, Model model) {
+        model.addAttribute("authenticatedEmail", authenticatedEmail);
         return "user/addUserView";
     }
 

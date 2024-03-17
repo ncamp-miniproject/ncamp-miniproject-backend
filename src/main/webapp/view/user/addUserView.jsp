@@ -265,7 +265,7 @@ function resetData() {
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td height="26">
-						<input 	type="text" name="email" class="ct_input_g" 
+						<input 	type="text" name="email" class="ct_input_g"  value="${authenticatedEmail}" readonly
 										style="width:100px; height:19px" onChange="check_email(this.form);">
 					</td>
 				</tr>
