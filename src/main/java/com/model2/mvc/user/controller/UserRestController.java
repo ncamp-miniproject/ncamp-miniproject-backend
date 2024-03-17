@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/app/users")
@@ -77,10 +78,10 @@ public class UserRestController {
     }
 
     @GetMapping("")
-    public ResponseEntity<ListUserResponseDTO> listUser(@ModelAttribute ListUserRequestDTO requestDTO, HttpSession session)
+    public ResponseEntity<ListUserResponseDTO> listUser(@ModelAttribute ListUserRequestDTO requestDTO, @SessionAttribute(value = "user", required = false)
+                                                        Optional<User> loginUser)
     throws Exception {
-        User loginUser = (User)session.getAttribute("user");
-        if (loginUser == null || loginUser.getRole() != Role.ADMIN) {
+        if (!loginUser.isPresent() || loginUser.get().getRole() != Role.ADMIN) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(this.userService.getUserList(requestDTO), HttpStatus.OK);
