@@ -5,7 +5,8 @@
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="role" property="role" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"
+                typeHandler="com.model2.mvc.common.mybatis.typehandler.RoleTypeHandler"/>
         <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
         <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
         <result column="addr" property="addr" jdbcType="VARCHAR"/>
@@ -66,7 +67,8 @@
             <result column="user_id" property="userId" jdbcType="VARCHAR"/>
             <result column="user_name" property="userName" jdbcType="VARCHAR"/>
             <result column="password" property="password" jdbcType="VARCHAR"/>
-            <result column="role" property="role" jdbcType="VARCHAR"/>
+            <result column="role" property="role" jdbcType="VARCHAR"
+                    typeHandler="com.model2.mvc.common.mybatis.typehandler.RoleTypeHandler"/>
             <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
             <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
             <result column="addr" property="addr" jdbcType="VARCHAR"/>

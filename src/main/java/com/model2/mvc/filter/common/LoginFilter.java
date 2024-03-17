@@ -1,5 +1,6 @@
 package com.model2.mvc.filter.common;
 
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 
 import javax.servlet.Filter;
@@ -49,7 +50,7 @@ public class LoginFilter extends HttpFilter implements Filter {
         sampleUser.setUserId("user08");
         sampleUser.setUserName("SCOTT");
         sampleUser.setPassword("1234");
-        sampleUser.setRole("admin");
+        sampleUser.setRole(Role.ADMIN);
         sampleUser.setRegDate(new Date(System.currentTimeMillis()));
         session.setAttribute("user", sampleUser);
     }

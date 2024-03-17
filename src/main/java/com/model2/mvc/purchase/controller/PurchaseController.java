@@ -18,6 +18,7 @@ import com.model2.mvc.purchase.util.LocalDateEditor;
 import com.model2.mvc.purchase.util.PaymentOptionEditor;
 import com.model2.mvc.purchase.util.TranStatusCodeEditor;
 import com.model2.mvc.purchase.util.TransactionProductionEditor;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -111,7 +112,7 @@ public class PurchaseController {
                                  @RequestParam(value = "page", required = false) Integer page,
                                  @SessionAttribute("user") User loginUser) {
         int currentPage = page == null ? 1 : page;
-        if ((menu == null || menu.equals("search")) || !loginUser.getRole().equals("admin")) {
+        if ((menu == null || menu.equals("search")) || loginUser.getRole() != Role.SELLER) {
             return new ModelAndView("redirect:/products?menu=search&page=" + currentPage);
         }
 
@@ -134,7 +135,7 @@ public class PurchaseController {
     public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDTO requestDTO,
                                      @RequestParam(value = "menu", required = false) String menu,
                                      @SessionAttribute("user") User loginUser) {
-        if ((menu != null && menu.equals("manage")) || loginUser.getRole().equals("admin")) {
+        if ((menu != null && menu.equals("manage")) || loginUser.getRole() == Role.SELLER) {
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 

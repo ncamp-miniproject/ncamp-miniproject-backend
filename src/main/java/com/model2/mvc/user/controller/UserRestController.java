@@ -2,6 +2,7 @@ package com.model2.mvc.user.controller;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.mail.MailTransferException;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
@@ -68,8 +69,12 @@ public class UserRestController {
     }
 
     @GetMapping("")
-    public ResponseEntity<ListUserResponseDTO> listUser(@ModelAttribute ListUserRequestDTO requestDTO)
+    public ResponseEntity<ListUserResponseDTO> listUser(@ModelAttribute ListUserRequestDTO requestDTO, HttpSession session)
     throws Exception {
+        User loginUser = (User)session.getAttribute("user");
+        if (loginUser == null || loginUser.getRole() != Role.ADMIN) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         return new ResponseEntity<>(this.userService.getUserList(requestDTO), HttpStatus.OK);
     }
 
@@ -80,6 +85,7 @@ public class UserRestController {
             session.setAttribute("user", dbVO);
             return new ResponseEntity<>(new SignInResponseDTO(true), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }

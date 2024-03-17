@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.user.dao.UserDAO;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import junit.framework.TestCase;
 import org.apache.ibatis.session.SqlSession;
@@ -62,7 +63,7 @@ public class TestMyBatisMapperUserDAO extends TestCase {
         user.setUserId("sampleuser");
         user.setUserName("username1");
         user.setPassword("1q2w3e4r");
-        user.setRole("admin");
+        user.setRole(Role.ADMIN);
         user.setSsn("fff");
         user.setPhone("010-1234-1234");
         user.setAddr("Daegu");
@@ -89,7 +90,7 @@ public class TestMyBatisMapperUserDAO extends TestCase {
         User user = new User();
         user.setUserName("username1");
         user.setPassword("1q2w3e4r");
-        user.setRole("admin");
+        user.setRole(Role.ADMIN);
         user.setSsn("fff");
         user.setPhone("010-1234-1234");
         user.setAddr("Daegu");

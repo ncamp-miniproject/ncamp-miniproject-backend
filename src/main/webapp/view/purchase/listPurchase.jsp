@@ -79,14 +79,14 @@
                         <td align="left">${ purchase.tranStatusCode.status }</td>
                         <td></td>
                         <td align="left">
-                            <c:if test="${ data.loginUser.role == 'admin' && purchase.tranStatusCode.code == TranStatusCode.PURCHASE_DONE.code }">
+                            <c:if test="${ data.loginUser.role.role == 'seller' && purchase.tranStatusCode.code == TranStatusCode.PURCHASE_DONE.code }">
                                 <form action="${pageContext.request.contextPath}/purchases/tran-code/update" method="POST">
                                     <input type="hidden" name="tranNo" value="${purchase.tranNo}">
                                     <input type="hidden" name="tranCode" value="2">
                                     <input type="submit" value="배송하기">
                                 </form>
                             </c:if>
-                            <c:if test="${ data.loginUser.role == 'user' && purchase.tranStatusCode.code == TranStatusCode.IN_DELIVERY.code }">
+                            <c:if test="${ data.loginUser.role.role == 'user' && purchase.tranStatusCode.code == TranStatusCode.IN_DELIVERY.code }">
                                 <form action="${pageContext.request.contextPath}/purchases/tran-code/update" method="POST">
                                     <input type="hidden" name="tranNo" value="${purchase.tranNo}">
                                     <input type="hidden" name="tranCode" value="3">

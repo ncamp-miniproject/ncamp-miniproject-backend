@@ -5,7 +5,7 @@
 
 <c:set var="role" value="" scope="page"/>
 <c:if test="${!empty user}">
-    <c:set var="role" value="${user.role}" scope="page"/>
+    <c:set var="role" value="${user.role.role}" scope="page"/>
 </c:if>
 
 <html>
@@ -58,7 +58,7 @@
         </tr>
 
 
-        <c:if test="${role == 'admin'}">
+        <c:if test="${role == 'seller'}">
 
 
         <!--menu 02 line-->

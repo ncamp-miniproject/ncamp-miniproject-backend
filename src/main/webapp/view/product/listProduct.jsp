@@ -109,7 +109,7 @@
                 </c:forEach>
             </div>
 
-            <c:if test="${!empty user && user.role == 'admin' && data.menuMode == 'manage'}">
+            <c:if test="${!empty user && user.role.role == 'admin' && data.menuMode == 'manage'}">
                 <a href="${pageContext.request.contextPath}/categories/new-form">
                     카테고리 생성
                 </a>

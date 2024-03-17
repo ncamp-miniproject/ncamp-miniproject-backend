@@ -12,6 +12,7 @@ import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
 import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.service.ProductService;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -145,7 +146,7 @@ public class ProductController {
         GetProductResponseDTO result = this.productService.getProduct(prodNo);
 
         if (loginUser != null) {
-            result.setPurchasable(loginUser.getRole().equals("user") && result.getStock() > 0);
+            result.setPurchasable(loginUser.getRole() == Role.USER &&result.getStock() > 0);
         } else {
             result.setPurchasable(false);
         }
@@ -158,7 +159,7 @@ public class ProductController {
                               @SessionAttribute(value = "user", required = false) User loginUser,
                               Model model) {
         String menu = requestDTO.getMenu();
-        if (menu == null || ((menu.equals("manage") && (loginUser == null || !loginUser.getRole().equals("admin"))))) {
+        if (menu == null || ((menu.equals("manage") && (loginUser == null || loginUser.getRole() != Role.SELLER)))) {
             return "redirect:/products?menu=search";
         }
 

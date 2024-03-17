@@ -31,8 +31,7 @@ CREATE TABLE users
     addr       VARCHAR2(100),
     email      VARCHAR2(50),
     reg_date   DATE DEFAULT sysdate,
-    CONSTRAINT users_pk PRIMARY KEY (user_id),
-    CONSTRAINT users_role_check CHECK (role IN ('user', 'admin'))
+    CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
 

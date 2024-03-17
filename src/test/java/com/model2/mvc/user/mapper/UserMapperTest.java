@@ -6,6 +6,7 @@ import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.common.Setter;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -38,7 +39,7 @@ public class UserMapperTest {
         String userId = "user1111";
         String userName = "scott";
         String password = "1q2w3e4r";
-        String role = "user";
+        Role role = Role.USER;
         String ssn = null;
         String phone = "010-1234-1234";
         String addr = "New York";
@@ -69,7 +70,7 @@ public class UserMapperTest {
         user.setUserId(p[0]);
         user.setUserName(p[1]);
         user.setPassword(p[2]);
-        user.setRole(p[3]);
+        user.setRole(Role.of(p[3]).get());
         user.setSsn(p[4]);
         user.setPhone(p[5]);
         user.setAddr(p[6]);

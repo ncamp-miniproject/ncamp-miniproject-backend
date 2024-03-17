@@ -1,5 +1,7 @@
 package com.model2.mvc.user.controller;
 
+import com.model2.mvc.user.controller.editor.RoleEditor;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
@@ -14,8 +16,10 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +39,11 @@ import java.net.URISyntaxException;
 public class UserProxyController {
 
     private final UserService userService;
+
+    @InitBinder
+    public void bindParameters(WebDataBinder binder) {
+        binder.registerCustomEditor(Role.class, RoleEditor.getInstance());
+    }
 
     @PostMapping("/new")
     public String addUser(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
@@ -188,8 +197,9 @@ public class UserProxyController {
                 model.addAttribute("currentPage", result.getCurrentPage());
                 model.addAttribute("totalPage", result.getTotalPage());
             }
-        } catch (HttpClientErrorException e) {
+        } catch (HttpClientErrorException.Unauthorized e) {
             e.printStackTrace();
+            return "redirect:/";
         }
         return "user/listUser";
     }

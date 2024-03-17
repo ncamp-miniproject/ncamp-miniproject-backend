@@ -35,6 +35,6 @@ public class AddProductUnauthorizedFilter implements Filter {
     }
 
     private boolean isNotAdmin(User user) {
-        return !user.getRole().equals(Role.ADMIN.role());
+        return !user.getRole().equals(Role.ADMIN.getRole());
     }
 }

@@ -25,7 +25,7 @@ public class MyBatisMapperUserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) throws SQLException {
+    public Optional<User> findByUserId(String userId) {
         return Optional.ofNullable(this.sqlSession.selectOne("UserMapper.findById", userId));
     }
 

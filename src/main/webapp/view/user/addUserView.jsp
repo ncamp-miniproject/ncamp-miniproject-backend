@@ -275,6 +275,26 @@ function resetData() {
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
+
+	<tr>
+		<td width="104" class="ct_write">역할</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="26">
+						<select name="role">
+							<option value="user">유저</option>
+							<option value="seller">판매자</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
