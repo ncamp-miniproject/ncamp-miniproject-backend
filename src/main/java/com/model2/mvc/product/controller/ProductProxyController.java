@@ -44,29 +44,22 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/products")
-public class ProductController {
+public class ProductProxyController {
 
     private final ProductService productService;
-
-    private final SearchConditionEditor searchConditionEditor;
-    private final CategoryNoEditor categoryNoEditor;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
 
     @Autowired
-    public ProductController(ProductService productService,
-                             SearchConditionEditor searchConditionEditor,
-                             CategoryNoEditor categoryNoEditor) {
+    public ProductProxyController(ProductService productService) {
         this.productService = productService;
-        this.searchConditionEditor = searchConditionEditor;
-        this.categoryNoEditor = categoryNoEditor;
     }
 
     @InitBinder
     public void bindParameters(WebDataBinder binder) {
-        binder.registerCustomEditor(SearchCondition.class, this.searchConditionEditor);
-        binder.registerCustomEditor(Integer.class, "categoryNo", this.categoryNoEditor);
+        binder.registerCustomEditor(SearchCondition.class, SearchConditionEditor.getInstance());
+        binder.registerCustomEditor(Integer.class, "categoryNo", CategoryNoEditor.getInstance());
     }
 
     @PostMapping("/new")

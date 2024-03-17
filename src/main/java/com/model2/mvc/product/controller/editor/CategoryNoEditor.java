@@ -4,8 +4,15 @@ import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
 
-@Component
 public class CategoryNoEditor extends PropertyEditorSupport {
+    private static final CategoryNoEditor singleton = new CategoryNoEditor();
+
+    private CategoryNoEditor() {
+    }
+
+    public static CategoryNoEditor getInstance() {
+        return singleton;
+    }
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {

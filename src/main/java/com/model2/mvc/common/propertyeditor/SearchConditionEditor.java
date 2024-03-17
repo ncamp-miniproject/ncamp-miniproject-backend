@@ -6,8 +6,15 @@ import org.springframework.stereotype.Component;
 import java.beans.PropertyEditorSupport;
 import java.util.Optional;
 
-@Component
 public class SearchConditionEditor extends PropertyEditorSupport {
+    private static final SearchConditionEditor singleton = new SearchConditionEditor();
+
+    private SearchConditionEditor() {
+    }
+
+    public static SearchConditionEditor getInstance() {
+        return singleton;
+    }
 
     @Override
     public String getAsText() {
