@@ -21,6 +21,6 @@ public class RoleEditor extends PropertyEditorSupport {
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
         Optional<Role> role = Role.of(text);
-        super.setAsText(role.orElseThrow(RuntimeException::new).getRole());
+        super.setValue(role.orElseThrow(RuntimeException::new));
     }
 }

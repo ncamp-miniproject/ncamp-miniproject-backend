@@ -2,6 +2,7 @@ package com.model2.mvc.user.controller;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.mail.MailTransferException;
+import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
@@ -12,7 +13,9 @@ import com.model2.mvc.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +37,11 @@ public class UserRestController {
     @Autowired
     public UserRestController(UserService userService) {
         this.userService = userService;
+    }
+
+    @InitBinder
+    public void bindParameters(WebDataBinder binder) {
+        binder.registerCustomEditor(Role.class, RoleEditor.getInstance());
     }
 
     @PostMapping(value = "/account/new")

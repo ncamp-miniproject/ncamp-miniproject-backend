@@ -25,7 +25,7 @@ CREATE TABLE users
     user_id    VARCHAR2(20),
     user_name  VARCHAR2(50) NOT NULL,
     password   VARCHAR2(10) NOT NULL,
-    role       VARCHAR2(5) DEFAULT 'user',
+    role       VARCHAR2(6) DEFAULT 'user',
     ssn        VARCHAR2(13),
     cell_phone VARCHAR2(14),
     addr       VARCHAR2(100),
