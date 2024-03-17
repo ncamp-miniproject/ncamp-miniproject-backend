@@ -1,8 +1,8 @@
 package com.model2.mvc.user.controller;
 
-import com.model2.mvc.common.dto.BasicJSONResponse;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.response.SignInResponseDTO;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
@@ -47,7 +47,7 @@ public class UserClientEndController {
                 .body(user);
         RestTemplate restTemplate = new RestTemplate();
         try {
-            restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+            restTemplate.exchange(requestEntity, User.class);
         } catch (HttpClientErrorException.Forbidden e) {
             return "redirect:/users/account/email-auth";
         }
@@ -73,7 +73,7 @@ public class UserClientEndController {
                 .header("Cookie", "JSESSIONID=" + jSessionId)
                 .build();
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+        restTemplate.exchange(requestEntity, Void.class);
         return "user/email-send-notification";
     }
 
@@ -93,7 +93,7 @@ public class UserClientEndController {
                 .build();
         RestTemplate restTemplate = new RestTemplate();
         try {
-            restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+            restTemplate.exchange(requestEntity, Void.class);
         } catch (HttpClientErrorException.Forbidden | HttpClientErrorException.Unauthorized e) {
             e.printStackTrace();
             return new ModelAndView("redirect:/");
@@ -155,7 +155,7 @@ public class UserClientEndController {
                 .body(user);
         RestTemplate restTemplate = new RestTemplate();
         try {
-            restTemplate.exchange(requestEntity, BasicJSONResponse.class);
+            restTemplate.exchange(requestEntity, SignInResponseDTO.class);
         } catch (HttpClientErrorException.Unauthorized e) {
             System.err.println(e.getStatusCode());
             System.err.println(e.getResponseBodyAsString());

@@ -1,7 +1,6 @@
 package com.model2.mvc.user.controller;
 
 import com.model2.mvc.common.Search;
-import com.model2.mvc.common.dto.BasicJSONResponse;
 import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
@@ -9,6 +8,7 @@ import com.model2.mvc.user.dto.response.ListUserResponseDTO;
 import com.model2.mvc.user.dto.response.SignInResponseDTO;
 import com.model2.mvc.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,30 +34,30 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/account/new")
-    public ResponseEntity<BasicJSONResponse> createUser(@RequestBody User toCreate, HttpSession session)
+    public ResponseEntity<User> createUser(@RequestBody User toCreate, HttpSession session)
     throws Exception {
         Boolean authenticated = (Boolean)session.getAttribute("authenticated");
         if (authenticated == null || !authenticated) {
-            return BasicJSONResponse.forbidden();
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         this.userService.addUser(toCreate);
-        return BasicJSONResponse.created(toCreate);
+        return new ResponseEntity<>(toCreate, HttpStatus.CREATED);
     }
 
     @PostMapping("/account/check-duplicate")
-    public ResponseEntity<BasicJSONResponse> checkDuplication(@RequestParam("userId") String userId) throws Exception {
+    public ResponseEntity<Boolean> checkDuplication(@RequestParam("userId") String userId) throws Exception {
         boolean result = this.userService.checkDuplication(userId);
-        return BasicJSONResponse.ok(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<BasicJSONResponse> getUser(@PathVariable("userId") String userId) throws Exception {
+    public ResponseEntity<User> getUser(@PathVariable("userId") String userId) throws Exception {
         User user = this.userService.getUser(userId);
-        return BasicJSONResponse.ok(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<BasicJSONResponse> getUsers(@RequestBody ListUserRequestDTO requestDTO) throws Exception {
+    public ResponseEntity<ListUserResponseDTO> getUsers(@RequestBody ListUserRequestDTO requestDTO) throws Exception {
         Map<String, Object> result = this.userService.getUserList(requestDTO);
 
         int totalPage = 0;
@@ -77,58 +77,58 @@ public class UserRestController {
                 .totalPage(totalPage)
                 .build();
 
-        return BasicJSONResponse.ok(responseData);
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
     @PostMapping("/account/sign-in")
-    public ResponseEntity<BasicJSONResponse> signIn(@RequestBody User user, HttpSession session) throws Exception {
+    public ResponseEntity<SignInResponseDTO> signIn(@RequestBody User user, HttpSession session) throws Exception {
         try {
             User dbVO = this.userService.loginUser(user);
             session.setAttribute("user", dbVO);
-            return BasicJSONResponse.ok(new SignInResponseDTO(true));
+            return new ResponseEntity<>(new SignInResponseDTO(true), HttpStatus.OK);
         } catch (Exception e) {
-            return BasicJSONResponse.unauthorized();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @PostMapping("/account/sign-out")
-    public ResponseEntity<BasicJSONResponse> signOut(HttpSession session, @SessionAttribute("user") User loginUser) {
+    public ResponseEntity<String> signOut(HttpSession session, @SessionAttribute("user") User loginUser) {
         session.removeAttribute("user");
-        return BasicJSONResponse.ok(loginUser.getUserId());
+        return new ResponseEntity<>(loginUser.getUserId(), HttpStatus.OK);
     }
 
     @PostMapping("/account/{userId}/delete")
-    public ResponseEntity<BasicJSONResponse> deleteUser(@PathVariable("userId") String userId, HttpSession session) {
+    public ResponseEntity<User> deleteUser(@PathVariable("userId") String userId, HttpSession session) {
         try {
             User result = this.userService.deleteUser(userId);
             session.removeAttribute("user");
-            return BasicJSONResponse.ok(result);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            throw new RuntimeException();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/account/authentication/start")
-    public ResponseEntity<BasicJSONResponse> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress,
+    public ResponseEntity<Void> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress,
                                                                        HttpSession session)
     throws MailTransferException {
         String generatedCode = this.userService.sendAuthenticateMail(emailAddress);
         session.setAttribute("authenticationCode", generatedCode);
-        return BasicJSONResponse.noContent();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/account/authentication")
-    public ResponseEntity<BasicJSONResponse> validateAuthentication(@RequestParam("code") String code,
+    public ResponseEntity<Void> validateAuthentication(@RequestParam("code") String code,
                                                                     HttpSession session) {
         Object authenticationCode = session.getAttribute("authenticationCode");
         if (authenticationCode == null) {
-            return BasicJSONResponse.forbidden();
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         if (!code.equals(authenticationCode)) {
-            return BasicJSONResponse.unauthorized();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         session.removeAttribute("authenticationCode");
         session.setAttribute("authenticated", true);
-        return BasicJSONResponse.ok(true);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
