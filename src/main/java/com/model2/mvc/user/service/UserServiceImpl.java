@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -42,17 +43,21 @@ public class UserServiceImpl implements UserService {
     }
 
     public User loginUser(User user) throws Exception {
-        User dbUser = userDAO.findByUserId(user.getUserId());
+        Optional<User> dbUser = userDAO.findByUserId(user.getUserId());
 
-        if (!dbUser.getPassword().equals(user.getPassword())) {
-            throw new Exception("No such user");
+        if (dbUser.isPresent()) {
+            User du = dbUser.get();
+            if (!du.getPassword().equals(user.getPassword())) {
+                throw new Exception("No such user");
+            }
         }
 
-        return dbUser;
+        return dbUser.orElseThrow(() -> new Exception("No such user"));
     }
 
     public User getUser(String userId) throws Exception {
-        return userDAO.findByUserId(userId);
+
+        return userDAO.findByUserId(userId).orElseThrow(Exception::new);
     }
 
     public Map<String, Object> getUserList(ListUserRequestDTO requestDTO) throws Exception {
@@ -87,8 +92,8 @@ public class UserServiceImpl implements UserService {
 
     public boolean checkDuplication(String userId) throws Exception {
         boolean result = true;
-        User userVO = userDAO.findByUserId(userId);
-        if (userVO != null) {
+        Optional<User> userVO = userDAO.findByUserId(userId);
+        if (userVO.isPresent()) {
             result = false;
         }
         return result;
@@ -96,12 +101,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User deleteUser(String userId) throws Exception {
-        User found = this.userDAO.findByUserId(userId);
-        if (found == null) {
-            throw new Exception(); // TODO
-        }
+        Optional<User> found = this.userDAO.findByUserId(userId);
+        found.orElseThrow(Exception::new);
         this.userDAO.removeByUserId(userId);
-        return found;
+        return found.get();
     }
 
     @Override

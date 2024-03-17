@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:spring-config/context-*.xml" })
@@ -75,9 +76,9 @@ public class TestMyBatisMapperUserDAO extends TestCase {
         }
 
         try {
-            User found = this.userDAO.findByUserId("sampleuser");
-            assertThat(found).isEqualTo(user);
-        } catch (SQLException e) {
+            Optional<User> found = this.userDAO.findByUserId("sampleuser");
+            assertThat(found.orElseThrow(Exception::new)).isEqualTo(user);
+        } catch (Exception e) {
             e.printStackTrace();
             fail();
         }

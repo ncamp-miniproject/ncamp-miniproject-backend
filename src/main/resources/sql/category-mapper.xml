@@ -46,4 +46,9 @@
         </set>
         WHERE category_no = #{categoryNo}
     </update>
+
+    <delete id="clear">
+        DELETE
+        FROM category
+    </delete>
 </mapper>
