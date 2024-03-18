@@ -9,15 +9,21 @@ public class StringUtil {
         return nullable == null ? "" : nullable;
     }
 
-    public static String addValueWithoutDuplicate(String to, String newValue, String separator) {
-        int indexOfTarget = to.indexOf(newValue);
-        if (indexOfTarget == -1) {
-            return newValue + "-" + to;
+    public static String addValueWithoutDuplicate(String into, String newValue, String separator) {
+        if (into == null) {
+            return addValueWithoutDuplicate("", newValue, separator);
         }
-        int indexOfNextSeparator = to.indexOf(separator, indexOfTarget);
+        if (into.isEmpty()) {
+            return newValue;
+        }
+        int indexOfTarget = into.indexOf(newValue);
+        if (indexOfTarget == -1) {
+            return newValue + separator + into;
+        }
+        int indexOfNextSeparator = into.indexOf(separator, indexOfTarget);
         return indexOfNextSeparator == -1
-               ? newValue + "-" + to.substring(0, indexOfTarget - 1 < 0 ? 0 : indexOfTarget)
-               : newValue + "-" + to.substring(0, indexOfTarget) + to.substring(indexOfNextSeparator + 1);
+               ? addValueWithoutDuplicate(into.substring(0, indexOfTarget == 0 ? 0 : indexOfTarget - 1), newValue, separator)
+               : newValue + separator + into.substring(0, indexOfTarget) + into.substring(indexOfNextSeparator + 1);
     }
 
     public static LocalDate parseDate(String from, String separator) {
