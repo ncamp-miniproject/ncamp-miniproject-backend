@@ -101,7 +101,7 @@ public class TestProductServiceImpl extends TestCase {
         List<Product> sampleProducts = insertSampleProducts();
 
         for (Product prod : sampleProducts) {
-            GetProductResponseDTO result = this.productService.getProduct(prod.getProdNo());
+            GetProductResponseDTO result = this.productService.getProduct(prod.getProdNo(), null);
             System.out.println("\n===============================");
             System.out.println("Result of ProductsService.getProduct");
             System.out.println(result);

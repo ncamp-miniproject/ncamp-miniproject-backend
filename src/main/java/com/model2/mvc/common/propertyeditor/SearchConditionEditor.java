@@ -1,7 +1,6 @@
 package com.model2.mvc.common.propertyeditor;
 
 import com.model2.mvc.common.SearchCondition;
-import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Optional;
@@ -25,6 +24,6 @@ public class SearchConditionEditor extends PropertyEditorSupport {
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
         Optional<SearchCondition> searchCondition = SearchCondition.getSearchCondition(text);
-        super.setValue(searchCondition.orElse(null));
+        super.setValue(searchCondition.orElse(SearchCondition.NO_CONDITION));
     }
 }

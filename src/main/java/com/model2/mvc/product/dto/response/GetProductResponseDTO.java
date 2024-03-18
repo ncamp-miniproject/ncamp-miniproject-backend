@@ -1,5 +1,9 @@
 package com.model2.mvc.product.dto.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.model2.mvc.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.user.domain.User;
 import lombok.Getter;
@@ -13,6 +17,9 @@ import java.time.LocalDate;
 public class GetProductResponseDTO {
     private int prodNo;
     private String fileName;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate manuDate;
     private int price;
     private String prodDetail;

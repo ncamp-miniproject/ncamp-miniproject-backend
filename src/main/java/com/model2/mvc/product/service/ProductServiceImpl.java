@@ -17,6 +17,8 @@ import com.model2.mvc.product.dto.response.ListProductResponseDTO;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
+import com.model2.mvc.user.domain.Role;
+import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Date;
@@ -86,10 +87,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public GetProductResponseDTO getProduct(int prodNo) {
+    public GetProductResponseDTO getProduct(int prodNo, User loginUser) {
         Optional<Product> result = productRepository.findById(prodNo);
-        return GetProductResponseDTO.from(result.orElseThrow(() -> new IllegalArgumentException(
+        GetProductResponseDTO responseDTO
+                = GetProductResponseDTO.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
+        responseDTO.setPurchasable(loginUser != null && loginUser.getRole() == Role.USER && responseDTO.getStock() > 0);
+        return responseDTO;
     }
 
     @Override

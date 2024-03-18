@@ -1,5 +1,9 @@
 package com.model2.mvc.product.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.model2.mvc.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.category.domain.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +22,9 @@ public class Product {
     private int prodNo;
     private String prodName;
     private String prodDetail;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate manuDate;
     private Integer price;
     private String fileName;

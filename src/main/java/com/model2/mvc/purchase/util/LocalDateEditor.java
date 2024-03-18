@@ -1,7 +1,5 @@
 package com.model2.mvc.purchase.util;
 
-import org.springframework.stereotype.Component;
-
 import java.beans.PropertyEditorSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

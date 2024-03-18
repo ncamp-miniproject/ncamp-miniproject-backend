@@ -3,7 +3,6 @@ package com.model2.mvc.purchase.util;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Arrays;

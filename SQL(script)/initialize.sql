@@ -6,6 +6,8 @@ DROP TABLE product;
 
 DROP TABLE category;
 
+DROP TABLE subscription;
+
 DROP TABLE users;
 
 DROP SEQUENCE seq_product_prod_no;

@@ -1,6 +1,5 @@
 package com.model2.mvc.user.controller;
 
-import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.mail.MailTransferException;
 import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
@@ -26,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController

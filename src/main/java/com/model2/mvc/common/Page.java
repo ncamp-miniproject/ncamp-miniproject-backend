@@ -2,20 +2,24 @@ package com.model2.mvc.common;
 
 import com.model2.mvc.common.util.ListPageUtil;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
+@NoArgsConstructor
+@Setter
 @Getter
 @ToString
 public class Page {
-    private final boolean previousPageSetAvailable;
-    private final boolean nextPageSetAvailable;
-    private final int previousPageSetEntry;
-    private final int nextPageSetEntry;
-    private final List<Integer> pagesToDisplay;
-    private final int currentPage;
-    private final int pageSize;
+    private boolean previousPageSetAvailable;
+    private boolean nextPageSetAvailable;
+    private int previousPageSetEntry;
+    private int nextPageSetEntry;
+    private List<Integer> pagesToDisplay;
+    private int currentPage;
+    private int pageSize;
 
     private Page(boolean previousPageSetBtnVisible,
                  boolean nextPageSetBtnVisible,

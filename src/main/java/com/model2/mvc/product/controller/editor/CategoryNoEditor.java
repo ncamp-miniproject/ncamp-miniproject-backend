@@ -1,7 +1,5 @@
 package com.model2.mvc.product.controller.editor;
 
-import org.springframework.stereotype.Component;
-
 import java.beans.PropertyEditorSupport;
 
 public class CategoryNoEditor extends PropertyEditorSupport {

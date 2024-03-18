@@ -6,8 +6,6 @@ import com.model2.mvc.user.dto.request.ListUserRequestDTO;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
 import com.model2.mvc.user.dto.response.ListUserResponseDTO;
 
-import java.util.Map;
-
 public interface UserService {
 
     public void addUser(User userVO) throws Exception;
