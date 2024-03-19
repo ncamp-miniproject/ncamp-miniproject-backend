@@ -9,7 +9,7 @@
 
 </head>
 
-<body>
+<body data-context-path="${pageContext.request.contextPath}">
 
     <c:import url="${pageContext.request.contextPath}/view/layout/header.jsp"/>
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
@@ -21,6 +21,10 @@
                     <option value="0" ${!empty searchVO.searchCondition && searchVO.searchCondition == "0" ? "selected" : ""}>회원 ID</option>
                     <option value="1" ${!empty searchVO.searchCondition && searchVO.searchCondition == "1" ? "selected" : ""}>회원명</option>
                 </select>
+                <input type="text"
+                       name="searchKeyword"
+                       value="${!empty searchVO.searchKeyword ? searchVO.searchKeyword : ''}"
+                       placeholder="검색어 입력">
                 <button type="submit">검색</button>
             </form>
             <p>전체 ${total}건수, 현재 ${currentPage} 페이지</p>
@@ -40,16 +44,16 @@
                     <tr>
                         <td>${no}</td>
                         <c:set var="no" value="${no - 1}" scope="page"/>
-                        <td><a href="${pageContext.request.contextPath}/users/${data.userId}">${data.userId}</a></td>
+                        <td><a class="user-id" data-user-id="${data.userId}">${data.userId}</a></td>
                         <td>${data.userName}</td>
                         <td>${data.email}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <div class="page-nav">
+        <div class="page-nav" data-current-page="${currentPage}">
             <c:forEach var="i" begin="1" end="${totalPage}" step="1">
-                <a href="${pageContext.request.contextPath}/users?page=${i}">${i}</a>
+                <a class="page-nav-item" data-page="${i}">${i}</a>
             </c:forEach>
         </div>
     </main>
