@@ -11,17 +11,6 @@
     <c:set var="role" value="none" scope="page"/>
 </c:if>
 
-
-<script type="text/javascript">
-    function history() {
-        popWin = window
-            .open(
-                "history.jsp",
-                "popWin",
-                "left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
-    }
-</script>
-
 <body>
 
     <nav>
@@ -55,7 +44,7 @@
             </li>
         </ul>
         <ul class="nav-box purchases">
-        <c:if test="${role == 'user'}">
+        <c:if test="${role == 'currentUser'}">
             <li class="nav-item">
                 <a class="depth03" href="${pageContext.request.contextPath}/purchases?menu=search">구매이력조회</a>
             </li>

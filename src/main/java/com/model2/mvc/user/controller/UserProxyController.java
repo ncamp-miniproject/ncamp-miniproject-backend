@@ -158,7 +158,7 @@ public class UserProxyController {
             ResponseEntity<User> response = restTemplate.exchange(RequestEntity.get(uri)
                                                                           .accept(MediaType.APPLICATION_JSON)
                                                                           .build(), User.class);
-            model.addAttribute("user", response.getBody());
+            model.addAttribute("currentUser", response.getBody());
         } catch (HttpClientErrorException.NotFound e) {
             throw new RuntimeException();
         }

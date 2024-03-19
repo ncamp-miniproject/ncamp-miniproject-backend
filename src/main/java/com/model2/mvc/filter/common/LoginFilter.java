@@ -50,7 +50,7 @@ public class LoginFilter extends HttpFilter implements Filter {
         sampleUser.setUserId("user08");
         sampleUser.setUserName("SCOTT");
         sampleUser.setPassword("1234");
-        sampleUser.setRole(Role.SELLER);
+        sampleUser.setRole(Role.ADMIN);
         sampleUser.setRegDate(new Date(System.currentTimeMillis()));
         session.setAttribute("user", sampleUser);
     }

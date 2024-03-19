@@ -12,7 +12,6 @@
         <result column="addr" property="addr" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="reg_date" property="regDate" jdbcType="DATE"/>
-        <result column="count" property="count" jdbcType="NUMERIC"/>
     </resultMap>
     <insert id="insert" parameterType="User">
         INSERT INTO users (
