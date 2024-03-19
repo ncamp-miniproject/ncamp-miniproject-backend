@@ -1,0 +1,47 @@
+.page {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+}
+
+.nav-box {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    list-style-type: none;
+}
+
+.depth03 {
+    font-size: 12px;
+    line-height: 20px;
+    color: #505050;
+    font-weight: normal;
+    text-indent: 14px;
+}
+
+.page-title {
+    
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}

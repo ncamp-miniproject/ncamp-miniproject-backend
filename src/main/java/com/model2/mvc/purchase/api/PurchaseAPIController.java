@@ -35,7 +35,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/purchase")
+@RequestMapping("/api/purchases")
 @RequiredArgsConstructor
 public class PurchaseAPIController {
     private final PurchaseService purchaseService;
