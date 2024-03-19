@@ -162,7 +162,7 @@ public class UserProxyController {
         } catch (HttpClientErrorException.NotFound e) {
             throw new RuntimeException();
         }
-        return "user/readUser";
+        return "user/user-info";
     }
 
     @GetMapping("")
