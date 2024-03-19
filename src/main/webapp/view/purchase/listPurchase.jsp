@@ -10,11 +10,6 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
 
-<script type="text/javascript">
-	function fncGetUserList() {
-		document.detailForm.submit();
-	}
-</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">

@@ -7,9 +7,6 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
 
-<script type="text/javascript" src="../../javascript/calendar.js">
-    
-</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
@@ -124,7 +121,7 @@
                                 <img src="/images/ct_btnbg01.gif" width="17" height="23" />
                             </td>
                             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-                                <a href="javascript:fncUpdateProduct();">등록</a>
+                                <a href="">등록</a>
                             </td>
                             <td width="14" height="23">
                                 <img src="/images/ct_btnbg03.gif" width="14" height="23" />
@@ -134,7 +131,7 @@
                                 <img src="/images/ct_btnbg01.gif" width="17" height="23" />
                             </td>
                             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-                                <a href="javascript:resetData();">취소</a>
+                                <a href="">취소</a>
                             </td>
                             <td width="14" height="23">
                                 <img src="/images/ct_btnbg03.gif" width="14" height="23" />
@@ -146,46 +143,5 @@
         </table>
 
     </form>
-
-    <script type="text/javascript">
-                    function fncUpdateProduct() {
-                        const detailForm = document.detailForm;
-
-                        //Form 유효성 검증
-                        var name = detailForm.prodName.value;
-                        var detail = detailForm.prodDetail.value;
-                        var manuDate = detailForm.manuDate.value;
-                        var price = detailForm.price.value;
-
-                        console.log("name=" + name);
-                        console.log("detail=" + detail);
-                        console.log("manuDate=" + manuDate);
-                        console.log("price=" + price);
-
-                        if (name == null || name.length < 1) {
-                            alert("상품명은 반드시 입력하여야 합니다.");
-                            return;
-                        }
-                        if (detail == null || detail.length < 1) {
-                            alert("상품상세정보는 반드시 입력하여야 합니다.");
-                            return;
-                        }
-                        if (manuDate == null || manuDate.length < 1) {
-                            alert("제조일자는 반드시 입력하셔야 합니다.");
-                            return;
-                        }
-                        if (price == null || price.length < 1) {
-                            alert("가격은 반드시 입력하셔야 합니다.");
-                            return;
-                        }
-
-                        detailForm.submit();
-                    }
-
-                    function resetData() {
-                        document.detailForm.reset();
-                    }
-                </script>
-
 </body>
 </html>

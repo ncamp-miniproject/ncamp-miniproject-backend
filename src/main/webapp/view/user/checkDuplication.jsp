@@ -6,38 +6,6 @@
 <title>아이디 중복 확인</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-
-<script type="text/javascript">
-
-	window.onload = function() {
-		document.getElementById("userId").focus();
-		document.getElementById("userId").onkeydown = function() {
-			if (event.keyCode == '13')
-				fncCheckDuplication();
-		}
-	}
-
-	function fncCheckDuplication() {
-		// Form 유효성 검증
-		if (document.detailForm.userId.value != null
-				&& document.detailForm.userId.value.length > 0) {
-
-			document.detailForm.action = '/users/account/check-duplicate';
-			document.detailForm.submit();
-		} else {
-			alert('아이디는 반드시 입력하셔야 합니다.');
-		}
-		document.getElementById("userId").focus();
-	}
-
-	function fncUseId() {
-		if (opener) {
-			opener.document.detailForm.userId.value = "${ userId }";
-		}
-		window.close();
-	}
-
-</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">

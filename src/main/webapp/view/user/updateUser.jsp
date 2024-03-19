@@ -7,45 +7,6 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<script type="text/javascript">
-<!--
-	function fncUpdateUser() {
-
-		var name = document.detailForm.userName.value;
-
-		if (name == null || name.length < 1) {
-			alert("이름은  반드시 입력하셔야 합니다.");
-			return;
-		}
-
-		if (document.detailForm.phone2.value != ""
-				&& document.detailForm.phone2.value != "") {
-			document.detailForm.phone.value = document.detailForm.phone1.value
-					+ "-" + document.detailForm.phone2.value + "-"
-					+ document.detailForm.phone3.value;
-		} else {
-			document.detailForm.phone.value = "";
-		}
-
-		document.detailForm.action = '/users/update';
-		document.detailForm.submit();
-	}
-
-	function check_email(frm) {
-		alert
-		var email = document.detailForm.email.value;
-		if (email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1)) {
-			alert("이메일 형식이 아닙니다.");
-			return false;
-		}
-		return true;
-	}
-
-	function resetData() {
-		document.detailForm.reset();
-	}
-	-->
-</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
