@@ -1,18 +1,16 @@
 $(() => {
-    const contextPath = $("body:first").data("context-path");
+    const contextPath = $("main:first").data("context-path");
 
-    const userIdElements = $(".list .user_id");
-    userIdElements.each((idx, e) => {
-        const userId = $(e).data("user-id");
-        $(e).attr("href", `${contextPath}/users/${userId}`);
+    $(".user-id").each((idx, te) => {
+        const userId = $(te).data("user-id");
+        $(te).attr("href", `${contextPath}/users/${userId}`);
     });
 
     const currentPage = $(".page-nav:last").data("current-page");
-    const pageElements = $(".page-nav-item");
-    pageElements.each((idx, obj) => {
-        const page = obj.data("page");
+    $(".page-nav-item").each((idx, te) => {
+        const page = $(te).data("page");
         if (page !== currentPage) {
-            obj.attr("href", `${contextPath}/users?page=${page}`);
+            $(te).attr("href", `${contextPath}/users?page=${page}`);
         }
     });
 });

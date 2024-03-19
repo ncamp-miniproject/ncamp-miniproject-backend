@@ -1,19 +1,24 @@
-<%@ page contentType="text/html; charset=euc-kr"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html; charset=euc-kr" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
 <title>회원 목록조회</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="${pageContext.request.contextPath}/javascript/user/userList.js"></script>
 
 </head>
 
-<body data-context-path="${pageContext.request.contextPath}">
-
+<body>
     <c:import url="${pageContext.request.contextPath}/view/layout/header.jsp"/>
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
-    <main>
+    <main data-context-path="${pageContext.request.contextPath}">
         <div class="inner-header">
             <h2 class="page-title">회원 목록 조회</h2>
             <form class="search">
