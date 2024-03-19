@@ -92,6 +92,7 @@ public class ProductRestController {
 
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getCategoryList() {
+        // TODO: This end point should be placed in api of controller
         List<Category> categories = this.productService.getCategoryList();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }

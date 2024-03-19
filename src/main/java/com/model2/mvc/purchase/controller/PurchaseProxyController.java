@@ -42,7 +42,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/purchases")
-public class PurchaseController {
+public class PurchaseProxyController {
 
     private final PurchaseService purchaseService;
 
@@ -54,7 +54,7 @@ public class PurchaseController {
     private int defaultPageDisplay;
 
     @Autowired
-    public PurchaseController(PurchaseService purchaseService) {
+    public PurchaseProxyController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
 
