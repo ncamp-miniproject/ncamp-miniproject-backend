@@ -201,7 +201,7 @@ public class UserProxyController {
             e.printStackTrace();
             return "redirect:/";
         }
-        return "user/listUser";
+        return "user/user-list";
     }
 
     @PostMapping("/account/sign-in")
