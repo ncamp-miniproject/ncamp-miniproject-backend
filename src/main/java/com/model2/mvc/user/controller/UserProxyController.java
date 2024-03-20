@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -206,7 +205,7 @@ public class UserProxyController {
     }
 
     @PostMapping("/account/sign-in")
-    public String login(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
+    public String signUp(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
     throws Exception {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
@@ -228,8 +227,8 @@ public class UserProxyController {
     }
 
     @GetMapping("/account/sign-in")
-    public String loginForm() {
-        return "user/loginView";
+    public String signUpForm() {
+        return "user/sign-in";
     }
 
     @PostMapping("/account/sign-out")
