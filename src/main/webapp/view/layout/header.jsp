@@ -7,12 +7,12 @@
 
     <header>
         <div class="header-menu">
-            <c:if test="${!empty user}">
+            <c:if test="${empty user}">
                 <form action="${pageContext.request.contextPath}/users/account/sign-in" method="GET">
                     <input type="submit" value="login">
                 </form>
             </c:if>
-            <c:if test="${empty user}">
+            <c:if test="${!empty user}">
                 <form action="${pageContext.request.contextPath}/users/account/sign-out" method="POST">
                     <input type="submit" value="logout"/>
                 </form>

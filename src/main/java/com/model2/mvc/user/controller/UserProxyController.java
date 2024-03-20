@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -118,7 +119,7 @@ public class UserProxyController {
     @GetMapping("/account/signup-form")
     public String signUpForm(@RequestParam("authenticatedEmail") String authenticatedEmail, Model model) {
         model.addAttribute("authenticatedEmail", authenticatedEmail);
-        return "user/addUserView";
+        return "user/sign-up-form";
     }
 
     @PostMapping("/account/check-duplicate")
@@ -143,7 +144,7 @@ public class UserProxyController {
         } catch (HttpClientErrorException e) {
             e.printStackTrace(); // TODO
         }
-        return "user/checkDuplication";
+        return "user/duplicate-check";
     }
 
     @GetMapping("/{userId}")

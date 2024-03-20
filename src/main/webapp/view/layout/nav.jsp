@@ -44,12 +44,12 @@
             </li>
         </ul>
         <ul class="nav-box purchases">
-        <c:if test="${role == 'currentUser'}">
+        <c:if test="${role == 'user'}">
             <li class="nav-item">
                 <a class="depth03" href="${pageContext.request.contextPath}/purchases?menu=search">구매이력조회</a>
             </li>
         </c:if>
-        <c:if test="${role == 'admin'}">
+        <c:if test="${role == 'seller'}">
             <li class="nav-item">
                 <a class="depth03" href="${pageContext.request.contextPath}/purchases?menu=manage">판매조회</a>
             </li>
