@@ -2,6 +2,7 @@ package com.model2.mvc.purchase.service;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
+import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
@@ -63,7 +64,8 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTransactionProductions(requestDTO.getTranProds());
         this.purchaseDAO.insertPurchase(purchase);
         purchase.getTransactionProductions().forEach(tp -> {
-            Product product = this.productRepository.findById(tp.getProduct().getProdNo()).orElseThrow(RuntimeException::new);
+            Product product = this.productRepository.findById(tp.getProduct().getProdNo())
+                    .orElseThrow(RuntimeException::new);
             product.decrementStock(tp.getQuantity());
             this.productRepository.updateProduct(product);
         });
@@ -83,13 +85,17 @@ public class PurchaseServiceImpl implements PurchaseService {
         page = page == 0 ? 1 : page;
         int pageSize = requestDTO.getPageSize();
         pageSize = pageSize == 0 ? defaultPageSize : pageSize;
-        String searchCondition = StringUtil.null2nullStr(requestDTO.getSearchCondition().getConditionCode());
+        String searchCondition = requestDTO.getSearchCondition() == null
+                                 ? SearchCondition.NO_CONDITION.getConditionCode()
+                                 : requestDTO.getSearchCondition().getConditionCode();
         String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
 
         Map<String, Object> search = new HashMap<>();
         search.put("buyerId", loginUserId);
         search.put("startRowNum", (page - 1) * pageSize + 1);
         search.put("endRowNum", page * pageSize);
+        search.put("searchCondition", searchCondition);
+        search.put("searchKeyword", searchKeyword);
         ListData<Purchase> result = this.purchaseDAO.findPurchasesByUserId(search);
         return ListPurchaseResponseDTO.builder()
                 .count(result.getCount())
@@ -105,9 +111,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap) {
-        Map<Integer, Product>
-                prodNoProductMap
-                = this.productRepository.findProductsByIds(new ArrayList<>(prodNoQuantityMap.keySet()));
+        Map<Integer, Product> prodNoProductMap = this.productRepository.findProductsByIds(new ArrayList<>(
+                prodNoQuantityMap.keySet()));
         List<Integer> prodNumbers = new ArrayList<>(prodNoProductMap.keySet());
 
         int priceSum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
