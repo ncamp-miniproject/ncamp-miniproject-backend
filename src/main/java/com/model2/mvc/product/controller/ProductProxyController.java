@@ -124,7 +124,7 @@ public class ProductProxyController {
         ResponseEntity<ListProductResponseDTO> result = restTemplate.exchange(requestEntity,
                                                                               ListProductResponseDTO.class);
         model.addAttribute("data", result.getBody());
-        return "product/listProduct";
+        return "product/product-list";
     }
 
     @PostMapping("/update")
