@@ -3,6 +3,7 @@ package com.model2.mvc.product.controller;
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.product.controller.editor.CategoryNoEditor;
+import com.model2.mvc.product.dto.request.AddProductRequestDTO;
 import com.model2.mvc.product.dto.request.ListProductRequestDTO;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
 import com.model2.mvc.product.dto.response.GetProductResponseDTO;
@@ -53,8 +54,9 @@ public class ProductProxyController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List> result = restTemplate.exchange(requestEntity, List.class);
 
-        ModelAndView mv = new ModelAndView("product/addProductView");
+        ModelAndView mv = new ModelAndView("product/product-register");
         mv.addObject("categoryList", result.getBody());
+        mv.addObject("productDTO", new AddProductRequestDTO());
         return mv;
     }
 
