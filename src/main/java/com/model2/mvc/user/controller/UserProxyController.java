@@ -252,6 +252,6 @@ public class UserProxyController {
     public String updateUserView(@PathVariable("userId") String userId, Model model) throws Exception {
         User user = this.userService.getUser(userId);
         model.addAttribute("user", user);
-        return "user/updateUser";
+        return "user/update-form";
     }
 }
