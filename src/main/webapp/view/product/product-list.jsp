@@ -31,6 +31,10 @@
                     <option value="1">상품명</option>
                     <option value="2">상품가격</option>
                 </select>
+                <c:if test="${!empty data.currentCategoryNo}">
+                    <input type="hidden" name="categoryNo" value="${data.currentCategoryNo}">
+                </c:if>
+                <input type="hidden" name="page" value="1">
                 <button type="submit">검색</button>
             </form>
             <p>전체 ${data.count}건수, 현재 ${data.pageInfo.currentPage} 페이지</p>

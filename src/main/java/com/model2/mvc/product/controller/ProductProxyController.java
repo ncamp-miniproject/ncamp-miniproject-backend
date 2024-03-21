@@ -130,6 +130,10 @@ public class ProductProxyController {
     @PostMapping("/update")
     public String updateProduct(@ModelAttribute("requestDTO") UpdateProductRequestDTO requestDTO)
     throws URISyntaxException {
+        // TODO:
+        // 1. Have to get binary data from client for image
+        // 2. Have to load the image binary data into object (to be converted into JSON)
+        // 3. Send the JSON formatted data in API controller
         RequestEntity<UpdateProductRequestDTO> requestEntity = RequestEntity.post(new URI("http",
                                                                                           null,
                                                                                           "localhost",
@@ -162,6 +166,6 @@ public class ProductProxyController {
         ResponseEntity<GetProductResponseDTO> result = restTemplate.exchange(requestEntity,
                                                                              GetProductResponseDTO.class);
         model.addAttribute("data", result.getBody());
-        return "product/updateProduct";
+        return "product/product-update";
     }
 }

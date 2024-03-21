@@ -55,18 +55,10 @@ $(() => {
         $(e.target).after(searchConditionFormMap[$("select[name=searchCondition] option:selected").val()]);
     });
 
-    $(".search-form[type=submit]").on("click", (e) => {
-        const condition = $("select[name=searchCondition] option:selected").val();
-        const keywords = [];
-        const keyword = $("input[name=searchKeyword]").each((idx, elem) => {
-            keywords.push($(this).val());
-        });
-        const keywordParam = keyword.join("-");
-        const categoryNo = $(".category-box").data("current-category-no");
-
-        $(e.target)
+    $(".search-form button[type=submit]").on("click", (e) => {
+        $("form[name=search]")
             .attr("method", "GET")
-            .attr("action", `${contextPath}/products?page=1&searchKeyword=${keywordParam}&searchCondition=${condition}&menu=${menu}&categoryNo=${categoryNo}`)
+            .attr("action", `${contextPath}/products`)
             .trigger("submit");
     });
 
@@ -74,7 +66,7 @@ $(() => {
         const prodNo = $(elem).data("prodNo");
         const stock = $(elem).data("stock");
         if (parseInt(stock) > 0) {
-            $(elem).children("td").children(".prod-no").attr("href", `${contextPath}/products/${prodNo}`);
+            $(elem).children("td").children(".prod-no").attr("href", `${contextPath}/products/${prodNo}?menu=${menu}`);
         }
     })
 });
