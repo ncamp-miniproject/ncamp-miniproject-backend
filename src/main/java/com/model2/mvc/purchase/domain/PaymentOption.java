@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum PaymentOption {
-    CASH("0"),
-    CREDIT_CARD("1");
+    CASH("0", "현금"),
+    CREDIT_CARD("1", "신용카드");
 
     private static final Map<String, PaymentOption> paymentOptionTable = new HashMap<>();
 
@@ -14,10 +14,12 @@ public enum PaymentOption {
         paymentOptionTable.put("1", CREDIT_CARD);
     }
 
-    private String code;
+    private final String code;
+    private final String paymentName;
 
-    private PaymentOption(String code) {
+    private PaymentOption(String code, String paymentName) {
         this.code = code;
+        this.paymentName = paymentName;
     }
 
     public static PaymentOption get(String optionCode) {
@@ -26,5 +28,9 @@ public enum PaymentOption {
 
     public String getCode() {
         return this.code;
+    }
+
+    public String getPaymentName() {
+        return this.paymentName;
     }
 }

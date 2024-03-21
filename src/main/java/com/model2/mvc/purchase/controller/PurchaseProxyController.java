@@ -71,7 +71,7 @@ public class PurchaseProxyController {
     public String addPurchase(@ModelAttribute("requestDTO") AddPurchaseRequestDTO requestDTO, Model model) {
         AddPurchaseResponseDTO responseDTO = this.purchaseService.addPurchase(requestDTO);
         model.addAttribute("purchaseData", responseDTO);
-        return "purchase/addPurchaseResult";
+        return "purchase/purchase-result";
     }
 
     @GetMapping("/new-form")
