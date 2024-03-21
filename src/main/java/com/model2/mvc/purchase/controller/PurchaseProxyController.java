@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,11 @@ public class PurchaseProxyController {
         binder.registerCustomEditor(SearchCondition.class, SearchConditionEditor.getInstance());
     }
 
+    @ModelAttribute("paymentOptions")
+    public List<PaymentOption> paymentOptions() {
+        return Arrays.asList(PaymentOption.values());
+    }
+
     @PostMapping("/new")
     public String addPurchase(@ModelAttribute("requestDTO") AddPurchaseRequestDTO requestDTO, Model model) {
         AddPurchaseResponseDTO responseDTO = this.purchaseService.addPurchase(requestDTO);
@@ -87,7 +93,7 @@ public class PurchaseProxyController {
                 .forEach(m -> prodNoQuantityMap.put(Integer.parseInt(m[0]), Integer.parseInt(m[1])));
         AddPurchaseViewResponseDTO responseDTO = this.purchaseService.getProductsWithQuantity(prodNoQuantityMap);
 
-        ModelAndView mv = new ModelAndView("/purchase/addPurchaseView");
+        ModelAndView mv = new ModelAndView("purchase/purchase-form");
         mv.addObject("data", responseDTO);
         mv.addObject("loginUser", loginUser);
         return mv;
