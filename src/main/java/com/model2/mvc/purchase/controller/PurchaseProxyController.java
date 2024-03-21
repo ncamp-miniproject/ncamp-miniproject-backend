@@ -111,7 +111,7 @@ public class PurchaseProxyController {
         ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, defaultPageSize);
 
         responseDTO.setLoginUser(loginUser);
-        ModelAndView mv = new ModelAndView("purchase/listPurchase");
+        ModelAndView mv = new ModelAndView("purchase/purchase-list");
         mv.addObject("data", responseDTO);
         return mv;
     }
@@ -120,10 +120,10 @@ public class PurchaseProxyController {
     public String getPurchase(@PathVariable("tranNo") int tranNo, Model model) {
         GetPurchaseResponseDTO responseDTO = this.purchaseService.getPurchase(tranNo);
         model.addAttribute("purchaseData", responseDTO);
-        return "purchase/getPurchase";
+        return "purchase/purchase-info";
     }
 
-    @GetMapping("")
+    @GetMapping
     public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDTO requestDTO,
                                      @RequestParam(value = "menu", required = false) String menu,
                                      @SessionAttribute("user") User loginUser) {
@@ -131,10 +131,12 @@ public class PurchaseProxyController {
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 
+        System.out.println(loginUser);
         ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(requestDTO, loginUser.getUserId());
 
-        ModelAndView mv = new ModelAndView("purchase/listPurchase");
-        mv.addObject("data", result.builder().loginUser(loginUser).build());
+        ModelAndView mv = new ModelAndView("purchase/purchase-list");
+        result.setLoginUser(loginUser);
+        mv.addObject("data", result);
         return mv;
     }
 
