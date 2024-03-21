@@ -24,7 +24,7 @@
     <!-- RequestMappingHandlerMapping, injects interceptor as follows -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/addItem.do"/>
+            <mvc:mapping path="/cart/items/new"/>
             <bean class="com.model2.mvc.cart.interceptor.CookieSetter"/>
         </mvc:interceptor>
     </mvc:interceptors>

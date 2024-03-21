@@ -16,7 +16,7 @@ $(() => {
         $(`<input type="text"
                 name="searchKeyword"
                 value="${searchKeyword}"
-                placeholder="°Ë»ö¾î ÀÔ·Â"
+                placeholder="ê²€ìƒ‰ì–´ ìž…ë ¥"
                 id="search-keyword-box">`);
 
     let lowerBound = 0;
@@ -69,4 +69,12 @@ $(() => {
             .attr("action", `${contextPath}/products?page=1&searchKeyword=${keywordParam}&searchCondition=${condition}&menu=${menu}&categoryNo=${categoryNo}`)
             .trigger("submit");
     });
+
+    $(".list .item").each((idx, elem) => {
+        const prodNo = $(elem).data("prodNo");
+        const stock = $(elem).data("stock");
+        if (parseInt(stock) > 0) {
+            $(elem).children("td").children(".prod-no").attr("href", `${contextPath}/products/${prodNo}`);
+        }
+    })
 });

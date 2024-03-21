@@ -88,7 +88,7 @@ public class ProductProxyController {
                                                                              GetProductResponseDTO.class);
         model.addAttribute("productData", result.getBody());
         model.addAttribute("cookie", new String[] { "history", result.getHeaders().get("Set-Cookie").get(0) });
-        return "product/getProduct";
+        return "product/product-info";
     }
 
     @GetMapping("")

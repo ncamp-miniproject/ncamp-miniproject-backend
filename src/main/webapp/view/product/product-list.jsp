@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="EUC-KR" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="EUC-KR">
+    <meta charset="UTF-8">
     <title>상품 목록조회</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
@@ -55,18 +55,24 @@
         <table class="list">
             <thead>
                 <tr>
-                    <td>No</td>
-                    <td>상품명</td>
-                    <td>가격</td>
-                    <td>등록일</td>
-                    <td>재고</td>
+                    <th>No</th>
+                    <th>상품명</th>
+                    <th>가격</th>
+                    <th>등록일</th>
+                    <th>재고</th>
                 </tr>
             </thead>
             <tbody>
                 <c:set var="no" value="${data.products.size()}" scope="page"/>
                 <c:forEach var="product" items="${data.products}">
-                    <tr>
-                        <td>${product.prodNo}</td>
+                    <tr class="item"
+                        data-prod-no="${product.prodNo}"
+                        data-stock="${product.stock}">
+                        <td>
+                            <a class="prod-no">
+                                ${product.prodNo}
+                            </a>
+                        </td>
                         <td>${product.prodName}</td>
                         <td>${product.price}</td>
                         <td>${product.regDate}</td>

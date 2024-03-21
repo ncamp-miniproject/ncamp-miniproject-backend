@@ -34,7 +34,7 @@ public class CartController {
             cartValue = "";
         }
         String result = this.cartService.addItem(new AddItemRequestDTO(prodNo, quantity, cartValue));
-        return new ModelAndView(String.format("redirect:/products/%s&menu=search", prodNo),
+        return new ModelAndView(String.format("redirect:/products/%s?menu=search", prodNo),
                                 "cartCookieValue",
                                 result);
     }
