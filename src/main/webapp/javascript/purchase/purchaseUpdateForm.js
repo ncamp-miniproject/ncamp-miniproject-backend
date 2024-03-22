@@ -2,9 +2,9 @@ $(() => {
     const contextPath = $("body").data("context-path");
 
     $(".btn--submit").on("click", () => {
-        $("form[name=purchase]")
-            .attr("action", `${contextPath}/purchases/new`)
+        $("form[name=purchase-update]")
             .attr("method", "POST")
+            .attr("action", `${contextPath}/purchases/update`)
             .trigger("submit");
     });
 

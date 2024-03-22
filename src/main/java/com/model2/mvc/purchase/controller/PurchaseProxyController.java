@@ -147,7 +147,7 @@ public class PurchaseProxyController {
         GetPurchaseResponseDTO toUpdate = this.purchaseService.getPurchase(tranNo);
         model.addAttribute("purchaseData", toUpdate);
         model.addAttribute("loginUser", loginUser);
-        return "purchase/updatePurchaseView";
+        return "purchase/purchase-update-form";
     }
 
     @PostMapping("/update")
@@ -155,7 +155,7 @@ public class PurchaseProxyController {
         Purchase result = this.purchaseService.updatePurchase(requestDTO);
 
         model.addAttribute("purchaseData", result);
-        return "purchase/updatePurchaseResult";
+        return "purchase/purchase-update-result";
     }
 
     @PostMapping("/tran-code/update")
