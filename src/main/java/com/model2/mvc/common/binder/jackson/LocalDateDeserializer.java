@@ -1,4 +1,4 @@
-package com.model2.mvc.common.jackson;
+package com.model2.mvc.common.binder.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

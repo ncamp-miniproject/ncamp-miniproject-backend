@@ -13,5 +13,5 @@ public interface CategoryService {
 
     public Category getCategory(int categoryNo);
 
-    public void updateCategory(UpdateCategoryRequestDto requestDTO);
+    public boolean updateCategory(int categoryNo, String newCategoryName);
 }

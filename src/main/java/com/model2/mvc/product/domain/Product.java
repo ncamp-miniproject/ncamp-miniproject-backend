@@ -2,8 +2,8 @@ package com.model2.mvc.product.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.model2.mvc.common.jackson.LocalDateDeserializer;
-import com.model2.mvc.common.jackson.LocalDateSerializer;
+import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.category.domain.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

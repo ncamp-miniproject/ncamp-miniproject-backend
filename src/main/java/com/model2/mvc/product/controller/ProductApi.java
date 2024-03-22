@@ -51,8 +51,8 @@ public class ProductApi {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Void> addProduct(@ModelAttribute("productDTO") AddProductRequestDto productDTO) {
-        this.productService.addProduct(productDTO, this.servletContext.getRealPath("/images/uploadFiles"));
+    public ResponseEntity<Void> addProduct(@ModelAttribute AddProductRequestDto productDto) {
+        this.productService.addProduct(productDto, this.servletContext.getRealPath("/images/uploadFiles"));
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/products");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);

@@ -37,7 +37,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(UpdateCategoryRequestDto requestDto) {
-        this.categoryRepository.updateCategory(new Category(requestDto.getCategoryNo(), requestDto.getCategoryName()));
+    public boolean updateCategory(int categoryNo, String newCategoryName) {
+        if (isCategoryAbsent(categoryNo)) {
+            return false;
+        }
+        this.categoryRepository.updateCategory(new Category(categoryNo, newCategoryName));
+        return true;
+    }
+
+    private boolean isCategoryAbsent(int categoryNo) {
+        return !this.categoryRepository.findById(categoryNo).isPresent();
     }
 }
