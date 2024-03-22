@@ -1,7 +1,7 @@
 package com.model2.mvc.category.service;
 
 import com.model2.mvc.category.domain.Category;
-import com.model2.mvc.category.dto.request.UpdateCategoryRequestDTO;
+import com.model2.mvc.category.dto.request.UpdateCategoryRequestDto;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface CategoryService {
 
     public Category getCategory(int categoryNo);
 
-    public void updateCategory(UpdateCategoryRequestDTO requestDTO);
+    public void updateCategory(UpdateCategoryRequestDto requestDTO);
 }

@@ -6,11 +6,11 @@ import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.dto.request.AddProductRequestDTO;
-import com.model2.mvc.product.dto.request.ListProductRequestDTO;
-import com.model2.mvc.product.dto.response.AddProductResponseDTO;
-import com.model2.mvc.product.dto.response.GetProductResponseDTO;
-import com.model2.mvc.product.dto.response.ListProductResponseDTO;
+import com.model2.mvc.product.dto.request.AddProductRequestDto;
+import com.model2.mvc.product.dto.request.ListProductRequestDto;
+import com.model2.mvc.product.dto.response.AddProductResponseDto;
+import com.model2.mvc.product.dto.response.GetProductResponseDto;
+import com.model2.mvc.product.dto.response.ListProductResponseDto;
 import junit.framework.TestCase;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -59,20 +59,20 @@ public class TestProductServiceImpl extends TestCase {
     private List<Product> insertSampleProducts() {
         Category category1 = this.categoryService.insertCategory("category1");
         Category category2 = this.categoryService.insertCategory("category2");
-        AddProductRequestDTO req1 = new AddProductRequestDTO();
+        AddProductRequestDto req1 = new AddProductRequestDto();
         req1.setManuDate("2017-02-11");
         req1.setPrice(1000);
         req1.setProdName("prod1");
         req1.setStock(20);
         req1.setCategoryNo(category1.getCategoryNo());
-        AddProductRequestDTO req2 = new AddProductRequestDTO();
+        AddProductRequestDto req2 = new AddProductRequestDto();
         req2.setPrice(200);
         req2.setProdName("prod2");
         req2.setStock(30);
         req2.setCategoryNo(category2.getCategoryNo());
 
-        AddProductResponseDTO resp1 = this.productService.addProduct(req1, "");
-        AddProductResponseDTO resp2 = this.productService.addProduct(req2, "");
+        AddProductResponseDto resp1 = this.productService.addProduct(req1, "");
+        AddProductResponseDto resp2 = this.productService.addProduct(req2, "");
         Product prod1 = new Product();
         prod1.setProdNo(resp1.getProdNo());
         prod1.setProdDetail(resp1.getProdDetail());
@@ -101,7 +101,7 @@ public class TestProductServiceImpl extends TestCase {
         List<Product> sampleProducts = insertSampleProducts();
 
         for (Product prod : sampleProducts) {
-            GetProductResponseDTO result = this.productService.getProduct(prod.getProdNo(), null);
+            GetProductResponseDto result = this.productService.getProduct(prod.getProdNo(), null);
             System.out.println("\n===============================");
             System.out.println("Result of ProductsService.getProduct");
             System.out.println(result);
@@ -121,8 +121,8 @@ public class TestProductServiceImpl extends TestCase {
     public void testGetProductList_FindAll_NoCategory() {
         List<Product> sampleProducts = insertSampleProducts();
 
-        ListProductRequestDTO req = new ListProductRequestDTO();
-        ListProductResponseDTO result = this.productService.getProductList(req);
+        ListProductRequestDto req = new ListProductRequestDto();
+        ListProductResponseDto result = this.productService.getProductList(req);
 
         System.out.println("\n===============================");
         System.out.println("List result:");
@@ -145,9 +145,9 @@ public class TestProductServiceImpl extends TestCase {
         List<Product> sampleProducts = insertSampleProducts();
         Product sampleProduct = sampleProducts.get(0);
 
-        ListProductRequestDTO req = new ListProductRequestDTO();
+        ListProductRequestDto req = new ListProductRequestDto();
         req.setCategoryNo(sampleProduct.getCategory().getCategoryNo());
-        ListProductResponseDTO result = this.productService.getProductList(req);
+        ListProductResponseDto result = this.productService.getProductList(req);
 
         System.out.println("\n===============================");
         System.out.println("List result:");

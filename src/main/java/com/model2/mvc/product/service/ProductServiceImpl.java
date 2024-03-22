@@ -8,13 +8,13 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.dto.request.AddProductRequestDTO;
-import com.model2.mvc.product.dto.request.ListProductRequestDTO;
-import com.model2.mvc.product.dto.request.UpdateProductRequestDTO;
-import com.model2.mvc.product.dto.response.AddProductResponseDTO;
-import com.model2.mvc.product.dto.response.GetProductResponseDTO;
-import com.model2.mvc.product.dto.response.ListProductResponseDTO;
-import com.model2.mvc.product.dto.response.UpdateProductResponseDTO;
+import com.model2.mvc.product.dto.request.AddProductRequestDto;
+import com.model2.mvc.product.dto.request.ListProductRequestDto;
+import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
+import com.model2.mvc.product.dto.response.AddProductResponseDto;
+import com.model2.mvc.product.dto.response.GetProductResponseDto;
+import com.model2.mvc.product.dto.response.ListProductResponseDto;
+import com.model2.mvc.product.dto.response.UpdateProductResponseDto;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
 import com.model2.mvc.user.domain.Role;
@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public AddProductResponseDTO addProduct(AddProductRequestDTO toInsert, String contextRealPath) {
+    public AddProductResponseDto addProduct(AddProductRequestDto toInsert, String contextRealPath) {
         Product product = new Product();
         product.setFileName(storeFile(toInsert.getImageFile(), contextRealPath));
         product.setManuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"));
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
             product.setCategory(this.categoryService.getCategory(toInsert.getCategoryNo()));
         }
         this.productRepository.insertProduct(product);
-        return AddProductResponseDTO.from(product);
+        return AddProductResponseDto.from(product);
     }
 
     private String storeFile(MultipartFile file, String contextRealPath) {
@@ -87,17 +87,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public GetProductResponseDTO getProduct(int prodNo, User loginUser) {
+    public GetProductResponseDto getProduct(int prodNo, User loginUser) {
         Optional<Product> result = productRepository.findById(prodNo);
-        GetProductResponseDTO responseDTO
-                = GetProductResponseDTO.from(result.orElseThrow(() -> new IllegalArgumentException(
+        GetProductResponseDto responseDTO
+                = GetProductResponseDto.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
         responseDTO.setPurchasable(loginUser != null && loginUser.getRole() == Role.USER && responseDTO.getStock() > 0);
         return responseDTO;
     }
 
     @Override
-    public ListProductResponseDTO getProductList(ListProductRequestDTO requestDTO) {
+    public ListProductResponseDto getProductList(ListProductRequestDto requestDTO) {
         requestDTO.setPageSize(requestDTO.getPageSize() == null ? defaultPageSize : requestDTO.getPageSize());
         ListData<Product> resultMap = ListQueryHelper.findProductList(this.productRepository, requestDTO);
 
@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<Category> categories = this.categoryService.getCategoryList();
 
-        return ListProductResponseDTO.from(resultMap,
+        return ListProductResponseDto.from(resultMap,
                                            categories,
                                            pageInfo,
                                            requestDTO,
@@ -119,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public UpdateProductResponseDTO updateProduct(UpdateProductRequestDTO requestDTO) {
+    public UpdateProductResponseDto updateProduct(UpdateProductRequestDto requestDTO) {
         Product previous = this.productRepository.findById(requestDTO.getProdNo())
                 .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" +
                                                                 requestDTO.getProdNo()));
@@ -134,7 +134,7 @@ public class ProductServiceImpl implements ProductService {
         to.setStock(requestDTO.getStock());
         to.setCategory(new Category(requestDTO.getCategoryNo()));
         this.productRepository.updateProduct(to);
-        return UpdateProductResponseDTO.from(previous);
+        return UpdateProductResponseDto.from(previous);
     }
 
     @Override

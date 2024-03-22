@@ -1,7 +1,8 @@
 package com.model2.mvc.category.controller;
 
-import com.model2.mvc.category.dto.request.UpdateCategoryRequestDTO;
+import com.model2.mvc.category.dto.request.UpdateCategoryRequestDto;
 import com.model2.mvc.category.service.CategoryService;
+import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Autowired
     public CategoryController(CategoryService categoryService) {
@@ -42,16 +43,16 @@ public class CategoryController {
     }
 
     @PostMapping("/update")
-    public String updateCategory(@ModelAttribute("requestDTO") UpdateCategoryRequestDTO requestDTO,
+    public String updateCategory(@ModelAttribute("requestDTO") UpdateCategoryRequestDto requestDto,
                                  @SessionAttribute("user") User loginUser) {
         checkAuthorization(loginUser);
 
-        this.categoryService.updateCategory(requestDTO);
+        this.categoryService.updateCategory(requestDto);
         return "redirect:/listProduct.do";
     }
 
     private void checkAuthorization(User loginUser) {
-        if (!loginUser.getRole().equals("admin")) {
+        if (loginUser.getRole() != Role.ADMIN) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }

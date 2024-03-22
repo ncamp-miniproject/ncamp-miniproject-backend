@@ -1,11 +1,11 @@
 package com.model2.mvc.cart.service;
 
-import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
-import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
+import com.model2.mvc.cart.dto.request.AddItemRequestDto;
+import com.model2.mvc.cart.dto.response.ListCartItemResponseDto;
 
 public interface CartService {
 
-    public String addItem(AddItemRequestDTO requestDTO);
+    public String addItem(AddItemRequestDto requestDTO);
 
-    public ListCartItemResponseDTO getCartItemList(String cartValue);
+    public ListCartItemResponseDto getCartItemList(String cartValue);
 }

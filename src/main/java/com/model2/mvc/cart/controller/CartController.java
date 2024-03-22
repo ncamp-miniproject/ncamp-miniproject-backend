@@ -1,7 +1,7 @@
 package com.model2.mvc.cart.controller;
 
-import com.model2.mvc.cart.dto.request.AddItemRequestDTO;
-import com.model2.mvc.cart.dto.response.ListCartItemResponseDTO;
+import com.model2.mvc.cart.dto.request.AddItemRequestDto;
+import com.model2.mvc.cart.dto.response.ListCartItemResponseDto;
 import com.model2.mvc.cart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class CartController {
         if (cartValue == null) {
             cartValue = "";
         }
-        String result = this.cartService.addItem(new AddItemRequestDTO(prodNo, quantity, cartValue));
+        String result = this.cartService.addItem(new AddItemRequestDto(prodNo, quantity, cartValue));
         return new ModelAndView(String.format("redirect:/products/%s?menu=search", prodNo),
                                 "cartCookieValue",
                                 result);
@@ -47,8 +47,8 @@ public class CartController {
 
     @GetMapping("/items")
     public String listCart(@CookieValue(value = "cart", required = false) String cartValue, Model model) {
-        ListCartItemResponseDTO responseDTO = this.cartService.getCartItemList(cartValue);
-        model.addAttribute("data", responseDTO);
+        ListCartItemResponseDto responseDto = this.cartService.getCartItemList(cartValue);
+        model.addAttribute("data", responseDto);
         return "cart/listCartItem";
     }
 }

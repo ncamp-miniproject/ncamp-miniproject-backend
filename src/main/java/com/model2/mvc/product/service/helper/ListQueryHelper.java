@@ -5,7 +5,7 @@ import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.OptionalHashMap;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.dto.request.ListProductRequestDTO;
+import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.repository.ProductRepository;
 
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class ListQueryHelper {
 
-    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDTO, ListData<Product>>>
+    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDto, ListData<Product>>>
             listTaskMapper = new OptionalHashMap<>();
 
     static {
@@ -60,10 +60,10 @@ public class ListQueryHelper {
         return num == null ? 1 : num;
     }
 
-    public static ListData<Product> findProductList(ProductRepository repository, ListProductRequestDTO dto) {
-        Optional<BiFunction<ProductRepository, ListProductRequestDTO, ListData<Product>>> funcOptional
+    public static ListData<Product> findProductList(ProductRepository repository, ListProductRequestDto dto) {
+        Optional<BiFunction<ProductRepository, ListProductRequestDto, ListData<Product>>> funcOptional
                 = listTaskMapper.getOptional(dto.getSearchCondition());
-        BiFunction<ProductRepository, ListProductRequestDTO, ListData<Product>> func = funcOptional.orElse(
+        BiFunction<ProductRepository, ListProductRequestDto, ListData<Product>> func = funcOptional.orElse(
                 listTaskMapper.get(SearchCondition.NO_CONDITION));
         ListData<Product> listData = func.apply(repository, dto);
         setPageAndPageSize(listData, getOneIfNull(dto.getPage()), getOneIfNull(dto.getPageSize()));

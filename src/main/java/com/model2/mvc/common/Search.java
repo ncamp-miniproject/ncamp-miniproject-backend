@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Search {
-
     String searchCondition;
     String searchKeyword;
     int endRowNum;
