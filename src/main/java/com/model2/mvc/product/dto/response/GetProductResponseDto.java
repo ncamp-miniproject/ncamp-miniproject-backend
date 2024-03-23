@@ -43,7 +43,9 @@ public class GetProductResponseDto {
         dto.prodName = product.getProdName();
         dto.regDate = product.getRegDate();
         dto.stock = product.getStock();
-        dto.categoryName = product.getCategory().getCategoryName();
+        if (product.getCategory() != null) {
+            dto.categoryName = product.getCategory().getCategoryName();
+        }
         return dto;
     }
 

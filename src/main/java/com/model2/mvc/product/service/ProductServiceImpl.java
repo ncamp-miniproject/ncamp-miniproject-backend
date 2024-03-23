@@ -8,7 +8,7 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.dto.request.AddProductRequestDto;
+import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
 import com.model2.mvc.product.dto.response.AddProductResponseDto;
@@ -22,13 +22,13 @@ import com.model2.mvc.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,10 +51,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public AddProductResponseDto addProduct(AddProductRequestDto toInsert, String contextRealPath) {
+    public AddProductResponseDto addProduct(CreateProductRequestDto toInsert, String contextRealPath) {
         Product product = new Product();
-        product.setFileName(storeFile(toInsert.getImageFile(), contextRealPath));
-        product.setManuDate(StringUtil.parseDate(toInsert.getManuDate(), "-"));
+        product.setFileName(storeFile(toInsert.getBase64ImageData(), contextRealPath, toInsert.getImageName()));
+        product.setManuDate(toInsert.getManuDate());
         product.setPrice(toInsert.getPrice());
         product.setProdDetail(toInsert.getProdDetail());
         product.setProdName(toInsert.getProdName());
@@ -67,18 +67,18 @@ public class ProductServiceImpl implements ProductService {
         return AddProductResponseDto.from(product);
     }
 
-    private String storeFile(MultipartFile file, String contextRealPath) {
-        System.out.println(file.getSize());
-        if (file.getSize() == 0) {
+    private String storeFile(String base64ImageData, String contextRealPath, String imageName) {
+        if (base64ImageData == null || imageName == null) {
             return null;
         }
-        int extensionIndex = file.getOriginalFilename().lastIndexOf(".");
-        String extension = file.getOriginalFilename().substring(extensionIndex);
+        int extensionIndex = imageName.lastIndexOf(".");
+        String extension = imageName.substring(extensionIndex);
         String filename = RandomSerialGenerator.generate() + extension;
         String uploadPath = contextRealPath + File.separator + filename;
+
+        byte[] encodedData = Base64.getDecoder().decode(base64ImageData);
         try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(new File(uploadPath).toPath()))) {
-            byte[] fileData = file.getBytes();
-            bos.write(fileData);
+            bos.write(encodedData);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(); // TODO
@@ -119,12 +119,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public UpdateProductResponseDto updateProduct(UpdateProductRequestDto requestDTO) {
-        Product previous = this.productRepository.findById(requestDTO.getProdNo())
-                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" +
-                                                                requestDTO.getProdNo()));
+    public UpdateProductResponseDto updateProduct(int prodNo, UpdateProductRequestDto requestDTO) {
+        Product previous = this.productRepository.findById(prodNo)
+                .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" + prodNo));
         Product to = new Product();
-        to.setProdNo(requestDTO.getProdNo());
+        to.setProdNo(prodNo);
         to.setFileName(requestDTO.getFileName());
         to.setManuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"));
         to.setPrice(requestDTO.getPrice());

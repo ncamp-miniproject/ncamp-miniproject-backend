@@ -24,7 +24,7 @@ $(() => {
     $(".btn--submit").on("click", () => {
         if (validateForm()) {
             $("form[name=product-register-form]")
-                .attr("action", `${contextPath}/app/products/new`)
+                .attr("action", `${contextPath}/products`)
                 .attr("method", "POST")
                 .trigger("submit");
         }

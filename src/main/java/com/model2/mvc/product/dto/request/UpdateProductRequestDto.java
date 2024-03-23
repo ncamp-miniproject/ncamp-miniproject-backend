@@ -10,7 +10,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UpdateProductRequestDto {
-    private int prodNo;
     private String prodName;
     private String prodDetail;
     private String manuDate;

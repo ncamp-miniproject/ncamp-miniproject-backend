@@ -2,8 +2,8 @@ package com.model2.mvc.user.repository.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.user.repository.UserRepository;
 import com.model2.mvc.user.domain.User;
+import com.model2.mvc.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.context.annotation.Primary;

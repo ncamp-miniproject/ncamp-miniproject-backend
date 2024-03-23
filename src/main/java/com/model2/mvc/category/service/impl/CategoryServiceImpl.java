@@ -2,7 +2,6 @@ package com.model2.mvc.category.service.impl;
 
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
-import com.model2.mvc.category.dto.request.UpdateCategoryRequestDto;
 import com.model2.mvc.category.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.model2.mvc.product.service;
 
 import com.model2.mvc.category.domain.Category;
-import com.model2.mvc.product.dto.request.AddProductRequestDto;
+import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
 import com.model2.mvc.product.dto.response.AddProductResponseDto;
@@ -14,13 +14,13 @@ import java.util.List;
 
 public interface ProductService {
 
-    public AddProductResponseDto addProduct(AddProductRequestDto toInsert, String contextRealPath);
+    public AddProductResponseDto addProduct(CreateProductRequestDto toInsert, String contextRealPath);
 
     public GetProductResponseDto getProduct(int prodNo, User loginUser);
 
     public ListProductResponseDto getProductList(ListProductRequestDto requestDTO);
 
-    public UpdateProductResponseDto updateProduct(UpdateProductRequestDto requestDTO);
+    public UpdateProductResponseDto updateProduct(int prodNo, UpdateProductRequestDto requestDTO);
 
     public Category addCategory(String categoryName);
 

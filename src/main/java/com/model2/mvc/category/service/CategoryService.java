@@ -1,7 +1,6 @@
 package com.model2.mvc.category.service;
 
 import com.model2.mvc.category.domain.Category;
-import com.model2.mvc.category.dto.request.UpdateCategoryRequestDto;
 
 import java.util.List;
 

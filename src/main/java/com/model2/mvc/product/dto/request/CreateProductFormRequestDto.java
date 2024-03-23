@@ -6,13 +6,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class AddProductRequestDto {
+public class CreateProductFormRequestDto {
     private MultipartFile imageFile;
-    private String manuDate;
+    private LocalDate manuDate;
     private int price;
     private String prodDetail;
     private String prodName;

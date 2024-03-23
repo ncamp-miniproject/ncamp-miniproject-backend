@@ -23,8 +23,8 @@
         <div class="inner-header">
             <h2 class="page-title">상품수정</h2>
         </div>
-        <form:form name="product-update-form" modelAttribute="data" enctype="multipart/form-data">
-            <form:input path="prodNo" type="hidden"/>
+        <form:form name="product-update-form" modelAttribute="data" enctype="multipart/form-data" data-prod-no="${prodNo}">
+
             <div class="form-item">
 				<label class="form-label" for="prod-name">상품명</label>
                 <form:input path="prodName" type="text" cssClass="form-input" id="prod-name"/>

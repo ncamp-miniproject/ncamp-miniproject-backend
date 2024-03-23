@@ -23,8 +23,10 @@ $(() => {
 
     $(".btn--submit").on("click", () => {
         if (validateForm()) {
-            $("form[name=product-update-form]")
-                .attr("action", `${contextPath}/products/update`)
+            const updateForm = $("form[name=product-update-form]");
+            const prodNo = updateForm.data("prod-no");
+            updateForm
+                .attr("action", `${contextPath}/products/${prodNo}/update`)
                 .attr("method", "POST")
                 .trigger("submit");
         }

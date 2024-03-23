@@ -6,7 +6,8 @@ import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.dto.request.AddProductRequestDto;
+import com.model2.mvc.product.dto.request.CreateProductFormRequestDto;
+import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.response.AddProductResponseDto;
 import com.model2.mvc.product.dto.response.GetProductResponseDto;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,13 +62,13 @@ public class TestProductServiceImpl extends TestCase {
     private List<Product> insertSampleProducts() {
         Category category1 = this.categoryService.insertCategory("category1");
         Category category2 = this.categoryService.insertCategory("category2");
-        AddProductRequestDto req1 = new AddProductRequestDto();
-        req1.setManuDate("2017-02-11");
+        CreateProductRequestDto req1 = new CreateProductRequestDto();
+        req1.setManuDate(LocalDate.of(2017, Month.APRIL, 25));
         req1.setPrice(1000);
         req1.setProdName("prod1");
         req1.setStock(20);
         req1.setCategoryNo(category1.getCategoryNo());
-        AddProductRequestDto req2 = new AddProductRequestDto();
+        CreateProductRequestDto req2 = new CreateProductRequestDto();
         req2.setPrice(200);
         req2.setProdName("prod2");
         req2.setStock(30);

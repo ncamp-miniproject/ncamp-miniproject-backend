@@ -1,8 +1,8 @@
 package com.model2.mvc.purchase.repository.impl;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.purchase.repository.PurchaseRepository;
 import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.repository.PurchaseRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
