@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Builder
 @ToString
-public class ListPurchaseResponseDTO {
+public class ListPurchaseResponseDto {
     private Page pageInfo;
     private int count;
     private List<Purchase> purchaseList;

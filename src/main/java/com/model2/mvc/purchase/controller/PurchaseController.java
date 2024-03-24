@@ -2,6 +2,7 @@ package com.model2.mvc.purchase.controller;
 
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
+import com.model2.mvc.common.util.WebUtil;
 import com.model2.mvc.purchase.controller.editor.LocalDateEditor;
 import com.model2.mvc.purchase.controller.editor.PaymentOptionEditor;
 import com.model2.mvc.purchase.controller.editor.TranStatusCodeEditor;
@@ -11,17 +12,21 @@ import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
-import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDTO;
-import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
+import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDto;
+import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
-import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
-import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
+import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDto;
+import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDto;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,31 +38,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/purchases")
 public class PurchaseController {
-
-    private final PurchaseService purchaseService;
-
-
-    @Value("#{constantProperties['defaultPageSize']}")
-    private int defaultPageSize;
-
-    @Value("#{constantProperties['defaultPageDisplay']}")
-    private int defaultPageDisplay;
-
-    @Autowired
-    public PurchaseController(PurchaseService purchaseService) {
-        this.purchaseService = purchaseService;
-    }
 
     @InitBinder
     public void dateBinding(WebDataBinder binder) {
@@ -74,27 +68,53 @@ public class PurchaseController {
     }
 
     @PostMapping("/new")
-    public String addPurchase(@ModelAttribute("requestDTO") AddPurchaseRequestDTO requestDTO, Model model) {
-        AddPurchaseResponseDTO responseDTO = this.purchaseService.addPurchase(requestDTO);
-        model.addAttribute("purchaseData", responseDTO);
-        return "purchase/purchase-result";
+    public String addPurchase(@ModelAttribute("requestDTO") AddPurchaseRequestDTO requestDTO, Model model)
+    throws URISyntaxException {
+        URI uri = new URI("http", null, "localhost", 8089, "/api/purchases", null, null);
+        RequestEntity<AddPurchaseRequestDTO> requestEntity = RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestDTO);
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<AddPurchaseResponseDTO> responseEntity = restTemplate.exchange(requestEntity,
+                                                                                          AddPurchaseResponseDTO.class);
+            model.addAttribute("purchaseData", responseEntity.getBody());
+            return "purchase/purchase-result";
+        } catch (HttpClientErrorException.Forbidden e) {
+            e.printStackTrace();
+            // TODO: do some logic
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
     }
 
     @GetMapping("/new-form")
-    public ModelAndView getPurchaseView(@RequestParam("purchase") List<String> purchase,
-                                        @SessionAttribute("user") User loginUser) {
-        if (purchase == null || purchase.isEmpty()) {
+    public ModelAndView getPurchaseView(@RequestParam("purchase") String[] purchaseParam,
+                                        @SessionAttribute("user") User loginUser) throws URISyntaxException {
+        if (purchaseParam == null) {
             return new ModelAndView("redirect:/products");
         }
-        Map<Integer, Integer> prodNoQuantityMap = new HashMap<>();
 
-        purchase.stream()
-                .map(p -> p.split(("-")))
-                .forEach(m -> prodNoQuantityMap.put(Integer.parseInt(m[0]), Integer.parseInt(m[1])));
-        AddPurchaseViewResponseDTO responseDTO = this.purchaseService.getProductsWithQuantity(prodNoQuantityMap);
+        URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("localhost").setPort(8089);
+        Arrays.stream(purchaseParam).forEach(q -> uriBuilder.addParameter("purchase", q));
+        URI uri = uriBuilder.build();
 
+        RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
         ModelAndView mv = new ModelAndView("purchase/purchase-form");
-        mv.addObject("data", responseDTO);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<AddPurchaseViewResponseDTO> responseEntity = restTemplate.exchange(requestEntity,
+                                                                                              AddPurchaseViewResponseDTO.class);
+            mv.addObject("data", responseEntity.getBody());
+        } catch (HttpClientErrorException.BadRequest e) {
+            e.printStackTrace();
+            throw e;
+        }
+
         mv.addObject("loginUser", loginUser);
         return mv;
     }
@@ -102,66 +122,124 @@ public class PurchaseController {
     @GetMapping("/sale")
     public ModelAndView listSale(@RequestParam(value = "menu", required = false) String menu,
                                  @RequestParam(value = "page", required = false) Integer page,
-                                 @SessionAttribute("user") User loginUser) {
+                                 @SessionAttribute("user") User loginUser) throws URISyntaxException {
         int currentPage = page == null ? 1 : page;
-        if ((menu == null || menu.equals("search")) || loginUser.getRole() != Role.SELLER) {
+        if ((menu == null || menu.equals("search")) || loginUser.getRole() != Role.ADMIN) {
             return new ModelAndView("redirect:/products?menu=search&page=" + currentPage);
         }
 
-        ListPurchaseResponseDTO responseDTO = this.purchaseService.getSaleList(currentPage, defaultPageSize);
+        URIBuilder uriBuilder = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/api/purchases/sale");
+        if (page != null) {
+            uriBuilder = uriBuilder.setParameter("page", String.valueOf(page));
+        }
+        RequestEntity<Void> requestEntity = RequestEntity.get(uriBuilder.build())
+                .accept(MediaType.APPLICATION_JSON)
+                .build();
 
-        responseDTO.setLoginUser(loginUser);
         ModelAndView mv = new ModelAndView("purchase/purchase-list");
-        mv.addObject("data", responseDTO);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<ListPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
+                                                                                           ListPurchaseResponseDto.class);
+            mv.addObject("data", responseEntity.getBody());
+        } catch (HttpClientErrorException.Forbidden e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/products?menu=search&page=" + currentPage);
+        }
         return mv;
     }
 
     @GetMapping("/{tranNo}")
-    public String getPurchase(@PathVariable("tranNo") int tranNo, Model model) {
-        GetPurchaseResponseDTO responseDTO = this.purchaseService.getPurchase(tranNo);
-        model.addAttribute("purchaseData", responseDTO);
+    public String getPurchase(@PathVariable("tranNo") int tranNo, Model model) throws URISyntaxException {
+        URI uri = new URIBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(8089)
+                .setPath("/api/purchases/" + tranNo)
+                .build();
+        try {
+            RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<GetPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
+                                                                                          GetPurchaseResponseDto.class);
+            model.addAttribute("purchaseData", responseEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "purchase/purchase-info";
     }
 
     @GetMapping
-    public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDTO requestDTO,
+    public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDto requestDTO,
                                      @RequestParam(value = "menu", required = false) String menu,
                                      @SessionAttribute("user") User loginUser) {
         if ((menu != null && menu.equals("manage")) || loginUser.getRole() == Role.SELLER) {
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 
-        System.out.println(loginUser);
-        ListPurchaseResponseDTO result = this.purchaseService.getPurchaseList(requestDTO, loginUser.getUserId());
+        URI uri = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("localhost")
+                .path("/api/purchases")
+                .queryParams(WebUtil.generateQueryParameterFrom(requestDTO))
+                .build()
+                .toUri();
 
-        ModelAndView mv = new ModelAndView("purchase/purchase-list");
-        result.setLoginUser(loginUser);
-        mv.addObject("data", result);
-        return mv;
+        RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<ListPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
+                                                                                           ListPurchaseResponseDto.class);
+            return new ModelAndView("purchase/purchase-list", "data", responseEntity.getBody());
+        } catch (HttpClientErrorException.Forbidden e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
+        }
     }
 
     @GetMapping("/{tranNo}/update-form")
     public String updatePurchaseView(@PathVariable("tranNo") int tranNo,
                                      Model model,
                                      @SessionAttribute("user") User loginUser) {
-        GetPurchaseResponseDTO toUpdate = this.purchaseService.getPurchase(tranNo);
-        model.addAttribute("purchaseData", toUpdate);
+        URI uri = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("localhost")
+                .port(8089)
+                .path("/api/purchases/" + tranNo)
+                .build()
+                .toUri();
+        RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<GetPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
+                                                                                      GetPurchaseResponseDto.class);
+
+        model.addAttribute("purchaseData", responseEntity.getBody());
         model.addAttribute("loginUser", loginUser);
         return "purchase/purchase-update-form";
     }
 
-    @PostMapping("/update")
-    public String updatePurchase(@ModelAttribute("requestDTO") UpdatePurchaseRequestDTO requestDTO, Model model) {
-        Purchase result = this.purchaseService.updatePurchase(requestDTO);
+    @PostMapping("/{tranNo}/update")
+    public String updatePurchase(@PathVariable("tranNo") int tranNo,
+                                 @ModelAttribute("requestDTO") UpdatePurchaseRequestDto requestDTO,
+                                 Model model) {
+        URI uri = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("localhost")
+                .port("8089")
+                .path("/api/purchases/" + tranNo)
+                .build()
+                .toUri();
+        RequestEntity<UpdatePurchaseRequestDto> requestEntity = RequestEntity.patch(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestDTO);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(requestEntity, Void.class);
 
-        model.addAttribute("purchaseData", result);
+        model.addAttribute("purchaseData", requestDTO);
         return "purchase/purchase-update-result";
-    }
-
-    @PostMapping("/tran-code/update")
-    public String updateTranCode(@RequestParam("tranNo") int tranNo, @RequestParam("tranCode") String tranCode) {
-        this.purchaseService.updateTranCode(new UpdateTranCodeRequestDTO(tranNo, TranStatusCode.getTranCode(tranCode)));
-        return "redirect:/purchases";
     }
 
     @RequestMapping("/updateTranCodeByProd.do")

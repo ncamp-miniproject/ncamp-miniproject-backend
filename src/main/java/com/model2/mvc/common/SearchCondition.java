@@ -29,10 +29,15 @@ public enum SearchCondition {
         enumSet.forEach(sc -> codeTable.put(sc.getConditionCode(), sc));
     }
 
-    public static Optional<SearchCondition> getSearchCondition(String conditionCode) {
+    public static Optional<SearchCondition> findConditionCode(String conditionCode) {
         if (conditionCode == null) {
             return Optional.empty();
         }
         return Optional.ofNullable(codeTable.get(conditionCode.trim()));
+    }
+
+    @Override
+    public String toString() {
+        return this.conditionCode;
     }
 }

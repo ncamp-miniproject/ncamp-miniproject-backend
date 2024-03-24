@@ -11,12 +11,12 @@ import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
-import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDTO;
-import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDTO;
+import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDto;
+import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
-import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDTO;
-import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDTO;
+import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDto;
+import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDto;
 import com.model2.mvc.purchase.repository.PurchaseRepository;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.User;
@@ -74,35 +74,35 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public GetPurchaseResponseDTO getPurchase(int tranNo) throws RecordNotFoundException {
+    public GetPurchaseResponseDto getPurchase(int tranNo) throws RecordNotFoundException {
         Optional<Purchase> purchase = this.purchaseRepository.findById(tranNo);
-        return GetPurchaseResponseDTO.from(purchase.orElseThrow(() -> new RecordNotFoundException(
+        return GetPurchaseResponseDto.from(purchase.orElseThrow(() -> new RecordNotFoundException(
                 "No record with tranNo=" + tranNo)));
     }
 
     @Override
-    public ListPurchaseResponseDTO getPurchaseList(ListPurchaseRequestDTO requestDTO, String loginUserId) {
-        int page = requestDTO.getPage();
-        page = page == 0 ? 1 : page;
-        int pageSize = requestDTO.getPageSize();
-        pageSize = pageSize == 0 ? defaultPageSize : pageSize;
+    public ListPurchaseResponseDto getPurchaseList(ListPurchaseRequestDto requestDTO) {
+        Integer page = requestDTO.getPage();
+        page = page == null ? 1 : page;
+        Integer pageSize = requestDTO.getPageSize();
+        pageSize = pageSize == null ? defaultPageSize : pageSize;
         String searchCondition = requestDTO.getSearchCondition() == null
                                  ? SearchCondition.NO_CONDITION.getConditionCode()
                                  : requestDTO.getSearchCondition().getConditionCode();
         String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
 
         Map<String, Object> search = new HashMap<>();
-        search.put("buyerId", loginUserId);
+        search.put("buyerId", requestDTO.getUser().getUserId());
         search.put("startRowNum", (page - 1) * pageSize + 1);
         search.put("endRowNum", page * pageSize);
         search.put("searchCondition", searchCondition);
         search.put("searchKeyword", searchKeyword);
         ListData<Purchase> result = this.purchaseRepository.findPurchasesByUserId(search);
-        return ListPurchaseResponseDTO.builder()
+        return ListPurchaseResponseDto.builder()
                 .count(result.getCount())
                 .purchaseList(result.getList())
                 .pageInfo(getPageInfo(result.getCount(), page, pageSize))
-                .loginUser(new User(loginUserId))
+                .loginUser(requestDTO.getUser())
                 .build();
     }
 
@@ -126,11 +126,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public ListPurchaseResponseDTO getSaleList(Integer page, Integer pageSize) {
+    public ListPurchaseResponseDto getSaleList(Integer page, Integer pageSize) {
         page = page == null ? 1 : page;
         pageSize = pageSize == null ? defaultPageSize : pageSize;
         ListData<Purchase> purchases = this.purchaseRepository.findAllInPageSize((page - 1) * pageSize + 1, page * pageSize);
-        return ListPurchaseResponseDTO.builder()
+        return ListPurchaseResponseDto.builder()
                 .count(purchases.getCount())
                 .purchaseList(purchases.getList())
                 .pageInfo(getPageInfo(purchases.getCount(), page, pageSize))
@@ -138,9 +138,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Purchase updatePurchase(UpdatePurchaseRequestDTO requestDTO) {
+    public Purchase updatePurchase(int tranNo, UpdatePurchaseRequestDto requestDTO) {
         Purchase purchase = new Purchase();
-        purchase.setTranNo(requestDTO.getTranNo());
+        purchase.setTranNo(tranNo);
         purchase.setBuyer(new User(requestDTO.getBuyerId()));
         purchase.setPaymentOption(requestDTO.getPaymentOption());
         purchase.setReceiverName(requestDTO.getReceiverName());

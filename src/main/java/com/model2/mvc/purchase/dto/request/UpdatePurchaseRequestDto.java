@@ -12,8 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class UpdatePurchaseRequestDTO {
-    private int tranNo;
+public class UpdatePurchaseRequestDto {
     private String buyerId;
     private PaymentOption paymentOption;
     private String receiverName;

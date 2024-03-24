@@ -23,7 +23,7 @@ public class SearchConditionEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        Optional<SearchCondition> searchCondition = SearchCondition.getSearchCondition(text);
+        Optional<SearchCondition> searchCondition = SearchCondition.findConditionCode(text);
         super.setValue(searchCondition.orElse(SearchCondition.NO_CONDITION));
     }
 }

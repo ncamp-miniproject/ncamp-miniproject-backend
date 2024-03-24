@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @ToString
-public class GetPurchaseResponseDTO {
+public class GetPurchaseResponseDto {
     private Integer tranNo;
     private User buyer;
     private PaymentOption paymentOption;
@@ -26,7 +26,7 @@ public class GetPurchaseResponseDTO {
     private LocalDate divyDate;
     private List<TransactionProduction> transactionProductions;
 
-    private GetPurchaseResponseDTO(Purchase from) {
+    private GetPurchaseResponseDto(Purchase from) {
         this.tranNo = from.getTranNo();
         this.buyer = from.getBuyer();
         this.paymentOption = from.getPaymentOption();
@@ -40,7 +40,7 @@ public class GetPurchaseResponseDTO {
         this.transactionProductions = from.getTransactionProductions();
     }
 
-    public static GetPurchaseResponseDTO from(Purchase purchase) {
-        return new GetPurchaseResponseDTO(purchase);
+    public static GetPurchaseResponseDto from(Purchase purchase) {
+        return new GetPurchaseResponseDto(purchase);
     }
 }
