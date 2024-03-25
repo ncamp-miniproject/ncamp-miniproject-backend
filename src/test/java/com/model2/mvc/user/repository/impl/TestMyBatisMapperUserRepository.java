@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,7 +69,7 @@ public class TestMyBatisMapperUserRepository extends TestCase {
         user.setPhone("010-1234-1234");
         user.setAddr("Daegu");
         user.setEmail("a@gmail.com");
-        user.setRegDate(new Date(2017, 3, 24));
+        user.setRegDate(LocalDate.of(2017, 1, 13));
         try {
             this.userRepository.insertUser(user);
         } catch (SQLException e) {
@@ -95,7 +96,7 @@ public class TestMyBatisMapperUserRepository extends TestCase {
         user.setPhone("010-1234-1234");
         user.setAddr("Daegu");
         user.setEmail("a@gmail.com");
-        user.setRegDate(new Date(System.currentTimeMillis()));
+        user.setRegDate(LocalDate.now());
 
         assertThatExceptionOfType(MyBatisSystemException.class).isThrownBy(() -> this.userRepository.insertUser(user));
     }
@@ -105,12 +106,12 @@ public class TestMyBatisMapperUserRepository extends TestCase {
         User user1 = new User("user1");
         user1.setUserName("username1");
         user1.setPassword("1q2w3e4r");
-        user1.setRegDate(new Date(System.currentTimeMillis()));
+        user1.setRegDate(LocalDate.now());
 
         User user2 = new User("user1");
         user2.setUserName("username2");
         user2.setPassword("2w3e4r5t");
-        user2.setRegDate(new Date(System.currentTimeMillis()));
+        user2.setRegDate(LocalDate.now());
 
         try {
             this.userRepository.insertUser(user1);
@@ -127,7 +128,7 @@ public class TestMyBatisMapperUserRepository extends TestCase {
         User user1 = new User("user1");
         user1.setUserName("username1");
         user1.setPassword("1q2w3e4r");
-        user1.setRegDate(new Date(System.currentTimeMillis()));
+        user1.setRegDate(LocalDate.now());
         try {
             this.userRepository.insertUser(user1);
         } catch (SQLException e) {
@@ -137,7 +138,7 @@ public class TestMyBatisMapperUserRepository extends TestCase {
         User user2 = new User("user2");
         user2.setUserName("username2");
         user2.setPassword("2w3e4r5t");
-        user2.setRegDate(new Date(System.currentTimeMillis()));
+        user2.setRegDate(LocalDate.now());
         try {
             this.userRepository.insertUser(user2);
         } catch (SQLException e) {

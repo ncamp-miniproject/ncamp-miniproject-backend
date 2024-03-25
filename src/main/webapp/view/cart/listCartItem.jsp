@@ -82,11 +82,32 @@
             </table>
 
 
-            <button type="button" id="purchaseBtn" onclick="fncAddPurchaseView('${pageContext.request.contextPath}/purchases/new-form')">구매</button>
-            <button type="button" onclick="clearCart('${pageContext.request.contextPath}/cart/items/clear')">초기화</button>
+            <button type="button" id="purchaseBtn">구매</button>
+            <button type="button" id="clear-cart-button">초기화</button>
 
         </form>
 
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+
+    <script>
+        const cartForm = $("form[name=cartForm]");
+        $("#purchaseBtn").on("click", () => {
+            cartForm
+                .attr("method", "GET")
+                .attr("action", "/purchases/new-form")
+                .trigger("submit");
+        });
+
+        $("#clear-cart-button").on("click", () => {
+            cartForm
+                .attr("method", "POST")
+                .attr("action", "/cart/items/clear")
+                .trigger("submit")
+        });
+    </script>
 </body>
 </html>

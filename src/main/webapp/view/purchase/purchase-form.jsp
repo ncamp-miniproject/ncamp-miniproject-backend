@@ -26,7 +26,7 @@
             <ul>
                 <li>
                     <label>구매자 아이디</label>
-                    <input type="text" name="buyerId" value="${loginUser.userId}" readonly>
+                    <input type="text" name="buyerId" readonly>
                 </li>
                 <li>
                     <label for="payment-option">구매 방법</label>
@@ -38,15 +38,15 @@
                 </li>
                 <li>
                     <label for="receiver-name">수령자 이름</label>
-                    <input type="text" name="receiverName" value="${loginUser.userName}" id="receiver-name"/>
+                    <input type="text" name="receiverName" id="receiver-name"/>
                 </li>
                 <li>
                     <label for="receiver-phone">수령인 연락처</label>
-                    <input type="text" name="receiverPhone" value="${loginUser.phone}" id="receiver-phone"/>
+                    <input type="text" name="receiverPhone" id="receiver-phone"/>
                 </li>
                 <li>
                     <label for="address">주소</label>
-                    <input type="text" name="divyAddr" value="${loginUser.addr}" id="address">
+                    <input type="text" name="divyAddr" id="address">
                 </li>
                 <li>
                     <label for="divy-request">배송 요청사항</label>
@@ -58,7 +58,7 @@
                 </li>
             </ul>
             <p>전체 ${data.productCount} 종류 품목</p>
-            <table>
+            <table class="cart-info">
                 <thead>
                     <tr>
                         <th>상품번호</th>
@@ -87,11 +87,11 @@
             </table>
             <div>
                 <label>총액</label>
-                <p>${data.priceSum}</p>
+                <p id="price-sum">0</p>
             </div>
             <div>
                 <label>총수량</label>
-                <p>${data.quantitySum}</p>
+                <p id="quantity-sum">0</p>
             </div>
             <div class="btn-box">
 				<button type="button" class="btn btn--submit">구매</button>

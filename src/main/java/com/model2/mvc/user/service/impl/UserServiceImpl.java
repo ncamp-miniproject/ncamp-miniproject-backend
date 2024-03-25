@@ -108,10 +108,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public CheckDuplicateResponseDto checkDuplication(String userId) throws Exception {
-        boolean result = true;
+        boolean result = false;
         Optional<User> userVO = userRepository.findByUserId(userId);
         if (userVO.isPresent()) {
-            result = false;
+            result = true;
         }
         return new CheckDuplicateResponseDto(result, userId);
     }

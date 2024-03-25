@@ -14,6 +14,8 @@ public class CookieSetter implements HandlerInterceptor {
                            HttpServletResponse response,
                            Object handler,
                            ModelAndView modelAndView) {
-        response.addCookie(new Cookie("cart", (String)modelAndView.getModel().get("cartCookieValue")));
+        Cookie cookie = new Cookie("cart", (String)modelAndView.getModel().get("cartCookieValue"));
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 }

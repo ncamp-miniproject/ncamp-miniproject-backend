@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/app/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserApi {
     private final UserService userService;

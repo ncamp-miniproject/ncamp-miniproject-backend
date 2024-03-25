@@ -93,7 +93,7 @@ public class PurchaseController {
     }
 
     @GetMapping("/new-form")
-    public String getPurchaseView(@SessionAttribute("user") User loginUser) {
+    public String getPurchaseView() {
         return "purchase/purchase-form";
     }
 

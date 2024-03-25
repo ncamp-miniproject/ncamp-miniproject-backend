@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -44,7 +45,7 @@ public class UserMapperTest {
         String phone = "010-1234-1234";
         String addr = "New York";
         String email = "john@g.com";
-        Date regDate = new Date(System.currentTimeMillis());
+        LocalDate regDate = LocalDate.now();
 
         User userToInsert = new User();
         userToInsert.setUserId(userId);
@@ -75,7 +76,7 @@ public class UserMapperTest {
         user.setPhone(p[5]);
         user.setAddr(p[6]);
         user.setEmail(p[7]);
-        user.setRegDate(new Date(System.currentTimeMillis()));
+        user.setRegDate(LocalDate.now());
         log.debug(user.toString());
         return user;
     };

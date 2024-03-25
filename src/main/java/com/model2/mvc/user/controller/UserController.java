@@ -51,7 +51,7 @@ public class UserController {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users/account/new")
+                .setPath("/api/users/account")
                 .build();
         RequestEntity<User> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
@@ -77,7 +77,7 @@ public class UserController {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users/account/authentication/start")
+                .setPath("/api/users/account/authentication/start")
                 .setParameter("emailAddress", emailAddress)
                 .build();
         RequestEntity<Void> requestEntity = RequestEntity.post(uri)
@@ -97,7 +97,7 @@ public class UserController {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users/account/authentication")
+                .setPath("/api/users/account/authentication")
                 .setParameters(new BasicNameValuePair("code", authenticationCode),
                                new BasicNameValuePair("authenticatedEmail", authenticatedEmail))
                 .build();
@@ -126,7 +126,7 @@ public class UserController {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users/account/check-duplicate")
+                .setPath("/api/users/account/duplicate")
                 .setParameter("userId", userId)
                 .build();
         RestTemplate restTemplate = new RestTemplate();
@@ -151,7 +151,7 @@ public class UserController {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users/" + userId)
+                .setPath("/api/users/" + userId)
                 .build();
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -170,7 +170,7 @@ public class UserController {
         URIBuilder uriBuilder = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users");
+                .setPath("/api/users");
         if (requestDTO.getPage() != null) {
             uriBuilder.addParameter("page", requestDTO.getPage().toString());
         }
@@ -210,7 +210,7 @@ public class UserController {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
-                .setPath("/app/users/account/sign-in")
+                .setPath("/api/users/account/sign-in")
                 .build();
         RequestEntity<User> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)

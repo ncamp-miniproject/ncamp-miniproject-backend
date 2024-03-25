@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class LoginFilter extends HttpFilter implements Filter {
     private static final long serialVersionUID = -2871416444202432425L;
@@ -50,8 +51,8 @@ public class LoginFilter extends HttpFilter implements Filter {
         sampleUser.setUserId("user08");
         sampleUser.setUserName("SCOTT");
         sampleUser.setPassword("1234");
-        sampleUser.setRole(Role.ADMIN);
-        sampleUser.setRegDate(new Date(System.currentTimeMillis()));
+        sampleUser.setRole(Role.USER);
+        sampleUser.setRegDate(LocalDate.now());
         session.setAttribute("user", sampleUser);
     }
 }
