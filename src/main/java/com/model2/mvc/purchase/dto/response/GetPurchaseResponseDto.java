@@ -1,16 +1,22 @@
 package com.model2.mvc.purchase.dto.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.user.domain.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @ToString
 public class GetPurchaseResponseDto {
@@ -22,7 +28,13 @@ public class GetPurchaseResponseDto {
     private String divyAddr;
     private String divyRequest;
     private TranStatusCode tranStatusCode;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate orderDate;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate divyDate;
     private List<TransactionProduction> transactionProductions;
 

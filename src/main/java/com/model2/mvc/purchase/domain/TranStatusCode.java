@@ -1,6 +1,6 @@
 package com.model2.mvc.purchase.domain;
 
-import java.util.EnumSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,36 +10,29 @@ public enum TranStatusCode {
     IN_DELIVERY("배송중", "2"),
     DELIVERY_DONE("배송 완료", "3");
 
-    private static final EnumSet<TranStatusCode> TRAN_STATUS_CODE_SET = EnumSet.allOf(TranStatusCode.class);
-    private static final Map<String, TranStatusCode> codeTable = new HashMap<>();
+    private static final Map<String, TranStatusCode> CODE_TABLE;
 
     static {
-        for (TranStatusCode t : TRAN_STATUS_CODE_SET) {
+        TranStatusCode[] tranStatusCodes = TranStatusCode.values();
+        Map<String, TranStatusCode> codeTable = new HashMap<>();
+        for (TranStatusCode t : tranStatusCodes) {
             codeTable.put(t.getCode(), t);
         }
+        CODE_TABLE = Collections.unmodifiableMap(codeTable);
     }
 
-    private String status;
-    private String code;
+    private final String status;
+    private final String code;
 
     private TranStatusCode(String status, String code) {
         this.status = status;
         this.code = code;
     }
 
-    public static String convertCodeToStatus(String code) {
-        for (TranStatusCode t : TRAN_STATUS_CODE_SET) {
-            if (t.containsCode(code)) {
-                return t.status;
-            }
-        }
-        System.out.println("enum TranCode doesn't contains code: " + code);
-        return "";
-    }
-
-    public static final TranStatusCode getTranCode(String code) {
-        if (codeTable.containsKey(code)) {
-            return codeTable.get(code);
+    public static TranStatusCode findTranCode(String code) {
+        code = code.trim();
+        if (CODE_TABLE.containsKey(code)) {
+            return CODE_TABLE.get(code);
         }
         throw new IllegalArgumentException("No such code: " + code);
     }
@@ -54,5 +47,10 @@ public enum TranStatusCode {
 
     private boolean containsCode(String code) {
         return status.equals(this.code);
+    }
+
+    @Override
+    public String toString() {
+        return this.code;
     }
 }

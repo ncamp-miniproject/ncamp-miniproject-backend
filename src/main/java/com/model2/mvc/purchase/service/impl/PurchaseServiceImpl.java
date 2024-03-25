@@ -17,6 +17,7 @@ import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDto;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDto;
+import com.model2.mvc.purchase.dto.response.TranStatusCodeResponseDto;
 import com.model2.mvc.purchase.repository.PurchaseRepository;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.User;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("purchaseServiceImpl")
 @Primary
@@ -100,7 +102,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         ListData<Purchase> result = this.purchaseRepository.findPurchasesByUserId(search);
         return ListPurchaseResponseDto.builder()
                 .count(result.getCount())
-                .purchaseList(result.getList())
+                .purchaseList(result.getList().stream().map(GetPurchaseResponseDto::from).collect(Collectors.toList()))
                 .pageInfo(getPageInfo(result.getCount(), page, pageSize))
                 .loginUser(requestDTO.getUser())
                 .build();
@@ -129,10 +131,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     public ListPurchaseResponseDto getSaleList(Integer page, Integer pageSize) {
         page = page == null ? 1 : page;
         pageSize = pageSize == null ? defaultPageSize : pageSize;
-        ListData<Purchase> purchases = this.purchaseRepository.findAllInPageSize((page - 1) * pageSize + 1, page * pageSize);
+        ListData<Purchase> purchases = this.purchaseRepository.findAllInPageSize((page - 1) * pageSize + 1,
+                                                                                 page * pageSize);
         return ListPurchaseResponseDto.builder()
                 .count(purchases.getCount())
-                .purchaseList(purchases.getList())
+                .purchaseList(purchases.getList()
+                                      .stream()
+                                      .map(GetPurchaseResponseDto::from)
+                                      .collect(Collectors.toList()))
                 .pageInfo(getPageInfo(purchases.getCount(), page, pageSize))
                 .build();
     }
@@ -154,10 +160,17 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void updateTranCode(UpdateTranCodeRequestDTO requestDTO) {
+    public TranStatusCode updateTranCode(UpdateTranCodeRequestDTO requestDTO) {
         Purchase purchase = new Purchase();
         purchase.setTranNo(requestDTO.getTranNo());
         purchase.setTranStatusCode(requestDTO.getTranStatusCode());
         this.purchaseRepository.updateTranCode(purchase);
+        return this.purchaseRepository.findTranStatusCodeByTranNo(requestDTO.getTranNo());
+    }
+
+    @Override
+    public TranStatusCodeResponseDto getTranStatus(int tranNo) {
+        TranStatusCode tranStatusCode = this.purchaseRepository.findTranStatusCodeByTranNo(tranNo);
+        return new TranStatusCodeResponseDto(tranStatusCode.getCode(), tranStatusCode.getStatus());
     }
 }

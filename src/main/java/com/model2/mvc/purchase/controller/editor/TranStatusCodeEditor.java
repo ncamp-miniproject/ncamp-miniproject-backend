@@ -16,6 +16,6 @@ public class TranStatusCodeEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        super.setValue(TranStatusCode.getTranCode(text));
+        super.setValue(TranStatusCode.findTranCode(text));
     }
 }

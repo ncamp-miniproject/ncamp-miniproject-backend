@@ -2,6 +2,7 @@ package com.model2.mvc.purchase.repository;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.domain.TranStatusCode;
 
 import java.util.Map;
 import java.util.Optional;
@@ -19,4 +20,6 @@ public interface PurchaseRepository {
     public boolean updatePurchase(Purchase purchase);
 
     public boolean updateTranCode(Purchase purchase);
+
+    public TranStatusCode findTranStatusCodeByTranNo(int tranNo);
 }

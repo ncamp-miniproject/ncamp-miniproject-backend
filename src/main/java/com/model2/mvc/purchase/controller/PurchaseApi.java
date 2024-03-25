@@ -16,6 +16,7 @@ import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDto;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDto;
+import com.model2.mvc.purchase.dto.response.TranStatusCodeResponseDto;
 import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
@@ -119,14 +120,22 @@ public class PurchaseApi {
     }
 
     @PatchMapping("/{tranNo}/tran-code")
-    public ResponseEntity<Void> updateTranCode(@PathVariable("tranNo") int tranNo,
-                                               @RequestParam("tranCode") String tranCode) {
-        this.purchaseService.updateTranCode(new UpdateTranCodeRequestDTO(tranNo, TranStatusCode.getTranCode(tranCode)));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<TranStatusCodeResponseDto> updateTranCode(@PathVariable("tranNo") int tranNo,
+                                                                    @RequestParam("tranCode") String tranCode) {
+        TranStatusCode tranStatusCode = this.purchaseService.updateTranCode(new UpdateTranCodeRequestDTO(tranNo,
+                                                                                                         TranStatusCode.findTranCode(
+                                                                                                                 tranCode)));
+        return new ResponseEntity<>(new TranStatusCodeResponseDto(tranStatusCode.getCode(), tranStatusCode.getStatus()),
+                                    HttpStatus.OK);
     }
 
     @GetMapping("/{tranNo}")
     public ResponseEntity<GetPurchaseResponseDto> getPurchase(@PathVariable("tranNo") int tranNo) {
         return new ResponseEntity<>(this.purchaseService.getPurchase(tranNo), HttpStatus.OK);
+    }
+
+    @GetMapping("/{tranNo}/tran-code")
+    public ResponseEntity<TranStatusCodeResponseDto> getTranStatusCode(@PathVariable("tranNo") int tranNo) {
+        return new ResponseEntity<>(this.purchaseService.getTranStatus(tranNo), HttpStatus.OK);
     }
 }

@@ -194,6 +194,13 @@
         </where>
     </update>
 
+    <select id="findTranStatusCodeByTranNo" parameterType="int" resultType="string">
+        SELECT
+            tran_status_code
+        FROM transaction
+        WHERE tran_no = #{value}
+    </select>
+
     <delete id="clearTransaction">
         DELETE FROM transaction
     </delete>

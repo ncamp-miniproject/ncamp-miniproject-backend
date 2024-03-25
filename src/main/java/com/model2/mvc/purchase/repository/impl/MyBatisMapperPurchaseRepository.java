@@ -2,6 +2,7 @@ package com.model2.mvc.purchase.repository.impl;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.purchase.domain.Purchase;
+import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.repository.PurchaseRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +79,11 @@ public class MyBatisMapperPurchaseRepository implements PurchaseRepository {
     @Override
     public boolean updateTranCode(Purchase purchase) {
         return updatePurchase(purchase);
+    }
+
+    @Override
+    public TranStatusCode findTranStatusCodeByTranNo(int tranNo) {
+        String tranCode = this.sqlSession.selectOne("PurchaseMapper.findTranStatusCodeByTranNo", tranNo);
+        return TranStatusCode.findTranCode(tranCode);
     }
 }

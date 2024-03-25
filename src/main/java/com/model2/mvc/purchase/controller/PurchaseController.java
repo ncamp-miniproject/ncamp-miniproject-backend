@@ -144,7 +144,9 @@ public class PurchaseController {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<ListPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
                                                                                            ListPurchaseResponseDto.class);
-            mv.addObject("data", responseEntity.getBody());
+            ListPurchaseResponseDto result = responseEntity.getBody();
+            result.setMenu(menu);
+            mv.addObject("data", result);
         } catch (HttpClientErrorException.Forbidden e) {
             e.printStackTrace();
             return new ModelAndView("redirect:/products?menu=search&page=" + currentPage);
@@ -164,7 +166,7 @@ public class PurchaseController {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<GetPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
                                                                                           GetPurchaseResponseDto.class);
-            model.addAttribute("purchaseData", responseEntity);
+            model.addAttribute("purchaseData", responseEntity.getBody());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,6 +185,7 @@ public class PurchaseController {
                 .scheme("http")
                 .host("localhost")
                 .path("/api/purchases")
+                .port(8089)
                 .queryParams(WebUtil.generateQueryParameterFrom(requestDTO))
                 .build()
                 .toUri();
@@ -192,7 +195,9 @@ public class PurchaseController {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<ListPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
                                                                                            ListPurchaseResponseDto.class);
-            return new ModelAndView("purchase/purchase-list", "data", responseEntity.getBody());
+            ListPurchaseResponseDto result = responseEntity.getBody();
+            result.setMenu(menu);
+            return new ModelAndView("purchase/purchase-list", "data", result);
         } catch (HttpClientErrorException.Forbidden e) {
             e.printStackTrace();
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");

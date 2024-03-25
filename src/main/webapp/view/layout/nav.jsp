@@ -47,7 +47,7 @@
             <a class="depth03" href="${pageContext.request.contextPath}/purchases?menu=search">구매이력조회</a>
         </li>
     </c:if>
-    <c:if test="${role == 'seller'}">
+    <c:if test="${role == 'admin'}">
         <li class="nav-item">
             <a class="depth03" href="${pageContext.request.contextPath}/purchases?menu=manage">판매조회</a>
         </li>
