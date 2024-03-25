@@ -145,7 +145,6 @@ public class PurchaseController {
             ResponseEntity<ListPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
                                                                                            ListPurchaseResponseDto.class);
             ListPurchaseResponseDto result = responseEntity.getBody();
-            result.setMenu(menu);
             mv.addObject("data", result);
         } catch (HttpClientErrorException.Forbidden e) {
             e.printStackTrace();
@@ -177,7 +176,7 @@ public class PurchaseController {
     public ModelAndView listPurchase(@ModelAttribute("requestDTO") ListPurchaseRequestDto requestDTO,
                                      @RequestParam(value = "menu", required = false) String menu,
                                      @SessionAttribute("user") User loginUser) {
-        if ((menu != null && menu.equals("manage")) || loginUser.getRole() == Role.SELLER) {
+        if ((menu != null && menu.equals("manage")) || loginUser.getRole() == Role.ADMIN) {
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 

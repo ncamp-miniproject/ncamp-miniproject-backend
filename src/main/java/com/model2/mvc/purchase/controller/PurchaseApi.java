@@ -109,6 +109,7 @@ public class PurchaseApi {
 
         ListPurchaseResponseDto saleList = this.purchaseService.getSaleList(page, pageSize);
         saleList.setLoginUser(loginUser);
+        saleList.setMenu("manage");
         return new ResponseEntity<>(saleList, HttpStatus.OK);
     }
 

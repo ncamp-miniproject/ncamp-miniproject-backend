@@ -77,7 +77,7 @@
             </tbody>
         </table>
         <c:set var="url" value="" scope="request"/>
-        <c:set var="additionalQueryString" value="&menu=${data.menu}"/>
+        <c:set var="additionalQueryString" value="&menu=${data.menu}" scope="request"/>
         <c:import var="pageNumbers"
                   url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"
                   scope="request"/>
