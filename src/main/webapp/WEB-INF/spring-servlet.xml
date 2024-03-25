@@ -28,9 +28,8 @@
             <bean class="com.model2.mvc.cart.interceptor.CookieSetter"/>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/api/categories"/>
-            <mvc:mapping path="/api/categories/*"/>
-            <bean class="com.model2.mvc.category.interceptor.AuthorizationInterceptor"/>
+            <mvc:mapping path="/api/**"/>
+            <bean class="com.model2.mvc.common.interceptor.AuthorizationInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 

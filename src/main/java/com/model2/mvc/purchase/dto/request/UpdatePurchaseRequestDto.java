@@ -1,5 +1,9 @@
 package com.model2.mvc.purchase.dto.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +23,8 @@ public class UpdatePurchaseRequestDto {
     private String receiverPhone;
     private String divyAddr;
     private String divyRequest;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate divyDate;
 }

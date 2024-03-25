@@ -93,30 +93,8 @@ public class PurchaseController {
     }
 
     @GetMapping("/new-form")
-    public ModelAndView getPurchaseView(@RequestParam("purchase") String[] purchaseParam,
-                                        @SessionAttribute("user") User loginUser) throws URISyntaxException {
-        if (purchaseParam == null) {
-            return new ModelAndView("redirect:/products");
-        }
-
-        URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("localhost").setPort(8089);
-        Arrays.stream(purchaseParam).forEach(q -> uriBuilder.addParameter("purchase", q));
-        URI uri = uriBuilder.build();
-
-        RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-        ModelAndView mv = new ModelAndView("purchase/purchase-form");
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<AddPurchaseViewResponseDTO> responseEntity = restTemplate.exchange(requestEntity,
-                                                                                              AddPurchaseViewResponseDTO.class);
-            mv.addObject("data", responseEntity.getBody());
-        } catch (HttpClientErrorException.BadRequest e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-        mv.addObject("loginUser", loginUser);
-        return mv;
+    public String getPurchaseView(@SessionAttribute("user") User loginUser) {
+        return "purchase/purchase-form";
     }
 
     @GetMapping("/sale")

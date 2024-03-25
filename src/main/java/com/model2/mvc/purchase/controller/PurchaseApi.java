@@ -73,20 +73,6 @@ public class PurchaseApi {
         return new ResponseEntity<>(this.purchaseService.addPurchase(requestDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping("/purchase-form-data")
-    public ResponseEntity<AddPurchaseViewResponseDTO> getDataForPurchaseForm(
-            @RequestParam("purchase") List<String> purchase) {
-        if (purchase == null || purchase.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Map<Integer, Integer> prodNoQuantityMap = new HashMap<>();
-
-        purchase.stream()
-                .map(p -> p.split("-"))
-                .forEach(m -> prodNoQuantityMap.put(Integer.parseInt(m[0]), Integer.parseInt(m[1])));
-        return new ResponseEntity<>(this.purchaseService.getProductsWithQuantity(prodNoQuantityMap), HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<ListPurchaseResponseDto> listPurchases(@ModelAttribute ListPurchaseRequestDto requestDto,
                                                                  @SessionAttribute(value = "user",

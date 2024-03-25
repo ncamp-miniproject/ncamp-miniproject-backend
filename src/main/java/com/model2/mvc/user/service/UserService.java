@@ -3,8 +3,8 @@ package com.model2.mvc.user.service;
 import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
-import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
-import com.model2.mvc.user.dto.response.ListUserResponseDTO;
+import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
+import com.model2.mvc.user.dto.response.ListUserResponseDto;
 
 public interface UserService {
 
@@ -14,11 +14,11 @@ public interface UserService {
 
     public User getUser(String userId) throws Exception;
 
-    public ListUserResponseDTO getUserList(ListUserRequestDTO requestDTO) throws Exception;
+    public ListUserResponseDto getUserList(ListUserRequestDTO requestDTO) throws Exception;
 
     public void updateUser(User userVO) throws Exception;
 
-    public CheckDuplicateResponseDTO checkDuplication(String userId) throws Exception;
+    public CheckDuplicateResponseDto checkDuplication(String userId) throws Exception;
 
     public User deleteUser(String userId) throws Exception;
 

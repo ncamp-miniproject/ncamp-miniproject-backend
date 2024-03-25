@@ -14,6 +14,7 @@ import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
 import com.model2.mvc.product.dto.response.AddProductResponseDto;
 import com.model2.mvc.product.dto.response.GetProductResponseDto;
 import com.model2.mvc.product.dto.response.ListProductResponseDto;
+import com.model2.mvc.product.dto.response.ProductDto;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDto;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
@@ -28,9 +29,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -116,6 +120,16 @@ public class ProductServiceImpl implements ProductService {
                                                       StringUtil.null2nullStr(requestDTO.getSearchKeyword()),
                                                       (page - 1) * pageSize + 1,
                                                       page * pageSize));
+    }
+
+    @Override
+    public List<ProductDto> getProductList(List<Integer> prodNos) {
+        Map<Integer, Product> prodNoProductMap = this.productRepository.findProductsByIds(prodNos);
+        return prodNoProductMap.keySet()
+                .stream()
+                .map(prodNoProductMap::get)
+                .map(ProductDto::from)
+                .collect(Collectors.toList());
     }
 
     @Override

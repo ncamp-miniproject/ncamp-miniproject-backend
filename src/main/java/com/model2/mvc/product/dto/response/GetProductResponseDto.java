@@ -28,7 +28,6 @@ public class GetProductResponseDto {
     private int stock;
     private String categoryName;
     private boolean purchasable;
-    private User loginUser;
 
     private GetProductResponseDto() {
     }
@@ -55,9 +54,5 @@ public class GetProductResponseDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public void setLoginUser(User loginUser) {
-        this.loginUser = loginUser;
     }
 }

@@ -9,8 +9,8 @@ import com.model2.mvc.mail.MailAgent;
 import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
-import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
-import com.model2.mvc.user.dto.response.ListUserResponseDTO;
+import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
+import com.model2.mvc.user.dto.response.ListUserResponseDto;
 import com.model2.mvc.user.repository.UserRepository;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     private int defaultPageSize;
 
     public void addUser(User userVO) throws Exception {
-        userVO.setRegDate(new Date(System.currentTimeMillis()));
+        userVO.setRegDate(LocalDate.now());
         userRepository.insertUser(userVO);
     }
 
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(userId).orElseThrow(Exception::new);
     }
 
-    public ListUserResponseDTO getUserList(ListUserRequestDTO requestDTO) throws Exception {
+    public ListUserResponseDto getUserList(ListUserRequestDTO requestDTO) throws Exception {
         Integer page = requestDTO.getPage();
         page = page == null ? 1 : page;
         Integer pageSize = requestDTO.getPageSize();
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
                     totalPage += 1;
                 }
             }
-            return ListUserResponseDTO.builder()
+            return ListUserResponseDto.builder()
                     .total(userList.getCount())
                     .list(userList.getList())
                     .searchVO(search)
@@ -107,13 +107,13 @@ public class UserServiceImpl implements UserService {
         userRepository.updateUser(user);
     }
 
-    public CheckDuplicateResponseDTO checkDuplication(String userId) throws Exception {
+    public CheckDuplicateResponseDto checkDuplication(String userId) throws Exception {
         boolean result = true;
         Optional<User> userVO = userRepository.findByUserId(userId);
         if (userVO.isPresent()) {
             result = false;
         }
-        return new CheckDuplicateResponseDTO(result, userId);
+        return new CheckDuplicateResponseDto(result, userId);
     }
 
     @Override

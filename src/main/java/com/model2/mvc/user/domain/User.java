@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class User {
     private String phone;
     private String addr;
     private String email;
-    private Date regDate;
+    private LocalDate regDate;
 
     public User(String userId) {
         this();

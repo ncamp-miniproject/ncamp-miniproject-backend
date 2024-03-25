@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
-public class AuthorizationHelper {
+public class AuthenticationHelper {
 
-    public static boolean authorize(HttpServletRequest request, HttpServletResponse response, Role toBe, HttpMethod... method) {
+    public static boolean authenticate(HttpServletRequest request, HttpServletResponse response, Role toBe, HttpMethod... method) {
         if (Arrays.stream(method).noneMatch(m -> m.matches(request.getMethod()))) {
             return true;
         }
         HttpSession session = request.getSession();
         User loginUser = (User)session.getAttribute("user");
-        if (session.isNew() || loginUser == null || loginUser.getRole() != toBe) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        if (loginUser == null || loginUser.getRole() != toBe) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             return false;
         }
         return true;

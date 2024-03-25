@@ -80,7 +80,9 @@
         p.price,
         p.image_file,
         p.reg_date,
-        p.stock
+        p.stock,
+        c.category_no,
+        c.category_name
         FROM product p
         LEFT OUTER JOIN category c ON c.category_no = p.category_no
         <where>

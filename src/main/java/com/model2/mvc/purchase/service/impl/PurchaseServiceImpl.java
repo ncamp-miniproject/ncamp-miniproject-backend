@@ -113,21 +113,6 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public AddPurchaseViewResponseDTO getProductsWithQuantity(Map<Integer, Integer> prodNoQuantityMap) {
-        Map<Integer, Product> prodNoProductMap = this.productRepository.findProductsByIds(new ArrayList<>(
-                prodNoQuantityMap.keySet()));
-        List<Integer> prodNumbers = new ArrayList<>(prodNoProductMap.keySet());
-
-        int priceSum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoProductMap.get(p).getPrice(), Integer::sum);
-        int quantitySum = prodNumbers.stream().reduce(0, (i, p) -> i + prodNoQuantityMap.get(p), Integer::sum);
-        int productCount = prodNumbers.size();
-
-        Map<Product, Integer> productQuantityMap = new HashMap<>();
-        prodNumbers.forEach(n -> productQuantityMap.put(prodNoProductMap.get(n), prodNoQuantityMap.get(n)));
-        return new AddPurchaseViewResponseDTO(priceSum, quantitySum, productCount, productQuantityMap);
-    }
-
-    @Override
     public ListPurchaseResponseDto getSaleList(Integer page, Integer pageSize) {
         page = page == null ? 1 : page;
         pageSize = pageSize == null ? defaultPageSize : pageSize;

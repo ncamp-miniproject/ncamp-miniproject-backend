@@ -5,14 +5,16 @@ import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
-import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
-import com.model2.mvc.user.dto.response.ListUserResponseDTO;
-import com.model2.mvc.user.dto.response.SignInResponseDTO;
+import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
+import com.model2.mvc.user.dto.response.ListUserResponseDto;
+import com.model2.mvc.user.dto.response.SignInResponseDto;
+import com.model2.mvc.user.dto.response.UserDto;
 import com.model2.mvc.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,20 +31,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/app/users")
+@RequiredArgsConstructor
 public class UserApi {
-    private UserService userService;
-
-    @Autowired
-    public UserApi(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @InitBinder
     public void bindParameters(WebDataBinder binder) {
         binder.registerCustomEditor(Role.class, RoleEditor.getInstance());
     }
 
-    @PostMapping(value = "/account/new")
+    @PostMapping(value = "/account")
     public ResponseEntity<User> createUser(@RequestBody User toCreate, HttpSession session) throws Exception {
         Boolean authenticated = (Boolean)session.getAttribute("authenticated");
         String authenticatedEmail = (String)session.getAttribute("authenticatedEmail");
@@ -59,8 +57,8 @@ public class UserApi {
         return new ResponseEntity<>(toCreate, HttpStatus.CREATED);
     }
 
-    @PostMapping("/account/check-duplicate")
-    public ResponseEntity<CheckDuplicateResponseDTO> checkDuplication(@RequestParam("userId") String userId)
+    @PostMapping("/account/duplicate")
+    public ResponseEntity<CheckDuplicateResponseDto> checkDuplication(@RequestParam("userId") String userId)
     throws Exception {
         return new ResponseEntity<>(this.userService.checkDuplication(userId), HttpStatus.OK);
     }
@@ -74,8 +72,16 @@ public class UserApi {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public ResponseEntity<ListUserResponseDTO> listUser(@ModelAttribute ListUserRequestDTO requestDTO, @SessionAttribute(value = "user", required = false)
+    @GetMapping("/account")
+    public ResponseEntity<UserDto> getLoginUser(@SessionAttribute(value = "user", required = false) User loginUser) {
+        if (loginUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(UserDto.from(loginUser), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<ListUserResponseDto> listUser(@ModelAttribute ListUserRequestDTO requestDTO, @SessionAttribute(value = "user", required = false)
                                                         Optional<User> loginUser)
     throws Exception {
         if (!loginUser.isPresent() || loginUser.get().getRole() != Role.ADMIN) {
@@ -85,11 +91,11 @@ public class UserApi {
     }
 
     @PostMapping("/account/sign-in")
-    public ResponseEntity<SignInResponseDTO> signIn(@RequestBody User user, HttpSession session) throws Exception {
+    public ResponseEntity<SignInResponseDto> signIn(@RequestBody User user, HttpSession session) throws Exception {
         try {
             User dbVO = this.userService.loginUser(user);
             session.setAttribute("user", dbVO);
-            return new ResponseEntity<>(new SignInResponseDTO(true), HttpStatus.OK);
+            return new ResponseEntity<>(new SignInResponseDto(true), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -102,7 +108,7 @@ public class UserApi {
         return new ResponseEntity<>(loginUser.getUserId(), HttpStatus.OK);
     }
 
-    @PostMapping("/account/{userId}/delete")
+    @DeleteMapping("/account/{userId}")
     public ResponseEntity<User> deleteUser(@PathVariable("userId") String userId, HttpSession session) {
         try {
             User result = this.userService.deleteUser(userId);

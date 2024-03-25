@@ -7,10 +7,12 @@ import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
 import com.model2.mvc.product.dto.response.AddProductResponseDto;
 import com.model2.mvc.product.dto.response.GetProductResponseDto;
 import com.model2.mvc.product.dto.response.ListProductResponseDto;
+import com.model2.mvc.product.dto.response.ProductDto;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDto;
 import com.model2.mvc.user.domain.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -19,6 +21,8 @@ public interface ProductService {
     public GetProductResponseDto getProduct(int prodNo, User loginUser);
 
     public ListProductResponseDto getProductList(ListProductRequestDto requestDTO);
+
+    public List<ProductDto> getProductList(List<Integer> prodNos);
 
     public UpdateProductResponseDto updateProduct(int prodNo, UpdateProductRequestDto requestDTO);
 

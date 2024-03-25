@@ -9,6 +9,7 @@ import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
 import com.model2.mvc.product.dto.response.GetProductResponseDto;
 import com.model2.mvc.product.dto.response.ListProductResponseDto;
+import com.model2.mvc.product.dto.response.ProductDto;
 import com.model2.mvc.product.service.ProductService;
 import com.model2.mvc.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.ServletContext;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -81,6 +83,11 @@ public class ProductApi {
 
         ListProductResponseDto responseDTO = this.productService.getProductList(requestDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/selected")
+    public ResponseEntity<List<ProductDto>> listProduct(@RequestParam("prodNos") List<Integer> prodNos) {
+        return new ResponseEntity<>(this.productService.getProductList(prodNos), HttpStatus.OK);
     }
 
     @PatchMapping("/{prodNo}")

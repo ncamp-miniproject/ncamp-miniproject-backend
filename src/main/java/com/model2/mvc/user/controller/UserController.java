@@ -4,9 +4,9 @@ import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
-import com.model2.mvc.user.dto.response.CheckDuplicateResponseDTO;
-import com.model2.mvc.user.dto.response.ListUserResponseDTO;
-import com.model2.mvc.user.dto.response.SignInResponseDTO;
+import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
+import com.model2.mvc.user.dto.response.ListUserResponseDto;
+import com.model2.mvc.user.dto.response.SignInResponseDto;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
@@ -131,11 +131,11 @@ public class UserController {
                 .build();
         RestTemplate restTemplate = new RestTemplate();
         try {
-            ResponseEntity<CheckDuplicateResponseDTO> response = restTemplate.exchange(RequestEntity.post(uri)
+            ResponseEntity<CheckDuplicateResponseDto> response = restTemplate.exchange(RequestEntity.post(uri)
                                                                                                .contentType(MediaType.APPLICATION_JSON)
                                                                                                .build(),
-                                                                                       CheckDuplicateResponseDTO.class);
-            CheckDuplicateResponseDTO body = response.getBody();
+                                                                                       CheckDuplicateResponseDto.class);
+            CheckDuplicateResponseDto body = response.getBody();
             if (body != null) {
                 model.addAttribute("result", body.getResult());
                 model.addAttribute("userId", body.getUserId());
@@ -185,11 +185,11 @@ public class UserController {
         }
         RestTemplate restTemplate = new RestTemplate();
         try {
-            ResponseEntity<ListUserResponseDTO> response = restTemplate.exchange(RequestEntity.get(uriBuilder.build())
+            ResponseEntity<ListUserResponseDto> response = restTemplate.exchange(RequestEntity.get(uriBuilder.build())
                                                                                          .accept(MediaType.APPLICATION_JSON)
                                                                                          .build(),
-                                                                                 ListUserResponseDTO.class);
-            ListUserResponseDTO result = response.getBody();
+                                                                                 ListUserResponseDto.class);
+            ListUserResponseDto result = response.getBody();
             if (result != null) {
                 model.addAttribute("total", result.getTotal());
                 model.addAttribute("list", result.getList());
@@ -218,7 +218,7 @@ public class UserController {
                 .body(user);
         RestTemplate restTemplate = new RestTemplate();
         try {
-            restTemplate.exchange(requestEntity, SignInResponseDTO.class);
+            restTemplate.exchange(requestEntity, SignInResponseDto.class);
         } catch (HttpClientErrorException.Unauthorized e) {
             System.err.println(e.getStatusCode());
             System.err.println(e.getResponseBodyAsString());
