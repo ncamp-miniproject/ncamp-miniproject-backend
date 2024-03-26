@@ -1,29 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
-    <tr>
+<script src="${pageContext.request.contextPath}/javascript/common/pageNavigation.js"></script>
 
-        <td align="center">
-            <c:if test="${ data.pageInfo.previousPageSetAvailable }">
-                <a
-                        href="${ url }?page=${ data.pageInfo.previousPageSetEntry }${ additionalQueryString }">이전</a>
-            </c:if>
-            <c:forEach var="pageToJump" items="${ data.pageInfo.pagesToDisplay }">
-                <c:choose>
-                    <c:when test="${ pageToJump != data.pageInfo.currentPage }">
-                        <a
-                                href="${ url }?page=${ pageToJump }${ additionalQueryString }">${ pageToJump }</a>
-                    </c:when>
-                    <c:otherwise>
-                        <strong>${ pageToJump }</strong>
-                    </c:otherwise>
-                </c:choose>
+<div class="container"
+     id="page-container"
+     data-additional-query-string="${additionalQueryString}"
+     data-url="${url}"
+     data-current-page="${data.pageInfo.currentPage}">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li id="nav-previous"
+                data-previous-page-set-available="${data.pageInfo.previousPageSetAvailable ? 1 : 0}"
+                data-previous-page-set-entry="${data.pageInfo.previousPageSetEntry}">
+                <a aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <c:forEach var="pageToJump" items="${data.pageInfo.pagesToDisplay}">
+                <li class="page-number" data-page="${pageToJump}"><a>${pageToJump}</a></li>
             </c:forEach>
-            <c:if test="${ data.pageInfo.nextPageSetAvailable }">
-                <a
-                        href="${ url }?page=${ data.pageInfo.nextPageSetEntry }${ additionalQueryString }">다음</a>
-            </c:if>
-        </td>
-    </tr>
-</table>
+            <li id="nav-next"
+                data-next-page-set-available="${data.pageInfo.nextPageSetAvailable ? 1 : 0}"
+                data-next-page-set-entry="${data.pageInfo.nextPageSetEntry}">
+                <a aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
