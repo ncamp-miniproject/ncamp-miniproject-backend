@@ -95,66 +95,98 @@
         </where>
     </select>
 
-    <resultMap id="productListData" type="ListData">
-        <result column="count" property="count" jdbcType="NUMERIC"/>
-        <collection property="list" resultMap="product"/>
-    </resultMap>
-
-    <select id="findList" parameterType="map" resultMap="productListData">
+    <select id="findList" parameterType="map" resultMap="product">
         SELECT
-        v.prod_no         AS "prod_no",
-        v.prod_name       AS "prod_name",
-        v.prod_detail     AS "prod_detail",
-        v.manufacture_day AS "manufacture_day",
-        v.price           AS "price",
-        v.image_file      AS "image_file",
-        v.reg_date        AS "reg_date",
-        v.stock           AS "stock",
-        v.category_no     AS "category_no",
-        v.category_name   AS "category_name",
-        v.count           AS "count"
-        FROM
-        (
-        SELECT
-        ROW_NUMBER() OVER(ORDER BY p.prod_no ASC)  row_num,
-        p.prod_no         prod_no,
-        p.prod_name       prod_name,
-        p.prod_detail     prod_detail,
-        p.manufacture_day manufacture_day,
-        p.price           price,
-        p.image_file      image_file,
-        p.reg_date        reg_date,
-        p.stock           stock,
-        c.category_no     category_no,
-        c.category_name   category_name,
-        COUNT(*) OVER()   count
-        FROM
-        product p
-        LEFT OUTER JOIN category c ON c.category_no = p.category_no
-        <where>
-            <if test="searchCondition == 1">
-                p.prod_name LIKE #{prodName}
-            </if>
-            <if test="searchCondition == 2">
-                <if test="lowerBound != null and upperBound != null">
-                    p.price BETWEEN #{lowerBound} AND #{upperBound}
+            v.prod_no         prod_no,
+            v.prod_name       prod_name,
+            v.prod_detail     prod_detail,
+            v.manufacture_day manufacture_day,
+            v.price           price,
+            v.image_file      image_file,
+            v.reg_date        reg_date,
+            v.stock           stock,
+            v.category_no     category_no,
+            v.category_name   category_name
+        FROM (
+            SELECT
+                ROW_NUMBER() OVER(
+                <if test="orderBy.propertyName == 'prodNo'">
+                    ORDER BY p.prod_no
                 </if>
-                <if test="lowerBound != null and upperBound == null">
-                    p.price $gt;= #{lowerBound}
+                <if test="orderBy.propertyName == 'prodName'">
+                    ORDER BY p.prod_name
                 </if>
-                <if test="lowerBound == null and upperBound != null">
-                    p.price $lt;= #{upperBound}
+                <if test="orderBy.propertyName == 'price'">
+                    ORDER BY p.price
                 </if>
-            </if>
-            <if test="categoryNo != null">
-                AND c.category_no = #{categoryNo}
-            </if>
-        </where>
-        ORDER BY
-        p.reg_date DESC -- Should be flexible
+                <if test="orderBy.propertyName == 'regDate'">
+                    ORDER BY p.reg_date
+                </if>
+                <if test="ascend == null or !ascend">
+                    DESC
+                </if>
+                <if test="ascend != null and ascend">
+                    ASC
+                </if>
+                )  row_num,
+                p.prod_no         prod_no,
+                p.prod_name       prod_name,
+                p.prod_detail     prod_detail,
+                p.manufacture_day manufacture_day,
+                p.price           price,
+                p.image_file      image_file,
+                p.reg_date        reg_date,
+                p.stock           stock,
+                c.category_no     category_no,
+                c.category_name   category_name
+            FROM product p
+            LEFT OUTER JOIN category c
+                            ON c.category_no = p.category_no
+            <where>
+                <if test="searchCondition == 1">
+                    p.prod_name LIKE #{prodName}
+                </if>
+                <if test="searchCondition == 2">
+                    <if test="lowerBound != null and upperBound != null">
+                        p.price BETWEEN #{lowerBound} AND #{upperBound}
+                    </if>
+                    <if test="lowerBound != null and upperBound == null">
+                        p.price $gt;= #{lowerBound}
+                    </if>
+                    <if test="lowerBound == null and upperBound != null">
+                        p.price $lt;= #{upperBound}
+                    </if>
+                </if>
+                <if test="categoryNo != null">
+                    AND c.category_no = #{categoryNo}
+                </if>
+            </where>
         ) v
-        WHERE
-        v.row_num BETWEEN #{startRowNum} AND #{endRowNum}
+        WHERE v.row_num BETWEEN #{startRowNum} AND #{endRowNum}
+        <if test="orderBy != null">
+            <if test="orderBy.propertyName == 'prodNo'">
+                ORDER BY v.prod_no
+            </if>
+            <if test="orderBy.propertyName == 'prodName'">
+                ORDER BY v.prod_name
+            </if>
+            <if test="orderBy.propertyName == 'price'">
+                ORDER BY v.price
+            </if>
+            <if test="orderBy.propertyName == 'regDate'">
+                ORDER BY v.reg_date
+            </if>
+
+            <if test="ascend == null or !ascend">
+                DESC
+            </if>
+            <if test="ascend != null and ascend">
+                ASC
+            </if>
+        </if>
+        <if test="orderBy == null">
+            ORDER BY v.prod_no DESC
+        </if>
     </select>
 
     <update id="update" parameterType="Product">

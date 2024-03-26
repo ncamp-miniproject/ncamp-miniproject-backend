@@ -23,6 +23,7 @@
         <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.PaymentOptionTypeHandler"/>
         <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.TranStatusCodeTypeHandler"/>
         <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.RoleTypeHandler"/>
+        <typeHandler handler="com.model2.mvc.common.mybatis.typehandler.OrderByTypeHandler"/>
     </typeHandlers>
 
     <environments default="development">

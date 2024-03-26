@@ -2,9 +2,10 @@ package com.model2.mvc.product.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.common.ListData;
+import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.domain.Product;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -29,12 +31,12 @@ public class TestProductMapper {
 
     @Before
     public void init() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @After
     public void destroy() {
-        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear");
+//        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @Test
@@ -113,35 +115,34 @@ public class TestProductMapper {
         search1.put("startRowNum", 1);
         search1.put("endRowNum", 3);
         search1.put("searchCondition", SearchCondition.BY_NAME.getConditionCode());
-        ListData<Product> found1 = this.sqlSession.selectOne("ProductMapper.findList", search1);
+        List<Product> found1 = this.sqlSession.selectList("ProductMapper.findList", search1);
 
-        findProductsByProdName_aTest(3, found1, prods);
+        findProductsByProdName_aTest(found1, prods);
 
         Map<String, Object> search2 = new HashMap<>();
         search2.put("prodName", "Product1");
         search2.put("startRowNum", 1);
         search2.put("endRowNum", 3);
         search2.put("searchCondition", SearchCondition.BY_NAME.getConditionCode());
-        ListData<Product> found2 = this.sqlSession.selectOne("ProductMapper.findList", search2);
+        List<Product> found2 = this.sqlSession.selectList("ProductMapper.findList", search2);
 
-        findProductsByProdName_aTest(1, found2, prods);
+        findProductsByProdName_aTest(found2, prods);
 
         Map<String, Object> search3 = new HashMap<>();
         search3.put("prodName", "%2");
         search3.put("startRowNum", 1);
         search3.put("endRowNum", 3);
         search3.put("searchCondition", SearchCondition.BY_NAME.getConditionCode());
-        ListData<Product> found3 = this.sqlSession.selectOne("ProductMapper.findList", search3);
+        List<Product> found3 = this.sqlSession.selectList("ProductMapper.findList", search3);
 
-        findProductsByProdName_aTest(1, found3, prods);
+        findProductsByProdName_aTest(found3, prods);
     }
 
-    private void findProductsByProdName_aTest(int expectedCount, ListData<Product> found, List<Product> prods) {
-        assertThat(found.getCount()).isEqualTo(expectedCount);
-        assertThat(prods).contains(found.getList().toArray(new Product[0]));
+    private void findProductsByProdName_aTest(List<Product> found, List<Product> prods) {
+        assertThat(prods).contains(found.toArray(new Product[0]));
 
         List<String> prodNames = prods.stream().map(Product::getProdName).collect(Collectors.toList());
-        List<String> foundNames = found.getList().stream().map(Product::getProdName).collect(Collectors.toList());
+        List<String> foundNames = found.stream().map(Product::getProdName).collect(Collectors.toList());
 
         assertThat(prodNames).contains(foundNames.toArray(new String[0]));
     }
@@ -195,5 +196,71 @@ public class TestProductMapper {
 
         assertThat(updatedProperty).isNotEqualTo(prototypeProperty);
         assertThat(updatedProperty).isEqualTo(toProperty);
+    }
+
+    @Test
+    public void findAllProducts_orderByProdNo() {
+        Category category = new Category("sample-category");
+        this.sqlSession.insert("CategoryMapper.insert", category);
+
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            this.sqlSession.insert("ProductMapper.insert",
+                                   Product.builder()
+                                           .prodName("product-" + num)
+                                           .prodDetail("detail-" + num)
+                                           .manuDate(LocalDate.now())
+                                           .price(100 * num)
+                                           .stock(150 * num)
+                                           .regDate(new Date(System.currentTimeMillis()))
+                                           .category(num % 2 == 0 ? null : category)
+                                           .build());
+        }
+
+        Map<String, Object> search = new HashMap<>();
+        search.put("startRowNum", 1);
+        search.put("endRowNum", 4);
+        search.put("orderBy", OrderBy.PROD_NO);
+        search.put("ascend", true);
+
+        List<Product> products = this.sqlSession.selectList("ProductMapper.findList", search);
+
+        for (int i = 1; i <= 4; i++) {
+            assertThat(products.get(i - 1).getProdName()).isEqualTo("product-" + i);
+        }
+    }
+
+    @Test
+    public void findAllProducts_orderByPrice() {
+        Category category = new Category("sample-category");
+        this.sqlSession.insert("CategoryMapper.insert", category);
+
+        for (int i = 0; i < 20; i++) {
+            Random random = new Random();
+            int num = i + 1;
+            this.sqlSession.insert("ProductMapper.insert",
+                                   Product.builder()
+                                           .prodName("product-" + num)
+                                           .prodDetail("detail-" + num)
+                                           .manuDate(LocalDate.now())
+                                           .price(Math.abs((random.nextInt() % 1000 + 1) * num))
+                                           .stock(150 * num)
+                                           .regDate(new Date(System.currentTimeMillis()))
+                                           .category(num % 2 == 0 ? null : category)
+                                           .build());
+        }
+
+        Map<String, Object> search = new HashMap<>();
+        search.put("startRowNum", 1);
+        search.put("endRowNum", 4);
+        search.put("orderBy", OrderBy.PRICE);
+        search.put("ascend", false);
+
+        List<Product> products = this.sqlSession.selectList("ProductMapper.findList", search);
+        products.forEach(System.out::println);
+
+        for (int i = 0; i < products.size() - 1; i++) {
+            assertThat(products.get(i).getPrice()).isGreaterThanOrEqualTo(products.get(i + 1).getPrice());
+        }
     }
 }
