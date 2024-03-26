@@ -189,6 +189,31 @@
         </if>
     </select>
 
+    <select id="count" parameterType="search" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM product
+        <where>
+            <if test="searchCondition == 1">
+                p.prod_name LIKE #{prodName}
+            </if>
+            <if test="searchCondition == 2">
+                <if test="lowerBound != null and upperBound != null">
+                    p.price BETWEEN #{lowerBound} AND #{upperBound}
+                </if>
+                <if test="lowerBound != null and upperBound == null">
+                    p.price $gt;= #{lowerBound}
+                </if>
+                <if test="lowerBound == null and upperBound != null">
+                    p.price $lt;= #{upperBound}
+                </if>
+            </if>
+            <if test="categoryNo != null">
+                AND c.category_no = #{categoryNo}
+            </if>
+        </where>
+    </select>
+
     <update id="update" parameterType="Product">
         UPDATE product
         <set>

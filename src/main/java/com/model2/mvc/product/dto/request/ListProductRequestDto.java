@@ -1,6 +1,7 @@
 package com.model2.mvc.product.dto.request;
 
 import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.product.domain.OrderBy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +18,6 @@ public class ListProductRequestDto {
     private SearchCondition searchCondition;
     private String menu;
     private Integer categoryNo;
+    private OrderBy orderBy;
+    private Boolean ascend;
 }

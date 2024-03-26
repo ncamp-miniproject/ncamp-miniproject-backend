@@ -257,10 +257,37 @@ public class TestProductMapper {
         search.put("ascend", false);
 
         List<Product> products = this.sqlSession.selectList("ProductMapper.findList", search);
-        products.forEach(System.out::println);
 
         for (int i = 0; i < products.size() - 1; i++) {
             assertThat(products.get(i).getPrice()).isGreaterThanOrEqualTo(products.get(i + 1).getPrice());
         }
+    }
+
+    @Test
+    public void getCount() {
+        for (int i = 0; i < 20; i++) {
+            Random random = new Random();
+            int num = i + 1;
+            this.sqlSession.insert("ProductMapper.insert",
+                                   Product.builder()
+                                           .prodName("product-" + num)
+                                           .prodDetail("detail-" + num)
+                                           .manuDate(LocalDate.now())
+                                           .price(Math.abs((random.nextInt() % 1000 + 1) * num))
+                                           .stock(150 * num)
+                                           .regDate(new Date(System.currentTimeMillis()))
+                                           .category(null)
+                                           .build());
+        }
+
+        Map<String, Object> search = new HashMap<>();
+        search.put("startRowNum", 1);
+        search.put("endRowNum", 4);
+        search.put("orderBy", OrderBy.PRICE);
+        search.put("ascend", false);
+
+        int count = this.sqlSession.selectOne("ProductMapper.count", search);
+
+        assertThat(count).isEqualTo(20);
     }
 }

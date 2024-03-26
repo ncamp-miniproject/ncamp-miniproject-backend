@@ -205,7 +205,7 @@ public class UserController {
     }
 
     @PostMapping("/account/sign-in")
-    public String signUp(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
+    public String signIn(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
     throws Exception {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")

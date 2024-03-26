@@ -1,6 +1,5 @@
 package com.model2.mvc.product.repository;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.product.domain.Product;
 
 import java.util.List;
@@ -17,17 +16,17 @@ public interface ProductRepository {
 
     public Map<Integer, Product> findProductsByIds(List<Integer> ids);
 
-    public ListData<Product> findListByProdName(String prodName,
+    public List<Product> findListByProdName(String prodName,
                                                 boolean match,
                                                 int page,
                                                 int pageSize,
                                                 Integer categoryNo);
 
-    public ListData<Product> findListByPriceRange(Integer lowerBound,
+    public List<Product> findListByPriceRange(Integer lowerBound,
                                                   Integer upperBound,
                                                   int page,
                                                   int pageSize,
                                                   Integer categoryNo);
 
-    public ListData<Product> findAllInCategory(int page, int pageSize, Integer categoryNo);
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo);
 }

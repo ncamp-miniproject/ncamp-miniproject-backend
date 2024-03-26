@@ -27,10 +27,10 @@
             <mvc:mapping path="/cart/items/new"/>
             <bean class="com.model2.mvc.cart.interceptor.CookieSetter"/>
         </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/api/**"/>
-            <bean class="com.model2.mvc.common.interceptor.AuthorizationInterceptor"/>
-        </mvc:interceptor>
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/api/**"/>-->
+<!--            <bean class="com.model2.mvc.common.interceptor.AuthorizationInterceptor"/>-->
+<!--        </mvc:interceptor>-->
     </mvc:interceptors>
 
 <!--     Annotation based HandlerMapping-->

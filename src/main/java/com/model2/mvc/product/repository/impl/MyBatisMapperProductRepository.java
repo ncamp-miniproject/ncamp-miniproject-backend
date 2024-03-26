@@ -47,7 +47,7 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
-    public ListData<Product> findListByProdName(String prodName,
+    public List<Product> findListByProdName(String prodName,
                                                 boolean match,
                                                 int page,
                                                 int pageSize,
@@ -69,13 +69,13 @@ public class MyBatisMapperProductRepository implements ProductRepository {
         return search;
     }
 
-    private ListData<Product> findList(Map<String, Object> search) {
-        ListData<Product> result = this.sqlSession.selectOne("ProductMapper.findList", search);
-        return result == null ? new ListData<>(0, new ArrayList<>()) : result;
+    private List<Product> findList(Map<String, Object> search) {
+        List<Product> result = this.sqlSession.selectList("ProductMapper.findList", search);
+        return result == null ? new ArrayList<>() : result;
     }
 
     @Override
-    public ListData<Product> findListByPriceRange(Integer lowerBound,
+    public List<Product> findListByPriceRange(Integer lowerBound,
                                                   Integer upperBound,
                                                   int page,
                                                   int pageSize,
@@ -90,7 +90,7 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
-    public ListData<Product> findAllInCategory(int page, int pageSize, Integer categoryNo) {
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo) {
         return findList(generateCommonOptionSearch(page, pageSize, null, categoryNo));
     }
 
