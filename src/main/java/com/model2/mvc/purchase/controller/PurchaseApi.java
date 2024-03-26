@@ -9,7 +9,6 @@ import com.model2.mvc.purchase.controller.editor.TransactionProductionEditor;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
-import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
@@ -38,9 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/purchases")
@@ -81,6 +78,7 @@ public class PurchaseApi {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         requestDto.setUser(loginUser);
+        System.out.println("=================================");
         return new ResponseEntity<>(this.purchaseService.getPurchaseList(requestDto), HttpStatus.OK);
     }
 

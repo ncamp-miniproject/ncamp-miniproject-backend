@@ -1,13 +1,13 @@
 const buttonText = new Map();
-buttonText.set("1", "πËº€«œ±‚");
-buttonText.set("2", "π∞∞«µµ¬¯");
+buttonText.set("1", "Î∞∞ÏÜ°ÌïòÍ∏∞");
+buttonText.set("2", "Î¨ºÍ±¥ÎèÑÏ∞©");
 
 function getTranCodeUpdateElement(tranNo, tranCode) {
     return `
         <form name="tran-code">
             <input type="hidden" name="tranNo" value="${tranNo}">
             <input type="hidden" name="tranCode" value="${parseInt(tranCode) + 1}">
-            <button type="button">${buttonText[tranCode]}</button>
+            <button type="button">${buttonText.get(tranCode)}</button>
         </form>
     `;
 }
@@ -28,7 +28,7 @@ $(() => {
             .attr("href", `${contextPath}/users/${buyerId}`);
     });
 
-    $("form[name=tran-code] button").on("click", e => {
+    const onClickTranCodeFormButton = e => {
         const form = $(e.target).parent("form[name=tran-code]");
         const tranNo = parseInt($("input[name=tranNo]", form).val());
         const tranCode = $("input[name=tranCode]", form).val();
@@ -42,7 +42,9 @@ $(() => {
                 updateTranStatus(data, tranNo);
             }
         });
-    });
+    };
+
+    $("form[name=tran-code] button").on("click", onClickTranCodeFormButton);
 
     function updateTranStatus(data, tranNo) {
         const purchaseItem = $(`#tran-no-${tranNo}`);
@@ -53,6 +55,7 @@ $(() => {
             case "1":
             case "2":
                 tranStatusUpdate.append(getTranCodeUpdateElement(tranNo, data.code));
+                $("form[name=tran-code] button").on("click", onClickTranCodeFormButton);
                 break;
         }
     }

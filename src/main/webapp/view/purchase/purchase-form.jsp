@@ -71,18 +71,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="product" items="${data.productsToPurchase}">
-                        <input type="hidden" name="tranProds" value="${product.key.prodNo}%DFS${product.value}">
-                        <tr>
-                            <td>${ product.key.prodNo }</td>
-                            <td>${ product.key.prodName }</td>
-                            <td>${ product.key.prodDetail }</td>
-                            <td>${ product.key.manuDate }</td>
-                            <td>${ product.key.price }</td>
-                            <td>${ product.key.regDate }</td>
-                            <td>${ product.value }</td>
-                        </tr>
-                    </c:forEach>
                 </tbody>
             </table>
             <div>

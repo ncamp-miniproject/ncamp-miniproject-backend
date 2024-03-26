@@ -1,9 +1,5 @@
 package com.model2.mvc.common.interceptor;
 
-import com.model2.mvc.common.util.AuthenticationHelper;
-import com.model2.mvc.user.domain.Role;
-import com.model2.mvc.user.domain.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

@@ -9,6 +9,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class SignInResponseDto {
+public class SignInResponseDTO {
     private boolean success;
 }

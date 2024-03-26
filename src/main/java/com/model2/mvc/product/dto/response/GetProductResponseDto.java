@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
 import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.user.domain.User;
 import lombok.Getter;
 import lombok.ToString;
 

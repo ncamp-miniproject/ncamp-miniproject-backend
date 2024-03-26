@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class LoginFilter extends HttpFilter implements Filter {
@@ -51,7 +50,7 @@ public class LoginFilter extends HttpFilter implements Filter {
         sampleUser.setUserId("user08");
         sampleUser.setUserName("SCOTT");
         sampleUser.setPassword("1234");
-        sampleUser.setRole(Role.USER);
+        sampleUser.setRole(Role.ADMIN);
         sampleUser.setRegDate(LocalDate.now());
         session.setAttribute("user", sampleUser);
     }

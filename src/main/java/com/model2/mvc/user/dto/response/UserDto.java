@@ -1,12 +1,15 @@
 package com.model2.mvc.user.dto.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Builder
@@ -21,6 +24,9 @@ public class UserDto {
     private String phone;
     private String addr;
     private String email;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate regDate;
 
     public static UserDto from(User user) {

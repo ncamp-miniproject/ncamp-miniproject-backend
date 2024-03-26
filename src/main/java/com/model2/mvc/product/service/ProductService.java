@@ -12,7 +12,6 @@ import com.model2.mvc.product.dto.response.UpdateProductResponseDto;
 import com.model2.mvc.user.domain.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ProductService {
 

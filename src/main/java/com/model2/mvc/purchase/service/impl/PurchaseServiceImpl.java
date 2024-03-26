@@ -10,7 +10,6 @@ import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
-import com.model2.mvc.purchase.dto.request.AddPurchaseViewResponseDTO;
 import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdateTranCodeRequestDTO;
@@ -27,9 +26,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;

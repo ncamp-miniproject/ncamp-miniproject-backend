@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CheckDuplicateResponseDto {
+public class CheckDuplicateResponseDTO {
     private Boolean result;
     private String userId;
 }

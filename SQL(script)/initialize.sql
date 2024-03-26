@@ -116,7 +116,7 @@ VALUES
       'admin',
       NULL,
       NULL,
-      '¼­¿ï½Ã ¼­ÃÊ±¸',
+      'ì„œìš¸ì‹œ ì„œì´ˆêµ¬',
       'admin@mvc.com',
       to_date('2012/01/14 10:48:43', 'YYYY/MM/DD HH24:MI:SS') );
 
@@ -429,7 +429,7 @@ INSERT INTO product
 VALUES
     ( seq_product_prod_no.nextval,
       'vaio vgn FS70B',
-      '¼Ò´Ï ¹ÙÀÌ¿À ³ëÆ®ºÏ ½Åµ¿Ç°',
+      'ì†Œë‹ˆ ë°”ì´ì˜¤ ë…¸íŠ¸ë¶ ì‹ ë™í’ˆ',
       to_date('2012/05/14', 'YYYY-MM-DD'),
       2000000,
       'AHlbAAAAtBqyWAAA.jpg',
@@ -447,8 +447,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      'ÀÚÀü°Å',
-      'ÀÚÀü°Å ÁÁ¾Æ¿ä~',
+      'ìì „ê±°',
+      'ìì „ê±° ì¢‹ì•„ìš”~',
       to_date('2012/05/14', 'YYYY-MM-DD'),
       10000,
       'AHlbAAAAvetFNwAA.jpg',
@@ -466,8 +466,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      'º¸¸£µµ',
-      'ÃÖ°í µğÀÚÀÎ ½ÅÇ°',
+      'ë³´ë¥´ë„',
+      'ìµœê³  ë””ìì¸ ì‹ í’ˆ',
       to_date('2012/02/01', 'YYYY-MM-DD'),
       1170000,
       'AHlbAAAAvewfegAB.jpg',
@@ -485,8 +485,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      'º¸µå¼¼Æ®',
-      'ÇÑ½ÃÁğ ¹Û¿¡ ¾È½è½À´Ï´Ù. ´«¹°À» ¸Ó±İ°í ³»³õÀ½ ¤Ğ.¤Ğ',
+      'ë³´ë“œì„¸íŠ¸',
+      'í•œì‹œì¦Œ ë°–ì— ì•ˆì¼ìŠµë‹ˆë‹¤. ëˆˆë¬¼ì„ ë¨¸ê¸ˆê³  ë‚´ë†“ìŒ ã… .ã… ',
       to_date('2012/02/17', 'YYYY-MM-DD'),
       200000,
       'AHlbAAAAve1WwgAC.jpg',
@@ -504,8 +504,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      'ÀÎ¶óÀÎ',
-      'ÁÁ¾Æ¿é',
+      'ì¸ë¼ì¸',
+      'ì¢‹ì•„ìš¥',
       to_date('2012/08/19', 'YYYY-MM-DD'),
       20000,
       'AHlbAAAAve37LwAD.jpg',
@@ -523,8 +523,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      '»ï¼º¼¾½º 2G',
-      'sens ¸Ş¸ğ¸® 2Giga',
+      'ì‚¼ì„±ì„¼ìŠ¤ 2G',
+      'sens ë©”ëª¨ë¦¬ 2Giga',
       to_date('2012/11/21', 'YYYY-MM-DD'),
       800000,
       'AHlbAAAAtBqyWAAA.jpg',
@@ -542,8 +542,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      '¿¬²É',
-      'Á¤¿øÀ» °¡²ãº¸¼¼¿ä',
+      'ì—°ê½ƒ',
+      'ì •ì›ì„ ê°€ê¿”ë³´ì„¸ìš”',
       to_date('2012/10/22', 'YYYY-MM-DD'),
       232300,
       'AHlbAAAAtDPSiQAA.jpg',
@@ -561,8 +561,8 @@ INSERT INTO product
       stock )
 VALUES
     ( seq_product_prod_no.nextval,
-      '»ï¼º¼¾½º',
-      '³ëÆ®ºÏ',
+      'ì‚¼ì„±ì„¼ìŠ¤',
+      'ë…¸íŠ¸ë¶',
       to_date('2012/02/12', 'YYYY-MM-DD'),
       600000,
       'AHlbAAAAug1vsgAA.jpg',
@@ -591,7 +591,7 @@ VALUES
       '010-1234-1234',
       'asdfasohfiw',
       'request sample',
-      '2',
+      '1',
       to_date('2017/2/8', 'YYYY/MM/DD'),
       to_date('2017/2/15', 'YYYY/MM/DD') );
 
@@ -643,7 +643,7 @@ VALUES
       '010-1234-1234',
       'asdfasohfiw',
       'request sample',
-      '2',
+      '1',
       to_date('2017/2/8', 'YYYY/MM/DD'),
       to_date('2017/2/15', 'YYYY/MM/DD') );
 
@@ -656,7 +656,7 @@ VALUES
       '010-1234-1234',
       'asdfasohfiw',
       'request sample',
-      '2',
+      '1',
       to_date('2017/2/8', 'YYYY/MM/DD'),
       to_date('2017/2/15', 'YYYY/MM/DD') );
 

@@ -34,7 +34,7 @@ $(() => {
 
     const productElem = (product, quantity) => `
         <tr>
-            <input type="hidden" name="tranProds" value="${product.prodNo}">
+            <input type="hidden" name="tranProds" value="${product.prodNo}%DFS${quantity}">
             <td>${product.prodNo}</td>
             <td>${product.prodName}</td>
             <td>${product.prodDetail}</td>

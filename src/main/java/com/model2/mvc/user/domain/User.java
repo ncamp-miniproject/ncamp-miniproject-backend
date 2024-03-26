@@ -1,5 +1,9 @@
 package com.model2.mvc.user.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
+import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +25,9 @@ public class User {
     private String phone;
     private String addr;
     private String email;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate regDate;
 
     public User(String userId) {

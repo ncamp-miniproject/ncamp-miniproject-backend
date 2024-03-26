@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Builder
 @ToString
-public class ListUserResponseDto {
+public class ListUserResponseDTO {
     private int total;
     private List<User> list;
     private Search searchVO;
