@@ -196,8 +196,10 @@
 
     <select id="count" parameterType="search" resultType="int">
         SELECT
-            COUNT(*)
-        FROM product
+            COUNT(p.prod_no)
+        FROM product AS p
+        LEFT OUTER JOIN category AS c
+                        ON c.category_no = p.category_no
         <where>
             <if test="searchCondition == 1">
                 p.prod_name LIKE #{prodName}

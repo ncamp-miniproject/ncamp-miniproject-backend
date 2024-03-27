@@ -28,6 +28,27 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
+    public int countAll(Integer categoryNo) {
+        Map<String, Object> search = generateCommonOptionSearch(SearchCondition.NO_CONDITION, categoryNo);
+        return this.sqlSession.selectOne("ProductMapper.count", search);
+    }
+
+    @Override
+    public int countByProdName(String prodName, boolean match, Integer categoryNo) {
+        Map<String, Object> search = generateCommonOptionSearch(SearchCondition.BY_NAME, categoryNo);
+        search.put("prodName", match ? prodName : "%" + prodName + "%");
+        return this.sqlSession.selectOne("ProductMapper.count", search);
+    }
+
+    @Override
+    public int countByPriceRange(Integer lowerBound, Integer upperBound, Integer categoryNo) {
+        Map<String, Object> search = generateCommonOptionSearch(SearchCondition.BY_INTEGER_RANGE, categoryNo);
+        search.put("lowerBound", lowerBound);
+        search.put("upperBound", upperBound);
+        return this.sqlSession.selectOne("ProductMapper.count", search);
+    }
+
+    @Override
     public Optional<Product> findById(int prodNo) {
         return Optional.ofNullable(this.sqlSession.selectOne("ProductMapper.findById", prodNo));
     }
@@ -48,24 +69,29 @@ public class MyBatisMapperProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findListByProdName(String prodName,
-                                                boolean match,
-                                                int page,
-                                                int pageSize,
-                                                Integer categoryNo) {
+                                            boolean match,
+                                            int page,
+                                            int pageSize,
+                                            Integer categoryNo) {
         Map<String, Object> search = generateCommonOptionSearch(page, pageSize, SearchCondition.BY_NAME, categoryNo);
         search.put("prodName", match ? prodName : "%" + prodName + "%");
         return findList(search);
+    }
+
+    private Map<String, Object> generateCommonOptionSearch(SearchCondition searchCondition, Integer categoryNo) {
+        Map<String, Object> search = new HashMap<>();
+        search.put("searchCondition", searchCondition == null ? null : searchCondition.getConditionCode());
+        search.put("categoryNo", categoryNo);
+        return search;
     }
 
     private Map<String, Object> generateCommonOptionSearch(int page,
                                                            int pageSize,
                                                            SearchCondition searchCondition,
                                                            Integer categoryNo) {
-        Map<String, Object> search = new HashMap<>();
+        Map<String, Object> search = generateCommonOptionSearch(searchCondition, categoryNo);
         search.put("startRowNum", (page - 1) * pageSize + 1);
         search.put("endRowNum", page * pageSize);
-        search.put("searchCondition", searchCondition == null ? null : searchCondition.getConditionCode());
-        search.put("categoryNo", categoryNo);
         return search;
     }
 
@@ -76,10 +102,10 @@ public class MyBatisMapperProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findListByPriceRange(Integer lowerBound,
-                                                  Integer upperBound,
-                                                  int page,
-                                                  int pageSize,
-                                                  Integer categoryNo) {
+                                              Integer upperBound,
+                                              int page,
+                                              int pageSize,
+                                              Integer categoryNo) {
         Map<String, Object> search = generateCommonOptionSearch(page,
                                                                 pageSize,
                                                                 SearchCondition.BY_INTEGER_RANGE,

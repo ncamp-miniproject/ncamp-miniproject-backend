@@ -2,9 +2,10 @@ package com.model2.mvc.product.service;
 
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
@@ -100,25 +101,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ListProductResponseDto getProductList(ListProductRequestDto requestDTO) {
-        requestDTO.setPageSize(requestDTO.getPageSize() == null ? defaultPageSize : requestDTO.getPageSize());
-        ListData<Product> resultMap = ListQueryHelper.findProductList(this.productRepository, requestDTO);
+    public ListProductResponseDto getProductList(ListProductRequestDto requestDto) {
+        requestDto.setPageSize(requestDto.getPageSize() == null ? defaultPageSize : requestDto.getPageSize());
+        List<Product> result = ListQueryHelper.findProductList(this.productRepository, requestDto);
+        int count = ListQueryHelper.count(this.productRepository, requestDto);
 
-        int page = resultMap.getPage();
-        int pageSize = resultMap.getPageSize();
+        int page = IntegerUtil.getOneIfNull(requestDto.getPage());
+        int pageSize = IntegerUtil.getOneIfNull(requestDto.getPage());
 
-        Page pageInfo = Page.of(page, resultMap.getCount(), defaultPageSize, defaultPageDisplay);
+        Page pageInfo = Page.of(page, pageSize, defaultPageSize, defaultPageDisplay);
 
         List<Category> categories = this.categoryService.getCategoryList();
 
-        return ListProductResponseDto.from(resultMap,
-                                           categories,
-                                           pageInfo,
-                                           requestDTO,
-                                           new Search(resultMap.getSearchCondition().getConditionCode(),
-                                                      StringUtil.null2nullStr(requestDTO.getSearchKeyword()),
-                                                      (page - 1) * pageSize + 1,
-                                                      page * pageSize));
+        SearchCondition searchCondition = requestDto.getSearchCondition() == null
+                                          ? SearchCondition.NO_CONDITION
+                                          : requestDto.getSearchCondition();
+
+
+        return ListProductResponseDto.builder()
+                .count(count)
+                .products(result)
+                .categories(categories)
+                .pageInfo(pageInfo)
+                .menuMode(requestDto.getMenu())
+                .searchInfo(new Search(searchCondition.getConditionCode(),
+                                       StringUtil.null2nullStr(requestDto.getSearchKeyword()),
+                                       (page - 1) * pageSize + 1,
+                                       page * pageSize))
+                .currentCategoryNo(requestDto.getCategoryNo())
+                .build();
     }
 
     @Override

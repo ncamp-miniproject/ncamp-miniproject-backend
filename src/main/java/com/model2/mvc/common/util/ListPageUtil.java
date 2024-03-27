@@ -1,7 +1,7 @@
 package com.model2.mvc.common.util;
 
-import static com.model2.mvc.common.util.IntBitwiseUtil.convertNegativeToZero;
-import static com.model2.mvc.common.util.IntBitwiseUtil.getOneIfNotZero;
+import static com.model2.mvc.common.util.IntegerUtil.convertNegativeToZero;
+import static com.model2.mvc.common.util.IntegerUtil.getOneIfNotZero;
 
 import java.util.LinkedList;
 import java.util.List;

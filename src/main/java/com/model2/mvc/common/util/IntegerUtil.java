@@ -1,6 +1,6 @@
 package com.model2.mvc.common.util;
 
-public class IntBitwiseUtil {
+public class IntegerUtil {
 
     public static int getOneIfNotZero(int value) {
         value = value & Integer.MAX_VALUE;
@@ -21,5 +21,9 @@ public class IntBitwiseUtil {
 
     public static int nand(int val1, int val2) {
         return (~val1 & val2) | (val1 & ~val2);
+    }
+
+    public static int getOneIfNull(Integer number) {
+        return number == null ? 1 : number;
     }
 }

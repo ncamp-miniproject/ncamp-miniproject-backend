@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-public class TestIntBitwiseUtil {
+public class TestIntegerUtil {
     
     @Test
     public void testGetOneIfNotZero() {
@@ -21,7 +21,7 @@ public class TestIntBitwiseUtil {
     }
 
     private void testGetOneIfNotZero(int input, int expected) {
-        assertThat(IntBitwiseUtil.getOneIfNotZero(input)).isEqualTo(expected);
+        assertThat(IntegerUtil.getOneIfNotZero(input)).isEqualTo(expected);
     }
     
     @Test
@@ -39,6 +39,6 @@ public class TestIntBitwiseUtil {
     }
 
     private void testConvertNegativeToZero(int input, int expected) {
-        assertThat(IntBitwiseUtil.convertNegativeToZero(input)).isEqualByComparingTo(expected);
+        assertThat(IntegerUtil.convertNegativeToZero(input)).isEqualByComparingTo(expected);
     }
 }

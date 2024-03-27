@@ -1,14 +1,19 @@
 package com.model2.mvc.product.service.helper;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.OptionalHashMap;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
+import com.model2.mvc.product.dto.response.ListProductResponseDto;
 import com.model2.mvc.product.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -16,65 +21,67 @@ import java.util.stream.Collectors;
 
 public class ListQueryHelper {
 
-    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDto, ListData<Product>>>
+    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDto, List<Product>>>
             listTaskMapper = new OptionalHashMap<>();
+    private static final OptionalHashMap<SearchCondition, BiFunction<ProductRepository, ListProductRequestDto, Integer>>
+            countTaskMapper = new OptionalHashMap<>();
 
     static {
-//        listTaskMapper.put(SearchCondition.NO_CONDITION,
-//                           (repository, dto) -> repository.findAllInCategory(getOneIfNull(dto.getPage()),
-//                                                                             getOneIfNull(dto.getPageSize()),
-//                                                                             dto.getCategoryNo()));
-//        listTaskMapper.put(SearchCondition.BY_NAME,
-//                           (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
-//                                                                              false,
-//                                                                              getOneIfNull(dto.getPage()),
-//                                                                              getOneIfNull(dto.getPageSize()),
-//                                                                              dto.getCategoryNo()));
-//        listTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
-//            List<Integer> boundPair = Arrays.stream(dto.getSearchKeyword().split(","))
-//                    .map(Integer::parseInt)
-//                    .collect(Collectors.toList());
-//            Integer lowerBound = null;
-//            Integer upperBound = null;
-//            if (boundPair.size() > 2) {
-//                throw new IllegalArgumentException();
-//            } else if (boundPair.size() == 2) {
-//                lowerBound = boundPair.get(0);
-//                upperBound = boundPair.get(1);
-//            } else if (boundPair.size() == 1) {
-//                if (dto.getSearchKeyword().startsWith(",")) {
-//                    upperBound = boundPair.get(0);
-//                } else {
-//                    lowerBound = boundPair.get(0);
-//                }
-//            }
-//            return repository.findListByPriceRange(lowerBound,
-//                                                   upperBound,
-//                                                   getOneIfNull(dto.getPage()),
-//                                                   getOneIfNull(dto.getPageSize()),
-//                                                   dto.getCategoryNo());
-//        });
+        listTaskMapper.put(SearchCondition.NO_CONDITION,
+                           (repository, dto) -> repository.findAllInCategory(IntegerUtil.getOneIfNull(dto.getPage()),
+                                                                             IntegerUtil.getOneIfNull(dto.getPageSize()),
+                                                                             dto.getCategoryNo()));
+        listTaskMapper.put(SearchCondition.BY_NAME,
+                           (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
+                                                                              false,
+                                                                              IntegerUtil.getOneIfNull(dto.getPage()),
+                                                                              IntegerUtil.getOneIfNull(dto.getPageSize()),
+                                                                              dto.getCategoryNo()));
+        listTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
+            List<Integer> boundPair = generateBoundPair(dto.getSearchKeyword());
+            return repository.findListByPriceRange(boundPair.get(0),
+                                                   boundPair.get(1),
+                                                   IntegerUtil.getOneIfNull(dto.getPage()),
+                                                   IntegerUtil.getOneIfNull(dto.getPageSize()),
+                                                   dto.getCategoryNo());
+        });
+
+        countTaskMapper.put(SearchCondition.NO_CONDITION,
+                            (repository, dto) -> repository.countAll(dto.getCategoryNo()));
+
+        countTaskMapper.put(SearchCondition.BY_NAME,
+                            (repository, dto) -> repository.countByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
+                                                                            false,
+                                                                            dto.getCategoryNo()));
+
+        countTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
+            List<Integer> boundPair = generateBoundPair(dto.getSearchKeyword());
+            return repository.countByPriceRange(boundPair.get(0), boundPair.get(1), dto.getCategoryNo());
+        });
     }
 
-    private static Integer getOneIfNull(Integer num) {
-        return num == null ? 1 : num;
+    private static List<Integer> generateBoundPair(String boundStr) {
+        List<Integer> pair = Arrays.stream(boundStr.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        if (pair.size() != 2) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        } else {
+            return pair;
+        }
     }
 
-    public static ListData<Product> findProductList(ProductRepository repository, ListProductRequestDto dto) {
-        Optional<BiFunction<ProductRepository, ListProductRequestDto, ListData<Product>>> funcOptional
+    public static List<Product> findProductList(ProductRepository repository, ListProductRequestDto dto) {
+        Optional<BiFunction<ProductRepository, ListProductRequestDto, List<Product>>> funcOptional
                 = listTaskMapper.getOptional(dto.getSearchCondition());
-        BiFunction<ProductRepository, ListProductRequestDto, ListData<Product>> func = funcOptional.orElse(
-                listTaskMapper.get(SearchCondition.NO_CONDITION));
-        ListData<Product> listData = func.apply(repository, dto);
-        setPageAndPageSize(listData, getOneIfNull(dto.getPage()), getOneIfNull(dto.getPageSize()));
-        listData.setSearchCondition(dto.getSearchCondition() == null
-                                    ? SearchCondition.NO_CONDITION
-                                    : dto.getSearchCondition());
-        return listData;
+        BiFunction<ProductRepository, ListProductRequestDto, List<Product>> func
+                = funcOptional.orElse(listTaskMapper.get(SearchCondition.NO_CONDITION));
+        return func.apply(repository, dto);
     }
 
-    private static void setPageAndPageSize(ListData<Product> listData, int page, int pageSize) {
-        listData.setPage(page);
-        listData.setPageSize(pageSize);
+    public static int count(ProductRepository repository, ListProductRequestDto dto) {
+        Optional<BiFunction<ProductRepository, ListProductRequestDto, Integer>> funcOptional
+                = countTaskMapper.getOptional(dto.getSearchCondition());
+        BiFunction<ProductRepository, ListProductRequestDto, Integer> func = funcOptional.orElse(countTaskMapper.get(
+                SearchCondition.NO_CONDITION));
+        return func.apply(repository, dto);
     }
 }

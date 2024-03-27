@@ -45,7 +45,7 @@ public class TestMyBatisMapperProductRepository {
 
     @After
     public void after() {
-        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession);
     }
 
     @Test
@@ -192,5 +192,152 @@ public class TestMyBatisMapperProductRepository {
         assertThat((int)found.stream()
                 .filter(p -> p.getCategory().getCategoryName().equals("category1"))
                 .count()).isEqualTo(2);
+    }
+
+    @Test
+    public void countAll_resultOverZero_noCategorySpecified() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+        int result = this.productRepository.countAll(null);
+        assertThat(result).isEqualTo(20);
+    }
+
+    @Test
+    public void countAll_resultZero_noCategorySpecified() {
+        int result = this.productRepository.countAll(null);
+        assertThat(result).isZero();
+    }
+
+    @Test
+    public void countAll_resultZero_productInserted_categorySpecified() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+        int result = this.productRepository.countAll(10000);
+        assertThat(result).isZero();
+    }
+
+    @Test
+    public void countAll_resultOverZero_categorySpecified() {
+        Category sampleCategory = new Category("sample-category");
+        this.sqlSession.insert("CategoryMapper.insert", sampleCategory);
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(num % 2 == 0 ? sampleCategory : null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        int result = this.productRepository.countAll(sampleCategory.getCategoryNo());
+        assertThat(result).isEqualTo(10);
+    }
+
+    @Test
+    public void countByProdName_resultZero_categoryNotSpecified() {
+        assertThat(this.productRepository.countByProdName("prod-name", false, null)).isZero();
+    }
+
+    @Test
+    public void countByProdName_resultIsOne_categoryNotSpecified() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+        int result = this.productRepository.countByProdName("product-11", false, null);
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void countByProdName_resultIsLargerThan1_categoryNotSpecified() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + (num % 2))
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+        int result = this.productRepository.countByProdName("product-1", false, null);
+        assertThat(result).isEqualTo(10);
+    }
+
+    @Test
+    public void countByProdName_resultIs1_categoryIsSpecified() {
+        Category sampleCategory = new Category("sample-category");
+        this.sqlSession.insert("CategoryMapper.insert", sampleCategory);
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(("product-" + num).equals("product-1") ? sampleCategory : null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+        int result = this.productRepository.countByProdName("product-1", false, sampleCategory.getCategoryNo());
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void countByProdName_resultIsLargerThan1_categoryIsSpecified() {
+        Category sampleCategory = new Category("sample-category");
+        this.sqlSession.insert("CategoryMapper.insert", sampleCategory);
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + ((num - 1) % 4 + 1))
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(num % 2 == 1 ? sampleCategory : null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+        int result = this.productRepository.countByProdName("product-1", false, sampleCategory.getCategoryNo());
+        assertThat(result).isEqualTo(5);
     }
 }
