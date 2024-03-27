@@ -658,4 +658,68 @@ public class TestMyBatisMapperProductRepository {
             assertThat(prodNumbers.get(i)).isGreaterThanOrEqualTo(prodNumbers.get(i + 1));
         }
     }
+
+    @Test
+    public void findListByProdName_orderBy_default_but_ascendFlagIsSet() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prodNumbers = this.productRepository.findListByProdName("product",
+                                                                              false,
+                                                                              1,
+                                                                              1000,
+                                                                              null,
+                                                                              null,
+                                                                              true)
+                .stream()
+                .map(Product::getProdNo)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < prodNumbers.size() - 1; i++) {
+            assertThat(prodNumbers.get(i)).isGreaterThanOrEqualTo(prodNumbers.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_default_but_ascendFlagIsSet_ascendIsFalse() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prodNumbers = this.productRepository.findListByProdName("product",
+                                                                              false,
+                                                                              1,
+                                                                              1000,
+                                                                              null,
+                                                                              null,
+                                                                              false)
+                .stream()
+                .map(Product::getProdNo)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < prodNumbers.size() - 1; i++) {
+            assertThat(prodNumbers.get(i)).isGreaterThanOrEqualTo(prodNumbers.get(i + 1));
+        }
+    }
 }
