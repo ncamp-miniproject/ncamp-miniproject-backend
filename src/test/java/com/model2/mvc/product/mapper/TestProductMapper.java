@@ -36,7 +36,7 @@ public class TestProductMapper {
 
     @After
     public void destroy() {
-//        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @Test

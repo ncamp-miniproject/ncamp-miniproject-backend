@@ -18,7 +18,7 @@
             order_date,
             dlvy_date
         ) VALUES (
-                     seq_transaction_tran_no.NEXTVAL,
+                     nextval('seq_transaction_tran_no'),
                      #{buyer.userId: VARCHAR},
                      #{paymentOption.code: CHAR},
                      #{receiverName: VARCHAR},

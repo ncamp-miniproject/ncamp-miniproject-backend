@@ -9,7 +9,7 @@
         INSERT INTO category (
             category_no, category_name
         ) VALUES (
-            seq_category_category_no.NEXTVAL, #{categoryName}
+            nextval('seq_category_category_no'), #{categoryName}
         )
     </insert>
 

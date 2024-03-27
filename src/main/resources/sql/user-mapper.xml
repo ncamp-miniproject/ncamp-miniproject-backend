@@ -39,7 +39,7 @@
             #{addr: VARCHAR},
             #{email: VARCHAR},
             <if test="regDate == null">
-                SYSDATE
+                CURRENT_DATE
             </if>
             <if test="regDate != null">
                 #{regDate: DATE}

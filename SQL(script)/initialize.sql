@@ -1,98 +1,98 @@
-DROP TABLE transaction_prod;
+DROP TABLE IF EXISTS transaction_prod;
 
-DROP TABLE transaction;
+DROP TABLE IF EXISTS  transaction;
 
-DROP TABLE product;
+DROP TABLE IF EXISTS  product;
 
-DROP TABLE category;
+DROP TABLE IF EXISTS  category;
 
-DROP TABLE subscription;
+DROP TABLE IF EXISTS  subscription;
 
-DROP TABLE users;
+DROP TABLE IF EXISTS  users;
 
-DROP SEQUENCE seq_product_prod_no;
+DROP SEQUENCE IF EXISTS seq_product_prod_no;
 
-DROP SEQUENCE seq_transaction_tran_no;
+DROP SEQUENCE IF EXISTS seq_transaction_tran_no;
 
-DROP SEQUENCE seq_category_category_no;
+DROP SEQUENCE IF EXISTS seq_category_category_no;
 
-CREATE SEQUENCE seq_product_prod_no INCREMENT BY 1 START WITH 10000;
+CREATE SEQUENCE IF NOT EXISTS seq_product_prod_no INCREMENT BY 1 START WITH 10000;
 
-CREATE SEQUENCE seq_transaction_tran_no INCREMENT BY 1 START WITH 10000;
+CREATE SEQUENCE IF NOT EXISTS  seq_transaction_tran_no INCREMENT BY 1 START WITH 10000;
 
-CREATE SEQUENCE seq_category_category_no INCREMENT BY 1 START WITH 10000;
+CREATE SEQUENCE IF NOT EXISTS  seq_category_category_no INCREMENT BY 1 START WITH 10000;
 
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
-    user_id    VARCHAR2(20),
-    user_name  VARCHAR2(50) NOT NULL,
-    password   VARCHAR2(10) NOT NULL,
-    role       VARCHAR2(6) DEFAULT 'user',
-    ssn        VARCHAR2(13),
-    cell_phone VARCHAR2(14),
-    addr       VARCHAR2(100),
-    email      VARCHAR2(50),
-    reg_date   DATE DEFAULT sysdate,
+    user_id    TEXT,
+    user_name  TEXT NOT NULL,
+    password   TEXT NOT NULL,
+    role       TEXT DEFAULT 'user',
+    ssn        TEXT,
+    cell_phone TEXT,
+    addr       TEXT,
+    email      TEXT,
+    reg_date   DATE DEFAULT CURRENT_DATE,
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
-CREATE TABLE subscription
+CREATE TABLE IF NOT EXISTS subscription
 (
-    subscriber_id VARCHAR(20),
-    seller_id     VARCHAR(20),
+    subscriber_id TEXT,
+    seller_id     TEXT,
     CONSTRAINT subscription_pk PRIMARY KEY (subscriber_id, seller_id),
     CONSTRAINT subscription_subscriber_fk FOREIGN KEY (subscriber_id) REFERENCES users (user_id),
     CONSTRAINT subscription_seller_fk FOREIGN KEY (seller_id) REFERENCES users (user_id)
 );
 
-CREATE TABLE category
+CREATE TABLE IF NOT EXISTS category
 (
-    category_no   NUMBER(16),
-    category_name VARCHAR2(100) NOT NULL,
+    category_no   INTEGER,
+    category_name TEXT NOT NULL,
     PRIMARY KEY (category_no),
     UNIQUE (category_name)
 );
 
-CREATE TABLE product
+CREATE TABLE IF NOT EXISTS product
 (
-    prod_no         NUMBER(16),
-    register        VARCHAR2(20),
-    prod_name       VARCHAR2(100) NOT NULL,
-    prod_detail     VARCHAR2(200),
-    manufacture_day DATE DEFAULT sysdate,
-    price           NUMBER(10) NOT NULL,
-    image_file      VARCHAR2(100),
-    reg_date        DATE DEFAULT sysdate,
-    stock           NUMBER(10) NOT NULL,
-    category_no     NUMBER(16),
+    prod_no         INTEGER,
+    register        TEXT,
+    prod_name       TEXT NOT NULL,
+    prod_detail     TEXT,
+    manufacture_day DATE DEFAULT CURRENT_DATE,
+    price           INTEGER NOT NULL,
+    image_file      TEXT,
+    reg_date        DATE DEFAULT CURRENT_DATE,
+    stock           INTEGER NOT NULL,
+    category_no     INTEGER,
     CONSTRAINT product_pk PRIMARY KEY (prod_no),
     CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no),
     CONSTRAINT prod_register_fk FOREIGN KEY (register) REFERENCES users (user_id)
 );
 
-CREATE TABLE transaction
+CREATE TABLE IF NOT EXISTS transaction
 (
-    tran_no          NUMBER(16),
-    buyer_id         VARCHAR2(20) NOT NULL,
+    tran_no          INTEGER,
+    buyer_id         TEXT NOT NULL,
     payment_option   CHAR(3),
-    receiver_name    VARCHAR2(20),
-    receiver_phone   VARCHAR2(14),
-    demailaddr       VARCHAR2(100),
-    dlvy_request     VARCHAR2(100),
+    receiver_name    TEXT,
+    receiver_phone   TEXT,
+    demailaddr       TEXT,
+    dlvy_request     TEXT,
     tran_status_code CHAR(3),
-    order_date       DATE DEFAULT sysdate,
-    dlvy_date        DATE DEFAULT sysdate,
+    order_date       DATE DEFAULT CURRENT_DATE,
+    dlvy_date        DATE DEFAULT CURRENT_DATE,
     CONSTRAINT transaction_pk PRIMARY KEY (tran_no),
     CONSTRAINT transaction_buyer_id FOREIGN KEY (buyer_id) REFERENCES users (user_id),
     CONSTRAINT transaction_payment_option CHECK (payment_option IN ('0', '1')),
     CONSTRAINT transaction_trans_status_code CHECK (tran_status_code IN ('0', '1', '2', '3'))
 );
 
-CREATE TABLE transaction_prod
+CREATE TABLE IF NOT EXISTS transaction_prod
 (
-    tran_no  NUMBER(16) NOT NULL,
-    prod_no  NUMBER(16) NOT NULL,
-    quantity NUMBER(10) NOT NULL,
+    tran_no  INTEGER NOT NULL,
+    prod_no  INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
     CONSTRAINT tp_pk PRIMARY KEY (tran_no, prod_no),
     CONSTRAINT tp_tran_no_fk FOREIGN KEY (tran_no) REFERENCES transaction (tran_no),
     CONSTRAINT tp_prod_no_fk FOREIGN KEY (prod_no) REFERENCES product (prod_no),
@@ -151,7 +151,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -163,7 +163,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -175,7 +175,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -187,7 +187,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -199,7 +199,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -211,7 +211,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -223,7 +223,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -235,7 +235,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -247,7 +247,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -259,7 +259,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -271,7 +271,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -283,7 +283,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -295,7 +295,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -307,7 +307,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -319,7 +319,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -331,7 +331,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -343,7 +343,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -355,7 +355,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -367,7 +367,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -379,7 +379,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -391,7 +391,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -403,7 +403,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO users
 VALUES
@@ -415,7 +415,7 @@ VALUES
       NULL,
       NULL,
       NULL,
-      sysdate );
+      CURRENT_DATE );
 
 INSERT INTO product
     ( prod_no,
@@ -427,7 +427,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       'vaio vgn FS70B',
       '소니 바이오 노트북 신동품',
       to_date('2012/05/14', 'YYYY-MM-DD'),
@@ -446,7 +446,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '자전거',
       '자전거 좋아요~',
       to_date('2012/05/14', 'YYYY-MM-DD'),
@@ -465,7 +465,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '보르도',
       '최고 디자인 신품',
       to_date('2012/02/01', 'YYYY-MM-DD'),
@@ -484,7 +484,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '보드세트',
       '한시즌 밖에 안썼습니다. 눈물을 머금고 내놓음 ㅠ.ㅠ',
       to_date('2012/02/17', 'YYYY-MM-DD'),
@@ -503,7 +503,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '인라인',
       '좋아욥',
       to_date('2012/08/19', 'YYYY-MM-DD'),
@@ -522,7 +522,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '삼성센스 2G',
       'sens 메모리 2Giga',
       to_date('2012/11/21', 'YYYY-MM-DD'),
@@ -541,7 +541,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '연꽃',
       '정원을 가꿔보세요',
       to_date('2012/10/22', 'YYYY-MM-DD'),
@@ -560,7 +560,7 @@ INSERT INTO product
       reg_date,
       stock )
 VALUES
-    ( seq_product_prod_no.nextval,
+    ( nextval('seq_product_prod_no'),
       '삼성센스',
       '노트북',
       to_date('2012/02/12', 'YYYY-MM-DD'),
@@ -571,7 +571,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user02',
       '1',
       'Nothing',
@@ -584,7 +584,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user01',
       '1',
       'Nothing',
@@ -597,7 +597,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user23',
       '1',
       'Nothing',
@@ -610,7 +610,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user08',
       '1',
       'Nothing',
@@ -623,7 +623,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user08',
       '1',
       'Nothing',
@@ -636,7 +636,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user08',
       '1',
       'Nothing',
@@ -649,7 +649,7 @@ VALUES
 
 INSERT INTO transaction
 VALUES
-    ( seq_transaction_tran_no.nextval,
+    ( nextval('seq_transaction_tran_no'),
       'user08',
       '1',
       'Nothing',
@@ -761,7 +761,7 @@ VALUES
 
 INSERT INTO category
 VALUES
-    ( seq_category_category_no.nextval,
+    ( nextval('seq_category_category_no'),
       'sample-category' );
 
 UPDATE product

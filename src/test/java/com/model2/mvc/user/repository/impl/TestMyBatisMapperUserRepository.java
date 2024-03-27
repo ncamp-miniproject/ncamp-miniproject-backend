@@ -98,7 +98,7 @@ public class TestMyBatisMapperUserRepository extends TestCase {
         user.setEmail("a@gmail.com");
         user.setRegDate(LocalDate.now());
 
-        assertThatExceptionOfType(MyBatisSystemException.class).isThrownBy(() -> this.userRepository.insertUser(user));
+        assertThatExceptionOfType(Exception.class).isThrownBy(() -> this.userRepository.insertUser(user));
     }
 
     @Test

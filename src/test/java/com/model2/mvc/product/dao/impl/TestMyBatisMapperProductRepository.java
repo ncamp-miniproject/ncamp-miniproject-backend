@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.repository.ProductRepository;
@@ -176,14 +175,9 @@ public class TestMyBatisMapperProductRepository {
     public void findListWithCategory_findAll() {
         insertSampleList();
 
-        ListData<Product> found = this.productRepository.findAllInCategory(1, 3, null);
-        assertThat(found.getCount()).isEqualTo(3);
-        assertThat(found.getList().size()).isEqualTo(3);
-        System.out.println("============================");
-        System.out.println(found.getList());
-        System.out.println("============================");
-        assertThat((int)found.getList()
-                .stream()
+        List<Product> found = this.productRepository.findAllInCategory(1, 3, null);
+        assertThat(found.size()).isEqualTo(3);
+        assertThat((int)found.stream()
                 .filter(p -> p.getCategory().getCategoryName().equals("category1"))
                 .count()).isEqualTo(2);
     }
@@ -193,11 +187,9 @@ public class TestMyBatisMapperProductRepository {
         List<Product> products = insertSampleList();
         Integer categoryNo = products.get(0).getCategory().getCategoryNo();
 
-        ListData<Product> found = this.productRepository.findAllInCategory(1, 3, categoryNo);
-        assertThat(found.getCount()).isEqualTo(2);
-        assertThat(found.getList().size()).isEqualTo(2);
-        assertThat((int)found.getList()
-                .stream()
+        List<Product> found = this.productRepository.findAllInCategory(1, 3, categoryNo);
+        assertThat(found.size()).isEqualTo(2);
+        assertThat((int)found.stream()
                 .filter(p -> p.getCategory().getCategoryName().equals("category1"))
                 .count()).isEqualTo(2);
     }
