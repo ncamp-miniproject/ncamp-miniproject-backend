@@ -6,14 +6,11 @@ import com.model2.mvc.common.util.OptionalHashMap;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
-import com.model2.mvc.product.dto.response.ListProductResponseDto;
 import com.model2.mvc.product.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;

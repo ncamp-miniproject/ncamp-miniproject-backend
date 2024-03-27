@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
+import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -339,5 +341,321 @@ public class TestMyBatisMapperProductRepository {
         }
         int result = this.productRepository.countByProdName("product-1", false, sampleCategory.getCategoryNo());
         assertThat(result).isEqualTo(5);
+    }
+
+    @Test
+    public void findListByProdName_orderBy_prodName_ascend() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Random random = new Random();
+            Product product = Product.builder()
+                    .prodName("product-" + (Math.abs(random.nextInt()) % 100 + 1))
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<String> prodLabels = this.productRepository.findListByProdName("product",
+                                                                             false,
+                                                                             1,
+                                                                             1000,
+                                                                             null,
+                                                                             OrderBy.PROD_NAME,
+                                                                             true)
+                .stream()
+                .map(Product::getProdName)
+                .collect(Collectors.toList());
+        for (int i = 0; i < prodLabels.size() - 1; i++) {
+            assertThat(prodLabels.get(i)).isLessThanOrEqualTo(prodLabels.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_prodName_descend() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Random random = new Random();
+            Product product = Product.builder()
+                    .prodName("product-" + (Math.abs(random.nextInt()) % 100 + 1))
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<String> prodNames = this.productRepository.findListByProdName("product",
+                                                                             false,
+                                                                             1,
+                                                                             1000,
+                                                                             null,
+                                                                             OrderBy.PROD_NAME,
+                                                                             false)
+                .stream()
+                .map(Product::getProdName)
+                .collect(Collectors.toList());
+        for (int i = 0; i < prodNames.size() - 1; i++) {
+            assertThat(prodNames.get(i)).isGreaterThanOrEqualTo(prodNames.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_price_ascend() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Random random = new Random();
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * (Math.abs(random.nextInt()) % 100 + 1))
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prices = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PRICE,
+                                                                         true)
+                .stream()
+                .map(Product::getPrice)
+                .collect(Collectors.toList());
+        for (int i = 0; i < prices.size() - 1; i++) {
+            assertThat(prices.get(i)).isLessThanOrEqualTo(prices.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_price_descend() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Random random = new Random();
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * (Math.abs(random.nextInt()) % 100 + 1))
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prices = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PRICE,
+                                                                         false)
+                .stream()
+                .map(Product::getPrice)
+                .collect(Collectors.toList());
+        for (int i = 0; i < prices.size() - 1; i++) {
+            assertThat(prices.get(i)).isGreaterThanOrEqualTo(prices.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_prodNo_ascend() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prodNumbers = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PROD_NO,
+                                                                         true)
+                .stream()
+                .map(Product::getProdNo)
+                .collect(Collectors.toList());
+        for (int i = 0; i < prodNumbers.size() - 1; i++) {
+            assertThat(prodNumbers.get(i)).isLessThanOrEqualTo(prodNumbers.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_prodNo_descend() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prodNumbers = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PROD_NO,
+                                                                         false)
+                .stream()
+                .map(Product::getProdNo)
+                .collect(Collectors.toList());
+        for (int i = 0; i < prodNumbers.size() - 1; i++) {
+            assertThat(prodNumbers.get(i)).isGreaterThanOrEqualTo(prodNumbers.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_prodName_default() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<String> prodNames = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PROD_NAME,
+                                                                         null)
+                .stream()
+                .map(Product::getProdName)
+                .collect(Collectors.toList());;
+        for (int i = 0; i < prodNames.size() - 1; i++) {
+            assertThat(prodNames.get(i)).isGreaterThanOrEqualTo(prodNames.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_price_default() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prices = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PRICE,
+                                                                         null)
+                .stream()
+                .map(Product::getPrice)
+                .collect(Collectors.toList());;
+        for (int i = 0; i < prices.size() - 1; i++) {
+            assertThat(prices.get(i)).isGreaterThanOrEqualTo(prices.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_prodNo_default() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prodNumbers = this.productRepository.findListByProdName("product",
+                                                                         false,
+                                                                         1,
+                                                                         1000,
+                                                                         null,
+                                                                         OrderBy.PROD_NO,
+                                                                         null)
+                .stream()
+                .map(Product::getProdNo)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < prodNumbers.size() - 1; i++) {
+            assertThat(prodNumbers.get(i)).isGreaterThanOrEqualTo(prodNumbers.get(i + 1));
+        }
+    }
+
+    @Test
+    public void findListByProdName_orderBy_default() {
+        for (int i = 0; i < 20; i++) {
+            int num = i + 1;
+            Product product = Product.builder()
+                    .prodName("product-" + num)
+                    .prodDetail("sample-" + num)
+                    .price(100 * num)
+                    .stock(10 * num)
+                    .regDate(new Date(System.currentTimeMillis()))
+                    .manuDate(LocalDate.now())
+                    .category(null)
+                    .build();
+            this.productRepository.insertProduct(product);
+        }
+
+        List<Integer> prodNumbers = this.productRepository.findListByProdName("product",
+                                                                              false,
+                                                                              1,
+                                                                              1000,
+                                                                              null,
+                                                                              null,
+                                                                              null)
+                .stream()
+                .map(Product::getProdNo)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < prodNumbers.size() - 1; i++) {
+            assertThat(prodNumbers.get(i)).isGreaterThanOrEqualTo(prodNumbers.get(i + 1));
+        }
     }
 }
