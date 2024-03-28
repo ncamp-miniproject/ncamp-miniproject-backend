@@ -3,7 +3,7 @@
 
 <script src="${pageContext.request.contextPath}/javascript/common/pageNavigation.js"></script>
 
-<div class="container"
+<div class="container page-container"
      id="page-container"
      data-additional-query-string="${additionalQueryString}"
      data-url="${url}"

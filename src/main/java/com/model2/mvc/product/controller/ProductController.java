@@ -2,6 +2,7 @@ package com.model2.mvc.product.controller;
 
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
+import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.product.controller.editor.CategoryNoEditor;
 import com.model2.mvc.product.dto.request.CreateProductFormRequestDto;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
@@ -69,20 +70,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public String addProduct(@ModelAttribute CreateProductFormRequestDto requestDto) throws URISyntaxException {
+    public String addProduct(@ModelAttribute CreateProductFormRequestDto requestDto)
+    throws URISyntaxException, InstantiationException, IllegalAccessException {
         URI uri = new URI("http", null, "localhost", 8089, "/api/products", null, null);
-        CreateProductRequestDto.CreateProductRequestDtoBuilder requestDtoBuilder = CreateProductRequestDto.builder()
-                .prodName(requestDto.getProdName())
-                .prodDetail(requestDto.getProdDetail())
-                .price(requestDto.getPrice())
-                .manuDate(requestDto.getManuDate())
-                .stock(requestDto.getStock())
-                .categoryNo(requestDto.getCategoryNo());
+        // TODO: check if using BeanUtil.generateGiven method doesn't make any problem
+        CreateProductRequestDto requestEntityForApi = BeanUtil.generateGiven(CreateProductRequestDto.class, requestDto);
         MultipartFile imageMultipart = requestDto.getImageFile();
         if (imageMultipart != null) {
             try {
-                requestDtoBuilder = requestDtoBuilder.imageName(imageMultipart.getOriginalFilename())
-                        .base64ImageData(Base64.getEncoder().encodeToString(imageMultipart.getBytes()));
+                requestEntityForApi.setImageName(imageMultipart.getOriginalFilename());
+                requestEntityForApi.setBase64ImageData(Base64.getEncoder().encodeToString(imageMultipart.getBytes()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -91,7 +88,7 @@ public class ProductController {
         RequestEntity<CreateProductRequestDto> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(requestDtoBuilder.build());
+                .body(requestEntityForApi);
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -130,29 +127,35 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public String listProduct(@ModelAttribute("requestDTO") ListProductRequestDto requestDTO, Model model)
+    public String listProduct(@ModelAttribute("requestDTO") ListProductRequestDto requestDto, Model model)
     throws URISyntaxException {
         URIBuilder uriBuilder = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
                 .setPath("/api/products");
-        if (requestDTO.getPage() != null) {
-            uriBuilder.addParameter("page", requestDTO.getPage().toString());
+        if (requestDto.getPage() != null) {
+            uriBuilder.addParameter("page", requestDto.getPage().toString());
         }
-        if (requestDTO.getPageSize() != null) {
-            uriBuilder.addParameter("pageSize", requestDTO.getPageSize().toString());
+        if (requestDto.getPageSize() != null) {
+            uriBuilder.addParameter("pageSize", requestDto.getPageSize().toString());
         }
-        if (requestDTO.getSearchKeyword() != null) {
-            uriBuilder.addParameter("searchKeyword", requestDTO.getSearchKeyword());
+        if (requestDto.getSearchKeyword() != null) {
+            uriBuilder.addParameter("searchKeyword", requestDto.getSearchKeyword());
         }
-        if (requestDTO.getSearchCondition() != null) {
-            uriBuilder.addParameter("searchCondition", requestDTO.getSearchCondition().getConditionCode());
+        if (requestDto.getSearchCondition() != null) {
+            uriBuilder.addParameter("searchCondition", requestDto.getSearchCondition().getConditionCode());
         }
-        if (requestDTO.getMenu() != null) {
-            uriBuilder.addParameter("menu", requestDTO.getMenu());
+        if (requestDto.getMenu() != null) {
+            uriBuilder.addParameter("menu", requestDto.getMenu());
         }
-        if (requestDTO.getCategoryNo() != null) {
-            uriBuilder.addParameter("categoryNo", requestDTO.getCategoryNo().toString());
+        if (requestDto.getCategoryNo() != null) {
+            uriBuilder.addParameter("categoryNo", requestDto.getCategoryNo().toString());
+        }
+        if (requestDto.getOrderBy() != null) {
+            uriBuilder.addParameter("orderBy", requestDto.getOrderBy().toString());
+        }
+        if (requestDto.getAscend() != null) {
+            uriBuilder.addParameter("ascend", requestDto.getAscend().toString());
         }
         URI uri = uriBuilder.build();
 

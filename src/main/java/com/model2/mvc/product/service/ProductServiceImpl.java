@@ -109,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
         int page = IntegerUtil.getOneIfNull(requestDto.getPage());
         int pageSize = IntegerUtil.getOneIfNull(requestDto.getPage());
 
-        Page pageInfo = Page.of(page, pageSize, defaultPageSize, defaultPageDisplay);
+        Page pageInfo = Page.of(page, count, defaultPageSize, defaultPageDisplay);
 
         List<Category> categories = this.categoryService.getCategoryList();
 

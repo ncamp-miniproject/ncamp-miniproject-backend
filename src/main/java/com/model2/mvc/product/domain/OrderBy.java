@@ -34,11 +34,11 @@ public enum OrderBy {
     }
 
     public static Optional<OrderBy> findByPropertyName(String propertyName) {
-        return Optional.ofNullable(PROPERTY_INDEX.get(propertyName.trim().toLowerCase()));
+        return Optional.ofNullable(PROPERTY_INDEX.get(propertyName.trim()));
     }
 
     public static Optional<OrderBy> findByColumnName(String columnName) {
-        return Optional.ofNullable(COLUMN_INDEX.get(columnName.trim().toLowerCase()));
+        return Optional.ofNullable(COLUMN_INDEX.get(columnName.trim()));
     }
 
     @Override

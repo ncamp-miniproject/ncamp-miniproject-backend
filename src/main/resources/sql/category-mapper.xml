@@ -23,6 +23,7 @@
             category_no,
             category_name
         FROM category
+        ORDER BY category_name
     </select>
 
     <select id="findById" parameterType="int" resultMap="categoryMap">

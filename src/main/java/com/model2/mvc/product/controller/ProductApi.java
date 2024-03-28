@@ -4,6 +4,8 @@ import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.controller.editor.CategoryNoEditor;
+import com.model2.mvc.product.controller.editor.OrderByEditor;
+import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
@@ -49,6 +51,7 @@ public class ProductApi {
     public void bindParameters(WebDataBinder binder) {
         binder.registerCustomEditor(SearchCondition.class, SearchConditionEditor.getInstance());
         binder.registerCustomEditor(Integer.class, "categoryNo", CategoryNoEditor.getInstance());
+        binder.registerCustomEditor(OrderBy.class, OrderByEditor.getInstance());
     }
 
     @PostMapping

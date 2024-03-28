@@ -27,20 +27,26 @@ public class ListQueryHelper {
         listTaskMapper.put(SearchCondition.NO_CONDITION,
                            (repository, dto) -> repository.findAllInCategory(IntegerUtil.getOneIfNull(dto.getPage()),
                                                                              IntegerUtil.getOneIfNull(dto.getPageSize()),
-                                                                             dto.getCategoryNo()));
+                                                                             dto.getCategoryNo(),
+                                                                             dto.getOrderBy(),
+                                                                             dto.getAscend()));
         listTaskMapper.put(SearchCondition.BY_NAME,
                            (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
                                                                               false,
                                                                               IntegerUtil.getOneIfNull(dto.getPage()),
                                                                               IntegerUtil.getOneIfNull(dto.getPageSize()),
-                                                                              dto.getCategoryNo()));
+                                                                              dto.getCategoryNo(),
+                                                                              dto.getOrderBy(),
+                                                                              dto.getAscend()));
         listTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
             List<Integer> boundPair = generateBoundPair(dto.getSearchKeyword());
             return repository.findListByPriceRange(boundPair.get(0),
                                                    boundPair.get(1),
                                                    IntegerUtil.getOneIfNull(dto.getPage()),
                                                    IntegerUtil.getOneIfNull(dto.getPageSize()),
-                                                   dto.getCategoryNo());
+                                                   dto.getCategoryNo(),
+                                                   dto.getOrderBy(),
+                                                   dto.getAscend());
         });
 
         countTaskMapper.put(SearchCondition.NO_CONDITION,
@@ -58,7 +64,7 @@ public class ListQueryHelper {
     }
 
     private static List<Integer> generateBoundPair(String boundStr) {
-        List<Integer> pair = Arrays.stream(boundStr.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> pair = Arrays.stream(boundStr.split("-")).map(Integer::parseInt).collect(Collectors.toList());
         if (pair.size() != 2) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         } else {

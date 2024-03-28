@@ -25,41 +25,37 @@
             integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
             crossorigin="anonymous"></script>
 
+    <style>
+        .prod-item {
+            display: flex;
+            gap: 24px;
+        }
+
+        .prod-item img {
+            width: 240px;
+        }
+
+        .page-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        main {
+            padding: 12px 120px;
+        }
+
+        .page-navigator, .category-item {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body data-context-path="${pageContext.request.contextPath}" data-menu="${data.menuMode}">
-    <c:import url="${pageContext.request.contextPath}/view/layout/header.jsp"/>
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
 
-    <main>
-        <div class="inner-header">
-            <h2 class="page-title">상품 목록 조회</h2>
-            <form class="search-form"
-                  name="search"
-                  data-search-condition="${data.searchInfo.searchCondition}"
-                  data-search-keyword="${data.searchInfo.searchKeyword}">
-                <select name="searchCondition" class="search-condition">
-                    <option value="1">상품명</option>
-                    <option value="2">상품가격</option>
-                </select>
-                <c:if test="${!empty data.currentCategoryNo}">
-                    <input type="hidden" name="categoryNo" value="${data.currentCategoryNo}">
-                </c:if>
-                <input type="hidden" name="page" value="1">
-                <button type="submit">검색</button>
-            </form>
-            <p>전체 ${data.count}건수, 현재 ${data.pageInfo.currentPage} 페이지</p>
-        </div>
-        <div class="category-box" data-current-category-no="${data.currentCategoryNo}">
+    <main class="row">
+        <div class="category-box col-md-3" data-current-category-no="${data.currentCategoryNo}">
             <div class="category-display">
-                <a data-category="all" class="category-item">모든 항목</a>
-                <c:forEach var="category" items="${data.categories}">
-                    <a data-page="${category}"
-                       class="category-item"
-                       data-category-no="${category.categoryNo}">
-                        ${category.categoryName}
-                    </a>
-                </c:forEach>
             </div>
             <c:if test="${!empty user && user.role.role == 'admin' && data.menuMode == 'manage'}">
                 <a href="${pageContext.request.contextPath}/categories/new-form">
@@ -67,43 +63,73 @@
                 </a>
             </c:if>
         </div>
-        <table class="list">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>상품명</th>
-                    <th>가격</th>
-                    <th>등록일</th>
-                    <th>재고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:set var="no" value="${data.products.size()}" scope="page"/>
-                <c:forEach var="product" items="${data.products}">
-                    <tr class="item"
-                        data-prod-no="${product.prodNo}"
-                        data-stock="${product.stock}">
-                        <td>
-                            <a class="prod-no">
-                                ${product.prodNo}
-                            </a>
-                        </td>
-                        <td>${product.prodName}</td>
-                        <td>${product.price}</td>
-                        <td>${product.regDate}</td>
-                        <td>${product.stock}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-        <c:set var="url" value="${pageContext.request.contextPath}/products" scope="request"/>
-        <c:set var="additionalQueryString"
-               value="&menu=${data.menuMode}&searchCondition=${data.searchInfo.searchCondition}&searchKeyword=${data.searchInfo.searchKeyword}"
-               scope="request"/>
-        <c:import var="pageNumbers"
-                  url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"
-                  scope="request"/>
-        ${pageNumbers}
+        <div class="content col-md-9">
+            <div class="inner-header">
+                <h2 class="page-title">상품 목록 조회</h2>
+                <form class="search-form"
+                      name="search"
+                      data-search-condition="${data.searchInfo.searchCondition}"
+                      data-search-keyword="${data.searchInfo.searchKeyword}">
+                    <select name="searchCondition" class="search-condition">
+                        <option value="1">상품명</option>
+                        <option value="2">상품가격</option>
+                    </select>
+                    <input type="hidden" name="categoryNo" value="${data.currentCategoryNo}">
+                    <input type="hidden" name="page" value="1">
+                    <input type="hidden" name="pageSize">
+                    <button type="button" id="search-button">검색</button>
+                </form>
+                <p>전체 <span id="count-display">${data.count}</span>건수, 현재 <span id="current-page-display">1</span> 페이지</p>
+            </div>
+            <div class="btn-group btn-group-xs order-button-set" role="group">
+                <div class="btn-group order-button-group" data-order-by="prodName">
+                    <button type="button"
+                            class="btn btn-default dropdown-toggle order-dropdown-button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        상품이름 정렬
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="order-button" data-ascend="true">상품이름 오름차순</a></li>
+                        <li><a href="#" class="order-button" data-ascend="false">상품이름 내림차순</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group order-button-group" data-order-by="price">
+                    <button type="button"
+                            class="btn btn-default dropdown-toggle order-dropdown-button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        가격 정렬
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="order-button" data-ascend="true">가격 낮은 순</a></li>
+                        <li><a href="#" class="order-button" data-ascend="false">가격 높은 순</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <c:set var="url" value="${pageContext.request.contextPath}/products" scope="request"/>
+            <c:set var="additionalQueryString"
+                   value="&menu=${data.menuMode}&searchCondition=${data.searchInfo.searchCondition}&searchKeyword=${data.searchInfo.searchKeyword}"
+                   scope="request"/>
+            <div class="container page-container"
+                 id="page-container"
+                 data-additional-query-string="${additionalQueryString}"
+                 data-url="${url}"
+                 data-current-page="${data.pageInfo.currentPage}">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="container item-list">
+            </div>
+        </div>
     </main>
 </body>
 </html>
