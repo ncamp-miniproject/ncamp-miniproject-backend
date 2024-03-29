@@ -15,8 +15,12 @@ import java.util.Arrays;
 public class ControllerLoggingAspect {
     Logger log = LoggerFactory.getLogger(ControllerLoggingAspect.class);
 
-    @Around("execution(* com.model2.mvc..*Controller.*(..))")
-    public Object logBeforeControllers(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("@annotation(org.springframework.web.bind.annotation.GetMapping) " +
+            "|| @annotation(org.springframework.web.bind.annotation.PostMapping) " +
+            "|| @annotation(org.springframework.web.bind.annotation.PutMapping) " +
+            "|| @annotation(org.springframework.web.bind.annotation.PatchMapping) " +
+            "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping)")
+    public Object logControllers(ProceedingJoinPoint joinPoint) throws Throwable {
         log.debug("{}Class: {}", GREEN.getCode(), joinPoint.getTarget().getClass().getName());
         log.debug("Method: {}", joinPoint.getSignature().getName());
         log.debug("Signature: {}", joinPoint.getSignature());
