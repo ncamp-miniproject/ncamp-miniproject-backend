@@ -107,13 +107,7 @@
                 </div>
             </div>
 
-            <div class="container page-container"
-                 id="page-container">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="pagination">
-                    </ul>
-                </nav>
-            </div>
+            <c:import url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"/>
 
             <div class="container item-list">
             </div>
