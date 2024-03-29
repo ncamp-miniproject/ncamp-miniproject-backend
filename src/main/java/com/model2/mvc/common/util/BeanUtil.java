@@ -4,15 +4,26 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class BeanUtil {
 
-    public static <T> T generateGiven(Class<T> typeToGenerate, Object given)
+    public static <T> T doMapping(Class<T> typeToGenerate, Object... given)
     throws InstantiationException, IllegalAccessException {
-        Method[] methods = given.getClass().getDeclaredMethods();
+        List<Method> getters = new LinkedList<>();
+        Map<Method, Object> methodGivenMap = new HashMap<>();
+        for (Object obj : given) {
+            Method[] methods = obj.getClass().getMethods();
+            getters.addAll(Arrays.asList(methods));
+            for (Method method : methods) {
+                getters.add(method);
+                methodGivenMap.put(method, obj);
+            }
+        }
         Map<String, Method> givenMethodNameMap = new HashMap<>();
-        Arrays.stream(methods)
+        getters.stream()
                 .filter(m -> m.getName().startsWith("get"))
                 .forEach(m -> givenMethodNameMap.put(toOgnl(m.getName()), m));
 
@@ -22,21 +33,18 @@ public class BeanUtil {
                 .filter(m -> m.getName().startsWith("set"))
                 .forEach(m -> {
                     Method getter = givenMethodNameMap.get(toOgnl(m.getName()));
-                    if (getter == null) {
+                    Object objOfMethod = methodGivenMap.get(getter);
+                    if (getter == null || objOfMethod == null) {
                         return;
                     }
                     try {
-                        m.invoke(newInstance, getter.invoke(given));
+                        m.invoke(newInstance, getter.invoke(objOfMethod));
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                         throw new RuntimeException(e);
                     }
                 });
         return newInstance;
-    }
-
-    private static boolean isGetterOrSetter(String methodName) {
-        return methodName.startsWith("get") || methodName.startsWith("set");
     }
 
     private static String toOgnl(String methodName) {

@@ -6,12 +6,9 @@ import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.product.controller.editor.CategoryNoEditor;
 import com.model2.mvc.product.dto.request.CreateProductFormRequestDto;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
-import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
 import com.model2.mvc.product.dto.response.GetProductResponseDto;
-import com.model2.mvc.product.dto.response.ListProductResponseDto;
 import com.model2.mvc.purchase.controller.editor.LocalDateEditor;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -73,8 +70,8 @@ public class ProductController {
     public String addProduct(@ModelAttribute CreateProductFormRequestDto requestDto)
     throws URISyntaxException, InstantiationException, IllegalAccessException {
         URI uri = new URI("http", null, "localhost", 8089, "/api/products", null, null);
-        // TODO: check if using BeanUtil.generateGiven method doesn't make any problem
-        CreateProductRequestDto requestEntityForApi = BeanUtil.generateGiven(CreateProductRequestDto.class, requestDto);
+        // TODO: check if using BeanUtil.doMapping method doesn't make any problem
+        CreateProductRequestDto requestEntityForApi = BeanUtil.doMapping(CreateProductRequestDto.class, requestDto);
         MultipartFile imageMultipart = requestDto.getImageFile();
         if (imageMultipart != null) {
             try {
