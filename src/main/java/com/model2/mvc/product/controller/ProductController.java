@@ -126,45 +126,10 @@ public class ProductController {
         return "product/product-info";
     }
 
-    @GetMapping("")
-    public String listProduct(@ModelAttribute("requestDTO") ListProductRequestDto requestDto, Model model)
+    @GetMapping
+    public String listProduct(@RequestParam("menu") String menu, Model model)
     throws URISyntaxException {
-        URIBuilder uriBuilder = new URIBuilder().setScheme("http")
-                .setHost("localhost")
-                .setPort(8089)
-                .setPath("/api/products");
-        if (requestDto.getPage() != null) {
-            uriBuilder.addParameter("page", requestDto.getPage().toString());
-        }
-        if (requestDto.getPageSize() != null) {
-            uriBuilder.addParameter("pageSize", requestDto.getPageSize().toString());
-        }
-        if (requestDto.getSearchKeyword() != null) {
-            uriBuilder.addParameter("searchKeyword", requestDto.getSearchKeyword());
-        }
-        if (requestDto.getSearchCondition() != null) {
-            uriBuilder.addParameter("searchCondition", requestDto.getSearchCondition().getConditionCode());
-        }
-        if (requestDto.getMenu() != null) {
-            uriBuilder.addParameter("menu", requestDto.getMenu());
-        }
-        if (requestDto.getCategoryNo() != null) {
-            uriBuilder.addParameter("categoryNo", requestDto.getCategoryNo().toString());
-        }
-        if (requestDto.getOrderBy() != null) {
-            uriBuilder.addParameter("orderBy", requestDto.getOrderBy().toString());
-        }
-        if (requestDto.getAscend() != null) {
-            uriBuilder.addParameter("ascend", requestDto.getAscend().toString());
-        }
-        URI uri = uriBuilder.build();
-
-        RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ListProductResponseDto> result = restTemplate.exchange(requestEntity,
-                                                                              ListProductResponseDto.class);
-        model.addAttribute("data", result.getBody());
+        model.addAttribute("menuMode", menu);
         return "product/product-list";
     }
 

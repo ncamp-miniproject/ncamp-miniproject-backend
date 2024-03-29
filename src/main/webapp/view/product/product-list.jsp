@@ -44,20 +44,20 @@
             padding: 12px 120px;
         }
 
-        .page-navigator, .category-item {
+        .page-navigator, .category-item, .order-button {
             cursor: pointer;
         }
     </style>
 </head>
 
-<body data-context-path="${pageContext.request.contextPath}" data-menu="${data.menuMode}">
+<body data-context-path="${pageContext.request.contextPath}" data-menu="${menuMode}">
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
 
     <main class="row">
-        <div class="category-box col-md-3" data-current-category-no="${data.currentCategoryNo}">
+        <div class="category-box col-md-3">
             <div class="category-display">
             </div>
-            <c:if test="${!empty user && user.role.role == 'admin' && data.menuMode == 'manage'}">
+            <c:if test="${!empty user && user.role.role == 'admin' && menuMode == 'manage'}">
                 <a href="${pageContext.request.contextPath}/categories/new-form">
                     카테고리 생성
                 </a>
@@ -67,19 +67,14 @@
             <div class="inner-header">
                 <h2 class="page-title">상품 목록 조회</h2>
                 <form class="search-form"
-                      name="search"
-                      data-search-condition="${data.searchInfo.searchCondition}"
-                      data-search-keyword="${data.searchInfo.searchKeyword}">
+                      name="search">
                     <select name="searchCondition" class="search-condition">
                         <option value="1">상품명</option>
                         <option value="2">상품가격</option>
                     </select>
-                    <input type="hidden" name="categoryNo" value="${data.currentCategoryNo}">
-                    <input type="hidden" name="page" value="1">
-                    <input type="hidden" name="pageSize">
                     <button type="button" id="search-button">검색</button>
                 </form>
-                <p>전체 <span id="count-display">${data.count}</span>건수, 현재 <span id="current-page-display">1</span> 페이지</p>
+                <p>전체 <span id="count-display">0</span>건수, 현재 <span id="current-page-display">0</span> 페이지</p>
             </div>
             <div class="btn-group btn-group-xs order-button-set" role="group">
                 <div class="btn-group order-button-group" data-order-by="prodName">
@@ -91,8 +86,8 @@
                         상품이름 정렬
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#" class="order-button" data-ascend="true">상품이름 오름차순</a></li>
-                        <li><a href="#" class="order-button" data-ascend="false">상품이름 내림차순</a></li>
+                        <li><a class="order-button" data-ascend="true">상품이름 오름차순</a></li>
+                        <li><a class="order-button" data-ascend="false">상품이름 내림차순</a></li>
                     </ul>
                 </div>
                 <div class="btn-group order-button-group" data-order-by="price">
@@ -104,23 +99,14 @@
                         가격 정렬
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#" class="order-button" data-ascend="true">가격 낮은 순</a></li>
-                        <li><a href="#" class="order-button" data-ascend="false">가격 높은 순</a></li>
+                        <li><a class="order-button" data-ascend="true">가격 낮은 순</a></li>
+                        <li><a class="order-button" data-ascend="false">가격 높은 순</a></li>
                     </ul>
                 </div>
             </div>
 
-
-
-            <c:set var="url" value="${pageContext.request.contextPath}/products" scope="request"/>
-            <c:set var="additionalQueryString"
-                   value="&menu=${data.menuMode}&searchCondition=${data.searchInfo.searchCondition}&searchKeyword=${data.searchInfo.searchKeyword}"
-                   scope="request"/>
             <div class="container page-container"
-                 id="page-container"
-                 data-additional-query-string="${additionalQueryString}"
-                 data-url="${url}"
-                 data-current-page="${data.pageInfo.currentPage}">
+                 id="page-container">
                 <nav aria-label="Page navigation">
                     <ul class="pagination" id="pagination">
                     </ul>

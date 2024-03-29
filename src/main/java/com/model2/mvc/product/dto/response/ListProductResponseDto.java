@@ -20,9 +20,5 @@ import java.util.List;
 public class ListProductResponseDto {
     private int count;
     private List<Product> products;
-    private List<Category> categories;
     private Page pageInfo;
-    private String menuMode;
-    private Search searchInfo;
-    private Integer currentCategoryNo;
 }

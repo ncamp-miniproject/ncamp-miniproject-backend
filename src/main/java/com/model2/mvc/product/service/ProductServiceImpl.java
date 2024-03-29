@@ -3,8 +3,6 @@ package com.model2.mvc.product.service;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.Page;
-import com.model2.mvc.common.Search;
-import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
@@ -107,28 +105,14 @@ public class ProductServiceImpl implements ProductService {
         int count = ListQueryHelper.count(this.productRepository, requestDto);
 
         int page = IntegerUtil.getOneIfNull(requestDto.getPage());
-        int pageSize = IntegerUtil.getOneIfNull(requestDto.getPage());
+        int pageSize = requestDto.getPageSize() == null ? defaultPageSize : requestDto.getPageSize();
 
-        Page pageInfo = Page.of(page, count, defaultPageSize, defaultPageDisplay);
-
-        List<Category> categories = this.categoryService.getCategoryList();
-
-        SearchCondition searchCondition = requestDto.getSearchCondition() == null
-                                          ? SearchCondition.NO_CONDITION
-                                          : requestDto.getSearchCondition();
-
+        Page pageInfo = Page.of(page, count, pageSize, defaultPageDisplay);
 
         return ListProductResponseDto.builder()
                 .count(count)
                 .products(result)
-                .categories(categories)
                 .pageInfo(pageInfo)
-                .menuMode(requestDto.getMenu())
-                .searchInfo(new Search(searchCondition.getConditionCode(),
-                                       StringUtil.null2nullStr(requestDto.getSearchKeyword()),
-                                       (page - 1) * pageSize + 1,
-                                       page * pageSize))
-                .currentCategoryNo(requestDto.getCategoryNo())
                 .build();
     }
 
@@ -162,11 +146,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Category addCategory(String categoryName) {
+        // TODO: remove
         return this.categoryService.insertCategory(categoryName);
     }
 
     @Override
     public List<Category> getCategoryList() {
+        // TODO: remove
         return this.categoryService.getCategoryList();
     }
 }

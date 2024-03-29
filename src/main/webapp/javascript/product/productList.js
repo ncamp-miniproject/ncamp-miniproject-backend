@@ -39,8 +39,7 @@ $(() => {
     const menu = $("body").data("menu");
 
     const searchForm = $("form[name=search]");
-    const searchCondition = searchForm.data("search-condition");
-    const searchKeyword = searchForm.data("search-keyword");
+    searchForm.data("search-condition");
 
     const getItemElem = (prodNo, prodName, price, stock, imageFileName, categoryName) => `
         <div class="panel panel-default item"
@@ -62,38 +61,24 @@ $(() => {
     `;
 
 
-    setDefaultDisplaySetting(1, 3, searchKeyword, searchCondition, menu);
+    setDefaultDisplaySetting(1, 3, "", "1", menu);
     fetchDataAndUpdateProductList();
 
     const textSearchInput =
         $(`<input type="text"
                 name="searchKeyword"
-                value="${searchKeyword}"
+                value=""
                 placeholder="검색어 입력"
                 id="search-keyword-box">`);
 
-    let lowerBound = 0;
-    let upperBound = 0;
-    if (searchKeyword !== "") {
-        const rangeValues = searchKeyword.split('-');
-        if (rangeValues.length === 2) {
-            lowerBound = parseInt(rangeValues[0]);
-            upperBound = parseInt(rangeValues[1]);
-        } else if (searchKeyword.startsWith("-")) {
-            upperBound = parseInt(rangeValues[0]);
-        } else {
-            lowerBound = parseInt(rangeValues[0]);
-            upperBound = "";
-        }
-    }
     const intRangeSearchInput =
         $(`<div id="search-keyword-box"><input type="number"
                 name="searchKeyword"
-                value="${lowerBound}">
+                value="">
          ~
          <input type="number"
                     name="searchKeyword"
-                value="${upperBound}"></div>`);
+                value=""></div>`);
 
     searchConditionFormMap["-1"] = textSearchInput;
     searchConditionFormMap["0"] = textSearchInput;
@@ -101,7 +86,7 @@ $(() => {
     searchConditionFormMap["2"] = intRangeSearchInput;
 
     const conditionSelect = $("form[name=search] select");
-    conditionSelect.after(searchConditionFormMap[searchCondition]);
+    conditionSelect.after(searchConditionFormMap["-1"]);
 
     conditionSelect.on("change", (e) => {
         $("#search-keyword-box").remove();
@@ -126,6 +111,7 @@ $(() => {
         const searchKeyword = arr.join("-");
 
         currentDisplaySetting.set(SEARCH_KEYWORD, searchKeyword);
+        currentDisplaySetting.set(PAGE, 1);
 
         fetchDataAndUpdateProductList();
     });
@@ -190,11 +176,9 @@ $(() => {
         const pagination = $("#pagination");
         pagination.children().remove();
         pagination.append(generatePageElem(pageInfo));
-        $(".page-navigator").on("click", (e) => {
+        $(".page-navigator:not(.disabled):not(.active)").on("click", (e) => {
             e.preventDefault();
-            console.log($(e.target));
             const page = $(e.target).data("page");
-            console.log("page=" + page);
             currentDisplaySetting.set(PAGE, page);
             fetchDataAndUpdateProductList();
         });
@@ -203,24 +187,23 @@ $(() => {
 
     function generatePageElem(pageInfo) {
         let pages = "";
-        console.log(pageInfo);
         for (let page of pageInfo.pagesToDisplay) {
             const pageItem = `
                 <li class="page-number ${page === pageInfo.currentPage ? "active" : ""}" data-page="${page}">
-                    <a class="page-navigator" ${page === pageInfo.currentPage ? "" : `data-page=${page}`}>${page}</a>
+                    <a class="page-navigator ${page === pageInfo.currentPage ? "active" : ""}" ${page === pageInfo.currentPage ? "" : `data-page=${page}`}>${page}</a>
                 </li>
             `;
             pages += pageItem;
         }
         return `
             <li${pageInfo.previousPageSetAvailable ? ` data-previous-page-set-entry="${pageInfo.previousPageSetEntry}"` : ` class="disabled"`}>
-                <a aria-label="Previous" class="page-navigator" ${pageInfo.previousPageSetAvailable ? `data-page=${pageInfo.previousPageSetEntry}` : ""}>
+                <a aria-label="Previous" class="page-navigator ${pageInfo.previousPageSetAvailable ? "" : "disabled"}" ${pageInfo.previousPageSetAvailable ? `data-page=${pageInfo.previousPageSetEntry}` : ""}>
                     <span aria-hidden="true" ${pageInfo.previousPageSetAvailable ? `data-page=${pageInfo.previousPageSetEntry}` : ""}>&laquo;</span>
                 </a>
             </li>
             ${pages}
             <li${pageInfo.nextPageSetAvailable ? ` data-next-page-set-entry="${pageInfo.nextPageSetEntry}"` : ` class="disabled"`}>
-                <a aria-label="Next" class="page-navigator" ${pageInfo.nextPageSetAvailable ? `data-page=${pageInfo.nextPageSetEntry}` : ""}>
+                <a aria-label="Next" class="page-navigator ${pageInfo.nextPageSetAvailable ? "" : "disabled"}" ${pageInfo.nextPageSetAvailable ? `data-page=${pageInfo.nextPageSetEntry}` : ""}>
                     <span aria-hidden="true" ${pageInfo.nextPageSetAvailable ? `data-page=${pageInfo.nextPageSetEntry}` : ""}>&raquo;</span>
                 </a>
             </li>

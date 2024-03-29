@@ -135,10 +135,6 @@ public class TestProductServiceImpl extends TestCase {
         assertThat(result.getProducts().size()).isEqualTo(2);
         assertThat(result.getProducts()).contains(sampleProducts.toArray(new Product[0]));
         assertThat(result.getCount()).isEqualTo(2);
-        assertThat(result.getCategories()).contains(sampleProducts.stream()
-                                                            .map(Product::getCategory)
-                                                            .collect(Collectors.toList())
-                                                            .toArray(new Category[0]));
         assertThat(result.getPageInfo().getCurrentPage()).isEqualTo(1);
         assertThat(result.getPageInfo().getPageSize()).isEqualTo(3);
     }
@@ -160,7 +156,6 @@ public class TestProductServiceImpl extends TestCase {
         assertThat(result.getProducts().size()).isEqualTo(1);
         assertThat(result.getProducts()).contains(sampleProduct);
         assertThat(result.getCount()).isEqualTo(1);
-        assertThat(result.getCategories()).contains(sampleProduct.getCategory());
         assertThat(result.getPageInfo().getCurrentPage()).isEqualTo(1);
         assertThat(result.getPageInfo().getPageSize()).isEqualTo(3);
     }
