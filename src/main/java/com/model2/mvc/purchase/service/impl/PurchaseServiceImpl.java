@@ -91,7 +91,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
 
         Map<String, Object> search = new HashMap<>();
-        search.put("buyerId", requestDTO.getUser().getUserId());
+        search.put("buyerId", requestDTO.getBuyerId());
         search.put("startRowNum", (page - 1) * pageSize + 1);
         search.put("endRowNum", page * pageSize);
         search.put("searchCondition", searchCondition);
@@ -101,7 +101,6 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .count(result.getCount())
                 .purchaseList(result.getList().stream().map(GetPurchaseResponseDto::from).collect(Collectors.toList()))
                 .pageInfo(getPageInfo(result.getCount(), page, pageSize))
-                .loginUser(requestDTO.getUser())
                 .build();
     }
 

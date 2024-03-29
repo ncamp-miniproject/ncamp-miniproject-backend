@@ -129,7 +129,7 @@
         FROM
         (
         SELECT
-        ROW_NUMBER() OVER (ORDER BY tran_no DESC) ROW_NUM,
+        ROW_NUMBER() OVER (ORDER BY t.order_date DESC) ROW_NUM,
         t.tran_no tran_no,
         t.buyer_id buyer_id,
         t.payment_option payment_option,
@@ -148,14 +148,12 @@
                 buyer_id = #{buyerId}
             </if>
         </where>
-        ORDER BY
-        tran_no DESC
         ) t
         INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
         INNER JOIN product p ON tp.prod_no = p.prod_no
         LEFT OUTER JOIN category c ON c.category_no = p.category_no
         WHERE t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
-        ORDER BY t.row_num
+        ORDER BY t.order_date
     </select>
 
     <update id="update" parameterType="Purchase">

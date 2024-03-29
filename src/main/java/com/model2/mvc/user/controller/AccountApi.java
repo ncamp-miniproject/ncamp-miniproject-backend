@@ -85,7 +85,7 @@ public class AccountApi {
         return new ResponseEntity<>(loginUser.getUserId(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{userId}") // TODO
     public ResponseEntity<User> deleteUser(@PathVariable("userId") String userId, HttpSession session) {
         try {
             User result = this.userService.deleteUser(userId);

@@ -14,7 +14,6 @@ function getTranCodeUpdateElement(tranNo, tranCode) {
 
 $(() => {
     const contextPath = $("body").data("context-path");
-    const role = $(".purchase-table").data("login-user-role");
 
     $(".data-row").each((idx, element) => {
         const jElem = $(element);

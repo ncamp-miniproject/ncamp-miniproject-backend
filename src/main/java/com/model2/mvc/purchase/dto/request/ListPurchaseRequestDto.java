@@ -17,5 +17,5 @@ public class ListPurchaseRequestDto {
     private String searchKeyword;
     private SearchCondition searchCondition;
     private String menu;
-    private User user;
+    private String buyerId;
 }

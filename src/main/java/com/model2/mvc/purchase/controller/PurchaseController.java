@@ -152,6 +152,8 @@ public class PurchaseController {
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 
+        requestDTO.setBuyerId(loginUser.getUserId());
+
         URI uri = UriComponentsBuilder.newInstance()
                 .scheme("http")
                 .host("localhost")
@@ -168,7 +170,9 @@ public class PurchaseController {
                                                                                            ListPurchaseResponseDto.class);
             ListPurchaseResponseDto result = responseEntity.getBody();
             result.setMenu(menu);
-            return new ModelAndView("purchase/purchase-list", "data", result);
+            ModelAndView mv = new ModelAndView("purchase/purchase-list", "data", result);
+            mv.addObject("loginUser", loginUser);
+            return mv;
         } catch (HttpClientErrorException.Forbidden e) {
             e.printStackTrace();
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");

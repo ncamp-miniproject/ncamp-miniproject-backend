@@ -71,14 +71,7 @@ public class PurchaseApi {
     }
 
     @GetMapping
-    public ResponseEntity<ListPurchaseResponseDto> listPurchases(@ModelAttribute ListPurchaseRequestDto requestDto,
-                                                                 @SessionAttribute(value = "user",
-                                                                                   required = false) User loginUser) {
-        if (loginUser == null || loginUser.getRole() != Role.USER) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        requestDto.setUser(loginUser);
-        System.out.println("=================================");
+    public ResponseEntity<ListPurchaseResponseDto> listPurchases(@ModelAttribute ListPurchaseRequestDto requestDto) {
         return new ResponseEntity<>(this.purchaseService.getPurchaseList(requestDto), HttpStatus.OK);
     }
 
@@ -92,7 +85,6 @@ public class PurchaseApi {
         }
 
         ListPurchaseResponseDto saleList = this.purchaseService.getSaleList(page, pageSize);
-        saleList.setLoginUser(loginUser);
         saleList.setMenu("manage");
         return new ResponseEntity<>(saleList, HttpStatus.OK);
     }
