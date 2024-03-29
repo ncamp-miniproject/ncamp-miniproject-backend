@@ -51,6 +51,7 @@ $(() => {
                     <img src="${contextPath}/images/uploadFiles/${imageFileName}"
                          alt="Product Image">
                     <div>
+                        <p>${prodNo}</p>
                         <p>${prodName}</p>
                         <p>${price}</p>
                         <p>${categoryName}</p>
@@ -138,6 +139,7 @@ $(() => {
 
         currentDisplaySetting.set(ORDER_BY, orderBy);
         currentDisplaySetting.set(ASCEND, ascend);
+        currentDisplaySetting.set(PAGE, 1);
 
         fetchDataAndUpdateProductList();
 
@@ -175,7 +177,7 @@ $(() => {
                         p.price,
                         p.stock,
                         "sample_ive.webp",
-                        p.category.categoryName);
+                        p.category ? p.category.categoryName : "카테고리 없음");
                     itemList.append(itemElem);
                 });
                 updatePage(data.pageInfo)
@@ -252,6 +254,7 @@ $(() => {
             const categoryNoData = $(e.target).data("category-no");
             currentDisplaySetting.set(CATEGORY_NO, categoryNoData === "NaN" ? undefined : parseInt(categoryNoData));
             updateCategory(currentDisplaySetting.get(CATEGORY_NO));
+            currentDisplaySetting.set(PAGE, 1);
 
             fetchDataAndUpdateProductList();
         });
