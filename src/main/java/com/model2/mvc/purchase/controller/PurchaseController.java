@@ -152,31 +152,10 @@ public class PurchaseController {
             return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
         }
 
-        requestDTO.setBuyerId(loginUser.getUserId());
-
-        URI uri = UriComponentsBuilder.newInstance()
-                .scheme("http")
-                .host("localhost")
-                .path("/api/purchases")
-                .port(8089)
-                .queryParams(WebUtil.generateQueryParameterFrom(requestDTO))
-                .build()
-                .toUri();
-
-        RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<ListPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
-                                                                                           ListPurchaseResponseDto.class);
-            ListPurchaseResponseDto result = responseEntity.getBody();
-            result.setMenu(menu);
-            ModelAndView mv = new ModelAndView("purchase/purchase-list", "data", result);
-            mv.addObject("loginUser", loginUser);
-            return mv;
-        } catch (HttpClientErrorException.Forbidden e) {
-            e.printStackTrace();
-            return new ModelAndView("redirect:/purchases/sale?menu=manage&page=1");
-        }
+        ModelAndView mv = new ModelAndView("purchase/purchase-list");
+        mv.addObject("loginUser", loginUser);
+        mv.addObject("menu", menu);
+        return mv;
     }
 
     @GetMapping("/{tranNo}/update-form")

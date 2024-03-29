@@ -32,19 +32,31 @@
 
     <style>
         main {
-            padding: 12px 48px;
+            padding: 12px 120px;
+        }
+
+        .page-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .page-navigator {
+            cursor: pointer;
         }
     </style>
 </head>
 
-<body data-context-path="${pageContext.request.contextPath}">
+<body data-context-path="${pageContext.request.contextPath}" data-menu="${menu}" data-user-role="${loginUser.role.role}" data-user-id="${loginUser.userId}">
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
 
     <main>
         <div class="inner-header">
             <h2 class="page-title">구매 목록 조회</h2>
         </div>
-        <p>전체 ${data.count} 건수, 현재 ${data.pageInfo.currentPage} 페이지</p>
+        <p>전체 <span id="count-display">0</span> 건수, 현재 <span id="current-page-display">0</span> 페이지</p>
+
+        <c:import url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"/>
+
         <table class="table table-striped table-bordered purchase-table">
             <thead>
                 <tr>
@@ -58,51 +70,9 @@
                     </c:if>
                 </tr>
             </thead>
-            <tbody>
-                <c:forEach var="purchase" items="${data.purchaseList}">
-                    <tr class="data-row"
-                        id="tran-no-${purchase.tranNo}"
-                        data-tran-no="${purchase.tranNo}"
-                        data-buyer-id="${purchase.buyer.userId}"
-                        data-tran-code="${purchase.tranStatusCode.code}">
-
-                        <td><a class="tran-no">${purchase.tranNo}</a></td>
-                        <td><a class="buyer-id">${purchase.buyer.userId}</a></td>
-                        <td>${purchase.receiverName}</td>
-                        <td>${purchase.receiverPhone}</td>
-                        <td class="tran-status">${purchase.tranStatusCode.status}</td>
-                        <c:if test="${loginUser.role.role == 'admin'}">
-                            <td class="tran-status-update">
-                                <c:if test="${purchase.tranStatusCode.code == TranStatusCode.PURCHASE_DONE.code}">
-                                    <form name="tran-code"
-                                          action="${pageContext.request.contextPath}/purchases/tran-code/update"
-                                          method="POST">
-                                        <input type="hidden" name="tranNo" value="${purchase.tranNo}">
-                                        <input type="hidden" name="tranCode" value="2">
-                                        <button type="button">배송하기</button>
-                                    </form>
-                                </c:if>
-                                <c:if test="${purchase.tranStatusCode.code == TranStatusCode.IN_DELIVERY.code}">
-                                    <form name="tran-code"
-                                          action="${pageContext.request.contextPath}/purchases/tran-code/update"
-                                          method="POST">
-                                        <input type="hidden" name="tranNo" value="${purchase.tranNo}">
-                                        <input type="hidden" name="tranCode" value="3">
-                                        <button type="button">물건도착</button>
-                                    </form>
-                                </c:if>
-                            </td>
-                        </c:if>
-                    </tr>
-                </c:forEach>
+            <tbody id="purchase-item-list">
             </tbody>
         </table>
-        <c:set var="url" value="" scope="request"/>
-        <c:set var="additionalQueryString" value="&menu=${data.menu}" scope="request"/>
-        <c:import var="pageNumbers"
-                  url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"
-                  scope="request"/>
-        ${ pageNumbers }
     </main>
 </body>
 </html>

@@ -11,6 +11,7 @@
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
             crossorigin="anonymous"></script>
     <script src="${pageContext.request.contextPath}/javascript/product/productList.js"></script>
+    <script src="${pageContext.request.contextPath}/javascript/common/page.js"></script>
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"

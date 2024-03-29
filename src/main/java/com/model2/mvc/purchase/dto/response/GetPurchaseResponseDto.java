@@ -27,7 +27,7 @@ public class GetPurchaseResponseDto {
     private String receiverPhone;
     private String divyAddr;
     private String divyRequest;
-    private TranStatusCode tranStatusCode;
+    private TranStatusCodeResponseDto tranStatusCode;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -46,7 +46,8 @@ public class GetPurchaseResponseDto {
         this.receiverPhone = from.getReceiverPhone();
         this.divyAddr = from.getDivyAddr();
         this.divyRequest = from.getDivyRequest();
-        this.tranStatusCode = from.getTranStatusCode();
+        TranStatusCode tsc = from.getTranStatusCode();
+        this.tranStatusCode = new TranStatusCodeResponseDto(tsc.getCode(), tsc.getStatus());
         this.orderDate = from.getOrderDate();
         this.divyDate = from.getDivyDate();
         this.transactionProductions = from.getTransactionProductions();

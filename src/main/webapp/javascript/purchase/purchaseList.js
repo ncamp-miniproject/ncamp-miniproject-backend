@@ -2,6 +2,34 @@ const buttonText = new Map();
 buttonText.set("1", "배송하기");
 buttonText.set("2", "물건도착");
 
+const PAGE = "page";
+const PAGE_SIZE = "pageSize";
+const SEARCH_KEYWORD = "searchKeyword";
+const SEARCH_CONDITION = "searchCondition";
+const MENU = "menu";
+const BUYER_ID = "buyerId";
+
+const queryParamNames = [
+    PAGE,
+    PAGE_SIZE,
+    SEARCH_KEYWORD,
+    SEARCH_CONDITION,
+    MENU,
+    BUYER_ID
+];
+
+const currentDisplaySetting = new Map();
+
+function setDefaultDisplaySetting(page,
+                                  pageSize,
+                                  menu,
+                                  buyerId) {
+    currentDisplaySetting.set(PAGE, page);
+    currentDisplaySetting.set(PAGE_SIZE, pageSize);
+    currentDisplaySetting.set(MENU, menu);
+    currentDisplaySetting.set(BUYER_ID, buyerId);
+}
+
 function getTranCodeUpdateElement(tranNo, tranCode) {
     return `
         <form name="tran-code">
@@ -13,19 +41,113 @@ function getTranCodeUpdateElement(tranNo, tranCode) {
 }
 
 $(() => {
-    const contextPath = $("body").data("context-path");
+    const body = $("body");
+    const contextPath = body.data("context-path");
+    const role = body.data("user-role");
+    const userId = body.data("user-id");
+    const menu = body.data("menu");
 
-    $(".data-row").each((idx, element) => {
-        const jElem = $(element);
-        const tranNo = jElem.data("tran-no");
-        const buyerId = jElem.data("buyer-id");
+    function getRecordElement(purchase) {
+        return `
+        <tr class="data-row"
+            id="tran-no-${purchase.tranNo}"
+            data-tran-no="${purchase.tranNo}"
+            data-buyer-id="${purchase.buyer.userId}"
+            data-tran-code="${purchase.tranStatusCode.code}">
 
-        $(".tran-no", jElem)
-            .attr("href", `${contextPath}/purchases/${tranNo}`);
+            <td><a class="tran-no">${purchase.tranNo}</a></td>
+            <td><a class="buyer-id">${purchase.buyer.userId}</a></td>
+            <td>${purchase.receiverName}</td>
+            <td>${purchase.receiverPhone}</td>
+            <td class="tran-status">${purchase.tranStatusCode.status}</td>
+            
+            
+            ${role === "admin" ? `
+                <td class="tran-status-update">
+                    ${purchase.tranStatusCode.code === "1" ? `
+                        <form name="tran-code"
+                              action="${contextPath}/purchases/tran-code/update"
+                              method="POST">
+                            <input type="hidden" name="tranNo" value="${purchase.tranNo}">
+                            <input type="hidden" name="tranCode" value="2">
+                            <button type="button">배송하기</button>
+                        </form>
+                    ` : "" }
+                    ${purchase.tranStatusCode.code === "2" ? `
+                        <form name="tran-code"
+                              action="${pageContext.request.contextPath}/purchases/tran-code/update"
+                              method="POST">
+                            <input type="hidden" name="tranNo" value="${purchase.tranNo}">
+                            <input type="hidden" name="tranCode" value="3">
+                            <button type="button">물건도착</button>
+                        </form>
+                    ` : ""}
+                </td>
+                ` : ""}
+            </c:if>
+        </tr>
+    `;
+    }
 
-        $(".buyer-id", jElem)
-            .attr("href", `${contextPath}/users/${buyerId}`);
-    });
+    setDefaultDisplaySetting(1, 3, menu, userId);
+    setLink();
+
+    fetchDataAndUpdatePurchaseList();
+
+    function setLink() {
+        $(".data-row").each((idx, element) => {
+            const jElem = $(element);
+            const tranNo = jElem.data("tran-no");
+            const buyerId = jElem.data("buyer-id");
+
+            $(".tran-no", jElem)
+                .attr("href", `${contextPath}/purchases/${tranNo}`);
+
+            $(".buyer-id", jElem)
+                .attr("href", `${contextPath}/users/${buyerId}`);
+        });
+    }
+
+    function fetchDataAndUpdatePurchaseList() {
+        const itemList = $("#purchase-item-list");
+        itemList.children().remove();
+
+        requestPurchaseList(itemList);
+    }
+
+    function requestPurchaseList(itemList) {
+        const queryParameters = {};
+        for (let param of queryParamNames) {
+            const setting = currentDisplaySetting.get(param);
+            if (setting) {
+                queryParameters[param] = setting;
+            }
+        }
+
+        const url = menu === "search"
+            ? `${contextPath}/api/purchases`
+            : `${contextPath}/api/purchases/sale`;
+
+        $.ajax(url, {
+            method: "GET",
+            data: queryParameters,
+            success: (data, textStatus, jqXHR) => {
+                console.log(data);
+                data.purchaseList.forEach(purchase => {
+                    itemList.append(getRecordElement(purchase));
+                });
+                updatePage(data.pageInfo, fetchDataAndUpdatePurchaseList);
+                $("#count-display").text(data.count);
+
+                // TODO: Maybe remove this
+                if (data.menu) {
+                    currentDisplaySetting.set(MENU, data.menu);
+                }
+
+                setLink();
+            }
+        });
+    }
 
     const onClickTranCodeFormButton = e => {
         const form = $(e.target).parent("form[name=tran-code]");

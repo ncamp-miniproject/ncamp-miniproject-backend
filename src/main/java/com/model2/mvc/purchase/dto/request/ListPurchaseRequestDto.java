@@ -1,7 +1,6 @@
 package com.model2.mvc.purchase.dto.request;
 
 import com.model2.mvc.common.SearchCondition;
-import com.model2.mvc.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

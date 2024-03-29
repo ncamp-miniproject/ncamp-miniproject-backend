@@ -78,12 +78,7 @@ public class PurchaseApi {
     @GetMapping("/sale")
     public ResponseEntity<ListPurchaseResponseDto> getSales(
             @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @SessionAttribute(value = "user", required = false) User loginUser) {
-        if (loginUser == null || loginUser.getRole() != Role.ADMIN) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
+            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         ListPurchaseResponseDto saleList = this.purchaseService.getSaleList(page, pageSize);
         saleList.setMenu("manage");
         return new ResponseEntity<>(saleList, HttpStatus.OK);
