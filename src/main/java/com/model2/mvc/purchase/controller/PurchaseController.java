@@ -15,8 +15,10 @@ import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDto;
 import com.model2.mvc.purchase.dto.response.AddPurchaseResponseDTO;
 import com.model2.mvc.purchase.dto.response.GetPurchaseResponseDto;
 import com.model2.mvc.purchase.dto.response.ListPurchaseResponseDto;
+import com.model2.mvc.purchase.service.PurchaseService;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -45,7 +47,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/purchases")
+@RequiredArgsConstructor
 public class PurchaseController {
+    private final PurchaseService purchaseService;
 
     @InitBinder
     public void dateBinding(WebDataBinder binder) {
@@ -127,20 +131,7 @@ public class PurchaseController {
 
     @GetMapping("/{tranNo}")
     public String getPurchase(@PathVariable("tranNo") int tranNo, Model model) throws URISyntaxException {
-        URI uri = new URIBuilder().setScheme("http")
-                .setHost("localhost")
-                .setPort(8089)
-                .setPath("/api/purchases/" + tranNo)
-                .build();
-        try {
-            RequestEntity<Void> requestEntity = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<GetPurchaseResponseDto> responseEntity = restTemplate.exchange(requestEntity,
-                                                                                          GetPurchaseResponseDto.class);
-            model.addAttribute("purchaseData", responseEntity.getBody());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        model.addAttribute("purchaseData", this.purchaseService.getPurchase(tranNo));
         return "purchase/purchase-info";
     }
 
