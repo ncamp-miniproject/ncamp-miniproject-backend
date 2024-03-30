@@ -9,7 +9,7 @@
         INSERT INTO product_image
             (image_no, prod_no, file_name, description, thumbnail)
         VALUES
-            ( nextval(seq_product_image_no),
+            ( nextval('seq_product_image_no'),
               #{prodNo},
               #{fileName},
               #{description},
@@ -19,10 +19,13 @@
     <resultMap id="productImage" type="ProductImage">
         <id column="image_no" property="imageNo" jdbcType="INTEGER"/>
         <result column="prod_no" property="prodNo" jdbcType="INTEGER"/>
-        <result column="file_name" property="filename" jdbcType="VARCHAR"/>
+        <result column="file_name" property="fileName" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="thumbnail" property="thumbnail" jdbcType="BIT"/>
     </resultMap>
 
-
+    <delete id="clear">
+        DELETE
+        FROM product_image;
+    </delete>
 </mapper>

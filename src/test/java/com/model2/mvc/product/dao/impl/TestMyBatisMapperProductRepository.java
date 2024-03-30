@@ -8,6 +8,7 @@ import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.domain.ProductImage;
 import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
@@ -42,7 +43,7 @@ public class TestMyBatisMapperProductRepository {
 
     @Before
     public void before() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductMapper.clear", "CategoryMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear", "ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @After
@@ -52,7 +53,8 @@ public class TestMyBatisMapperProductRepository {
 
     @Test
     public void insert() {
-        this.productRepository.insertProduct(generateOne());
+        Product generated = generateOne();
+        this.productRepository.insertProduct(generated);
     }
 
     private Product generateOne() {

@@ -22,12 +22,17 @@ public class TestCategoryMapper {
 
     @Before
     public void init() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductMapper.clear", "CategoryMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear",
+                                                                      "ProductMapper.clear",
+                                                                      "CategoryMapper.clear");
     }
 
     @After
     public void after() {
-        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession,
+                                                     "ProductImageMapper.clear",
+                                                     "ProductMapper.clear",
+                                                     "CategoryMapper.clear");
     }
 
     @Test

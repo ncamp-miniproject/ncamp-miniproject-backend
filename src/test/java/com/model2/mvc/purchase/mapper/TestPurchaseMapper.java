@@ -37,7 +37,8 @@ public class TestPurchaseMapper {
 
     @Before
     public void init() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("PurchaseMapper.clearTranProd",
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear",
+                                                                      "PurchaseMapper.clearTranProd",
                                                                       "PurchaseMapper.clearTransaction",
                                                                       "ProductMapper.clear",
                                                                       "UserMapper.clear");

@@ -1,6 +1,5 @@
 package com.model2.mvc.product.repository.impl;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.domain.Product;
@@ -193,7 +192,7 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     @Override
     public boolean updateProduct(Product to) {
         try {
-            this.sqlSession.insert("ProductMapper.update", to);
+            this.sqlSession.update("ProductMapper.update", to);
             return true;
         } catch (DataAccessException e) {
             e.printStackTrace();

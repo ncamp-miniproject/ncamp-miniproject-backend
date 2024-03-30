@@ -3,6 +3,7 @@ package com.model2.mvc.product.repository;
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.domain.ProductImage;
 
 import java.util.List;
 import java.util.Map;

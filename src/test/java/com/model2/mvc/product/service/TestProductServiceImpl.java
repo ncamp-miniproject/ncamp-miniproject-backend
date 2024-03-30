@@ -42,7 +42,7 @@ public class TestProductServiceImpl extends TestCase {
 
     @Before
     public void before() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductMapper.clear", "CategoryMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear", "ProductMapper.clear", "CategoryMapper.clear");
     }
 
     @After
