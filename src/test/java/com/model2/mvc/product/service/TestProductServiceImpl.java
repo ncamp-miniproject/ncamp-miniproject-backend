@@ -79,7 +79,6 @@ public class TestProductServiceImpl extends TestCase {
         Product prod1 = new Product();
         prod1.setProdNo(resp1.getProdNo());
         prod1.setProdDetail(resp1.getProdDetail());
-        prod1.setFileName(resp1.getFileName());
         prod1.setManuDate(resp1.getManuDate());
         prod1.setPrice(resp1.getPrice());
         prod1.setProdName(resp1.getProdName());
@@ -89,7 +88,6 @@ public class TestProductServiceImpl extends TestCase {
         Product prod2 = new Product();
         prod2.setProdNo(resp2.getProdNo());
         prod2.setProdDetail(resp2.getProdDetail());
-        prod2.setFileName(resp2.getFileName());
         prod2.setManuDate(resp2.getManuDate());
         prod2.setPrice(resp2.getPrice());
         prod2.setProdName(resp2.getProdName());
@@ -110,7 +108,6 @@ public class TestProductServiceImpl extends TestCase {
             System.out.println(result);
             System.out.println("=====================================\n");
             assertThat(result.getProdNo()).isEqualTo(prod.getProdNo());
-            assertThat(result.getFileName()).isEqualTo(prod.getFileName());
             assertThat(result.getManuDate()).isEqualTo(prod.getManuDate());
             assertThat(result.getPrice()).isEqualTo(prod.getPrice());
             assertThat(result.getProdDetail()).isEqualTo(prod.getProdDetail());

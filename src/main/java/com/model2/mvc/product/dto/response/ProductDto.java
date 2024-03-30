@@ -37,7 +37,6 @@ public class ProductDto {
                 .prodDetail(product.getProdDetail())
                 .manuDate(product.getManuDate())
                 .price(product.getPrice())
-                .fileName(product.getFileName())
                 .regDate(product.getRegDate())
                 .stock(product.getStock())
                 .categoryNo(product.getCategory() == null ? null : product.getCategory().getCategoryNo())

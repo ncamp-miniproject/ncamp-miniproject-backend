@@ -32,7 +32,6 @@ public class UpdateProductResponseDto {
     public static UpdateProductResponseDto from(Product product) {
         UpdateProductResponseDto responseDTO = new UpdateProductResponseDto();
         responseDTO.prodNo = product.getProdNo();
-        responseDTO.fileName = product.getFileName();
         responseDTO.manuDate = product.getManuDate();
         responseDTO.price = product.getPrice();
         responseDTO.prodDetail = product.getProdDetail();

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="EUC-KR" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//en"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductImageMapper">
+    <insert id="insert" parameterType="ProductImage">
+        INSERT INTO product_image
+            (image_no, prod_no, file_name, description, thumbnail)
+        VALUES
+            ( nextval(seq_product_image_no),
+              #{prodNo},
+              #{fileName},
+              #{description},
+              #{thumbnail})
+    </insert>
+
+    <resultMap id="productImage" type="ProductImage">
+        <id column="image_no" property="imageNo" jdbcType="INTEGER"/>
+        <result column="prod_no" property="prodNo" jdbcType="INTEGER"/>
+        <result column="file_name" property="filename" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="thumbnail" property="thumbnail" jdbcType="BIT"/>
+    </resultMap>
+
+
+</mapper>

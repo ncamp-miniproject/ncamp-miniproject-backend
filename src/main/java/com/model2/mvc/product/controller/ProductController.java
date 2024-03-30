@@ -72,7 +72,7 @@ public class ProductController {
         URI uri = new URI("http", null, "localhost", 8089, "/api/products", null, null);
         // TODO: check if using BeanUtil.doMapping method doesn't make any problem
         CreateProductRequestDto requestEntityForApi = BeanUtil.doMapping(CreateProductRequestDto.class, requestDto);
-        MultipartFile imageMultipart = requestDto.getImageFile();
+        MultipartFile imageMultipart = requestDto.getImageFiles();
         if (imageMultipart != null) {
             try {
                 requestEntityForApi.setImageName(imageMultipart.getOriginalFilename());

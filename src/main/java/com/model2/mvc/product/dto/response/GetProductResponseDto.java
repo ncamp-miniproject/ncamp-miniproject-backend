@@ -34,7 +34,6 @@ public class GetProductResponseDto {
     public static GetProductResponseDto from(Product product) {
         GetProductResponseDto dto = new GetProductResponseDto();
         dto.prodNo = product.getProdNo();
-        dto.fileName = product.getFileName();
         dto.manuDate = product.getManuDate();
         dto.price = product.getPrice();
         dto.prodDetail = product.getProdDetail();

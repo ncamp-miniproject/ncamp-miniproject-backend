@@ -14,6 +14,21 @@
     <script src="${pageContext.request.contextPath}/javascript/product/productRegister.js"
             type="text/javascript"></script>
 
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ"
+          crossorigin="anonymous">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+
 </head>
 
 <body data-context-path="${pageContext.request.contextPath}">
@@ -24,7 +39,7 @@
         <div class="inner-header">
             <h2 class="page-title">상품등록</h2>
         </div>
-        <form:form name="product-register-form" modelAttribute="productDTO" enctype="multipart/form-data">
+        <form:form name="product-register-form" modelAttribute="productDTO" enctype="multipart/form-data" id="product-register-form">
             <div class="form-item">
 				<label class="form-label" for="prod-name">상품명</label>
                 <form:input path="prodName" type="text" cssClass="form-input" id="prod-name"/>
@@ -45,8 +60,10 @@
                 </div>
 			</div>
             <div class="form-item">
-				<label class="form-label" for="image">상품이미지</label>
-                <form:input path="imageFile" type="file" cssClass="form-input" id="image"/>
+				<label class="form-label">상품이미지</label>
+                <button type="button" id="image-upload-window-button">이미지 선택</button>
+                <div class="row" id="image-container">
+                </div>
 			</div>
             <div class="form-item">
 				<label class="form-label" for="stock">재고</label>

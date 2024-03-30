@@ -61,7 +61,6 @@ public class TestMyBatisMapperProductRepository {
         prod.setProdDetail("Detail of prod");
         prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
-        prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
         prod.setStock(13);
         return prod;

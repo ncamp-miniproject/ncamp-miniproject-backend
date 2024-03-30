@@ -46,7 +46,6 @@ public class TestProductMapper {
         prod.setProdDetail("Detail of prod");
         prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
-        prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
         prod.setStock(13);
         this.sqlSession.insert("ProductMapper.insert", prod);
@@ -59,7 +58,6 @@ public class TestProductMapper {
         prod.setProdDetail("Detail of prod");
         prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
-        prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
         prod.setStock(13);
         this.sqlSession.insert("ProductMapper.insert", prod);
@@ -72,7 +70,6 @@ public class TestProductMapper {
         assertThat(found.getProdName()).isEqualTo(prod.getProdName());
         assertThat(found.getProdDetail()).isEqualTo(prod.getProdDetail());
         assertThat(found.getPrice()).isEqualTo(prod.getPrice());
-        assertThat(found.getFileName()).isEqualTo(prod.getFileName());
         assertThat(found.getStock()).isEqualTo(prod.getStock());
     }
 
@@ -154,7 +151,6 @@ public class TestProductMapper {
         prod.setProdDetail("Detail of prod");
         prod.setManuDate(LocalDate.of(2023, 1, 2));
         prod.setPrice(10000);
-        prod.setFileName("asdf.png");
         prod.setRegDate(new Date(System.currentTimeMillis()));
         prod.setStock(13);
         this.sqlSession.insert("ProductMapper.insert", prod);
@@ -185,7 +181,6 @@ public class TestProductMapper {
         prototype.setProdDetail("Detail of prod");
         prototype.setManuDate(LocalDate.of(2023, 1, 2));
         prototype.setPrice(10000);
-        prototype.setFileName("asdf.png");
         prototype.setRegDate(new Date(System.currentTimeMillis()));
         prototype.setStock(13);
         this.sqlSession.update("ProductMapper.update", to);

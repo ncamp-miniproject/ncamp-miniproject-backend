@@ -14,6 +14,7 @@ import lombok.ToString;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -31,9 +32,9 @@ public class Product {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate manuDate;
     private Integer price;
-    private String fileName;
     private Date regDate;
     private Integer stock;
+    private List<ProductImage> productImages;
     private Category category;
 
     public Product(int prodNo) {

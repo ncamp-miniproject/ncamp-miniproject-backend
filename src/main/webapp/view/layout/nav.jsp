@@ -44,7 +44,7 @@
                         <a href="${pageContext.request.contextPath}/products/add-form">판매상품등록</a>
                     </li>
                     <li>
-                        <a> href="${pageContext.request.contextPath}/products?menu=manage">판매상품관리</a>
+                        <a href="${pageContext.request.contextPath}/products?menu=manage">판매상품관리</a>
                     </li>
                 </c:if>
                 <li>

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 public class CreateProductFormRequestDto {
-    private MultipartFile imageFile;
+    private MultipartFile imageFiles;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)

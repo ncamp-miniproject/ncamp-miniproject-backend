@@ -13,7 +13,6 @@
         prod_detail,
         manufacture_day,
         price,
-        image_file,
         reg_date,
         stock,
         category_no )
@@ -29,7 +28,6 @@
         #{prodDetail: VARCHAR},
         #{manuDate: DATE},
         #{price: NUMERIC},
-        #{fileName: VARCHAR},
         <if test="regDate != null">
             #{regDate: DATE}
         </if>
@@ -48,10 +46,10 @@
         <result column="prod_detail" property="prodDetail" jdbcType="VARCHAR"/>
         <result column="manufacture_day" property="manuDate" jdbcType="DATE"/>
         <result column="price" property="price" jdbcType="NUMERIC"/>
-        <result column="image_file" property="fileName" jdbcType="VARCHAR"/>
         <result column="reg_date" property="regDate" jdbcType="DATE"/>
         <result column="stock" property="stock" jdbcType="NUMERIC"/>
         <association property="category" javaType="Category" resultMap="CategoryMapper.categoryMap"/>
+        <collection property="productImages" resultMap="ProductImageMapper.productImage"/>
     </resultMap>
 
     <select id="findById" parameterType="int" resultMap="product">
@@ -61,33 +59,41 @@
             p.prod_detail     AS prod_detail,
             p.manufacture_day AS manufacture_day,
             p.price           AS price,
-            p.image_file      AS image_file,
             p.reg_date        AS reg_date,
             p.stock           AS stock,
             c.category_no     AS category_no,
-            c.category_name   AS category_name
+            c.category_name   AS category_name,
+            pi.image_no       AS image_no,
+            pi.file_name      AS file_name,
+            pi.description    AS description,
+            pi.thumbnail      AS thumbnail
         FROM product AS p
+        LEFT OUTER JOIN product_image AS pi ON pi.prod_no = p.prod_no
         LEFT OUTER JOIN category AS c ON c.category_no = p.category_no
         WHERE p.prod_no = #{value}
     </select>
 
     <select id="findProductsByIds" parameterType="java.util.List" resultMap="product">
         SELECT
-        p.prod_no,
-        p.prod_name,
-        p.prod_detail,
-        p.manufacture_day,
-        p.price,
-        p.image_file,
-        p.reg_date,
-        p.stock,
-        c.category_no,
-        c.category_name
+            p.prod_no,
+            p.prod_name,
+            p.prod_detail,
+            p.manufacture_day,
+            p.price,
+            p.reg_date,
+            p.stock,
+            c.category_no,
+            c.category_name,
+            pi.image_no,
+            pi.file_name,
+            pi.description,
+            pi.thumbnail
         FROM product AS p
         LEFT OUTER JOIN category AS c ON c.category_no = p.category_no
+        LEFT OUTER JOIN product_image AS pi ON pi.prod_no = p.prod_no
         <where>
             <if test="list.size != 0">
-                prod_no IN
+                p.prod_no IN
                 <foreach item="id" collection="list" open="(" separator=", " close=")">
                     #{id}
                 </foreach>
@@ -102,11 +108,14 @@
             v.prod_detail     AS prod_detail,
             v.manufacture_day AS manufacture_day,
             v.price           AS price,
-            v.image_file      AS image_file,
             v.reg_date        AS reg_date,
             v.stock           AS stock,
             v.category_no     AS category_no,
-            v.category_name   AS category_name
+            v.category_name   AS category_name,
+            v.image_no       AS image_no,
+            v.file_name      AS file_name,
+            v.description    AS description,
+            v.thumbnail      AS thumbnail
         FROM (
             SELECT
                 ROW_NUMBER() OVER(
@@ -139,14 +148,18 @@
                 p.prod_detail     AS prod_detail,
                 p.manufacture_day AS manufacture_day,
                 p.price           AS price,
-                p.image_file      AS image_file,
                 p.reg_date        AS reg_date,
                 p.stock           AS stock,
                 c.category_no     AS category_no,
-                c.category_name   AS category_name
+                c.category_name   AS category_name,
+                pi.image_no       AS image_no,
+                pi.file_name      AS file_name,
+                pi.description    AS description,
+                pi.thumbnail      AS thumbnail
             FROM product AS p
             LEFT OUTER JOIN category AS c
                             ON c.category_no = p.category_no
+            LEFT OUTER JOIN product_image pi ON p.prod_no = pi.prod_no
             <where>
                 <if test="searchCondition == 1">
                     p.prod_name LIKE #{prodName}
@@ -235,9 +248,6 @@
             </if>
             <if test="price != null">
                 price = #{price},
-            </if>
-            <if test="fileName != null">
-                image_file = #{fileName},
             </if>
             <if test="regDate != null">
                 reg_date = #{regDate},

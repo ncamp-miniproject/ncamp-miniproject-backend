@@ -55,7 +55,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public AddProductResponseDto addProduct(CreateProductRequestDto toInsert, String contextRealPath) {
         Product product = new Product();
-        product.setFileName(storeFile(toInsert.getBase64ImageData(), contextRealPath, toInsert.getImageName()));
         product.setManuDate(toInsert.getManuDate());
         product.setPrice(toInsert.getPrice());
         product.setProdDetail(toInsert.getProdDetail());
@@ -132,7 +131,6 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("No such record for given prodNo:" + prodNo));
         Product to = new Product();
         to.setProdNo(prodNo);
-        to.setFileName(requestDTO.getFileName());
         to.setManuDate(StringUtil.parseDate(requestDTO.getManuDate(), "-"));
         to.setPrice(requestDTO.getPrice());
         to.setProdDetail(requestDTO.getProdDetail());

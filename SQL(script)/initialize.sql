@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS transaction_prod;
 
 DROP TABLE IF EXISTS  transaction;
 
+DROP TABLE IF EXISTS product_image;
+
 DROP TABLE IF EXISTS  product;
 
 DROP TABLE IF EXISTS  category;
@@ -16,11 +18,15 @@ DROP SEQUENCE IF EXISTS seq_transaction_tran_no;
 
 DROP SEQUENCE IF EXISTS seq_category_category_no;
 
+DROP SEQUENCE IF EXISTS seq_product_image_no;
+
 CREATE SEQUENCE IF NOT EXISTS seq_product_prod_no INCREMENT BY 1 START WITH 10000;
 
 CREATE SEQUENCE IF NOT EXISTS  seq_transaction_tran_no INCREMENT BY 1 START WITH 10000;
 
 CREATE SEQUENCE IF NOT EXISTS  seq_category_category_no INCREMENT BY 1 START WITH 10000;
+
+CREATE SEQUENCE IF NOT EXISTS seq_product_image_no INCREMENT BY 1 START WITH 10000;
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -61,13 +67,23 @@ CREATE TABLE IF NOT EXISTS product
     prod_detail     TEXT,
     manufacture_day DATE DEFAULT CURRENT_DATE,
     price           INTEGER NOT NULL,
-    image_file      TEXT,
     reg_date        DATE DEFAULT CURRENT_DATE,
     stock           INTEGER NOT NULL,
     category_no     INTEGER,
     CONSTRAINT product_pk PRIMARY KEY (prod_no),
     CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no),
     CONSTRAINT prod_register_fk FOREIGN KEY (register) REFERENCES users (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS product_image
+(
+    image_no INTEGER,
+    prod_no INTEGER,
+    file_name TEXT,
+    description TEXT,
+    thumbnail BOOLEAN,
+    CONSTRAINT product_image_pk PRIMARY KEY (image_no),
+    CONSTRAINT product_fk FOREIGN KEY (prod_no) REFERENCES product (prod_no)
 );
 
 CREATE TABLE IF NOT EXISTS transaction

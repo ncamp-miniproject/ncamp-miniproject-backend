@@ -83,16 +83,20 @@
             p.prod_detail      "prod_detail",
             p.manufacture_day  "manufacture_day",
             p.price            "price",
-            p.image_file       "image_file",
             p.reg_date         "reg_date",
             p.stock            "stock",
             c.category_no      "category_no",
-            c.category_name    "category_name"
+            c.category_name    "category_name",
+            pi.image_no        "image_no",
+            pi.file_name       "file_name",
+            pi.description     "description",
+            pi.thumbnail       "thumbnail"
         FROM
             transaction t
             LEFT OUTER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
             LEFT OUTER JOIN product          p ON tp.prod_no = p.prod_no
             LEFT OUTER JOIN category         c ON c.category_no = p.category_no
+            LEFT OUTER JOIN product_image    pi ON pi.prod_no = p.prod_no
         WHERE
             t.tran_no = #{value}
     </select>
@@ -104,56 +108,59 @@
 
     <select id="findList" parameterType="map" resultMap="purchaseListData">
         SELECT
-        t.row_num          "row_num",
-        t.tran_no          "tran_no",
-        t.buyer_id         "buyer_id",
-        t.payment_option   "payment_option",
-        t.receiver_name    "receiver_name",
-        t.receiver_phone   "receiver_phone",
-        t.demailaddr       "demailaddr",
-        t.dlvy_request     "dlvy_request",
-        t.tran_status_code "tran_status_code",
-        t.order_date       "order_date",
-        t.dlvy_date        "dlvy_date",
-        t.count            "count",
-        tp.prod_no         "prod_no",
-        tp.quantity        "quantity",
-        p.prod_name        "prod_name",
-        p.prod_detail      "prod_detail",
-        p.manufacture_day  "manufacture_day",
-        p.price            "price",
-        p.image_file       "image_file",
-        p.reg_date         "reg_date",
-        p.stock            "stock",
-        c.category_no      "category_no"
-        FROM
-        (
-        SELECT
-        ROW_NUMBER() OVER (ORDER BY t.order_date DESC) ROW_NUM,
-        t.tran_no tran_no,
-        t.buyer_id buyer_id,
-        t.payment_option payment_option,
-        t.receiver_name receiver_name,
-        t.receiver_phone receiver_phone,
-        t.demailaddr demailaddr,
-        t.dlvy_request dlvy_request,
-        t.tran_status_code tran_status_code,
-        t.order_date order_date,
-        t.dlvy_date dlvy_date,
-        COUNT(*) OVER () count
-        FROM
-        transaction t
-        <where>
-            <if test="buyerId != null">
-                buyer_id = #{buyerId}
-            </if>
-        </where>
+            t.row_num          "row_num",
+            t.tran_no          "tran_no",
+            t.buyer_id         "buyer_id",
+            t.payment_option   "payment_option",
+            t.receiver_name    "receiver_name",
+            t.receiver_phone   "receiver_phone",
+            t.demailaddr       "demailaddr",
+            t.dlvy_request     "dlvy_request",
+            t.tran_status_code "tran_status_code",
+            t.order_date       "order_date",
+            t.dlvy_date        "dlvy_date",
+            t.count            "count",
+            tp.prod_no         "prod_no",
+            tp.quantity        "quantity",
+            p.prod_name        "prod_name",
+            p.prod_detail      "prod_detail",
+            p.manufacture_day  "manufacture_day",
+            p.price            "price",
+            p.reg_date         "reg_date",
+            p.stock            "stock",
+            c.category_no      "category_no",
+            pi.image_no        "image_no",
+            pi.file_name       "file_name",
+            pi.description     "description",
+            pi.thumbnail       "thumbnail"
+        FROM (
+            SELECT
+            ROW_NUMBER() OVER (ORDER BY t.order_date DESC) ROW_NUM,
+            t.tran_no tran_no,
+            t.buyer_id buyer_id,
+            t.payment_option payment_option,
+            t.receiver_name receiver_name,
+            t.receiver_phone receiver_phone,
+            t.demailaddr demailaddr,
+            t.dlvy_request dlvy_request,
+            t.tran_status_code tran_status_code,
+            t.order_date order_date,
+            t.dlvy_date dlvy_date,
+            COUNT(*) OVER () count
+            FROM
+            transaction t
+            <where>
+                <if test="buyerId != null">
+                    buyer_id = #{buyerId}
+                </if>
+            </where>
         ) t
         INNER JOIN transaction_prod tp ON tp.tran_no = t.tran_no
         INNER JOIN product p ON tp.prod_no = p.prod_no
         LEFT OUTER JOIN category c ON c.category_no = p.category_no
+        LEFT OUTER JOIN product_image pi ON pi.prod_no = p.prod_no
         WHERE t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
-        ORDER BY t.order_date
+        ORDER BY t.order_date DESC
     </select>
 
     <update id="update" parameterType="Purchase">

@@ -32,7 +32,6 @@ public class AddProductResponseDto {
     public static AddProductResponseDto from(Product product) {
         AddProductResponseDto dto = new AddProductResponseDto();
         dto.prodNo = product.getProdNo();
-        dto.fileName = product.getFileName();
         dto.manuDate = product.getManuDate();
         dto.price = product.getPrice();
         dto.prodDetail = product.getProdDetail();
