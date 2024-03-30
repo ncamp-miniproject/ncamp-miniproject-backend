@@ -3,6 +3,7 @@ package com.model2.mvc.product.service;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.Page;
+import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
@@ -54,13 +55,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public AddProductResponseDto addProduct(CreateProductRequestDto toInsert, String contextRealPath) {
-        Product product = new Product();
-        product.setManuDate(toInsert.getManuDate());
-        product.setPrice(toInsert.getPrice());
-        product.setProdDetail(toInsert.getProdDetail());
-        product.setProdName(toInsert.getProdName());
+        Product product = null;
+        try {
+            product = BeanUtil.doMapping(Product.class, toInsert);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         product.setRegDate(new Date(System.currentTimeMillis()));
-        product.setStock(toInsert.getStock());
         if (toInsert.getCategoryNo() != null) {
             product.setCategory(this.categoryService.getCategory(toInsert.getCategoryNo()));
         }
