@@ -1,16 +1,18 @@
 DROP TABLE IF EXISTS transaction_prod;
 
-DROP TABLE IF EXISTS  transaction;
+DROP TABLE IF EXISTS transaction;
 
 DROP TABLE IF EXISTS product_image;
 
-DROP TABLE IF EXISTS  product;
+DROP TABLE IF EXISTS product;
 
-DROP TABLE IF EXISTS  category;
+DROP TABLE IF EXISTS category;
 
-DROP TABLE IF EXISTS  subscription;
+DROP TABLE IF EXISTS subscription;
 
-DROP TABLE IF EXISTS  users;
+DROP TABLE IF EXISTS seller;
+
+DROP TABLE IF EXISTS users;
 
 DROP SEQUENCE IF EXISTS seq_product_prod_no;
 
@@ -22,9 +24,9 @@ DROP SEQUENCE IF EXISTS seq_product_image_no;
 
 CREATE SEQUENCE IF NOT EXISTS seq_product_prod_no INCREMENT BY 1 START WITH 10000;
 
-CREATE SEQUENCE IF NOT EXISTS  seq_transaction_tran_no INCREMENT BY 1 START WITH 10000;
+CREATE SEQUENCE IF NOT EXISTS seq_transaction_tran_no INCREMENT BY 1 START WITH 10000;
 
-CREATE SEQUENCE IF NOT EXISTS  seq_category_category_no INCREMENT BY 1 START WITH 10000;
+CREATE SEQUENCE IF NOT EXISTS seq_category_category_no INCREMENT BY 1 START WITH 10000;
 
 CREATE SEQUENCE IF NOT EXISTS seq_product_image_no INCREMENT BY 1 START WITH 10000;
 
@@ -42,13 +44,23 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
+CREATE TABLE seller
+(
+    seller_id         TEXT,
+    main_image_file TEXT,
+    description     TEXT,
+    CONSTRAINT seller_pk PRIMARY KEY (seller_id),
+    CONSTRAINT seller_users_fk FOREIGN KEY (seller_id) REFERENCES users (user_id)
+);
+
+
 CREATE TABLE IF NOT EXISTS subscription
 (
     subscriber_id TEXT,
     seller_id     TEXT,
     CONSTRAINT subscription_pk PRIMARY KEY (subscriber_id, seller_id),
     CONSTRAINT subscription_subscriber_fk FOREIGN KEY (subscriber_id) REFERENCES users (user_id),
-    CONSTRAINT subscription_seller_fk FOREIGN KEY (seller_id) REFERENCES users (user_id)
+    CONSTRAINT subscription_seller_fk FOREIGN KEY (seller_id) REFERENCES seller (seller_id)
 );
 
 CREATE TABLE IF NOT EXISTS category
@@ -63,7 +75,7 @@ CREATE TABLE IF NOT EXISTS product
 (
     prod_no         INTEGER,
     register        TEXT,
-    prod_name       TEXT NOT NULL,
+    prod_name       TEXT    NOT NULL,
     prod_detail     TEXT,
     manufacture_day DATE DEFAULT CURRENT_DATE,
     price           INTEGER NOT NULL,
@@ -72,16 +84,16 @@ CREATE TABLE IF NOT EXISTS product
     category_no     INTEGER,
     CONSTRAINT product_pk PRIMARY KEY (prod_no),
     CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no),
-    CONSTRAINT prod_register_fk FOREIGN KEY (register) REFERENCES users (user_id)
+    CONSTRAINT prod_register_fk FOREIGN KEY (register) REFERENCES seller (seller_id)
 );
 
 CREATE TABLE IF NOT EXISTS product_image
 (
-    image_no INTEGER,
-    prod_no INTEGER,
-    file_name TEXT,
+    image_no    INTEGER,
+    prod_no     INTEGER,
+    file_name   TEXT,
     description TEXT,
-    thumbnail BOOLEAN,
+    thumbnail   BOOLEAN,
     CONSTRAINT product_image_pk PRIMARY KEY (image_no),
     CONSTRAINT product_fk FOREIGN KEY (prod_no) REFERENCES product (prod_no)
 );
@@ -114,5 +126,3 @@ CREATE TABLE IF NOT EXISTS transaction_prod
     CONSTRAINT tp_prod_no_fk FOREIGN KEY (prod_no) REFERENCES product (prod_no),
     CONSTRAINT tp_quantity_num_range CHECK (quantity >= 0)
 );
-
-COMMIT;
