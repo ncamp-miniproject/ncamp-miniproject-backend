@@ -29,8 +29,6 @@ function setDefaultDisplaySetting(page,
                                   menu) {
     currentDisplaySetting.set(PAGE, page);
     currentDisplaySetting.set(PAGE_SIZE, pageSize);
-    currentDisplaySetting.set(SEARCH_KEYWORD, searchKeyword);
-    currentDisplaySetting.set(SEARCH_CONDITION, searchCondition);
     currentDisplaySetting.set(MENU, menu);
 }
 
@@ -50,10 +48,10 @@ $(() => {
                     <img src="${contextPath}/images/uploadFiles/${imageFileName}"
                          alt="Product Image">
                     <div>
-                        <p>${prodNo}</p>
-                        <p>${prodName}</p>
+                        <a>${prodName}</a>
                         <p>${price}</p>
                         <p>${categoryName}</p>
+                        ${stock === 0 ? "<p>재고 없음</p>" : ""}
                     </div>
                 </div>
             </div>
@@ -93,15 +91,18 @@ $(() => {
         $(e.target).after(searchConditionFormMap[$("select[name=searchCondition] option:selected").val()]);
     });
 
-    $(".list .item").each((idx, elem) => {
-        const prodNo = $(elem).data("prodNo");
-        const stock = $(elem).data("stock");
-        if (parseInt(stock) > 0) {
-            $(elem).children("td").children(".prod-no").attr("href", `${contextPath}/products/${prodNo}?menu=${menu}`);
+    $("#search-button").on("click", () => {
+        doSearch();
+    });
+
+    searchForm.on("keypress", e => {
+        e.preventDefault();
+        if (e.which === 13) {
+            doSearch();
         }
     });
 
-    $("#search-button").on("click", () => {
+    function doSearch() {
         currentDisplaySetting.set(SEARCH_CONDITION, $("form[name=search] select").val());
 
         const arr = [];
@@ -114,7 +115,7 @@ $(() => {
         currentDisplaySetting.set(PAGE, 1);
 
         fetchDataAndUpdateProductList();
-    });
+    }
 
     $(".order-button").on("click", e => {
         const je = $(e.target);
@@ -157,18 +158,33 @@ $(() => {
             method: "GET",
             success: (data, textStatus, jqXHR) => {
                 console.log(data);
-                data.products.forEach(p => {
-                    const itemElem = getItemElem(p.prodNo,
-                        p.prodName,
-                        p.price,
-                        p.stock,
-                        "sample_ive.webp",
-                        p.category ? p.category.categoryName : "카테고리 없음");
-                    itemList.append(itemElem);
-                });
+                updateProductList(itemList, data.products);
                 updatePage(data.pageInfo, fetchDataAndUpdateProductList)
                 $("#count-display").text(data.count);
             }
+        });
+    }
+
+    function updateProductList(itemList, products) {
+        products.forEach(p => {
+            const thumbnail = p.productImages.filter(pi => pi.thumbnail)[0];
+            const itemElem = $(getItemElem(p.prodNo,
+                p.prodName,
+                p.price,
+                p.stock,
+                thumbnail ? thumbnail.fileName : "",
+                p.category ? p.category.categoryName : "카테고리 없음"));
+            const jItem = $("a", itemElem);
+            if (p.stock > 0) {
+                const menu = currentDisplaySetting.get(MENU);
+                const queryParam = menu ? `?menu=${menu}` : "";
+                jItem.attr("href", `${contextPath}/products/${p.prodNo}${queryParam}`)
+                    .attr("target", "_blank")
+                    .attr("rel", "noopener noreferrer");
+            } else {
+                jItem.replaceWith($(`<p>${p.prodName}</p>`));
+            }
+            itemList.append(itemElem);
         });
     }
 

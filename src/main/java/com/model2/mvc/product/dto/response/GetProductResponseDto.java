@@ -5,17 +5,18 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
 import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.domain.ProductImage;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @ToString
 public class GetProductResponseDto {
     private int prodNo;
-    private String fileName;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -27,6 +28,7 @@ public class GetProductResponseDto {
     private int stock;
     private String categoryName;
     private boolean purchasable;
+    private List<ProductImage> productImages;
 
     private GetProductResponseDto() {
     }
@@ -43,6 +45,7 @@ public class GetProductResponseDto {
         if (product.getCategory() != null) {
             dto.categoryName = product.getCategory().getCategoryName();
         }
+        dto.productImages = product.getProductImages();
         return dto;
     }
 

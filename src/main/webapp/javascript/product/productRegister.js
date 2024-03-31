@@ -40,7 +40,6 @@ $(() => {
         .datepicker("option", "dateFormat", "yy-mm-dd");
 
     $("#image-upload-window-button").on("click", () => {
-        console.log("here");
         window.open(`${contextPath}/view/fragment/image-upload.jsp`, "_blank", "width=500,height=500");
     });
 });

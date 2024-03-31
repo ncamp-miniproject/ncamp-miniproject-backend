@@ -45,12 +45,6 @@ import java.util.List;
 public class PurchaseApi {
     private final PurchaseService purchaseService;
 
-    @Value("#{constantProperties['defaultPageSize']}")
-    private int defaultPageSize;
-
-    @Value("#{constantProperties['defaultPageDisplay']}")
-    private int defaultPageDisplay;
-
     @InitBinder
     public void dateBinding(WebDataBinder binder) {
         binder.registerCustomEditor(LocalDate.class, LocalDateEditor.getInstance());

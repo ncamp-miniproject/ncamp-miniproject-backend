@@ -31,7 +31,7 @@ $(() => {
                     <img alt="No image">
                     <div class="caption">
                         <p>${imageDescText}</p>
-                        <input type="hidden" name="image-desc" value="${imageDescText}">
+                        <input type="hidden" name="imageDesc" value="${imageDescText}">
                     </div>
                 </div>
             </div>

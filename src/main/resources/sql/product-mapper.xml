@@ -112,10 +112,10 @@
             v.stock           AS stock,
             v.category_no     AS category_no,
             v.category_name   AS category_name,
-            v.image_no       AS image_no,
-            v.file_name      AS file_name,
-            v.description    AS description,
-            v.thumbnail      AS thumbnail
+            pi.image_no       AS image_no,
+            pi.file_name      AS file_name,
+            pi.description    AS description,
+            pi.thumbnail      AS thumbnail
         FROM (
             SELECT
                 ROW_NUMBER() OVER(
@@ -151,15 +151,10 @@
                 p.reg_date        AS reg_date,
                 p.stock           AS stock,
                 c.category_no     AS category_no,
-                c.category_name   AS category_name,
-                pi.image_no       AS image_no,
-                pi.file_name      AS file_name,
-                pi.description    AS description,
-                pi.thumbnail      AS thumbnail
+                c.category_name   AS category_name
             FROM product AS p
             LEFT OUTER JOIN category AS c
-                            ON c.category_no = p.category_no
-            LEFT OUTER JOIN product_image pi ON p.prod_no = pi.prod_no
+                ON c.category_no = p.category_no
             <where>
                 <if test="searchCondition == 1">
                     p.prod_name LIKE #{prodName}
@@ -180,6 +175,7 @@
                 </if>
             </where>
         ) v
+        LEFT OUTER JOIN product_image pi ON pi.prod_no = v.prod_no
         WHERE v.row_num BETWEEN #{startRowNum} AND #{endRowNum}
         <if test="orderBy != null">
             <if test="orderBy.propertyName == 'prodNo'">

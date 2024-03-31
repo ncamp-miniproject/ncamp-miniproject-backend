@@ -4,13 +4,20 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.model2.mvc.common.binder.jackson.LocalDateDeserializer;
 import com.model2.mvc.common.binder.jackson.LocalDateSerializer;
+import com.model2.mvc.product.dto.ProductImageDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @ToString
@@ -23,29 +30,7 @@ public class CreateProductRequestDto {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate manuDate;
     private int stock;
-    private String imageName;
-    private String base64ImageData;
     private Integer categoryNo;
 
-    public CreateProductRequestDto(){
-    }
-
-    @Builder
-    public CreateProductRequestDto(String prodName,
-                                   String prodDetail,
-                                   int price,
-                                   LocalDate manuDate,
-                                   int stock,
-                                   String imageName,
-                                   String base64ImageData,
-                                   Integer categoryNo) {
-        this.prodName = prodName;
-        this.prodDetail = prodDetail;
-        this.price = price;
-        this.manuDate = manuDate;
-        this.stock = stock;
-        this.imageName = imageName;
-        this.base64ImageData = base64ImageData;
-        this.categoryNo = categoryNo;
-    }
+    private List<ProductImageDto> productImageDto;
 }

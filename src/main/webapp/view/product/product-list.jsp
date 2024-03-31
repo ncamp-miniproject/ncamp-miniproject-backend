@@ -47,7 +47,7 @@
             padding: 12px 120px;
         }
 
-        .page-navigator, .category-item, .order-button {
+        a {
             cursor: pointer;
         }
     </style>

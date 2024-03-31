@@ -4,6 +4,7 @@ import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.product.controller.editor.CategoryNoEditor;
+import com.model2.mvc.product.dto.ProductImageDto;
 import com.model2.mvc.product.dto.request.CreateProductFormRequestDto;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
@@ -35,6 +36,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -68,19 +70,30 @@ public class ProductController {
 
     @PostMapping
     public String addProduct(@ModelAttribute CreateProductFormRequestDto requestDto)
-    throws URISyntaxException, InstantiationException, IllegalAccessException {
+    throws URISyntaxException, InstantiationException, IllegalAccessException, IOException {
         URI uri = new URI("http", null, "localhost", 8089, "/api/products", null, null);
-        // TODO: check if using BeanUtil.doMapping method doesn't make any problem
         CreateProductRequestDto requestEntityForApi = BeanUtil.doMapping(CreateProductRequestDto.class, requestDto);
-        MultipartFile imageMultipart = requestDto.getImageFiles();
-        if (imageMultipart != null) {
-            try {
-                requestEntityForApi.setImageName(imageMultipart.getOriginalFilename());
-                requestEntityForApi.setBase64ImageData(Base64.getEncoder().encodeToString(imageMultipart.getBytes()));
-            } catch (IOException e) {
-                e.printStackTrace();
+
+        List<ProductImageDto> productImages = new LinkedList<>();
+        List<MultipartFile> multipartFiles = requestDto.getImageFiles();
+        List<String> descriptions = requestDto.getImageDesc();
+        for (int i = 0; i < multipartFiles.size(); i++) {
+            MultipartFile multipartFile = multipartFiles.get(i);
+            String imageName = multipartFile.getOriginalFilename();
+            int extensionSeparatorIndex = imageName.lastIndexOf(".");
+            if (extensionSeparatorIndex == -1) {
+                continue;
             }
+            String fileExtension = imageName.substring(extensionSeparatorIndex);
+
+            String description = descriptions.get(i);
+            productImages.add(new ProductImageDto(fileExtension,
+                                                  Base64.getEncoder().encodeToString(multipartFile.getBytes()),
+                                                  description,
+                                                  i == 0));
         }
+
+        requestEntityForApi.setProductImageDto(productImages);
 
         RequestEntity<CreateProductRequestDto> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
@@ -124,8 +137,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public String listProduct(@RequestParam("menu") String menu, Model model)
-    throws URISyntaxException {
+    public String listProduct(@RequestParam("menu") String menu, Model model) throws URISyntaxException {
         model.addAttribute("menuMode", menu);
         return "product/product-list";
     }

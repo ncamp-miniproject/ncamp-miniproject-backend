@@ -1,3 +1,5 @@
+let currentImageIdx = 0;
+
 $(() => {
     const contextPath = $("body").data("context-path");
 
@@ -9,12 +11,34 @@ $(() => {
     });
 
     $("#quantityInput").on("change", e => {
-        if ($(e.target).val() <= 0) {
-
+        const quantityInputElem = $(e.target);
+        if (parseInt(quantityInputElem.val()) <= 0) {
+            quantityInputElem.val(1);
         }
     });
 
-    $(".btn--back").on("click", () => {
-        history.go(-1);
+    const generateImgElem = (imageData) => `
+        <img src="${contextPath}/images/uploadFiles/${imageData.fileName}"
+             alt="No image">
+        <p>${imageData.description}</p>
+    `;
+
+    const imageContainer = $("#image-container");
+    imageContainer.append(generateImgElem(prodImageData[currentImageIdx]));
+
+    $("#slide-left").on("click", () => {
+        if (currentImageIdx <= 0) {
+            return;
+        }
+        imageContainer.children().remove();
+        imageContainer.append(generateImgElem(prodImageData[--currentImageIdx]));
+    });
+
+    $("#slide-right").on("click", () => {
+        if (currentImageIdx >= prodImageData.length - 1) {
+            return;
+        }
+        imageContainer.children().remove();
+        imageContainer.append(generateImgElem(prodImageData[++currentImageIdx]));
     });
 });

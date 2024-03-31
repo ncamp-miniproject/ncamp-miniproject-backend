@@ -8,6 +8,7 @@ import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
+import com.model2.mvc.product.domain.ProductImage;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
@@ -16,11 +17,12 @@ import com.model2.mvc.product.dto.response.GetProductResponseDto;
 import com.model2.mvc.product.dto.response.ListProductResponseDto;
 import com.model2.mvc.product.dto.response.ProductDto;
 import com.model2.mvc.product.dto.response.UpdateProductResponseDto;
+import com.model2.mvc.product.repository.ProductImageRepository;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,22 +38,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-
+    private final ProductImageRepository productImageRepository;
     private final CategoryService categoryService;
+    private final ListQueryHelper listQueryHelper;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
 
     @Value("#{constantProperties['defaultPageDisplay']}")
     private int defaultPageDisplay;
-
-    @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService) {
-        this.productRepository = productRepository;
-        this.categoryService = categoryService;
-    }
 
     @Override
     public AddProductResponseDto addProduct(CreateProductRequestDto toInsert, String contextRealPath) {
@@ -66,16 +64,29 @@ public class ProductServiceImpl implements ProductService {
             product.setCategory(this.categoryService.getCategory(toInsert.getCategoryNo()));
         }
         this.productRepository.insertProduct(product);
+
+        Integer prodNo = product.getProdNo();
+
+        List<ProductImage> productImages = toInsert.getProductImageDto().stream().map(pi -> {
+            String fileName = storeFile(pi.getBase64Data(), contextRealPath, pi.getFileExtension());
+            return ProductImage.builder()
+                    .prodNo(prodNo)
+                    .fileName(fileName)
+                    .description(pi.getDescription())
+                    .thumbnail(pi.getThumbnail())
+                    .build();
+        }).collect(Collectors.toList());
+        if (!this.productImageRepository.insert(productImages)) {
+            throw new RuntimeException(); // TODO: Specific exception
+        }
         return AddProductResponseDto.from(product);
     }
 
-    private String storeFile(String base64ImageData, String contextRealPath, String imageName) {
-        if (base64ImageData == null || imageName == null) {
+    private String storeFile(String base64ImageData, String contextRealPath, String fileExtension) {
+        if (base64ImageData == null || fileExtension == null) {
             return null;
         }
-        int extensionIndex = imageName.lastIndexOf(".");
-        String extension = imageName.substring(extensionIndex);
-        String filename = RandomSerialGenerator.generate() + extension;
+        String filename = RandomSerialGenerator.generate(30) + fileExtension;
         String uploadPath = contextRealPath + File.separator + filename;
 
         byte[] encodedData = Base64.getDecoder().decode(base64ImageData);
@@ -101,19 +112,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ListProductResponseDto getProductList(ListProductRequestDto requestDto) {
         requestDto.setPageSize(requestDto.getPageSize() == null ? defaultPageSize : requestDto.getPageSize());
-        List<Product> result = ListQueryHelper.findProductList(this.productRepository, requestDto);
-        int count = ListQueryHelper.count(this.productRepository, requestDto);
+        List<Product> result = this.listQueryHelper.findProductList(this.productRepository, requestDto);
+        int count = this.listQueryHelper.count(this.productRepository, requestDto);
 
         int page = IntegerUtil.getOneIfNull(requestDto.getPage());
         int pageSize = requestDto.getPageSize() == null ? defaultPageSize : requestDto.getPageSize();
 
         Page pageInfo = Page.of(page, count, pageSize, defaultPageDisplay);
 
-        return ListProductResponseDto.builder()
-                .count(count)
-                .products(result)
-                .pageInfo(pageInfo)
-                .build();
+        return ListProductResponseDto.builder().count(count).products(result).pageInfo(pageInfo).build();
     }
 
     @Override

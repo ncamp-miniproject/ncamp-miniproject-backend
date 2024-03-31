@@ -27,11 +27,11 @@ public class Product {
     private int prodNo;
     private String prodName;
     private String prodDetail;
+    private Integer price;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate manuDate;
-    private Integer price;
     private Date regDate;
     private Integer stock;
     private List<ProductImage> productImages;
