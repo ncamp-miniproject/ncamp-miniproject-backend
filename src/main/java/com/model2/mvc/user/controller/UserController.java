@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String addUser(@ModelAttribute("user") User user, @CookieValue("JSESSIONID") String jSessionId)
+    public String addUser(@ModelAttribute("user") User user)
     throws Exception {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
@@ -55,7 +55,6 @@ public class UserController {
                 .build();
         RequestEntity<User> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Cookie", "JSESSIONID=" + jSessionId)
                 .body(user);
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -72,8 +71,7 @@ public class UserController {
     }
 
     @PostMapping("/account/email-auth")
-    public String emailAuth(@RequestParam("emailAddress") String emailAddress,
-                            @CookieValue("JSESSIONID") String jSessionId) throws URISyntaxException {
+    public String emailAuth(@RequestParam("emailAddress") String emailAddress) throws URISyntaxException {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
@@ -82,7 +80,6 @@ public class UserController {
                 .build();
         RequestEntity<Void> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Cookie", "JSESSIONID=" + jSessionId)
                 .build();
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.exchange(requestEntity, Void.class);
@@ -91,8 +88,7 @@ public class UserController {
 
     @GetMapping("/account/authentication/code")
     public ModelAndView authenticationCodeValidation(@RequestParam("code") String authenticationCode,
-                                                     @RequestParam("authenticatedEmail") String authenticatedEmail,
-                                                     @CookieValue("JSESSIONID") String jSessionId)
+                                                     @RequestParam("authenticatedEmail") String authenticatedEmail)
     throws URISyntaxException {
         URI uri = new URIBuilder().setScheme("http")
                 .setHost("localhost")
@@ -103,7 +99,6 @@ public class UserController {
                 .build();
         RequestEntity<Void> requestEntity = RequestEntity.post(uri)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Cookie", "JSESSIONID=" + jSessionId)
                 .build();
         RestTemplate restTemplate = new RestTemplate();
         try {

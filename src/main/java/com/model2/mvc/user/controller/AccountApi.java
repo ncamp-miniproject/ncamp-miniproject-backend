@@ -7,6 +7,7 @@ import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.SignInResponseDto;
 import com.model2.mvc.user.dto.response.UserDto;
+import com.model2.mvc.user.service.MailAuthorizationService;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AccountApi {
     private final UserService userService;
+    private final MailAuthorizationService mailAuthorizationService;
 
     @InitBinder
     public void bindParameters(WebDataBinder binder) {
@@ -37,19 +39,12 @@ public class AccountApi {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User toCreate, HttpSession session) throws Exception {
-        Boolean authenticated = (Boolean)session.getAttribute("authenticated");
-        String authenticatedEmail = (String)session.getAttribute("authenticatedEmail");
-        if (authenticated == null ||
-            !authenticated ||
-            authenticatedEmail == null ||
-            !authenticatedEmail.equals(toCreate.getEmail())) {
-
+    public ResponseEntity<User> createUser(@RequestBody User toCreate) throws Exception {
+        if (!this.mailAuthorizationService.checkAuthorization(toCreate.getEmail())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         this.userService.addUser(toCreate);
-        session.removeAttribute("authenticated");
-        session.removeAttribute("authenticatedEmail");
+        this.mailAuthorizationService.removeAuthenticationInfo(toCreate.getEmail());
         return new ResponseEntity<>(toCreate, HttpStatus.CREATED);
     }
 
@@ -97,27 +92,19 @@ public class AccountApi {
     }
 
     @PostMapping("/authentication/start")
-    public ResponseEntity<Void> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress,
-                                                          HttpSession session) throws MailTransferException {
-        String generatedCode = this.userService.sendAuthenticateMail(emailAddress);
-        session.setAttribute("authenticationCode", generatedCode);
+    public ResponseEntity<Void> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress)
+    throws MailTransferException {
+        this.mailAuthorizationService.sendAuthenticationMail(emailAddress);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/authentication")
     public ResponseEntity<Void> validateAuthentication(@RequestParam("code") String code,
-                                                       @RequestParam("authenticatedEmail") String authenticatedEmail,
-                                                       HttpSession session) {
-        Object authenticationCode = session.getAttribute("authenticationCode");
-        if (authenticationCode == null) {
+                                                       @RequestParam("authenticatedEmail") String authenticatedEmail) {
+        boolean authorized = this.mailAuthorizationService.checkValidCode(authenticatedEmail, code);
+        if (!authorized) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        if (!code.equals(authenticationCode)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        session.removeAttribute("authenticationCode");
-        session.setAttribute("authenticated", true);
-        session.setAttribute("authenticatedEmail", authenticatedEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

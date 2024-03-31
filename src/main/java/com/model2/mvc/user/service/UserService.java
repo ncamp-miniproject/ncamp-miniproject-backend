@@ -21,6 +21,4 @@ public interface UserService {
     public CheckDuplicateResponseDto checkDuplication(String userId) throws Exception;
 
     public User deleteUser(String userId) throws Exception;
-
-    public String sendAuthenticateMail(String receiverMailAddress) throws MailTransferException;
 }

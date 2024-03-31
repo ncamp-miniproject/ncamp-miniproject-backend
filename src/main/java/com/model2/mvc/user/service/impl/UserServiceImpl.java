@@ -123,34 +123,4 @@ public class UserServiceImpl implements UserService {
         this.userRepository.removeByUserId(userId);
         return found.get();
     }
-
-    @Override
-    public String sendAuthenticateMail(String receiverMailAddress) throws MailTransferException {
-        JSONObject metadata = readMailMetadata();
-        String generatedCode = RandomSerialGenerator.generate(40);
-        this.mailAgent.send(receiverMailAddress,
-                            new java.util.Date(),
-                            (String)metadata.get("subject"),
-                            (String)metadata.get("message"),
-                            (String)metadata.get("authenticationURL") +
-                            generatedCode +
-                            "&authenticatedEmail=" +
-                            receiverMailAddress);
-        return generatedCode;
-    }
-
-    private JSONObject readMailMetadata() {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("constants/authenticate-mail.json");
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
-        return (JSONObject)JSONValue.parse(sb.toString());
-    }
 }
