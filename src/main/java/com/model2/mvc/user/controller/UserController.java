@@ -60,7 +60,7 @@ public class UserController {
         try {
             restTemplate.exchange(requestEntity, User.class);
         } catch (HttpClientErrorException.Forbidden e) {
-            return "redirect:/users/account/email-auth";
+            return "user/notification-email-not-good";
         }
         return "redirect:/";
     }
@@ -105,14 +105,13 @@ public class UserController {
             restTemplate.exchange(requestEntity, Void.class);
         } catch (HttpClientErrorException.Forbidden | HttpClientErrorException.Unauthorized e) {
             e.printStackTrace();
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("user/notification-email-not-good");
         }
-        return new ModelAndView("redirect:/users/account/signup-form", "authenticatedEmail", authenticatedEmail);
+        return new ModelAndView("user/notification-email-good", "authenticatedEmail", authenticatedEmail);
     }
 
     @GetMapping("/account/signup-form")
-    public String signUpForm(@RequestParam("authenticatedEmail") String authenticatedEmail, Model model) {
-        model.addAttribute("authenticatedEmail", authenticatedEmail);
+    public String signUpForm() {
         return "user/sign-up-form";
     }
 
@@ -222,7 +221,7 @@ public class UserController {
     }
 
     @GetMapping("/account/sign-in")
-    public String signUpForm() {
+    public String signInForm() {
         return "user/sign-in";
     }
 

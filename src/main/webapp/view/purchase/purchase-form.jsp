@@ -15,7 +15,6 @@
 </head>
 
 <body data-context-path="${pageContext.request.contextPath}">
-    <c:import url="${pageContext.request.contextPath}/view/layout/header.jsp"/>
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
 
     <main>

@@ -4,7 +4,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="${pageContext.request.contextPath}/users/account/email-auth" method="POST">
+    <form action="${pageContext.request.contextPath}/api/users/account/authentication/start" method="POST">
         Email: <input type="email" name="emailAddress">
         <input type="submit" value="Send"/>
     </form>

@@ -35,26 +35,38 @@ function validateFormData() {
 }
 
 $(() => {
-    console.log("here");
     const contextPath = $("body:first").data("context-path");
 
     const submitButton = $(".btn--submit");
     submitButton.on("click", () => {
-        console.log("asdf");
         if (validateFormData()) {
             const form = $($("form[name=sign-up]")[0]);
+            const phoneNumber = $("select[name=phone1] option:checked").val() + $("input[name=phone2]").val();
+            $("input[name=phone]").val(phoneNumber);
             form.attr("method", "POST").attr("action", `${contextPath}/users/new`).trigger("submit");
         }
     });
 
     $(".btn--reset").on("click", () => {
-        console.log("fdsa");
         $("form[name=sign-up]").reset();
     });
 
     $(".btn--check-duplicate").on("click", () => {
-        console.log("ggg");
         const popWin = window.open(`${contextPath}/users/check-duplicate`, "popWin", "left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0," +
             "scrollbars=no,scrolling=no,menubar=no,resizable=no");
+    });
+
+    $("#email-authentication").on("click", e => {
+        console.log("here");
+        const email = $("#email").val();
+        $.ajax(`${contextPath}/users/account/email-auth`, {
+            method: "POST",
+            data: {
+                emailAddress: email
+            },
+            success: data => {
+                $("#email-form").after("<div class='alert alert-info'>인증 메일이 전송됐습니다.</div>");
+            }
+        });
     });
 });

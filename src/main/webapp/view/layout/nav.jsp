@@ -71,7 +71,7 @@
                     <button type="submit" class="btn btn-default" id="sign-in-btn">로그인</button>
                 </form>
                 <form class="navbar-form navbar-right"
-                      action="${pageContext.request.contextPath}/users/account/email-auth"
+                      action="${pageContext.request.contextPath}/users/account/signup-form"
                       method="GET">
                     <button type="submit" class="btn btn-default" id="sign-up-btn">회원가입</button>
                 </form>

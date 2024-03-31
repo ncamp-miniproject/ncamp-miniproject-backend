@@ -41,6 +41,6 @@ $(() => {
     });
 
     $(".btn--sign-up").on("click", () => {
-        self.location = `${contextPath}/users/account/email-auth`;
+        self.location = `${contextPath}/users/account/signup-form`;
     });
 });
