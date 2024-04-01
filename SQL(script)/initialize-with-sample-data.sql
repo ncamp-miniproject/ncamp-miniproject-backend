@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS transaction_prod;
+    DROP TABLE IF EXISTS transaction_prod;
 
 DROP TABLE IF EXISTS transaction;
 

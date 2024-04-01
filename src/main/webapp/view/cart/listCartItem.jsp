@@ -6,39 +6,76 @@
 <head>
 <title>장바구니</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/admin.css" type="text/css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+          crossorigin="anonymous">
+
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ"
+          crossorigin="anonymous">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+
+    <script>
+        $(() => {
+            const cartForm = $("form[name=cartForm]");
+            $("#purchaseBtn").on("click", () => {
+                cartForm
+                    .attr("method", "GET")
+                    .attr("action", "/purchases/new-form")
+                    .trigger("submit");
+            });
+
+            $("#clear-cart-button").on("click", () => {
+                cartForm
+                    .attr("method", "POST")
+                    .attr("action", "/cart/items/clear")
+                    .trigger("submit")
+            });
+        });
+    </script>
+
+    <style>
+        main {
+            width: 1024px;
+        }
+
+        .summary {
+            font-size: 14px;
+            float: right;
+            margin-right: 24px;
+        }
+    </style>
 
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
+    <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
 
-    <div>
-
-            <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td width="15" height="37">
-                        <img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
-                    </td>
-                    <td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td width="93%" class="ct_ttl01">장바구니 목록</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td width="12" height="37">
-                        <img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
-                    </td>
-                </tr>
-            </table>
+    <main>
+        <div class="page-header">
+            <h2 class="page-title">장바구니</h2>
+        </div>
+        <p class="summary">총액 ${data.priceSum}원</p>
+        <p class="summary">전체 ${data.itemCount}개</p>
+    </main>
+    <div class="cart-list container-fluid">
 
         <form name="cartForm" method="POST">
 
             <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
-                <tr>
-                    <td colspan="11" id="itemCount">전체 ${ data.itemCount }개</td>
-                    <td colspan="11" id="priceSum">총액 ${ data.priceSum }원</td>
-                </tr>
+
                 <tr>
                     <td class="ct_list_b" width="100">No</td>
                     <td class="ct_line02"></td>
@@ -93,21 +130,6 @@
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
             crossorigin="anonymous"></script>
 
-    <script>
-        const cartForm = $("form[name=cartForm]");
-        $("#purchaseBtn").on("click", () => {
-            cartForm
-                .attr("method", "GET")
-                .attr("action", "/purchases/new-form")
-                .trigger("submit");
-        });
 
-        $("#clear-cart-button").on("click", () => {
-            cartForm
-                .attr("method", "POST")
-                .attr("action", "/cart/items/clear")
-                .trigger("submit")
-        });
-    </script>
 </body>
 </html>

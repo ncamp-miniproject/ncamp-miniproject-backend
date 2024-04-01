@@ -106,6 +106,19 @@
                         <li><a class="order-button" data-ascend="false">가격 높은 순</a></li>
                     </ul>
                 </div>
+                <div class="btn-group order-button-group" data-order-by="regDate">
+                    <button type="button"
+                            class="btn btn-default dropdown-toggle order-dropdown-button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        날짜순 정렬
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="order-button" data-ascend="true">오래된 순</a></li>
+                        <li><a class="order-button" data-ascend="false">최신순</a></li>
+                    </ul>
+                </div>
             </div>
 
             <c:import url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"/>
