@@ -75,7 +75,7 @@ $(() => {
                     ` : "" }
                     ${purchase.tranStatusCode.code === "2" ? `
                         <form name="tran-code"
-                              action="${pageContext.request.contextPath}/purchases/tran-code/update"
+                              action="${contextPath}/purchases/tran-code/update"
                               method="POST">
                             <input type="hidden" name="tranNo" value="${purchase.tranNo}">
                             <input type="hidden" name="tranCode" value="3">
@@ -116,6 +116,7 @@ $(() => {
     }
 
     function requestPurchaseList(itemList) {
+        console.log("here");
         const queryParameters = {};
         for (let param of queryParamNames) {
             const setting = currentDisplaySetting.get(param);
@@ -134,7 +135,9 @@ $(() => {
             success: (data, textStatus, jqXHR) => {
                 console.log(data);
                 data.purchaseList.forEach(purchase => {
-                    itemList.append(getRecordElement(purchase));
+                    const elem = $(getRecordElement(purchase));
+                    elem.on("click", onClickTranCodeFormButton)
+                    itemList.append(elem);
                 });
                 updatePage(data.pageInfo, fetchDataAndUpdatePurchaseList);
                 $("#count-display").text(data.count);

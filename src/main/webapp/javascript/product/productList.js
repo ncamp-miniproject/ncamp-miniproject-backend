@@ -137,6 +137,16 @@ $(() => {
         dropdownBtn.text(je.text());
     });
 
+    $(".page-size-button").on("click", e => {
+        const pageSize = parseInt($(e.target).data("page-size"));
+        console.log(pageSize);
+
+        currentDisplaySetting.set(PAGE, 1);
+        currentDisplaySetting.set(PAGE_SIZE, pageSize);
+
+        fetchDataAndUpdateProductList();
+    });
+
     function fetchDataAndUpdateProductList() {
         const itemList = $(".item-list");
         itemList.children().remove();

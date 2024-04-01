@@ -1,13 +1,18 @@
 package com.model2.mvc.purchase.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
 @ToString
 public class TranStatusCodeResponseDto {
-    private final String code;
-    private final String status;
+    private String code;
+    private String status;
 }

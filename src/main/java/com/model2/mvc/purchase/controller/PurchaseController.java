@@ -126,6 +126,8 @@ public class PurchaseController {
             e.printStackTrace();
             return new ModelAndView("redirect:/products?menu=search&page=" + currentPage);
         }
+        mv.addObject("loginUser", loginUser);
+        System.out.println(loginUser);
         return mv;
     }
 

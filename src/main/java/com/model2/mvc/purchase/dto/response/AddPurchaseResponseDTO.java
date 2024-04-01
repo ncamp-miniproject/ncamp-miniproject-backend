@@ -4,11 +4,15 @@ import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@NoArgsConstructor
+@Setter
 @Getter
 @ToString
 public class AddPurchaseResponseDTO {
@@ -20,9 +24,6 @@ public class AddPurchaseResponseDTO {
     private String divyRequest;
     private LocalDate divyDate;
     private List<TransactionProduction> transactionProductions;
-
-    private AddPurchaseResponseDTO() {
-    }
 
     public static AddPurchaseResponseDTO from(Purchase purchase) {
         AddPurchaseResponseDTO dto = new AddPurchaseResponseDTO();

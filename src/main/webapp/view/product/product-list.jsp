@@ -119,6 +119,20 @@
                         <li><a class="order-button" data-ascend="false">최신순</a></li>
                     </ul>
                 </div>
+                <div class="btn-group" id="page-size-button-group">
+                    <button type="button"
+                            class="btn btn-default dropdown-toggle order-dropdown-button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        페이지 크기
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="page-size-button" data-page-size="3">3</a></li>
+                        <li><a class="page-size-button" data-page-size="5">5</a></li>
+                        <li><a class="page-size-button" data-page-size="10">10</a></li>
+                    </ul>
+                </div>
             </div>
 
             <c:import url="${pageContext.request.contextPath}/view/fragment/pageNumbers.jsp"/>
