@@ -18,31 +18,37 @@ import java.util.Arrays;
 public class LoggingAspect {
     Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
+    public LoggingAspect() {
+        System.out.println("============================");
+        System.out.println("LoggingAspect");
+        System.out.println("==========================");
+    }
+
     @Around("execution(* com.model2.mvc..*ServiceImpl.*(..))")
     public Object aroundServiceImpl(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("{}[Around before] applied method:: {}.{}{}",
+        log.info("{}[Around before] applied method:: {}.{}{}",
                   CYAN.getCode(),
                   joinPoint.getTarget().getClass().getName(),
                   joinPoint.getSignature().getName(),
                   RESET.getCode());
-        log.debug("{}[Around before] parameters:: {}{}", CYAN.getCode(), Arrays.toString(joinPoint.getArgs()), RESET.getCode());
+        log.info("{}[Around before] parameters:: {}{}", CYAN.getCode(), Arrays.toString(joinPoint.getArgs()), RESET.getCode());
 
         Object methodResult = joinPoint.proceed();
 
-        log.debug("{}[Around after] return: {}{}", CYAN.getCode(), methodResult, RESET.getCode());
+        log.info("{}[Around after] return: {}{}", CYAN.getCode(), methodResult, RESET.getCode());
         return methodResult;
     }
 
     @Around("execution(* com.model2.mvc..*DAO.*(..)) || execution(public * com.model2.mvc..*Repository.*(..))")
     public Object logAroundDAO(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("{}Class: {}", YELLOW.getCode(), joinPoint.getTarget().getClass().getName());
-        log.debug("Method: {}", joinPoint.getSignature().getName());
-        log.debug("Signature: {}", joinPoint.getSignature());
-        log.debug("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
+        log.info("{}Class: {}", YELLOW.getCode(), joinPoint.getTarget().getClass().getName());
+        log.info("Method: {}", joinPoint.getSignature().getName());
+        log.info("Signature: {}", joinPoint.getSignature());
+        log.info("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
 
         Object returnValue = joinPoint.proceed();
 
-        log.debug("{}Returns: {}{}", YELLOW.getCode(), returnValue, RESET.getCode());
+        log.info("{}Returns: {}{}", YELLOW.getCode(), returnValue, RESET.getCode());
         return returnValue;
     }
 }

@@ -35,7 +35,7 @@ public class MyBatisMapperCategoryRepository implements CategoryRepository {
     }
 
     @Override
-    public Optional<Category> findById(int categoryNo) {
+    public Optional<Category> findById(Integer categoryNo) {
         return Optional.ofNullable(this.sqlSession.selectOne("CategoryMapper.findById", categoryNo));
     }
 

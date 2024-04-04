@@ -15,22 +15,28 @@ import java.util.Arrays;
 public class ControllerLoggingAspect {
     Logger log = LoggerFactory.getLogger(ControllerLoggingAspect.class);
 
+    public ControllerLoggingAspect() {
+        System.out.println("================");
+        System.out.println("Initialize ControllerLoggingAspect");
+        System.out.println("======================");
+    }
+
     @Around("@annotation(org.springframework.web.bind.annotation.GetMapping) " +
             "|| @annotation(org.springframework.web.bind.annotation.PostMapping) " +
             "|| @annotation(org.springframework.web.bind.annotation.PutMapping) " +
             "|| @annotation(org.springframework.web.bind.annotation.PatchMapping) " +
             "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping)")
     public Object logControllers(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("{}Class: {}", GREEN.getCode(), joinPoint.getTarget().getClass().getName());
-        log.debug("Method: {}", joinPoint.getSignature().getName());
-        log.debug("Signature: {}", joinPoint.getSignature());
-        log.debug("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
+        log.info("{}Class: {}", GREEN.getCode(), joinPoint.getTarget().getClass().getName());
+        log.info("Method: {}", joinPoint.getSignature().getName());
+        log.info("Signature: {}", joinPoint.getSignature());
+        log.info("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
         Object returnObj = joinPoint.proceed();
-        log.debug("{}[END]: {}", GREEN.getCode(), joinPoint.getSignature());
+        log.info("{}[END]: {}", GREEN.getCode(), joinPoint.getSignature());
         if (returnObj != null) {
-            log.debug("Return object: {}", returnObj.getClass());
+            log.info("Return object: {}", returnObj.getClass());
         }
-        log.debug("Return value: {}{}", returnObj, RESET.getCode());
+        log.info("Return value: {}{}", returnObj, RESET.getCode());
         return returnObj;
     }
 }

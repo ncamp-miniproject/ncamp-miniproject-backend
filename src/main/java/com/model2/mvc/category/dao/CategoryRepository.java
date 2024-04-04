@@ -11,7 +11,7 @@ public interface CategoryRepository {
 
     public List<Category> findAll();
 
-    public Optional<Category> findById(int categoryNo);
+    public Optional<Category> findById(Integer categoryNo);
 
     public void updateCategory(Category to);
 }

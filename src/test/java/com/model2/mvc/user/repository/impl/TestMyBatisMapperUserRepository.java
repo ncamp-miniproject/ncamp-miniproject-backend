@@ -9,7 +9,6 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.config.context.ContextConfig;
 import com.model2.mvc.config.context.MyBatisConfig;
 import com.model2.mvc.config.context.PropertyConfig;
-import com.model2.mvc.config.context.TransactionConfig;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.repository.UserRepository;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @SpringJUnitConfig(classes = {
-        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class
 })
 public class TestMyBatisMapperUserRepository {
 

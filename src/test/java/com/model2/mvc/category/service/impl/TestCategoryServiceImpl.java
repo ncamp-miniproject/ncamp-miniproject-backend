@@ -8,7 +8,6 @@ import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import com.model2.mvc.config.context.ContextConfig;
 import com.model2.mvc.config.context.MyBatisConfig;
 import com.model2.mvc.config.context.PropertyConfig;
-import com.model2.mvc.config.context.TransactionConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @SpringBootTest
 @SpringJUnitConfig(classes = {
-        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class
 })
 public class TestCategoryServiceImpl {
 

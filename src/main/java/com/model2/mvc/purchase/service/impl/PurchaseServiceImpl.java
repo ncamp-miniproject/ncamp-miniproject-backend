@@ -44,7 +44,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private int defaultPageDisplay;
 
     @Autowired
-    private PurchaseServiceImpl(PurchaseRepository purchaseRepository, ProductRepository productRepository) {
+    public PurchaseServiceImpl(PurchaseRepository purchaseRepository, ProductRepository productRepository) {
         this.purchaseRepository = purchaseRepository;
         this.productRepository = productRepository;
     }
