@@ -11,9 +11,9 @@ import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.user.domain.User;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class TestPurchaseMapper {
                                                          new Product(20001, "prod2", 100, 10),
                                                          new Product(20002, "prod3", 103, 23));
 
-    @Before
+    @BeforeEach
     public void init() {
         this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear",
                                                                       "PurchaseMapper.clearTranProd",
@@ -46,7 +46,7 @@ public class TestPurchaseMapper {
         sampleProducts.forEach(p -> this.sqlSession.insert("ProductMapper.insert", p));
     }
 
-    @After
+    @AfterEach
     public void destroy() {
         MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession,
                                                      "PurchaseMapper.clearTranProd",

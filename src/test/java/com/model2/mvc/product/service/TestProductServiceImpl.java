@@ -5,32 +5,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
+import com.model2.mvc.config.context.ContextConfig;
+import com.model2.mvc.config.context.MyBatisConfig;
+import com.model2.mvc.config.context.PropertyConfig;
+import com.model2.mvc.config.context.TransactionConfig;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.dto.request.CreateProductFormRequestDto;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.response.AddProductResponseDto;
 import com.model2.mvc.product.dto.response.GetProductResponseDto;
 import com.model2.mvc.product.dto.response.ListProductResponseDto;
-import junit.framework.TestCase;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:spring-config/context-*.xml")
-public class TestProductServiceImpl extends TestCase {
+@SpringBootTest
+@SpringJUnitConfig(classes = {
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+})
+public class TestProductServiceImpl {
 
     @Autowired
     private ProductService productService;
@@ -40,12 +42,12 @@ public class TestProductServiceImpl extends TestCase {
 
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void before() {
         this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear", "ProductMapper.clear", "CategoryMapper.clear");
     }
 
-    @After
+    @AfterEach
     public void after() {
         MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductMapper.clear", "CategoryMapper.clear");
     }

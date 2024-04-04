@@ -2,33 +2,36 @@ package com.model2.mvc.user.repository.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Search;
-import com.model2.mvc.user.repository.UserRepository;
+import com.model2.mvc.config.context.ContextConfig;
+import com.model2.mvc.config.context.MyBatisConfig;
+import com.model2.mvc.config.context.PropertyConfig;
+import com.model2.mvc.config.context.TransactionConfig;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
-import junit.framework.TestCase;
+import com.model2.mvc.user.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mybatis.spring.MyBatisSystemException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:spring-config/context-*.xml" })
-public class TestMyBatisMapperUserRepository extends TestCase {
+@SpringBootTest
+@SpringJUnitConfig(classes = {
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+})
+public class TestMyBatisMapperUserRepository {
 
     @Autowired
     @Qualifier("myBatisMapperUserDAO")
@@ -38,12 +41,12 @@ public class TestMyBatisMapperUserRepository extends TestCase {
     @Qualifier("sqlSessionTemplate")
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
         this.sqlSession.delete("UserMapper.clear");
     }
 
-    @After
+    @AfterEach
     public void afterTest() {
         this.sqlSession.delete("UserMapper.clear");
     }

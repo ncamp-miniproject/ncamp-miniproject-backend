@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,14 +20,14 @@ public class TestCategoryMapper {
 
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear",
                                                                       "ProductMapper.clear",
                                                                       "CategoryMapper.clear");
     }
 
-    @After
+    @AfterEach
     public void after() {
         MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession,
                                                      "ProductImageMapper.clear",

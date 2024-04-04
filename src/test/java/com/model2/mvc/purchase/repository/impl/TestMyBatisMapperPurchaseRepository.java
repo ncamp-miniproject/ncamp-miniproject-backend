@@ -3,23 +3,25 @@ package com.model2.mvc.purchase.repository.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.model2.mvc.common.ListData;
+import com.model2.mvc.config.context.ContextConfig;
+import com.model2.mvc.config.context.MyBatisConfig;
+import com.model2.mvc.config.context.PropertyConfig;
+import com.model2.mvc.config.context.TransactionConfig;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.purchase.repository.PurchaseRepository;
 import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
+import com.model2.mvc.purchase.repository.PurchaseRepository;
 import com.model2.mvc.user.domain.User;
-import junit.framework.TestCase;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,9 +29,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:spring-config/context-*.xml" })
-public class TestMyBatisMapperPurchaseRepository extends TestCase {
+@SpringBootTest
+@SpringJUnitConfig(classes = {
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+})
+public class TestMyBatisMapperPurchaseRepository {
 
     @Autowired
     @Qualifier("myBatisMapperPurchaseDAO")
@@ -39,14 +43,14 @@ public class TestMyBatisMapperPurchaseRepository extends TestCase {
     @Qualifier("sqlSessionTemplate")
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void before() {
         clear();
         sampleUsers.forEach(u -> this.sqlSession.insert("UserMapper.insert", u));
         sampleProducts.forEach(p -> this.sqlSession.insert("ProductMapper.insert", p));
     }
 
-    @After
+    @AfterEach
     public void after() {
         clear();
     }

@@ -9,13 +9,12 @@ import com.model2.mvc.common.Setter;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
@@ -25,12 +24,12 @@ public class UserMapperTest {
     private static final Logger log = LoggerFactory.getLogger(UserMapperTest.class);
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("UserMapper.clear");
     }
 
-    @After
+    @AfterEach
     public void destroy() {
         MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "UserMapper.clear");
     }

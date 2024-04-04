@@ -6,18 +6,20 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
+import com.model2.mvc.config.context.ContextConfig;
+import com.model2.mvc.config.context.MyBatisConfig;
+import com.model2.mvc.config.context.PropertyConfig;
+import com.model2.mvc.config.context.TransactionConfig;
 import com.model2.mvc.product.domain.OrderBy;
 import com.model2.mvc.product.domain.Product;
-import com.model2.mvc.product.domain.ProductImage;
 import com.model2.mvc.product.repository.ProductRepository;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -29,8 +31,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:spring-config/context-*.xml" })
+@SpringBootTest
+@SpringJUnitConfig(classes = {
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+})
 public class TestMyBatisMapperProductRepository {
 
     @Autowired
@@ -41,12 +45,12 @@ public class TestMyBatisMapperProductRepository {
 
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void before() {
         this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear", "ProductMapper.clear", "CategoryMapper.clear");
     }
 
-    @After
+    @AfterEach
     public void after() {
         MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession);
     }

@@ -5,22 +5,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.model2.mvc.category.dao.CategoryRepository;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
-import junit.framework.TestCase;
+import com.model2.mvc.config.context.ContextConfig;
+import com.model2.mvc.config.context.MyBatisConfig;
+import com.model2.mvc.config.context.PropertyConfig;
+import com.model2.mvc.config.context.TransactionConfig;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringJUnitConfig(locations = { "classpath*:spring-config/context-*.xml" })
-public class TestMyBatisMapperCategoryRepository extends TestCase {
+@SpringBootTest
+@SpringJUnitConfig(classes = {
+        ContextConfig.class, MyBatisConfig.class, PropertyConfig.class, TransactionConfig.class
+})
+public class TestMyBatisMapperCategoryRepository {
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -28,14 +32,19 @@ public class TestMyBatisMapperCategoryRepository extends TestCase {
     @Autowired
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void init() {
-        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear", "ProductMapper.clear", "CategoryMapper.clear");
+        this.sqlSession = MapperWithoutSpringInitializer.initUnitTest("ProductImageMapper.clear",
+                                                                      "ProductMapper.clear",
+                                                                      "CategoryMapper.clear");
     }
 
-    @After
+    @AfterEach
     public void after() {
-        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession, "ProductImageMapper.clear", "ProductMapper.clear", "CategoryMapper.clear");
+        MapperWithoutSpringInitializer.afterUnitTest(this.sqlSession,
+                                                     "ProductImageMapper.clear",
+                                                     "ProductMapper.clear",
+                                                     "CategoryMapper.clear");
     }
 
     @Test
