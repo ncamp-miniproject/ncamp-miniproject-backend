@@ -21,19 +21,19 @@ class TestJwtUtil {
     void resolveClaims() {
         JwtUtil jwtUtil = new JwtUtil();
         String token = jwtUtil.createToken("sample-user", Role.USER);
-        Claims claims = jwtUtil.resolveClaims(token);
-        String sub = (String)claims.get("sub");
-        Role role = Role.of((String)claims.get("role")).get();
+        TokenContent tokenContent = jwtUtil.resolveClaim(token);
 
-        assertThat(sub).isEqualTo("sample-user");
-        assertThat(role).isEqualTo(Role.USER);
+        System.out.println(tokenContent.getExpiration());
+
+        assertThat(tokenContent.getUserId()).isEqualTo("sample-user");
+        assertThat(tokenContent.getRole()).isEqualTo(Role.USER);
     }
 
     @Test
     void validateClaims() {
         JwtUtil jwtUtil = new JwtUtil();
         String token = jwtUtil.createToken("sample-user", Role.USER);
-        Claims claims = jwtUtil.resolveClaims(token);
-        assertThat(jwtUtil.validateClaims(claims)).isTrue();
+        TokenContent tokenContent = jwtUtil.resolveClaim(token);
+        assertThat(tokenContent.isValid()).isTrue();
     }
 }
