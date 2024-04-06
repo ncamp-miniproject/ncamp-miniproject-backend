@@ -58,7 +58,7 @@ public class PurchaseApi {
     public ResponseEntity<AddPurchaseResponseDTO> addPurchase(@RequestBody AddPurchaseRequestDTO requestDTO,
                                                               @SessionAttribute(value = "user",
                                                                                 required = false) User loginUser) {
-//        if (loginUser == null || loginUser.getRole() != Role.USER) {
+//        if (signIn == null || signIn.getRole() != Role.USER) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 //        }
         return new ResponseEntity<>(this.purchaseService.addPurchase(requestDTO), HttpStatus.CREATED);

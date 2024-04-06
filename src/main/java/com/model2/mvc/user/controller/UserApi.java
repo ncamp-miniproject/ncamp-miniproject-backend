@@ -41,12 +41,12 @@ public class UserApi {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable("userId") String userId) throws Exception {
+    public ResponseEntity<UserDto> getUser(@PathVariable("userId") String userId) throws Exception {
         User user = this.userService.getUser(userId);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
 
     @GetMapping

@@ -18,7 +18,6 @@ import java.time.LocalDate;
 public class UserDto {
     private String userId;
     private String userName;
-    private String password;
     private Role role;
     private String ssn;
     private String phone;
@@ -33,7 +32,6 @@ public class UserDto {
         return UserDto.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
-                .password(user.getPassword())
                 .role(user.getRole())
                 .ssn(user.getSsn())
                 .phone(user.getPhone())
