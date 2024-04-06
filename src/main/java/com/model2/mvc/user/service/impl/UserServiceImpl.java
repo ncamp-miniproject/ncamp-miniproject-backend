@@ -9,6 +9,7 @@ import com.model2.mvc.mail.MailAgent;
 import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
 import com.model2.mvc.user.repository.UserRepository;
@@ -45,12 +46,13 @@ public class UserServiceImpl implements UserService {
         userRepository.insertUser(userVO);
     }
 
-    public User loginUser(User user) throws Exception {
-        Optional<User> dbUser = userRepository.findByUserId(user.getUserId());
+    @Override
+    public User signIn(SignInRequestDto dto) throws Exception {
+        Optional<User> dbUser = userRepository.findByUserId(dto.getUserId());
 
         if (dbUser.isPresent()) {
             User du = dbUser.get();
-            if (!du.getPassword().equals(user.getPassword())) {
+            if (!du.getPassword().equals(dto.getPassword())) {
                 throw new Exception("No such user");
             }
         }

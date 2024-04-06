@@ -4,6 +4,7 @@ import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
+import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.SignInResponseDto;
 import com.model2.mvc.user.dto.response.UserDto;
@@ -63,9 +64,9 @@ public class AccountApi {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<SignInResponseDto> signIn(@RequestBody User user, HttpSession session) throws Exception {
+    public ResponseEntity<SignInResponseDto> signIn(@RequestBody SignInRequestDto user, HttpSession session) throws Exception {
         try {
-            User dbVO = this.userService.loginUser(user);
+            User dbVO = this.userService.signIn(user);
             session.setAttribute("user", dbVO);
             return new ResponseEntity<>(new SignInResponseDto(true), HttpStatus.OK);
         } catch (Exception e) {
