@@ -3,7 +3,7 @@ package com.model2.mvc.user.service;
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.mail.MailAgent;
 import com.model2.mvc.mail.MailTransferException;
-import com.model2.mvc.user.domain.MailAuthorizationInfo;
+import com.model2.mvc.user.domain.MailAuthenticationInfo;
 import com.model2.mvc.user.repository.MailAuthorizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MailAuthorizationService {
+public class MailAuthenticationService {
     private final MailAuthorizationRepository mailAuthorizationRepository;
     private final MailAgent mailAgent;
 
@@ -33,10 +33,10 @@ public class MailAuthorizationService {
                             generatedCode +
                             "&authenticatedEmail=" +
                             receiverMailAddress);
-        MailAuthorizationInfo mailAuthorizationInfo = new MailAuthorizationInfo();
-        mailAuthorizationInfo.setEmail(receiverMailAddress);
-        mailAuthorizationInfo.setAuthenticationCode(generatedCode);
-        this.mailAuthorizationRepository.save(mailAuthorizationInfo);
+        MailAuthenticationInfo mailAuthenticationInfo = new MailAuthenticationInfo();
+        mailAuthenticationInfo.setEmail(receiverMailAddress);
+        mailAuthenticationInfo.setAuthenticationCode(generatedCode);
+        this.mailAuthorizationRepository.save(mailAuthenticationInfo);
     }
 
     private JSONObject readMailMetadata() {
@@ -55,9 +55,9 @@ public class MailAuthorizationService {
     }
 
     public boolean checkValidCode(String email, String code) {
-        Optional<MailAuthorizationInfo> byEmail = this.mailAuthorizationRepository.findByEmail(email);
+        Optional<MailAuthenticationInfo> byEmail = this.mailAuthorizationRepository.findByEmail(email);
         if (byEmail.isPresent()) {
-            MailAuthorizationInfo info = byEmail.get();
+            MailAuthenticationInfo info = byEmail.get();
             if (info.getAuthenticationCode().equals(code)) {
                 info.setAuthenticated(true);
                 return true;
@@ -67,9 +67,9 @@ public class MailAuthorizationService {
     }
 
     public boolean checkAuthorization(String email) {
-        Optional<MailAuthorizationInfo> infoOptional = this.mailAuthorizationRepository.findByEmail(email);
+        Optional<MailAuthenticationInfo> infoOptional = this.mailAuthorizationRepository.findByEmail(email);
         if (infoOptional.isPresent()) {
-            MailAuthorizationInfo info = infoOptional.get();
+            MailAuthenticationInfo info = infoOptional.get();
             return info.isAuthenticated();
         }
         return false;

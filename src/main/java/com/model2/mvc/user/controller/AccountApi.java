@@ -8,7 +8,7 @@ import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.SignInResponseDto;
 import com.model2.mvc.user.dto.response.UserDto;
-import com.model2.mvc.user.service.MailAuthorizationService;
+import com.model2.mvc.user.service.MailAuthenticationService;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AccountApi {
     private final UserService userService;
-    private final MailAuthorizationService mailAuthorizationService;
+    private final MailAuthenticationService mailAuthenticationService;
 
     @InitBinder
     public void bindParameters(WebDataBinder binder) {
@@ -41,11 +41,11 @@ public class AccountApi {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User toCreate) throws Exception {
-        if (!this.mailAuthorizationService.checkAuthorization(toCreate.getEmail())) {
+        if (!this.mailAuthenticationService.checkAuthorization(toCreate.getEmail())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         this.userService.addUser(toCreate);
-        this.mailAuthorizationService.removeAuthenticationInfo(toCreate.getEmail());
+        this.mailAuthenticationService.removeAuthenticationInfo(toCreate.getEmail());
         return new ResponseEntity<>(toCreate, HttpStatus.CREATED);
     }
 
@@ -95,14 +95,14 @@ public class AccountApi {
     @PostMapping("/authentication/start")
     public ResponseEntity<Void> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress)
     throws MailTransferException {
-        this.mailAuthorizationService.sendAuthenticationMail(emailAddress);
+        this.mailAuthenticationService.sendAuthenticationMail(emailAddress);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/authentication")
     public ResponseEntity<Void> validateAuthentication(@RequestParam("code") String code,
                                                        @RequestParam("authenticatedEmail") String authenticatedEmail) {
-        boolean authorized = this.mailAuthorizationService.checkValidCode(authenticatedEmail, code);
+        boolean authorized = this.mailAuthenticationService.checkValidCode(authenticatedEmail, code);
         if (!authorized) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

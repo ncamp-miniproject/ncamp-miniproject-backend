@@ -1,16 +1,16 @@
 package com.model2.mvc.user.repository;
 
-import com.model2.mvc.user.domain.MailAuthorizationInfo;
+import com.model2.mvc.user.domain.MailAuthenticationInfo;
 
 import java.util.Optional;
 
 public interface MailAuthorizationRepository {
 
-    public Optional<MailAuthorizationInfo> findByEmail(String email);
+    public Optional<MailAuthenticationInfo> findByEmail(String email);
 
-    public void save(MailAuthorizationInfo mailAuthorizationInfo);
+    public void save(MailAuthenticationInfo mailAuthenticationInfo);
 
-    public MailAuthorizationInfo updateByEmail(String email, MailAuthorizationInfo newInstance);
+    public MailAuthenticationInfo updateByEmail(String email, MailAuthenticationInfo newInstance);
 
-    public MailAuthorizationInfo deleteByEmail(String email);
+    public MailAuthenticationInfo deleteByEmail(String email);
 }

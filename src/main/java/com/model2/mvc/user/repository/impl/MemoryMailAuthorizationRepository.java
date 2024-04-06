@@ -1,6 +1,6 @@
 package com.model2.mvc.user.repository.impl;
 
-import com.model2.mvc.user.domain.MailAuthorizationInfo;
+import com.model2.mvc.user.domain.MailAuthenticationInfo;
 import com.model2.mvc.user.repository.MailAuthorizationRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,25 +10,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class MemoryMailAuthorizationRepository implements MailAuthorizationRepository {
-    private static final Map<String, MailAuthorizationInfo> storage = new ConcurrentHashMap<>();
+    private static final Map<String, MailAuthenticationInfo> storage = new ConcurrentHashMap<>();
 
     @Override
-    public Optional<MailAuthorizationInfo> findByEmail(String email) {
+    public Optional<MailAuthenticationInfo> findByEmail(String email) {
         return Optional.ofNullable(storage.get(email));
     }
 
     @Override
-    public void save(MailAuthorizationInfo mailAuthorizationInfo) {
-        storage.put(mailAuthorizationInfo.getEmail(), mailAuthorizationInfo);
+    public void save(MailAuthenticationInfo mailAuthenticationInfo) {
+        storage.put(mailAuthenticationInfo.getEmail(), mailAuthenticationInfo);
     }
 
     @Override
-    public MailAuthorizationInfo updateByEmail(String email, MailAuthorizationInfo newInstance) {
+    public MailAuthenticationInfo updateByEmail(String email, MailAuthenticationInfo newInstance) {
         return storage.put(email, newInstance);
     }
 
     @Override
-    public MailAuthorizationInfo deleteByEmail(String email) {
+    public MailAuthenticationInfo deleteByEmail(String email) {
         return storage.remove(email);
     }
 }

@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MailAuthorizationInfo {
+public class MailAuthenticationInfo {
     private String email;
     private String authenticationCode;
     private boolean authenticated;
