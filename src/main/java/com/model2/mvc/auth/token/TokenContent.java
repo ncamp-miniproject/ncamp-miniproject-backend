@@ -1,4 +1,4 @@
-package com.model2.mvc.auth;
+package com.model2.mvc.auth.token;
 
 import com.model2.mvc.user.domain.Role;
 import lombok.Getter;

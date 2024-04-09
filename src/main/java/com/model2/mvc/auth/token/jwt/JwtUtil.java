@@ -1,5 +1,7 @@
-package com.model2.mvc.auth;
+package com.model2.mvc.auth.token.jwt;
 
+import com.model2.mvc.auth.token.TokenBasedAuth;
+import com.model2.mvc.auth.token.TokenContent;
 import com.model2.mvc.user.domain.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

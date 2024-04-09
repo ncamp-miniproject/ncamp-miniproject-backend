@@ -2,7 +2,7 @@ package com.model2.mvc.product.service;
 
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
-import com.model2.mvc.common.Page;
+import com.model2.mvc.common.Pagination;
 import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.RandomSerialGenerator;
@@ -120,9 +120,9 @@ public class ProductServiceImpl implements ProductService {
         int page = IntegerUtil.getOneIfNull(requestDto.getPage());
         int pageSize = requestDto.getPageSize() == null ? defaultPageSize : requestDto.getPageSize();
 
-        Page pageInfo = Page.of(page, count, pageSize, defaultPageDisplay);
+        Pagination paginationInfo = Pagination.of(page, count, pageSize, defaultPageDisplay);
 
-        return ListProductResponseDto.builder().count(count).products(result).pageInfo(pageInfo).build();
+        return ListProductResponseDto.builder().count(count).products(result).pagination(paginationInfo).build();
     }
 
     @Override

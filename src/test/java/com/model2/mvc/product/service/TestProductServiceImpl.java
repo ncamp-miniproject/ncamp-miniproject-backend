@@ -133,8 +133,8 @@ public class TestProductServiceImpl {
         assertThat(result.getProducts().size()).isEqualTo(2);
         assertThat(result.getProducts()).contains(sampleProducts.toArray(new Product[0]));
         assertThat(result.getCount()).isEqualTo(2);
-        assertThat(result.getPageInfo().getCurrentPage()).isEqualTo(1);
-        assertThat(result.getPageInfo().getPageSize()).isEqualTo(3);
+        assertThat(result.getPagination().getCurrentPage()).isEqualTo(1);
+        assertThat(result.getPagination().getPageSize()).isEqualTo(3);
     }
 
     @Test
@@ -154,8 +154,8 @@ public class TestProductServiceImpl {
         assertThat(result.getProducts().size()).isEqualTo(1);
         assertThat(result.getProducts()).contains(sampleProduct);
         assertThat(result.getCount()).isEqualTo(1);
-        assertThat(result.getPageInfo().getCurrentPage()).isEqualTo(1);
-        assertThat(result.getPageInfo().getPageSize()).isEqualTo(3);
+        assertThat(result.getPagination().getCurrentPage()).isEqualTo(1);
+        assertThat(result.getPagination().getPageSize()).isEqualTo(3);
     }
 
     public void testUpdateProduct() {

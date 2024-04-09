@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class Page {
+public class Pagination {
     private boolean previousPageSetAvailable;
     private boolean nextPageSetAvailable;
     private int previousPageSetEntry;
@@ -21,13 +21,13 @@ public class Page {
     private int currentPage;
     private int pageSize;
 
-    private Page(boolean previousPageSetBtnVisible,
-                 boolean nextPageSetBtnVisible,
-                 int previousPageSetEntry,
-                 int nextPageSetEntry,
-                 List<Integer> pagesToDisplay,
-                 int currentPage,
-                 int pageSize) {
+    private Pagination(boolean previousPageSetBtnVisible,
+                       boolean nextPageSetBtnVisible,
+                       int previousPageSetEntry,
+                       int nextPageSetEntry,
+                       List<Integer> pagesToDisplay,
+                       int currentPage,
+                       int pageSize) {
         this.previousPageSetAvailable = previousPageSetBtnVisible;
         this.nextPageSetAvailable = nextPageSetBtnVisible;
         this.previousPageSetEntry = previousPageSetEntry;
@@ -37,7 +37,7 @@ public class Page {
         this.pageSize = pageSize;
     }
 
-    public static Page of(int currentPage, int dataCount, int pageSize, int pageDisplay) {
+    public static Pagination of(int currentPage, int dataCount, int pageSize, int pageDisplay) {
         List<Integer> pageToDisplay = ListPageUtil.getPageSet(dataCount, currentPage, pageSize, pageDisplay);
         boolean previousPageSetBtnVisible = ListPageUtil.isPreviousPageSetAvailable(dataCount,
                                                                                     currentPage,
@@ -48,12 +48,12 @@ public class Page {
                                                                             pageSize,
                                                                             pageDisplay);
 
-        return new Page(previousPageSetBtnVisible,
-                        nextPageSetBtnVisible,
-                        ListPageUtil.getPreviousPageSetEntry(currentPage, pageDisplay),
-                        ListPageUtil.getNextPageSetEntry(currentPage, pageDisplay),
-                        pageToDisplay,
-                        currentPage,
-                        pageSize);
+        return new Pagination(previousPageSetBtnVisible,
+                              nextPageSetBtnVisible,
+                              ListPageUtil.getPreviousPageSetEntry(currentPage, pageDisplay),
+                              ListPageUtil.getNextPageSetEntry(currentPage, pageDisplay),
+                              pageToDisplay,
+                              currentPage,
+                              pageSize);
     }
 }

@@ -1,4 +1,4 @@
-package com.model2.mvc.user.controller;
+package com.model2.mvc.auth.controller;
 
 import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.controller.editor.RoleEditor;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/users/account")
 @RequiredArgsConstructor
-public class AccountApi {
+public class AuthApi {
     private final UserService userService;
     private final MailAuthenticationService mailAuthenticationService;
 

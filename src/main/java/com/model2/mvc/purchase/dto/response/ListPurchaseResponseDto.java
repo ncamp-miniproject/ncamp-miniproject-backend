@@ -1,6 +1,6 @@
 package com.model2.mvc.purchase.dto.response;
 
-import com.model2.mvc.common.Page;
+import com.model2.mvc.common.Pagination;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @ToString
 public class ListPurchaseResponseDto {
-    private Page pageInfo;
+    private Pagination paginationInfo;
     private int count;
     private List<GetPurchaseResponseDto> purchaseList;
     private String menu;

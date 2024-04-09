@@ -2,11 +2,10 @@ package com.model2.mvc.auth;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.model2.mvc.auth.token.jwt.JwtUtil;
+import com.model2.mvc.auth.token.TokenContent;
 import com.model2.mvc.user.domain.Role;
-import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
-
-import javax.naming.AuthenticationException;
 
 class TestJwtUtil {
 

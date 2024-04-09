@@ -1,7 +1,7 @@
 package com.model2.mvc.purchase.service.impl;
 
 import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Page;
+import com.model2.mvc.common.Pagination;
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.exception.RecordNotFoundException;
 import com.model2.mvc.common.util.StringUtil;
@@ -100,12 +100,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         return ListPurchaseResponseDto.builder()
                 .count(result.getCount())
                 .purchaseList(result.getList().stream().map(GetPurchaseResponseDto::from).collect(Collectors.toList()))
-                .pageInfo(getPageInfo(result.getCount(), page, pageSize))
+                .paginationInfo(getPageInfo(result.getCount(), page, pageSize))
                 .build();
     }
 
-    private Page getPageInfo(int count, int currentPage, int pageSize) {
-        return Page.of(currentPage, count, pageSize, defaultPageDisplay);
+    private Pagination getPageInfo(int count, int currentPage, int pageSize) {
+        return Pagination.of(currentPage, count, pageSize, defaultPageDisplay);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                                       .stream()
                                       .map(GetPurchaseResponseDto::from)
                                       .collect(Collectors.toList()))
-                .pageInfo(getPageInfo(purchases.getCount(), page, pageSize))
+                .paginationInfo(getPageInfo(purchases.getCount(), page, pageSize))
                 .build();
     }
 
