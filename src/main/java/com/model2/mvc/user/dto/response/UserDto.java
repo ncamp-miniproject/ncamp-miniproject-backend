@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @ToString
 public class UserDto {
     private String userId;
-    private String userName;
+    private String nameOfUser;
     private Role role;
     private String ssn;
     private String phone;
@@ -31,7 +31,7 @@ public class UserDto {
     public static UserDto from(User user) {
         return UserDto.builder()
                 .userId(user.getUserId())
-                .userName(user.getUserName())
+                .nameOfUser(user.getNameOfUser())
                 .role(user.getRole())
                 .ssn(user.getSsn())
                 .phone(user.getPhone())

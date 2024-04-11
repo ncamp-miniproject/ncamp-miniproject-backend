@@ -65,7 +65,7 @@ public class TestMyBatisMapperUserRepository {
     public void insertUser() {
         User user = new User();
         user.setUserId("sampleuser");
-        user.setUserName("username1");
+        user.setNameOfUser("username1");
         user.setPassword("1q2w3e4r");
         user.setRole(Role.ADMIN);
         user.setSsn("fff");
@@ -92,7 +92,7 @@ public class TestMyBatisMapperUserRepository {
     @Test
     public void insertUser_withoutId() {
         User user = new User();
-        user.setUserName("username1");
+        user.setNameOfUser("username1");
         user.setPassword("1q2w3e4r");
         user.setRole(Role.ADMIN);
         user.setSsn("fff");
@@ -107,12 +107,12 @@ public class TestMyBatisMapperUserRepository {
     @Test
     public void insertUser_duplicateOfUserId() {
         User user1 = new User("user1");
-        user1.setUserName("username1");
+        user1.setNameOfUser("username1");
         user1.setPassword("1q2w3e4r");
         user1.setRegDate(LocalDate.now());
 
         User user2 = new User("user1");
-        user2.setUserName("username2");
+        user2.setNameOfUser("username2");
         user2.setPassword("2w3e4r5t");
         user2.setRegDate(LocalDate.now());
 
@@ -129,7 +129,7 @@ public class TestMyBatisMapperUserRepository {
     @Test
     public void findByUserName() {
         User user1 = new User("user1");
-        user1.setUserName("username1");
+        user1.setNameOfUser("username1");
         user1.setPassword("1q2w3e4r");
         user1.setRegDate(LocalDate.now());
         try {
@@ -139,7 +139,7 @@ public class TestMyBatisMapperUserRepository {
         }
 
         User user2 = new User("user2");
-        user2.setUserName("username2");
+        user2.setNameOfUser("username2");
         user2.setPassword("2w3e4r5t");
         user2.setRegDate(LocalDate.now());
         try {

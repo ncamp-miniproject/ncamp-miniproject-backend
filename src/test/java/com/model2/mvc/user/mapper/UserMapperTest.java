@@ -50,7 +50,7 @@ public class UserMapperTest {
 
         User userToInsert = new User();
         userToInsert.setUserId(userId);
-        userToInsert.setUserName(userName);
+        userToInsert.setNameOfUser(userName);
         userToInsert.setPassword(password);
         userToInsert.setRole(role);
         userToInsert.setSsn(ssn);
@@ -70,7 +70,7 @@ public class UserMapperTest {
         String[] p = s.split("==");
         User user = new User();
         user.setUserId(p[0]);
-        user.setUserName(p[1]);
+        user.setNameOfUser(p[1]);
         user.setPassword(p[2]);
         user.setRole(Role.of(p[3]).get());
         user.setSsn(p[4]);
@@ -125,7 +125,7 @@ public class UserMapperTest {
             User expected = expectedIter.next();
 
             assertThat(output.getUserId()).isEqualTo(expected.getUserId());
-            assertThat(output.getUserName()).isEqualTo(expected.getUserName());
+            assertThat(output.getNameOfUser()).isEqualTo(expected.getNameOfUser());
             assertThat(output.getPassword()).isEqualTo(expected.getPassword());
             assertThat(output.getAddr()).isEqualTo(expected.getAddr());
             assertThat(output.getSsn()).isEqualTo(expected.getSsn());
@@ -142,10 +142,10 @@ public class UserMapperTest {
         User user = Setter.get(param, testCaseGenerate).get(0);
         sqlSession.insert("UserMapper.insert", user);
 
-        user.setUserName("Doe");
+        user.setNameOfUser("Doe");
         sqlSession.update("UserMapper.update", user);
         User found1 = sqlSession.selectOne("UserMapper.findById", id);
-        assertThat(found1.getUserName()).isEqualTo("Doe");
+        assertThat(found1.getNameOfUser()).isEqualTo("Doe");
 
         user.setAddr("Seoul");
         sqlSession.update("UserMapper.update", user);

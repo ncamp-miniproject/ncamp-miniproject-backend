@@ -33,7 +33,7 @@ CREATE SEQUENCE IF NOT EXISTS seq_product_image_no INCREMENT BY 1 START WITH 100
 CREATE TABLE IF NOT EXISTS users
 (
     user_id    TEXT,
-    user_name  TEXT NOT NULL,
+    name_of_user  TEXT NOT NULL,
     password   TEXT NOT NULL,
     role       TEXT DEFAULT 'user',
     ssn        TEXT,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS transaction_prod
 
 INSERT INTO users
     ( user_id,
-      user_name,
+      name_of_user,
       password,
       role,
       ssn,
@@ -150,7 +150,7 @@ VALUES
 
 INSERT INTO users
     ( user_id,
-      user_name,
+      name_of_user,
       password,
       role,
       ssn,

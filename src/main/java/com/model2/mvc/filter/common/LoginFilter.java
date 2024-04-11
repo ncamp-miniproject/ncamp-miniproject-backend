@@ -48,7 +48,7 @@ public class LoginFilter extends HttpFilter implements Filter {
 
         User sampleUser = new User();
         sampleUser.setUserId("user08");
-        sampleUser.setUserName("SCOTT");
+        sampleUser.setNameOfUser("SCOTT");
         sampleUser.setPassword("1234");
         sampleUser.setRole(Role.USER);
         sampleUser.setRegDate(LocalDate.now());
