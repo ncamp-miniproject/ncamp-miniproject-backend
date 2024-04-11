@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="EUC-KR"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="UserMapper">
-    <resultMap id="user" type="User">
-        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="role" property="role" jdbcType="VARCHAR"
-                typeHandler="com.model2.mvc.common.mybatis.typehandler.RoleTypeHandler"/>
-        <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
-        <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="addr" property="addr" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="reg_date" property="regDate" jdbcType="DATE"/>
-    </resultMap>
     <insert id="insert" parameterType="User">
         INSERT INTO users (
             user_id,
@@ -46,6 +34,20 @@
             </if>
         )
     </insert>
+
+    <resultMap id="user" type="User">
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"
+                typeHandler="com.model2.mvc.common.mybatis.typehandler.RoleTypeHandler"/>
+        <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
+        <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="addr" property="addr" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="reg_date" property="regDate" jdbcType="DATE"/>
+    </resultMap>
+
     <select id="findById" parameterType="string" resultMap="user">
         SELECT user_id,
                user_name,
@@ -60,23 +62,7 @@
         WHERE user_id = #{value}
     </select>
 
-    <resultMap id="userListData" type="ListData">
-        <result column="count" property="count" jdbcType="NUMERIC"/>
-        <collection property="list" ofType="User">
-            <result column="user_id" property="userId" jdbcType="VARCHAR"/>
-            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-            <result column="password" property="password" jdbcType="VARCHAR"/>
-            <result column="role" property="role" jdbcType="VARCHAR"
-                    typeHandler="com.model2.mvc.common.mybatis.typehandler.RoleTypeHandler"/>
-            <result column="ssn" property="ssn" jdbcType="VARCHAR"/>
-            <result column="cell_phone" property="phone" jdbcType="VARCHAR"/>
-            <result column="addr" property="addr" jdbcType="VARCHAR"/>
-            <result column="email" property="email" jdbcType="VARCHAR"/>
-            <result column="reg_date" property="regDate" jdbcType="DATE"/>
-        </collection>
-    </resultMap>
-
-    <select id="findUsers" parameterType="Search" resultMap="userListData">
+    <select id="findUsers" parameterType="map" resultMap="user">
         SELECT
             v.user_id user_id,
             v.user_name user_name,
@@ -86,21 +72,19 @@
             v.cell_phone cell_phone,
             v.addr addr,
             v.email email,
-            v.reg_date reg_date,
-            v.count count
+            v.reg_date reg_date
         FROM (
             SELECT
                 ROW_NUMBER() OVER (ORDER BY u.user_id ASC) row_num,
                 u.user_id user_id,
-                user_name user_name,
+                u.user_name user_name,
                 u.password password,
                 u.role role,
                 u.ssn ssn,
                 u.cell_phone cell_phone,
                 u.addr addr,
                 u.email email,
-                u.reg_date reg_date,
-                COUNT(*) OVER () count
+                u.reg_date reg_date
             FROM users u
                 <where>
                     <if test="searchCondition == 0">
@@ -118,6 +102,21 @@
             </if>
         </where>
     </select>
+
+    <select id="count" parameterType="map" resultType="int">
+        SELECT
+            COUNT(u.user_id)
+        FROM users u
+            <where>
+                <if test="searchCondition == 0">
+                    u.user_id LIKE #{searchKeyword}
+                </if>
+                <if test="searchCondition == 1">
+                    u.user_name LIKE #{searchKeyword}
+                </if>
+            </where>
+    </select>
+
     <update id="update" parameterType="User">
         UPDATE users
         <set>

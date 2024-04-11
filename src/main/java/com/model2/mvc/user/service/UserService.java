@@ -1,7 +1,7 @@
 package com.model2.mvc.user.service;
 
 import com.model2.mvc.user.domain.User;
-import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
@@ -14,7 +14,7 @@ public interface UserService {
 
     public User getUser(String userId) throws Exception;
 
-    public ListUserResponseDto getUserList(ListUserRequestDTO requestDTO) throws Exception;
+    public ListUserResponseDto getUserList(ListUserRequestDto requestDTO) throws Exception;
 
     public void updateUser(User userVO) throws Exception;
 

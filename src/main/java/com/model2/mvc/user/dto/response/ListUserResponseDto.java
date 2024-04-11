@@ -1,6 +1,6 @@
 package com.model2.mvc.user.dto.response;
 
-import com.model2.mvc.common.Search;
+import com.model2.mvc.common.Pagination;
 import com.model2.mvc.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,9 +16,7 @@ import java.util.List;
 @Builder
 @ToString
 public class ListUserResponseDto {
-    private int total;
+    private int count;
     private List<User> list;
-    private Search searchVO;
-    private int currentPage;
-    private int totalPage;
+    private Pagination paginationInfo;
 }

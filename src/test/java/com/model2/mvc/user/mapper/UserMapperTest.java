@@ -16,8 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class UserMapperTest {
@@ -90,30 +92,33 @@ public class UserMapperTest {
 
         users.forEach(e -> sqlSession.insert("UserMapper.insert", e));
 
-        Search search1 = new Search();
-        search1.setStartRowNum(1);
-        search1.setEndRowNum(3);
-        search1.setSearchCondition("0");
-        search1.setSearchKeyword("iuser%");
-        ListData<User> found1 = sqlSession.selectOne("UserMapper.findUsers", search1);
+        Map<String, Object> search1 = new HashMap<>();
+        search1.put("startRowNum", 1);
+        search1.put("endRowNum", 3);
+        search1.put("searchCondition", "0");
+        search1.put("searchKeyword", "iuser%");
+        List<User> found1 = sqlSession.selectList("UserMapper.findUsers", search1);
+        int count1 = sqlSession.selectOne("UserMapper.count", search1);
+
         log.debug(found1.toString());
-        checkResult(users, found1);
+        checkResult(users, found1, count1);
 
-        Search search2 = new Search();
-        search2.setStartRowNum(1);
-        search2.setEndRowNum(3);
-        search2.setSearchCondition("1");
-        search2.setSearchKeyword("zxcv");
-        ListData<User> found2 = sqlSession.selectOne("UserMapper.findUsers", search2);
+        Map<String, Object> search2 = new HashMap<>();
+        search2.put("startRowNum", 1);
+        search2.put("endRowNum", 3);
+        search2.put("searchCondition", "1");
+        search2.put("searchKeyword", "zxcv");
+        List<User> found2 = sqlSession.selectList("UserMapper.findUsers", search2);
+        int count2 = sqlSession.selectOne("UserMapper.count", search2);
 
-        assertThat(found2.getList().size()).isEqualTo(1);
-        assertThat(found2.getList().get(0)).isEqualTo(users.get(2));
+        assertThat(found2.size()).isEqualTo(1);
+        assertThat(found2.get(0)).isEqualTo(users.get(2));
     }
 
-    private static void checkResult(List<User> users, ListData<User> found) {
-        assertThat(found.getCount()).isEqualTo(3);
+    private static void checkResult(List<User> users, List<User> found, int count) {
+        assertThat(count).isEqualTo(3);
 
-        Iterator<User> outputIter = found.getList().iterator();
+        Iterator<User> outputIter = found.iterator();
         Iterator<User> expectedIter = users.iterator();
         while (outputIter.hasNext() || expectedIter.hasNext()) {
             User output = outputIter.next();

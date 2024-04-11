@@ -1,7 +1,6 @@
 package com.model2.mvc.user.repository.impl;
 
-import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Search;
+import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository("myBatisMapperUserDAO")
@@ -30,10 +32,30 @@ public class MyBatisMapperUserRepository implements UserRepository {
     }
 
     @Override
-    public ListData<User> findByUserName(Search search) throws SQLException {
-        search.setSearchKeyword("%" + search.getSearchKeyword() + "%");
-        ListData<User> list = this.sqlSession.selectOne("UserMapper.findUsers", search);
-        return list == null ? new ListData<>(0, new ArrayList<>()) : list;
+    public List<User> findByUserName(String userName, boolean match, int page, int pageSize) {
+        Map<String, Object> searchOptions = generateSearchOption(userName, SearchCondition.BY_NAME, match, page, pageSize);
+        List<User> result = this.sqlSession.selectList("UserMapper.findUsers", searchOptions);
+        return result == null ? new ArrayList<>() : result;
+    }
+
+    @Override
+    public int countByUserName(String userName, boolean match) {
+        Map<String, Object> searchOptions = generateSearchOption(userName, SearchCondition.BY_NAME, match);
+        return this.sqlSession.selectOne("UserMapper.count", searchOptions);
+    }
+
+    private Map<String, Object> generateSearchOption(String searchKeyword, SearchCondition searchCondition, boolean match) {
+        Map<String, Object> search = new HashMap<>();
+        search.put("searchKeyword", match ? searchKeyword : "%" + searchKeyword + "%");
+        search.put("searchCondition", searchCondition.getConditionCode());
+        return search;
+    }
+
+    private Map<String, Object> generateSearchOption(String userName, SearchCondition searchCondition, boolean match, int page, int pageSize) {
+        Map<String, Object> search = generateSearchOption(userName, searchCondition, match);
+        search.put("startRowNum", (page - 1) * pageSize + 1);
+        search.put("endRowNum", page * pageSize);
+        return search;
     }
 
     @Override

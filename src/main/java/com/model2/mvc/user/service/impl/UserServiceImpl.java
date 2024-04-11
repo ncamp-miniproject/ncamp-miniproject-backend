@@ -1,33 +1,23 @@
 package com.model2.mvc.user.service.impl;
 
-import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Search;
+import com.model2.mvc.common.Pagination;
 import com.model2.mvc.common.SearchCondition;
-import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.mail.MailAgent;
-import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.domain.User;
-import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
 import com.model2.mvc.user.repository.UserRepository;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -40,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
+
+    @Value("#{constantProperties['defaultPageDisplay']}")
+    private int defaultPageDisplay;
 
     public void addUser(User userVO) throws Exception {
         userVO.setRegDate(LocalDate.now());
@@ -65,40 +58,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(userId).orElseThrow(Exception::new);
     }
 
-    public ListUserResponseDto getUserList(ListUserRequestDTO requestDTO) throws Exception {
-        Integer page = requestDTO.getPage();
+    public ListUserResponseDto getUserList(ListUserRequestDto requestDto) throws Exception {
+        Integer page = requestDto.getPage();
         page = page == null ? 1 : page;
-        Integer pageSize = requestDTO.getPageSize();
+        Integer pageSize = requestDto.getPageSize();
         pageSize = pageSize == null ? defaultPageSize : pageSize;
-        SearchCondition searchCondition = requestDTO.getSearchCondition() == null
-                                          ? SearchCondition.BY_NAME
-                                          : requestDTO.getSearchCondition();
-        Search search = new Search();
-        search.setStartRowNum((page - 1) * pageSize + 1);
-        search.setEndRowNum(page * pageSize);
-        search.setSearchCondition(searchCondition.getConditionCode());
-        search.setSearchKeyword(StringUtil.null2nullStr(requestDTO.getSearchKeyword()));
+        SearchCondition searchCondition = requestDto.getSearchCondition() == null
+                                          ? SearchCondition.NO_CONDITION
+                                          : requestDto.getSearchCondition();
+        String searchKeyword = StringUtil.null2nullStr(requestDto.getSearchKeyword());
         switch (searchCondition) {
         case BY_NAME:
-            ListData<User> userList = userRepository.findByUserName(search);
-            Map<String, Object> result = new HashMap<>();
-            result.put("count", userList.getCount());
-            result.put("list", userList.getList());
-            result.put("searchVO", search);
-            int totalPage = 0;
-            int total = (int)result.get("count");
-            if (total > 0) {
-                totalPage = total / pageSize;
-                if (total % pageSize > 0) {
-                    totalPage += 1;
-                }
-            }
+            List<User> listResult = this.userRepository.findByUserName(searchKeyword, false, page, pageSize);
+            int countResult = this.userRepository.countByUserName(searchKeyword, false);
             return ListUserResponseDto.builder()
-                    .total(userList.getCount())
-                    .list(userList.getList())
-                    .searchVO(search)
-                    .currentPage(page)
-                    .totalPage(totalPage)
+                    .count(countResult)
+                    .list(listResult)
+                    .paginationInfo(Pagination.of(page, countResult, pageSize, defaultPageDisplay))
                     .build();
         default:
             throw new IllegalArgumentException();

@@ -24,6 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -147,22 +148,10 @@ public class TestMyBatisMapperUserRepository {
             throw new RuntimeException(e);
         }
 
-
-        Search search = new Search();
-        search.setSearchKeyword("user");
-        search.setSearchCondition("1");
-        search.setStartRowNum(1);
-        search.setEndRowNum(3);
-
-        try {
-            ListData<User> result = this.userRepository.findByUserName(search);
-
-            assertThat(result.getCount()).isEqualTo(2);
-            assertThat(result.getList().get(0)).isEqualTo(user1);
-            assertThat(result.getList().get(1)).isEqualTo(user2);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
+        List<User> resultList = this.userRepository.findByUserName("user", false, 1, 3);
+        int count = this.userRepository.countByUserName("user", false);
+        assertThat(count).isEqualTo(2);
+        assertThat(resultList.get(0)).isEqualTo(user1);
+        assertThat(resultList.get(1)).isEqualTo(user2);
     }
 }

@@ -3,7 +3,7 @@ package com.model2.mvc.user.controller;
 import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
-import com.model2.mvc.user.dto.request.ListUserRequestDTO;
+import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
 import com.model2.mvc.user.dto.response.SignInResponseDto;
@@ -160,7 +160,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String listUser(@ModelAttribute("requestDTO") ListUserRequestDTO requestDTO, Model model) throws Exception {
+    public String listUser(@ModelAttribute("requestDTO") ListUserRequestDto requestDTO, Model model) throws Exception {
         URIBuilder uriBuilder = new URIBuilder().setScheme("http")
                 .setHost("localhost")
                 .setPort(8089)
@@ -185,11 +185,9 @@ public class UserController {
                                                                                  ListUserResponseDto.class);
             ListUserResponseDto result = response.getBody();
             if (result != null) {
-                model.addAttribute("total", result.getTotal());
+                model.addAttribute("count", result.getCount());
                 model.addAttribute("list", result.getList());
-                model.addAttribute("searchVO", result.getSearchVO());
-                model.addAttribute("currentPage", result.getCurrentPage());
-                model.addAttribute("totalPage", result.getTotalPage());
+                model.addAttribute("paginationInfo", result.getPaginationInfo());
             }
         } catch (HttpClientErrorException.Unauthorized e) {
             e.printStackTrace();

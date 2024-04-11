@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ListUserRequestDTO {
+public class ListUserRequestDto {
     private Integer page;
     private Integer pageSize;
     private SearchCondition searchCondition;
