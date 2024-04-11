@@ -31,13 +31,7 @@
             category_no,
             category_name
         FROM category
-        WHERE category_no =
-              <if test="value == null">
-                  -1
-              </if>
-              <if test="value != null">
-                  #{value}
-              </if>
+        WHERE category_no = #{value}
     </select>
 
     <update id="update" parameterType="Category">

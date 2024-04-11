@@ -13,9 +13,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
@@ -33,4 +33,8 @@ public class CreateProductRequestDto {
     private Integer categoryNo;
 
     private List<ProductImageDto> productImageDto;
+
+    public CreateProductRequestDto() {
+        this.productImageDto = new ArrayList<>();
+    }
 }
