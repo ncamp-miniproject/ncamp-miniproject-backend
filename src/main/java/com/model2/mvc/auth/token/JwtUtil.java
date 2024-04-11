@@ -1,4 +1,4 @@
-package com.model2.mvc.auth.token.jwt;
+package com.model2.mvc.auth.token;
 
 import com.model2.mvc.auth.token.TokenSupport;
 import com.model2.mvc.user.domain.Role;
@@ -38,7 +38,6 @@ public class JwtUtil implements TokenSupport {
         claims.setExpiration(new Date(now.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_VALIDITY)));
         claims.putAll(extraClaims);
         return Jwts.builder()
-                .setSubject(user.getUsername())
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();

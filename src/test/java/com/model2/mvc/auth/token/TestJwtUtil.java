@@ -1,8 +1,8 @@
-package com.model2.mvc.auth;
+package com.model2.mvc.auth.token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.auth.token.jwt.JwtUtil;
+import com.model2.mvc.auth.token.JwtUtil;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.junit.jupiter.api.Test;
