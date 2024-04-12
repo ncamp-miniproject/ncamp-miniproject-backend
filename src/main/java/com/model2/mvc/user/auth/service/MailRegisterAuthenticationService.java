@@ -1,4 +1,4 @@
-package com.model2.mvc.user.service;
+package com.model2.mvc.user.auth.service;
 
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.mail.MailAgent;
@@ -8,6 +8,7 @@ import com.model2.mvc.user.repository.MailAuthorizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,11 +19,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MailAuthenticationService {
+@Primary
+public class MailAuthenticationService implements RegisterAuthenticationService {
     private final MailAuthorizationRepository mailAuthorizationRepository;
     private final MailAgent mailAgent;
 
-    public void sendAuthenticationMail(String receiverMailAddress) throws MailTransferException {
+    @Override
+    public void sendAuthenticationRequest(String receiverMailAddress) throws MailTransferException {
         JSONObject metadata = readMailMetadata();
         String generatedCode = RandomSerialGenerator.generate(40);
         this.mailAgent.send(receiverMailAddress,
@@ -54,6 +57,7 @@ public class MailAuthenticationService {
         return (JSONObject)JSONValue.parse(sb.toString());
     }
 
+    @Override
     public boolean checkValidCode(String email, String code) {
         Optional<MailAuthenticationInfo> byEmail = this.mailAuthorizationRepository.findByEmail(email);
         if (byEmail.isPresent()) {
@@ -66,7 +70,8 @@ public class MailAuthenticationService {
         return false;
     }
 
-    public boolean checkAuthorization(String email) {
+    @Override
+    public boolean checkAuthentication(String email) {
         Optional<MailAuthenticationInfo> infoOptional = this.mailAuthorizationRepository.findByEmail(email);
         if (infoOptional.isPresent()) {
             MailAuthenticationInfo info = infoOptional.get();
@@ -75,6 +80,7 @@ public class MailAuthenticationService {
         return false;
     }
 
+    @Override
     public void removeAuthenticationInfo(String email) {
         this.mailAuthorizationRepository.deleteByEmail(email);
     }

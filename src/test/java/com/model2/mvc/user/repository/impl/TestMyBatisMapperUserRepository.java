@@ -54,11 +54,7 @@ public class TestMyBatisMapperUserRepository {
     @Test
     public void test() {
         User user = new User("user111111", "username", "1q2w3e4r");
-        try {
-            userRepository.insertUser(user);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        userRepository.insertUser(user);
     }
 
     @Test
@@ -73,12 +69,7 @@ public class TestMyBatisMapperUserRepository {
         user.setAddr("Daegu");
         user.setEmail("a@gmail.com");
         user.setRegDate(LocalDate.of(2017, 1, 13));
-        try {
-            this.userRepository.insertUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
+        this.userRepository.insertUser(user);
 
         try {
             Optional<User> found = this.userRepository.findByUserId("sampleuser");
@@ -101,7 +92,7 @@ public class TestMyBatisMapperUserRepository {
         user.setEmail("a@gmail.com");
         user.setRegDate(LocalDate.now());
 
-        assertThatExceptionOfType(Exception.class).isThrownBy(() -> this.userRepository.insertUser(user));
+        assertThat(this.userRepository.insertUser(user)).isFalse();
     }
 
     @Test
@@ -116,14 +107,9 @@ public class TestMyBatisMapperUserRepository {
         user2.setPassword("2w3e4r5t");
         user2.setRegDate(LocalDate.now());
 
-        try {
-            this.userRepository.insertUser(user1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
+        this.userRepository.insertUser(user1);
 
-        assertThatExceptionOfType(DuplicateKeyException.class).isThrownBy(() -> this.userRepository.insertUser(user2));
+        assertThat(this.userRepository.insertUser(user2)).isFalse();
     }
 
     @Test
@@ -132,21 +118,13 @@ public class TestMyBatisMapperUserRepository {
         user1.setNameOfUser("username1");
         user1.setPassword("1q2w3e4r");
         user1.setRegDate(LocalDate.now());
-        try {
-            this.userRepository.insertUser(user1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        this.userRepository.insertUser(user1);
 
         User user2 = new User("user2");
         user2.setNameOfUser("username2");
         user2.setPassword("2w3e4r5t");
         user2.setRegDate(LocalDate.now());
-        try {
-            this.userRepository.insertUser(user2);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        this.userRepository.insertUser(user2);
 
         List<User> resultList = this.userRepository.findByUserName("user", false, 1, 3);
         int count = this.userRepository.countByUserName("user", false);
