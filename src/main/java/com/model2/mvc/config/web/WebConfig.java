@@ -3,11 +3,14 @@ package com.model2.mvc.config.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model2.mvc.cart.interceptor.CookieSetter;
 import com.model2.mvc.common.aspect.ControllerLoggingAspect;
+import com.model2.mvc.user.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartResolver;
@@ -75,5 +78,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public MultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return (username) -> userRepository.findByUserId(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

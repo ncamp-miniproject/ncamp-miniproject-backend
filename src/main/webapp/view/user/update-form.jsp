@@ -109,7 +109,7 @@
 									data-toggle="dropdown"
 									aria-haspopup="true"
 									aria-expanded="true">
-								${user.role.role == 'seller' ? '판매자' : '유저'} <span class="caret"></span>
+								${user.role.name() == 'SELLER' ? '판매자' : '유저'} <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="role-dropdown">
 								<li><a href="#" class="role-select" data-role="user">유저</a></li>

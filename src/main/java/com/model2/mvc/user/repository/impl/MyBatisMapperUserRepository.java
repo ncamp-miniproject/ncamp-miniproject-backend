@@ -22,8 +22,13 @@ public class MyBatisMapperUserRepository implements UserRepository {
     private final SqlSession sqlSession;
 
     @Override
-    public void insertUser(User user) throws SQLException {
-        this.sqlSession.insert("UserMapper.insert", user);
+    public boolean insertUser(User user) {
+        try {
+            this.sqlSession.insert("UserMapper.insert", user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

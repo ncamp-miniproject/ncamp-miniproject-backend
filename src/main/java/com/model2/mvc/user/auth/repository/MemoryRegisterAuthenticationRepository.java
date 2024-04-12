@@ -1,7 +1,6 @@
-package com.model2.mvc.user.repository.impl;
+package com.model2.mvc.user.auth.repository;
 
 import com.model2.mvc.user.domain.MailAuthenticationInfo;
-import com.model2.mvc.user.repository.MailAuthorizationRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -9,7 +8,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class MemoryMailAuthorizationRepository implements MailAuthorizationRepository {
+public class MemoryRegisterAuthenticationRepository implements RegisterAuthenticationRepository {
     private static final Map<String, MailAuthenticationInfo> storage = new ConcurrentHashMap<>();
 
     @Override

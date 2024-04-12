@@ -1,10 +1,10 @@
-package com.model2.mvc.user.repository;
+package com.model2.mvc.user.auth.repository;
 
 import com.model2.mvc.user.domain.MailAuthenticationInfo;
 
 import java.util.Optional;
 
-public interface MailAuthorizationRepository {
+public interface RegisterAuthenticationRepository {
 
     public Optional<MailAuthenticationInfo> findByEmail(String email);
 

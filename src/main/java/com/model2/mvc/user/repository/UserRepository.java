@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    public void insertUser(User user) throws SQLException;
+    public boolean insertUser(User user);
 
-    public Optional<User> findByUserId(String userId) throws SQLException;
+    public Optional<User> findByUserId(String userId);
 
     public List<User> findByUserName(String userName, boolean match, int page, int pageSize);
 

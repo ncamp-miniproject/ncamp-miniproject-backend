@@ -4,7 +4,7 @@ import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.mail.MailAgent;
 import com.model2.mvc.mail.MailTransferException;
 import com.model2.mvc.user.domain.MailAuthenticationInfo;
-import com.model2.mvc.user.repository.MailAuthorizationRepository;
+import com.model2.mvc.user.auth.repository.RegisterAuthenticationRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -20,8 +20,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Primary
-public class MailAuthenticationService implements RegisterAuthenticationService {
-    private final MailAuthorizationRepository mailAuthorizationRepository;
+public class MailRegisterAuthenticationService implements RegisterAuthenticationService {
+    private final RegisterAuthenticationRepository registerAuthenticationRepository;
     private final MailAgent mailAgent;
 
     @Override
@@ -39,7 +39,7 @@ public class MailAuthenticationService implements RegisterAuthenticationService 
         MailAuthenticationInfo mailAuthenticationInfo = new MailAuthenticationInfo();
         mailAuthenticationInfo.setEmail(receiverMailAddress);
         mailAuthenticationInfo.setAuthenticationCode(generatedCode);
-        this.mailAuthorizationRepository.save(mailAuthenticationInfo);
+        this.registerAuthenticationRepository.save(mailAuthenticationInfo);
     }
 
     private JSONObject readMailMetadata() {
@@ -59,12 +59,15 @@ public class MailAuthenticationService implements RegisterAuthenticationService 
 
     @Override
     public boolean checkValidCode(String email, String code) {
-        Optional<MailAuthenticationInfo> byEmail = this.mailAuthorizationRepository.findByEmail(email);
+        Optional<MailAuthenticationInfo> byEmail = this.registerAuthenticationRepository.findByEmail(email);
         if (byEmail.isPresent()) {
             MailAuthenticationInfo info = byEmail.get();
             if (info.getAuthenticationCode().equals(code)) {
+                System.out.println("Equals");
                 info.setAuthenticated(true);
                 return true;
+            } else {
+                System.out.println("Not Equals");
             }
         }
         return false;
@@ -72,7 +75,7 @@ public class MailAuthenticationService implements RegisterAuthenticationService 
 
     @Override
     public boolean checkAuthentication(String email) {
-        Optional<MailAuthenticationInfo> infoOptional = this.mailAuthorizationRepository.findByEmail(email);
+        Optional<MailAuthenticationInfo> infoOptional = this.registerAuthenticationRepository.findByEmail(email);
         if (infoOptional.isPresent()) {
             MailAuthenticationInfo info = infoOptional.get();
             return info.isAuthenticated();
@@ -82,6 +85,6 @@ public class MailAuthenticationService implements RegisterAuthenticationService 
 
     @Override
     public void removeAuthenticationInfo(String email) {
-        this.mailAuthorizationRepository.deleteByEmail(email);
+        this.registerAuthenticationRepository.deleteByEmail(email);
     }
 }

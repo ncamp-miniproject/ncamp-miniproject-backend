@@ -46,7 +46,7 @@
     </style>
 </head>
 
-<body data-context-path="${pageContext.request.contextPath}" data-menu="${menu}" data-user-role="${loginUser.role.role}" data-user-id="${loginUser.userId}">
+<body data-context-path="${pageContext.request.contextPath}" data-menu="${menu}" data-user-role="${loginUser.role.name()}" data-user-id="${loginUser.userId}">
     <c:import url="${pageContext.request.contextPath}/view/layout/nav.jsp"/>
 
     <main>
@@ -65,7 +65,7 @@
                     <th>수령인 이름</th>
                     <th>연락처</th>
                     <th>배송현황</th>
-                    <c:if test="${loginUser.role.role == 'admin'}">
+                    <c:if test="${loginUser.role.name() == 'ADMIN'}">
                         <th>정보수정</th>
                     </c:if>
                 </tr>

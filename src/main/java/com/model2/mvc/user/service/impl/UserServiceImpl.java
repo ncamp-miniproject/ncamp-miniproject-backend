@@ -3,7 +3,6 @@ package com.model2.mvc.user.service.impl;
 import com.model2.mvc.common.Pagination;
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.StringUtil;
-import com.model2.mvc.mail.MailAgent;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.request.SignInRequestDto;
@@ -14,9 +13,11 @@ import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,18 +27,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final MailAgent mailAgent;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
 
     @Value("#{constantProperties['defaultPageDisplay']}")
     private int defaultPageDisplay;
-
-    public void addUser(User userVO) throws Exception {
-        userVO.setRegDate(LocalDate.now());
-        userRepository.insertUser(userVO);
-    }
 
     @Override
     public User signIn(SignInRequestDto dto) throws Exception {
@@ -53,9 +48,8 @@ public class UserServiceImpl implements UserService {
         return dbUser.orElseThrow(() -> new Exception("No such user"));
     }
 
-    public User getUser(String userId) throws Exception {
-
-        return userRepository.findByUserId(userId).orElseThrow(Exception::new);
+    public User getUser(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new);
     }
 
     public ListUserResponseDto getUserList(ListUserRequestDto requestDto) throws Exception {

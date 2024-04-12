@@ -15,11 +15,13 @@ public class RoleEditor extends PropertyEditorSupport {
     @Override
     public String getAsText() {
         Role value = (Role)super.getValue();
-        return value.getRole();
+        return value.name();
     }
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
+        System.out.println("here");
+        System.out.println(text);
         Optional<Role> role = Role.of(text);
         super.setValue(role.orElseThrow(RuntimeException::new));
     }

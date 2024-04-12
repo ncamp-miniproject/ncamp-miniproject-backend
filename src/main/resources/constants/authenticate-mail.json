@@ -1,5 +1,5 @@
 {
     "subject": "Naver Cloud Camp Shopping Mall: Authentication",
     "message": "Please authenticate by clicking the link below: ",
-    "authenticationURL": "http://localhost:8089/users/account/authentication/code?code="
+    "authenticationURL": "http://localhost:8089/api/auth/registration/auth?code="
 }

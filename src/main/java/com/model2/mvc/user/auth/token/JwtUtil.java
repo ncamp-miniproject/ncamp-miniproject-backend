@@ -1,6 +1,5 @@
-package com.model2.mvc.auth.token;
+package com.model2.mvc.user.auth.token;
 
-import com.model2.mvc.auth.token.TokenSupport;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import io.jsonwebtoken.Claims;
@@ -17,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil implements TokenSupport {
     private static final String SECRET_KEY = "9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d9";
-    private static final long ACCESS_TOKEN_VALIDITY = 60 * 60 * 1000;
+    private static final long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000;
+    private static final long REFRESH_TOKEN_VALIDITY = 14 * 24 * 60 * 60 * 1000;
     private static final String ROLE_KEY = "role";
 
     private final JwtParser jwtParser;
@@ -27,20 +27,20 @@ public class JwtUtil implements TokenSupport {
     }
 
     @Override
-    public String createToken(User user) {
-        Map<String, Object> extraClaims = Map.of(ROLE_KEY, user.getRole().getRole());
+    public String createToken(User user, boolean refreshToken) {
+        Map<String, Object> extraClaims = Map.of(ROLE_KEY, user.getRole().name());
 
         Date now = new Date(System.currentTimeMillis());
 
         Claims claims = Jwts.claims();
         claims.setSubject(user.getUsername());
         claims.setIssuedAt(now);
-        claims.setExpiration(new Date(now.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_VALIDITY)));
+        claims.setExpiration(new Date(now.getTime() +
+                                      TimeUnit.MINUTES.toMillis(refreshToken
+                                                                ? REFRESH_TOKEN_VALIDITY
+                                                                : ACCESS_TOKEN_VALIDITY)));
         claims.putAll(extraClaims);
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+        return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.model2.mvc.auth.token;
+package com.model2.mvc.user.auth.token;
 
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
@@ -14,18 +14,21 @@ import java.time.temporal.ChronoUnit;
 @Component
 @Primary
 public class SimpleJsonTokenSupport implements TokenSupport {
-    private static final long ACCESS_TOKEN_VALIDITY = 60;
+    private static final long ACCESS_TOKEN_VALIDITY = 30;
+    private static final long REFRESH_TOKEN_VALIDITY = 14 * 24 * 60;
     private static final String ROLE_KEY = "role";
 
     @Override
-    public String createToken(User user) {
+    public String createToken(User user, boolean refreshToken) {
         LocalDateTime now = LocalDateTime.now();
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("subject", user.getUsername());
         jsonObj.put("issuedAt", now.toString());
-        jsonObj.put("expiration", now.plus(ACCESS_TOKEN_VALIDITY, ChronoUnit.MINUTES).toString());
-        jsonObj.put(ROLE_KEY, user.getRole().getRole());
+        jsonObj.put("expiration",
+                    now.plus(refreshToken ? REFRESH_TOKEN_VALIDITY : ACCESS_TOKEN_VALIDITY, ChronoUnit.MINUTES)
+                            .toString());
+        jsonObj.put(ROLE_KEY, user.getRole().name());
         return jsonObj.toJSONString();
     }
 
@@ -36,12 +39,12 @@ public class SimpleJsonTokenSupport implements TokenSupport {
 
     @Override
     public Role extractRole(String token) {
-        return Role.of(extractValue(token, ROLE_KEY)).orElseThrow();
+        return Role.of(extractValue(token, ROLE_KEY)).orElse(null);
     }
 
     private String extractValue(String token, String key) {
         JSONObject jsonObject = (JSONObject)JSONValue.parse(token);
-        return jsonObject.get(key).toString();
+        return jsonObject == null ? null : jsonObject.get(key).toString();
     }
 
     @Override

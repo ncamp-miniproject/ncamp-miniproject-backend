@@ -1,23 +1,20 @@
-package com.model2.mvc.auth.controller;
+package com.model2.mvc.user.auth.controller;
 
-import com.model2.mvc.mail.MailTransferException;
+import com.model2.mvc.user.auth.dto.request.AuthRequestDto;
+import com.model2.mvc.user.auth.dto.response.AuthenticatedResponseDto;
+import com.model2.mvc.user.auth.exception.AuthRequestFailException;
+import com.model2.mvc.user.auth.service.AuthService;
+import com.model2.mvc.user.auth.service.RegisterAuthenticationService;
 import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
-import com.model2.mvc.user.dto.request.SignInRequestDto;
-import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
-import com.model2.mvc.user.dto.response.SignInResponseDto;
-import com.model2.mvc.user.dto.response.UserDto;
-import com.model2.mvc.user.service.MailAuthenticationService;
-import com.model2.mvc.user.service.UserService;
+import com.model2.mvc.user.dto.request.RegisterRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,47 +25,31 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/api/users/account")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthApi {
-    private final UserService userService;
-    private final MailAuthenticationService mailAuthenticationService;
+    private final AuthService authService;
+    private final RegisterAuthenticationService registerAuthService;
 
     @InitBinder
     public void bindParameters(WebDataBinder binder) {
         binder.registerCustomEditor(Role.class, RoleEditor.getInstance());
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User toCreate) throws Exception {
-        if (!this.mailAuthenticationService.checkAuthorization(toCreate.getEmail())) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        this.userService.addUser(toCreate);
-        this.mailAuthenticationService.removeAuthenticationInfo(toCreate.getEmail());
-        return new ResponseEntity<>(toCreate, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<UserDto> getLoginUser(@SessionAttribute(value = "user", required = false) User loginUser) {
-        if (loginUser == null) {
+    @PostMapping("/registration")
+    public ResponseEntity<AuthenticatedResponseDto> registerUser(@RequestBody RegisterRequestDto request) {
+        try {
+            AuthenticatedResponseDto result = this.authService.registerUser(request);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (IllegalStateException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(UserDto.from(loginUser), HttpStatus.OK);
     }
 
-    @PostMapping("/duplicate")
-    public ResponseEntity<CheckDuplicateResponseDto> checkDuplication(@RequestParam("userId") String userId)
-    throws Exception {
-        return new ResponseEntity<>(this.userService.checkDuplication(userId), HttpStatus.OK);
-    }
-
-    @PostMapping("/sign-in")
-    public ResponseEntity<SignInResponseDto> signIn(@RequestBody SignInRequestDto user, HttpSession session) throws Exception {
+    @PostMapping
+    public ResponseEntity<AuthenticatedResponseDto> authenticate(@RequestBody AuthRequestDto request) {
         try {
-            User dbVO = this.userService.signIn(user);
-            session.setAttribute("user", dbVO);
-            return new ResponseEntity<>(new SignInResponseDto(true), HttpStatus.OK);
+            return new ResponseEntity<>(this.authService.authenticate(request), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -81,28 +62,17 @@ public class AuthApi {
         return new ResponseEntity<>(loginUser.getUserId(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}") // TODO
-    public ResponseEntity<User> deleteUser(@PathVariable("userId") String userId, HttpSession session) {
-        try {
-            User result = this.userService.deleteUser(userId);
-            session.removeAttribute("user");
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/authentication/start")
+    @PostMapping("/registration/auth/start")
     public ResponseEntity<Void> requestAuthenticationMail(@RequestParam("emailAddress") String emailAddress)
-    throws MailTransferException {
-        this.mailAuthenticationService.sendAuthenticationMail(emailAddress);
+    throws AuthRequestFailException {
+        this.registerAuthService.sendAuthenticationRequest(emailAddress);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/authentication")
+    @GetMapping("/registration/auth") // TODO: Some proxy task should be involved
     public ResponseEntity<Void> validateAuthentication(@RequestParam("code") String code,
                                                        @RequestParam("authenticatedEmail") String authenticatedEmail) {
-        boolean authorized = this.mailAuthenticationService.checkValidCode(authenticatedEmail, code);
+        boolean authorized = this.registerAuthService.checkValidCode(authenticatedEmail, code);
         if (!authorized) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
