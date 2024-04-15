@@ -2,9 +2,7 @@ package com.model2.mvc.user.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.MapperWithoutSpringInitializer;
-import com.model2.mvc.common.Search;
 import com.model2.mvc.common.Setter;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;

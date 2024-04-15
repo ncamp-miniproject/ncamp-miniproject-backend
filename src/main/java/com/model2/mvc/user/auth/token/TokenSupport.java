@@ -1,16 +1,19 @@
 package com.model2.mvc.user.auth.token;
 
-import com.model2.mvc.user.domain.Role;
-import com.model2.mvc.user.domain.User;
-import org.springframework.security.core.userdetails.UserDetails;
-
 public interface TokenSupport {
 
-    public String createToken(User user, boolean refreshToken);
+//    public static long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000;
+    public static long ACCESS_TOKEN_VALIDITY = 20 * 1000;
+    public static long REFRESH_TOKEN_VALIDITY = 14 * 24 * 60 * 60 * 1000;
+    public static String REFRESH_KEY = "isRefresh";
+
+    public String createToken(String subjectName, boolean refreshToken);
 
     public String extractUsername(String token);
 
-    public Role extractRole(String token);
+    public boolean isTokenValid(String token, String subjectName);
 
-    public boolean isTokenValid(String token, UserDetails userDetails);
+    public boolean isRefreshToken(String token);
+
+    public void removeToken(String token);
 }

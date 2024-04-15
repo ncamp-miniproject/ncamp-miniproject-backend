@@ -1,11 +1,8 @@
 package com.model2.mvc.user.repository.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Search;
 import com.model2.mvc.config.context.ContextConfig;
 import com.model2.mvc.config.context.MyBatisConfig;
 import com.model2.mvc.config.context.PropertyConfig;
@@ -19,10 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

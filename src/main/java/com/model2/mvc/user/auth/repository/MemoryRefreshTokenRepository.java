@@ -1,8 +1,11 @@
 package com.model2.mvc.user.auth.repository;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class MemoryRefreshTokenRepository implements RefreshTokenRepository {
     private static final Set<String> store = ConcurrentHashMap.newKeySet();
 

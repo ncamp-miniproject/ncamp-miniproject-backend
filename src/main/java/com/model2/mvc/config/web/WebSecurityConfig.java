@@ -1,7 +1,6 @@
 package com.model2.mvc.config.web;
 
 import com.model2.mvc.user.auth.filter.AuthFilter;
-import com.model2.mvc.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +25,12 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private static final List<String> WHITE_LISTS = List.of("/api/auth/**");
+    public static final String AUTH_HEADER = "Authorization";
+    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String NEW_ACCESS_TOKEN_HEADER = "New-Access-Token";
+    public static final String NEW_REFRESH_TOKEN_HEADER = "New-Refresh-Token";
+    public static final List<String> WHITE_LIST = List.of("/api/auth/**");
+
     private final AuthFilter authFilter;
 
     @Bean
@@ -54,7 +57,7 @@ public class WebSecurityConfig {
                                          AuthenticationManager authManager) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((req) -> {
-                    req.requestMatchers(WHITE_LISTS.stream()
+                    req.requestMatchers(WHITE_LIST.stream()
                                                 .map(AntPathRequestMatcher::new)
                                                 .toList()
                                                 .toArray(new AntPathRequestMatcher[0]))

@@ -4,6 +4,7 @@ import com.model2.mvc.config.context.ContextConfig;
 import com.model2.mvc.config.context.MyBatisConfig;
 import com.model2.mvc.config.context.PropertyConfig;
 import com.model2.mvc.config.web.WebConfig;
+import com.model2.mvc.config.web.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -16,7 +17,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
                 ContextConfig.class,
                 MyBatisConfig.class,
                 PropertyConfig.class,
-                WebConfig.class
+                WebConfig.class,
+                WebSecurityConfig.class
         }
 )
 public class ApplicationEntry extends SpringBootServletInitializer {

@@ -1,11 +1,10 @@
 package com.model2.mvc.user.auth.token;
 
-import com.model2.mvc.user.domain.Role;
-import com.model2.mvc.user.domain.User;
+import com.model2.mvc.user.auth.repository.RefreshTokenRepository;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -13,33 +12,34 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 @Primary
+@RequiredArgsConstructor
 public class SimpleJsonTokenSupport implements TokenSupport {
-    private static final long ACCESS_TOKEN_VALIDITY = 30;
-    private static final long REFRESH_TOKEN_VALIDITY = 14 * 24 * 60;
-    private static final String ROLE_KEY = "role";
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
-    public String createToken(User user, boolean refreshToken) {
+    public String createToken(String subjectName, boolean refreshToken) {
         LocalDateTime now = LocalDateTime.now();
 
         JSONObject jsonObj = new JSONObject();
-        jsonObj.put("subject", user.getUsername());
+        jsonObj.put("subject", subjectName);
         jsonObj.put("issuedAt", now.toString());
         jsonObj.put("expiration",
-                    now.plus(refreshToken ? REFRESH_TOKEN_VALIDITY : ACCESS_TOKEN_VALIDITY, ChronoUnit.MINUTES)
+                    now.plus(refreshToken ? TokenSupport.REFRESH_TOKEN_VALIDITY : TokenSupport.ACCESS_TOKEN_VALIDITY, ChronoUnit.MILLIS)
                             .toString());
-        jsonObj.put(ROLE_KEY, user.getRole().name());
-        return jsonObj.toJSONString();
+        jsonObj.put(TokenSupport.REFRESH_KEY, refreshToken);
+
+        String token = jsonObj.toJSONString();
+
+        if (refreshToken) {
+            this.refreshTokenRepository.save(token);
+        }
+
+        return token;
     }
 
     @Override
     public String extractUsername(String token) {
         return extractValue(token, "subject");
-    }
-
-    @Override
-    public Role extractRole(String token) {
-        return Role.of(extractValue(token, ROLE_KEY)).orElse(null);
     }
 
     private String extractValue(String token, String key) {
@@ -48,17 +48,43 @@ public class SimpleJsonTokenSupport implements TokenSupport {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        return !isTokenExpired(token) && isTokenForRightUser(token, userDetails);
+    public boolean isTokenValid(String token, String subjectName) {
+        if (subjectName == null || token == null) {
+            return false;
+        }
+
+        if (this.isRefreshToken(token) && !this.isValidRefreshToken(token)) {
+            return false;
+        }
+
+        return !isTokenExpired(token) && isTokenForRightUser(token, subjectName);
     }
 
     private boolean isTokenExpired(String token) {
-        LocalDateTime expiration = LocalDateTime.parse(extractValue(token, "expiration"));
+        String value = extractValue(token, "expiration");
+        if (value == null) {
+            return true;
+        }
+        LocalDateTime expiration = LocalDateTime.parse(value);
         return expiration.isBefore(LocalDateTime.now());
     }
 
-    private boolean isTokenForRightUser(String token, UserDetails userDetails) {
+    private boolean isTokenForRightUser(String token, String subjectName) {
         String subject = extractUsername(token);
-        return subject.equals(userDetails.getUsername());
+        return subject.equals(subjectName);
+    }
+
+    private boolean isValidRefreshToken(String token) {
+        return this.refreshTokenRepository.retrieve(token);
+    }
+
+    @Override
+    public boolean isRefreshToken(String token) {
+        return Boolean.parseBoolean(extractValue(token, TokenSupport.REFRESH_KEY));
+    }
+
+    @Override
+    public void removeToken(String token) {
+        this.refreshTokenRepository.remove(token);
     }
 }

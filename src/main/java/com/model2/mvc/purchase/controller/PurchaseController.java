@@ -2,7 +2,6 @@ package com.model2.mvc.purchase.controller;
 
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
-import com.model2.mvc.common.util.WebUtil;
 import com.model2.mvc.purchase.controller.editor.LocalDateEditor;
 import com.model2.mvc.purchase.controller.editor.PaymentOptionEditor;
 import com.model2.mvc.purchase.controller.editor.TranStatusCodeEditor;

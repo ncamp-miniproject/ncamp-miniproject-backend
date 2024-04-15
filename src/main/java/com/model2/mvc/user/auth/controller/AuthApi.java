@@ -10,6 +10,7 @@ import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.RegisterRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthApi {
     private final AuthService authService;
     private final RegisterAuthenticationService registerAuthService;
@@ -42,14 +44,19 @@ public class AuthApi {
             AuthenticatedResponseDto result = this.authService.registerUser(request);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (IllegalStateException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping
     public ResponseEntity<AuthenticatedResponseDto> authenticate(@RequestBody AuthRequestDto request) {
         try {
-            return new ResponseEntity<>(this.authService.authenticate(request), HttpStatus.OK);
+            AuthenticatedResponseDto result = this.authService.authenticate(request);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

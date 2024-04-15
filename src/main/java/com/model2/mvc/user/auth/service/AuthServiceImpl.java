@@ -7,13 +7,10 @@ import com.model2.mvc.user.auth.token.TokenSupport;
 import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.RegisterRequestDto;
 import com.model2.mvc.user.repository.UserRepository;
-import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +31,9 @@ public class AuthServiceImpl implements AuthService {
         this.authManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getUserId(),
                                                                               requestDto.getPassword()));
         var user = this.userRepository.findByUserId(requestDto.getUserId()).orElseThrow(); // TODO: Do specific
-        String accessToken = this.tokenSupport.createToken(user, false);
-        String refreshToken = this.tokenSupport.createToken(user, true);
+        String username = user.getUsername();
+        String accessToken = this.tokenSupport.createToken(username, false);
+        String refreshToken = this.tokenSupport.createToken(username, true);
         return new AuthenticatedResponseDto(accessToken, refreshToken);
     }
 
@@ -49,12 +47,12 @@ public class AuthServiceImpl implements AuthService {
             newUser.setPassword(this.pwEncoder.encode(newUser.getPassword()));
             newUser.setRegDate(LocalDate.now());
             boolean success = this.userRepository.insertUser(newUser);
-            String accessToken = "";
-            String refreshToken = "";
-            if (success) {
-                accessToken = this.tokenSupport.createToken(newUser, false);
-                refreshToken = this.tokenSupport.createToken(newUser, true);
+            if (!success) {
+                throw new IllegalArgumentException("Failed to create an account");
             }
+            String username = newUser.getUsername();
+            String accessToken = this.tokenSupport.createToken(username, false);
+            String refreshToken = this.tokenSupport.createToken(username, true);
             return new AuthenticatedResponseDto(accessToken, refreshToken);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);

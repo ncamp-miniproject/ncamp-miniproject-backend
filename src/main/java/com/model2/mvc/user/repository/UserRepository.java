@@ -1,7 +1,5 @@
 package com.model2.mvc.user.repository;
 
-import com.model2.mvc.common.ListData;
-import com.model2.mvc.common.Search;
 import com.model2.mvc.user.domain.User;
 
 import java.sql.SQLException;
