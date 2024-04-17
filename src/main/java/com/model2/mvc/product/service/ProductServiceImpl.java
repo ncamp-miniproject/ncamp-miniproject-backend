@@ -22,6 +22,7 @@ import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
+import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CategoryService categoryService;
+    private final UserService userService;
     private final ListQueryHelper listQueryHelper;
 
     @Value("#{constantProperties['defaultPageSize']}")
@@ -102,12 +104,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public GetProductResponseDto getProduct(int prodNo, User loginUser) {
+    public GetProductResponseDto getProduct(int prodNo, String userId) {
         Optional<Product> result = productRepository.findById(prodNo);
         GetProductResponseDto responseDTO
                 = GetProductResponseDto.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
-        responseDTO.setPurchasable(loginUser != null && loginUser.getRole() == Role.USER && responseDTO.getStock() > 0);
+        User user = this.userService.getUser(userId);
+        responseDTO.setPurchasable(user != null && user.getRole() == Role.USER && responseDTO.getStock() > 0);
         return responseDTO;
     }
 

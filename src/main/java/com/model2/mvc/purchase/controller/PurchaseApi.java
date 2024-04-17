@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -53,12 +52,7 @@ public class PurchaseApi {
     }
 
     @PostMapping
-    public ResponseEntity<AddPurchaseResponseDTO> addPurchase(@RequestBody AddPurchaseRequestDTO requestDTO,
-                                                              @SessionAttribute(value = "user",
-                                                                                required = false) User loginUser) {
-//        if (signIn == null || signIn.getRole() != Role.USER) {
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        }
+    public ResponseEntity<AddPurchaseResponseDTO> addPurchase(@RequestBody AddPurchaseRequestDTO requestDTO) {
         return new ResponseEntity<>(this.purchaseService.addPurchase(requestDTO), HttpStatus.CREATED);
     }
 

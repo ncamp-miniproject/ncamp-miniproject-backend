@@ -17,7 +17,7 @@ public interface ProductService {
 
     public AddProductResponseDto addProduct(CreateProductRequestDto toInsert, String contextRealPath);
 
-    public GetProductResponseDto getProduct(int prodNo, User loginUser);
+    public GetProductResponseDto getProduct(int prodNo, String userId);
 
     public ListProductResponseDto getProductList(ListProductRequestDto requestDTO);
 

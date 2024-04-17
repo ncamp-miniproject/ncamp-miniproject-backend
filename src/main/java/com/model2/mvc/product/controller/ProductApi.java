@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.ServletContext;
 import java.util.List;
@@ -62,14 +61,12 @@ public class ProductApi {
 
     @GetMapping("/{prodNo}")
     public ResponseEntity<GetProductResponseDto> getProduct(@PathVariable("prodNo") int prodNo,
-                                                            @RequestParam(value = "menu", required = false) String menu,
+                                                            @RequestParam("userId") String userId,
                                                             @CookieValue(value = "history",
-                                                                         required = false) String history,
-                                                            @SessionAttribute(value = "user",
-                                                                              required = false) User loginUser) {
+                                                                         required = false) String history) {
         String updatedHistory = StringUtil.addValueWithoutDuplicate(history, String.valueOf(prodNo), "-");
 
-        GetProductResponseDto result = this.productService.getProduct(prodNo, loginUser);
+        GetProductResponseDto result = this.productService.getProduct(prodNo, userId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

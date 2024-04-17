@@ -46,9 +46,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CookieSetter()).addPathPatterns("/cart/items/new");
-        registry.addInterceptor(this.tokenRefreshInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns(WebSecurityConfig.WHITE_LIST);
+//        registry.addInterceptor(this.tokenRefreshInterceptor)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns(WebSecurityConfig.WHITE_LIST); // TODO: for development
     }
 
     @Bean

@@ -1,9 +1,11 @@
 package com.model2.mvc.config.web;
 
 import com.model2.mvc.user.auth.filter.AuthFilter;
+import com.model2.mvc.user.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +33,15 @@ public class WebSecurityConfig {
     public static final String NEW_ACCESS_TOKEN_HEADER = "New-Access-Token";
     public static final String NEW_REFRESH_TOKEN_HEADER = "New-Refresh-Token";
     public static final List<String> WHITE_LIST = List.of("/api/auth/**");
+    public static final Map<Role, Map<HttpMethod, List<String>>> ALLOWED_REQUESTS = Map.of(
+            Role.USER, Map.of(
+                    HttpMethod.GET, List.of(),
+                    HttpMethod.POST, List.of(),
+                    HttpMethod.PUT, List.of(),
+                    HttpMethod.PATCH, List.of(),
+                    HttpMethod.DELETE, List.of()
+            )
+    );
 
     private final AuthFilter authFilter;
 
@@ -39,7 +51,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder,
+                                                         UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
@@ -57,13 +70,14 @@ public class WebSecurityConfig {
                                          AuthenticationManager authManager) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((req) -> {
-                    req.requestMatchers(WHITE_LIST.stream()
-                                                .map(AntPathRequestMatcher::new)
-                                                .toList()
-                                                .toArray(new AntPathRequestMatcher[0]))
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated();
+//                    req.requestMatchers(WHITE_LIST.stream()
+//                                                .map(AntPathRequestMatcher::new)
+//                                                .toList()
+//                                                .toArray(new AntPathRequestMatcher[0]))
+//                            .permitAll()
+//                            .anyRequest()
+//                            .authenticated();
+                    req.anyRequest().permitAll(); // TODO: just for development
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationManager(authManager)
