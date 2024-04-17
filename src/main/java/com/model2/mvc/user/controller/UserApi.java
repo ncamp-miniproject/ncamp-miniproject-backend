@@ -1,5 +1,7 @@
 package com.model2.mvc.user.controller;
 
+import com.model2.mvc.common.SearchCondition;
+import com.model2.mvc.common.propertyeditor.SearchConditionEditor;
 import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
@@ -31,6 +33,7 @@ public class UserApi {
     @InitBinder
     public void bindParameters(WebDataBinder binder) {
         binder.registerCustomEditor(Role.class, RoleEditor.getInstance());
+        binder.registerCustomEditor(SearchCondition.class, SearchConditionEditor.getInstance());
     }
 
     @PostMapping("/duplicate")
