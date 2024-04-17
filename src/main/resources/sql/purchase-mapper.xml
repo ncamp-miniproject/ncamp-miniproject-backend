@@ -101,12 +101,7 @@
             t.tran_no = #{value}
     </select>
 
-    <resultMap id="purchaseListData" type="ListData">
-        <result column="count" property="count" jdbcType="NUMERIC"/>
-        <collection property="list" resultMap="purchase"/>
-    </resultMap>
-
-    <select id="findList" parameterType="map" resultMap="purchaseListData">
+    <select id="findList" parameterType="map" resultMap="purchase">
         SELECT
             t.row_num          "row_num",
             t.tran_no          "tran_no",
@@ -119,7 +114,6 @@
             t.tran_status_code "tran_status_code",
             t.order_date       "order_date",
             t.dlvy_date        "dlvy_date",
-            t.count            "count",
             tp.prod_no         "prod_no",
             tp.quantity        "quantity",
             p.prod_name        "prod_name",
@@ -135,20 +129,19 @@
             pi.thumbnail       "thumbnail"
         FROM (
             SELECT
-            ROW_NUMBER() OVER (ORDER BY t.order_date DESC) ROW_NUM,
-            t.tran_no tran_no,
-            t.buyer_id buyer_id,
-            t.payment_option payment_option,
-            t.receiver_name receiver_name,
-            t.receiver_phone receiver_phone,
-            t.demailaddr demailaddr,
-            t.dlvy_request dlvy_request,
-            t.tran_status_code tran_status_code,
-            t.order_date order_date,
-            t.dlvy_date dlvy_date,
-            COUNT(*) OVER () count
+                ROW_NUMBER() OVER (ORDER BY t.order_date DESC) ROW_NUM,
+                t.tran_no tran_no,
+                t.buyer_id buyer_id,
+                t.payment_option payment_option,
+                t.receiver_name receiver_name,
+                t.receiver_phone receiver_phone,
+                t.demailaddr demailaddr,
+                t.dlvy_request dlvy_request,
+                t.tran_status_code tran_status_code,
+                t.order_date order_date,
+                t.dlvy_date dlvy_date
             FROM
-            transaction t
+                transaction t
             <where>
                 <if test="buyerId != null">
                     buyer_id = #{buyerId}
@@ -161,6 +154,17 @@
         LEFT OUTER JOIN product_image pi ON pi.prod_no = p.prod_no
         WHERE t.row_num BETWEEN #{startRowNum} AND #{endRowNum}
         ORDER BY t.order_date DESC
+    </select>
+
+    <select id="count" parameterType="map" resultType="int">
+        SELECT
+            COUNT(tran_no)
+        FROM transaction
+        <where>
+            <if test="buyerId != null">
+                buyer_id = #{buyerId}
+            </if>
+        </where>
     </select>
 
     <update id="update" parameterType="Purchase">

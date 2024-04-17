@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,21 +33,39 @@ public class MyBatisMapperPurchaseRepository implements PurchaseRepository {
     }
 
     @Override
-    public ListData<Purchase> findAllInPageSize(int startRowNum, int endRowNum) {
-        Map<String, Object> search = new HashMap<>();
-        search.put("startRowNum", startRowNum);
-        search.put("endRowNum", endRowNum);
-        return doSelectList(search);
+    public List<Purchase> findAllInPageSize(int page, int pageSize) {
+        return doSelectList(getCommonSearchOptions(page, pageSize));
     }
 
     @Override
-    public ListData<Purchase> findPurchasesByUserId(Map<String, Object> purchaseSearch) {
-        return doSelectList(purchaseSearch);
+    public List<Purchase> findPurchasesByUserId(String buyerId, int page, int pageSize) {
+        Map<String, Object> search = getCommonSearchOptions(page, pageSize);
+        search.put("buyerId", buyerId);
+        return doSelectList(search);
     }
 
-    private ListData<Purchase> doSelectList(Map<String, Object> search) {
-        ListData<Purchase> result = this.sqlSession.selectOne("PurchaseMapper.findList", search);
-        return result == null ? new ListData<>(0, new ArrayList<>()) : result;
+    private Map<String, Object> getCommonSearchOptions(int page, int pageSize) {
+        Map<String, Object> commonSearchOptions = new HashMap<>();
+        commonSearchOptions.put("startRowNum", (page - 1) * pageSize + 1);
+        commonSearchOptions.put("endRowNum", page * pageSize);
+        return commonSearchOptions;
+    }
+
+    private List<Purchase> doSelectList(Map<String, Object> search) {
+        List<Purchase> result = this.sqlSession.selectList("PurchaseMapper.findList", search);
+        return result == null ? new ArrayList<>() : result;
+    }
+
+    @Override
+    public int countAll() {
+        return this.sqlSession.selectOne("PurchaseMapper.count", new HashMap<>());
+    }
+
+    @Override
+    public int countByUserId(String buyerId) {
+        HashMap<String, Object> search = new HashMap<>();
+        search.put("buyerId", buyerId);
+        return this.sqlSession.selectOne("PurchaseMapper.count", search);
     }
 
     @Override

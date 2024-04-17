@@ -4,6 +4,7 @@ import com.model2.mvc.common.ListData;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -11,9 +12,13 @@ public interface PurchaseRepository {
 
     public Optional<Purchase> findById(int tranNo);
 
-    public ListData<Purchase> findAllInPageSize(int startRowNum, int endRowNum);
+    public List<Purchase> findAllInPageSize(int page, int pageSize);
 
-    public ListData<Purchase> findPurchasesByUserId(Map<String, Object> purchaseSearch);
+    public List<Purchase> findPurchasesByUserId(String buyerId, int page, int pageSize);
+
+    public int countAll();
+
+    public int countByUserId(String buyerId);
 
     public boolean insertPurchase(Purchase purchase);
 

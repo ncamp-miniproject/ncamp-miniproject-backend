@@ -121,15 +121,18 @@ public class TestMyBatisMapperPurchaseRepository {
     @Test
     public void findAllInPageSize() {
         samplePurchases.forEach(this.purchaseRepository::insertPurchase);
-        ListData<Purchase> found = this.purchaseRepository.findAllInPageSize(1, 3);
-        assertThat(found.getCount()).isEqualTo(2);
+        List<Purchase> found = this.purchaseRepository.findAllInPageSize(1, 3);
+        int count = this.purchaseRepository.countAll();
+        assertThat(count).isEqualTo(2);
+        assertThat(found.size()).isEqualTo(2);
     }
 
     @Test
     public void findAllInPageSize_NoResult() {
         samplePurchases.forEach(this.purchaseRepository::insertPurchase);
-        ListData<Purchase> found = this.purchaseRepository.findAllInPageSize(4, 6);
-        assertThat(found.getCount()).isEqualTo(0);
-        assertThat(found.getList()).isEmpty();
+        List<Purchase> found = this.purchaseRepository.findAllInPageSize(4, 6);
+        int count = this.purchaseRepository.countAll();
+        assertThat(count).isEqualTo(2);
+        assertThat(found).isEmpty();
     }
 }

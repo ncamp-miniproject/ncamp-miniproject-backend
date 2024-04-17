@@ -48,7 +48,7 @@
         <h4>구매번호 ${purchaseData.tranNo}</h4>
         <div class="panel panel-default">
             <div class="panel-heading">구매자 아이디</div>
-            <div class="panel-body">${purchaseData.buyer.userId}</div>
+            <div class="panel-body">${purchaseData.buyerId.userId}</div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">구매방법</div>

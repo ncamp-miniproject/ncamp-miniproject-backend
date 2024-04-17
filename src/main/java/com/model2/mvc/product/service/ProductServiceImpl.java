@@ -109,8 +109,12 @@ public class ProductServiceImpl implements ProductService {
         GetProductResponseDto responseDTO
                 = GetProductResponseDto.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
-        User user = this.userService.getUser(userId);
-        responseDTO.setPurchasable(user != null && user.getRole() == Role.USER && responseDTO.getStock() > 0);
+        try {
+            User user = this.userService.getUser(userId);
+            responseDTO.setPurchasable(user != null && user.getRole() == Role.USER && responseDTO.getStock() > 0);
+        } catch (IllegalArgumentException e) {
+            responseDTO.setPurchasable(false);
+        }
         return responseDTO;
     }
 

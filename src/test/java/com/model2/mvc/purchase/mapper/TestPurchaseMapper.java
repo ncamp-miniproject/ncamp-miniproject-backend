@@ -126,19 +126,21 @@ public class TestPurchaseMapper {
         Map<String, Object> search = new HashMap<>();
         search.put("startRowNum", 1);
         search.put("endRowNum", 3);
-        ListData<Purchase> result = this.sqlSession.selectOne("PurchaseMapper.findList", search);
+        List<Purchase> result = this.sqlSession.selectList("PurchaseMapper.findList", search);
+        int count = this.sqlSession.selectOne("PurchaseMapper.count", search);
 
-        assertThat(result.getCount()).isEqualTo(2);
-        assertThat(result.getList().size()).isEqualTo(2);
+        assertThat(count).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
 
         Map<String, Object> search2 = new HashMap<>();
         search2.put("startRowNum", 1);
         search2.put("endRowNum", 3);
         search2.put("buyerId", "user001");
-        ListData<Purchase> result2 = this.sqlSession.selectOne("PurchaseMapper.findList", search2);
+        List<Purchase> result2 = this.sqlSession.selectList("PurchaseMapper.findList", search2);
+        int count2 = this.sqlSession.selectOne("PurchaseMapper.count", search2);
 
-        assertThat(result2.getCount()).isEqualTo(2);
-        assertThat(result2.getList().size()).isEqualTo(2);
+        assertThat(count2).isEqualTo(2);
+        assertThat(result2.size()).isEqualTo(2);
     }
 
     @Test

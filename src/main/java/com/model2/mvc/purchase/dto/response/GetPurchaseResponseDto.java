@@ -8,7 +8,6 @@ import com.model2.mvc.purchase.domain.PaymentOption;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.domain.TransactionProduction;
-import com.model2.mvc.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,7 +20,7 @@ import java.util.List;
 @ToString
 public class GetPurchaseResponseDto {
     private Integer tranNo;
-    private User buyer;
+    private String buyerId;
     private PaymentOption paymentOption;
     private String receiverName;
     private String receiverPhone;
@@ -40,7 +39,7 @@ public class GetPurchaseResponseDto {
 
     private GetPurchaseResponseDto(Purchase from) {
         this.tranNo = from.getTranNo();
-        this.buyer = from.getBuyer();
+        this.buyerId = from.getBuyer().getUserId();
         this.paymentOption = from.getPaymentOption();
         this.receiverName = from.getReceiverName();
         this.receiverPhone = from.getReceiverPhone();

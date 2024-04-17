@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,22 +86,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         page = page == null ? 1 : page;
         Integer pageSize = requestDTO.getPageSize();
         pageSize = pageSize == null ? defaultPageSize : pageSize;
-        String searchCondition = requestDTO.getSearchCondition() == null
-                                 ? SearchCondition.NO_CONDITION.getConditionCode()
-                                 : requestDTO.getSearchCondition().getConditionCode();
-        String searchKeyword = StringUtil.null2nullStr(requestDTO.getSearchKeyword());
-
-        Map<String, Object> search = new HashMap<>();
-        search.put("buyerId", requestDTO.getBuyerId());
-        search.put("startRowNum", (page - 1) * pageSize + 1);
-        search.put("endRowNum", page * pageSize);
-        search.put("searchCondition", searchCondition);
-        search.put("searchKeyword", searchKeyword);
-        ListData<Purchase> result = this.purchaseRepository.findPurchasesByUserId(search);
+        List<Purchase> result = this.purchaseRepository.findPurchasesByUserId(requestDTO.getBuyerId(), page, pageSize);
+        int count = this.purchaseRepository.countByUserId(requestDTO.getBuyerId());
         return ListPurchaseResponseDto.builder()
-                .count(result.getCount())
-                .purchaseList(result.getList().stream().map(GetPurchaseResponseDto::from).collect(Collectors.toList()))
-                .paginationInfo(getPageInfo(result.getCount(), page, pageSize))
+                .count(count)
+                .purchaseList(result.stream().map(GetPurchaseResponseDto::from).collect(Collectors.toList()))
+                .paginationInfo(getPageInfo(count, page, pageSize))
                 .build();
     }
 
@@ -112,15 +103,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     public ListPurchaseResponseDto getSaleList(Integer page, Integer pageSize) {
         page = page == null ? 1 : page;
         pageSize = pageSize == null ? defaultPageSize : pageSize;
-        ListData<Purchase> purchases = this.purchaseRepository.findAllInPageSize((page - 1) * pageSize + 1,
-                                                                                 page * pageSize);
+        List<Purchase> purchases = this.purchaseRepository.findAllInPageSize(page, pageSize);
+        int count = this.purchaseRepository.countAll();
         return ListPurchaseResponseDto.builder()
-                .count(purchases.getCount())
-                .purchaseList(purchases.getList()
-                                      .stream()
-                                      .map(GetPurchaseResponseDto::from)
-                                      .collect(Collectors.toList()))
-                .paginationInfo(getPageInfo(purchases.getCount(), page, pageSize))
+                .count(count)
+                .purchaseList(purchases.stream().map(GetPurchaseResponseDto::from).collect(Collectors.toList()))
+                .paginationInfo(getPageInfo(count, page, pageSize))
                 .build();
     }
 
