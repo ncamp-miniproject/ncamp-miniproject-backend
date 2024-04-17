@@ -2,7 +2,7 @@ package com.model2.mvc.config.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model2.mvc.cart.interceptor.CookieSetter;
-import com.model2.mvc.common.aspect.ControllerLoggingAspect;
+import com.model2.mvc.common.aspect.ControllerDebugLoggingAspect;
 import com.model2.mvc.common.interceptor.TokenRefreshInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -60,8 +60,8 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ControllerLoggingAspect controllerLoggingAspect() {
-        return new ControllerLoggingAspect();
+    public ControllerDebugLoggingAspect controllerLoggingAspect() {
+        return new ControllerDebugLoggingAspect();
     }
 
     @Override

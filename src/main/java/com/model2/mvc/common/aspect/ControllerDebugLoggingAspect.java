@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 
 @Aspect
-public class ControllerLoggingAspect {
-    Logger log = LoggerFactory.getLogger(ControllerLoggingAspect.class);
+public class ControllerDebugLoggingAspect {
+    Logger log = LoggerFactory.getLogger(ControllerDebugLoggingAspect.class);
 
-    public ControllerLoggingAspect() {
+    public ControllerDebugLoggingAspect() {
         System.out.println("================");
         System.out.println("Initialize ControllerLoggingAspect");
         System.out.println("======================");
@@ -27,16 +27,16 @@ public class ControllerLoggingAspect {
             "|| @annotation(org.springframework.web.bind.annotation.PatchMapping) " +
             "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping)")
     public Object logControllers(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.info("{}Class: {}", GREEN.getCode(), joinPoint.getTarget().getClass().getName());
-        log.info("Method: {}", joinPoint.getSignature().getName());
-        log.info("Signature: {}", joinPoint.getSignature());
-        log.info("Params: {}{}", Arrays.toString(joinPoint.getArgs()), RESET.getCode());
+        log.debug("{}Class: {}{}", GREEN.getCode(), joinPoint.getTarget().getClass().getName(), RESET.getCode());
+        log.debug("{}Method: {}{}", GREEN.getCode(), joinPoint.getSignature().getName(), RESET.getCode());
+        log.debug("{}Signature: {}{}", GREEN.getCode(), joinPoint.getSignature(), RESET.getCode());
+        log.debug("{}Params: {}{}", GREEN.getCode(), Arrays.toString(joinPoint.getArgs()), RESET.getCode());
         Object returnObj = joinPoint.proceed();
-        log.info("{}[END]: {}", GREEN.getCode(), joinPoint.getSignature());
+        log.debug("{}[END]: {}", GREEN.getCode(), joinPoint.getSignature());
         if (returnObj != null) {
-            log.info("Return object: {}", returnObj.getClass());
+            log.debug("{}Return object: {}{}", GREEN.getCode(), returnObj.getClass(), RESET.getCode());
         }
-        log.info("Return value: {}{}", returnObj, RESET.getCode());
+        log.debug("{}Return value: {}{}", GREEN.getCode(), returnObj, RESET.getCode());
         return returnObj;
     }
 }
