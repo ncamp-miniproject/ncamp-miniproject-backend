@@ -8,7 +8,7 @@ import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
-import com.model2.mvc.user.dto.response.UserDto;
+import com.model2.mvc.user.dto.response.UserResponseDto;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,10 +53,10 @@ public class UserApi {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("userId") String userId) {
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable("userId") String userId) {
         try {
             User user = this.userService.getUser(userId);
-            return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
+            return new ResponseEntity<>(UserResponseDto.from(user), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

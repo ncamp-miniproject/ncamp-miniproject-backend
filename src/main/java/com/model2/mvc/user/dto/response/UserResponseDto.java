@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @ToString
-public class UserDto {
+public class UserResponseDto {
     private String userId;
     private String nameOfUser;
     private Role role;
@@ -28,8 +28,8 @@ public class UserDto {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate regDate;
 
-    public static UserDto from(User user) {
-        return UserDto.builder()
+    public static UserResponseDto from(User user) {
+        return UserResponseDto.builder()
                 .userId(user.getUserId())
                 .nameOfUser(user.getNameOfUser())
                 .role(user.getRole())

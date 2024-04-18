@@ -1,7 +1,6 @@
 package com.model2.mvc.user.dto.response;
 
 import com.model2.mvc.common.Pagination;
-import com.model2.mvc.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +16,6 @@ import java.util.List;
 @ToString
 public class ListUserResponseDto {
     private int count;
-    private List<User> list;
+    private List<UserResponseDto> list;
     private Pagination paginationInfo;
 }

@@ -8,6 +8,7 @@ import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
+import com.model2.mvc.user.dto.response.UserResponseDto;
 import com.model2.mvc.user.repository.UserRepository;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
             int countResult = this.userRepository.countByUserName(searchKeyword, false);
             return ListUserResponseDto.builder()
                     .count(countResult)
-                    .list(listResult)
+                    .list(listResult.stream().map(UserResponseDto::from).toList())
                     .paginationInfo(Pagination.of(page, countResult, pageSize, defaultPageDisplay))
                     .build();
         default:
