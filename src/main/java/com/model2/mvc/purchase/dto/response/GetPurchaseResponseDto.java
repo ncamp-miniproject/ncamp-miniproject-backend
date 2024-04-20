@@ -21,7 +21,7 @@ import java.util.List;
 public class GetPurchaseResponseDto {
     private Integer tranNo;
     private String buyerId;
-    private PaymentOption paymentOption;
+    private PaymentOptionResponseDto paymentOption;
     private String receiverName;
     private String receiverPhone;
     private String divyAddr;
@@ -40,7 +40,8 @@ public class GetPurchaseResponseDto {
     private GetPurchaseResponseDto(Purchase from) {
         this.tranNo = from.getTranNo();
         this.buyerId = from.getBuyer().getUserId();
-        this.paymentOption = from.getPaymentOption();
+        this.paymentOption = new PaymentOptionResponseDto(from.getPaymentOption().getCode(),
+                                                          from.getPaymentOption().getPaymentName());
         this.receiverName = from.getReceiverName();
         this.receiverPhone = from.getReceiverPhone();
         this.divyAddr = from.getDivyAddr();
