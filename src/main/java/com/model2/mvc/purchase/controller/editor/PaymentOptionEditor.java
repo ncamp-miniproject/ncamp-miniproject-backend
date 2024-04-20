@@ -18,4 +18,10 @@ public class PaymentOptionEditor extends PropertyEditorSupport {
     public void setAsText(String text) throws IllegalArgumentException {
         super.setValue(PaymentOption.get(text));
     }
+
+    @Override
+    public String getAsText() {
+        PaymentOption paymentOption = (PaymentOption)super.getValue();
+        return paymentOption.getCode();
+    }
 }

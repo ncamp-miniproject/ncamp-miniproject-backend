@@ -144,7 +144,7 @@ VALUES
       'ADMIN',
       NULL,
       NULL,
-      '¼­¿ï½Ã ¼­ÃÊ±¸',
+      'ì„œìš¸ì‹œ ì„œì´ˆêµ¬',
       'admin@mvc.com',
       TO_DATE('2012/01/14 10:48:43', 'YYYY/MM/DD HH24:MI:SS') );
 
@@ -448,7 +448,7 @@ VALUES
 INSERT INTO users
 VALUES
     ( 'seller1',
-      'ÀÏ·Ð ¸Ó½ºÅ©',
+      'ì¼ë¡  ë¨¸ìŠ¤í¬',
       'asdf',
       'SELLER',
       NULL,
@@ -460,7 +460,7 @@ VALUES
 INSERT INTO users
 VALUES
     ( 'seller2',
-      '¸¶ÀÌÅ©·Î¼ÒÇÁÆ®',
+      'ë§ˆì´í¬ë¡œì†Œí”„íŠ¸',
       'asdf',
       'SELLER',
       NULL,
@@ -472,7 +472,7 @@ VALUES
 INSERT INTO users
 VALUES
     ( 'seller3',
-      '»ï¼º',
+      'ì‚¼ì„±',
       'asdf',
       'SELLER',
       NULL,
@@ -489,13 +489,13 @@ INSERT INTO seller
 VALUES
     ( 'seller1',
       'image_readtop_2022_556367_16561184505086722.jpeg',
-      'È­¼º¿¡ °¥ ¼öµµ ÀÖ°í ¸ø °¥ ¼öµµ ÀÖ½À´Ï´Ù.' ),
+      'í™”ì„±ì— ê°ˆ ìˆ˜ë„ ìžˆê³  ëª» ê°ˆ ìˆ˜ë„ ìžˆìŠµë‹ˆë‹¤.' ),
     ( 'seller2',
       'microsoft-logo.jpg',
       'I hate Linux' ),
     ( 'seller3',
       'samsung-logo.jpg',
-      'ÇÑ±¹ÀÎÀÌ¸é °¶·°½Ã ¾¹½Ã´Ù.' );
+      'í•œêµ­ì¸ì´ë©´ ê°¤ëŸ­ì‹œ ì”ì‹œë‹¤.' );
 
 INSERT INTO category
     (
@@ -503,11 +503,11 @@ INSERT INTO category
         category_name )
 VALUES
     ( 9000,
-      '·¹³ë¹ö Laptop' ),
+      'ë ˆë…¸ë²„ Laptop' ),
     ( 9001,
-      '½ÄÇ°' ),
+      'ì‹í’ˆ' ),
     ( 9002,
-      'Ã¥' );
+      'ì±…' );
 
 INSERT INTO product
     ( prod_no,
@@ -522,8 +522,8 @@ INSERT INTO product
 VALUES
     ( 9000,
       'seller1',
-      '·¹³ë¹ö 2022 ¾ÆÀÌµð¾îÆÐµå ½½¸² 1 15AMN7 15.6 ¶óÀÌÁ¨3 ¶óÀÌÁ¨ 7000 ½Ã¸®Áî',
-      '·¹³ë¹ö¿¡¼­ ÆÄ´Â 2022³â»ê ¾ÆÀÌµð¾îÆÐµå ½½¸² 1',
+      'ë ˆë…¸ë²„ 2022 ì•„ì´ë””ì–´íŒ¨ë“œ ìŠ¬ë¦¼ 1 15AMN7 15.6 ë¼ì´ì  3 ë¼ì´ì   7000 ì‹œë¦¬ì¦ˆ',
+      'ë ˆë…¸ë²„ì—ì„œ íŒŒëŠ” 2022ë…„ì‚° ì•„ì´ë””ì–´íŒ¨ë“œ ìŠ¬ë¦¼ 1',
       TO_DATE('2022-02-23', 'YYYY-MM-DD'),
       488990,
       TO_DATE('2022-02-25', 'YYYY-MM-DD'),
@@ -567,8 +567,8 @@ INSERT INTO product
 VALUES
     ( 9001,
       'seller1',
-      '·¹³ë¹ö ¾ÅÅ©ÆÐµå L13 Yoga Gen2 21ADS00300 (SSD 256GB)',
-      '»ç°í ½ÍÀº ¸¶À½ÀÌ µé°Ô²û ÇÏ´Â ¶óÀÎ¾÷',
+      'ë ˆë…¸ë²„ ì”½í¬íŒ¨ë“œ L13 Yoga Gen2 21ADS00300 (SSD 256GB)',
+      'ì‚¬ê³  ì‹¶ì€ ë§ˆìŒì´ ë“¤ê²Œë” í•˜ëŠ” ë¼ì¸ì—…',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       1390000,
       TO_DATE('2024-03-31', 'YYYY-MM-DD'),
@@ -616,8 +616,8 @@ INSERT INTO product
 VALUES
     ( 9002,
       'seller1',
-      '·¹³ë¹ö ¾ÅÅ©ºÏ 16p 20YM0002KR (SSD 512GB)',
-      '·ÑÀ» µ¹¸®±â¿¡ ¼Õ»öÀÌ ¾ø´Â ¼º´É',
+      'ë ˆë…¸ë²„ ì”½í¬ë¶ 16p 20YM0002KR (SSD 512GB)',
+      'ë¡¤ì„ ëŒë¦¬ê¸°ì— ì†ìƒ‰ì´ ì—†ëŠ” ì„±ëŠ¥',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       1170000,
       TO_DATE('2024-03-31', 'YYYY-MM-DD'),
@@ -660,8 +660,8 @@ INSERT INTO product
 VALUES
     ( 9003,
       'seller2',
-      '°õ°õ ½ºÅ×ºñ¾Æ ´ëÃß¹æ¿ïÅä¸¶Åä, 500g, 1ÆÑ',
-      '¹æ¿ïÅä¸¶Åä',
+      'ê³°ê³° ìŠ¤í…Œë¹„ì•„ ëŒ€ì¶”ë°©ìš¸í† ë§ˆí† , 500g, 1íŒ©',
+      'ë°©ìš¸í† ë§ˆí† ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       6900,
       CURRENT_DATE,
@@ -724,8 +724,8 @@ INSERT INTO product
 VALUES
     ( 9004,
       'seller2',
-      'µ¨¸óÆ® ÇÊ¸®ÇÉ»ê ¹Ù³ª³ª, 2kg ³»¿Ü, 1°³',
-      '¹Ù³ª³ª',
+      'ë¸ëª¬íŠ¸ í•„ë¦¬í•€ì‚° ë°”ë‚˜ë‚˜, 2kg ë‚´ì™¸, 1ê°œ',
+      'ë°”ë‚˜ë‚˜',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       6380,
       CURRENT_DATE,
@@ -773,8 +773,8 @@ INSERT INTO product
 VALUES
     ( 9005,
       'seller2',
-      '¿À´ÃÂ÷¸² ¾Èµ¿½Ä ¼ø»ì Âò´ß ¾ç³äÀ°',
-      'Å« ¸¾ ¸Ô°í ³»³õ½À´Ï´Ù ¤Ì¤Ì',
+      'ì˜¤ëŠ˜ì°¨ë¦¼ ì•ˆë™ì‹ ìˆœì‚´ ì°œë‹­ ì–‘ë…ìœ¡',
+      'í° ë§˜ ë¨¹ê³  ë‚´ë†“ìŠµë‹ˆë‹¤ ã…œã…œ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       14900,
       CURRENT_DATE,
@@ -817,8 +817,8 @@ INSERT INTO product
 VALUES
     ( 9006,
       'seller2',
-      'ÇÁ·¹½ÃÁö ½Å¸²µ¿ ¹é¼ø´ë ººÀ½',
-      '¸Ô¾îº¸Áø ¾Ê¾Ò½À´Ï´Ù',
+      'í”„ë ˆì‹œì§€ ì‹ ë¦¼ë™ ë°±ìˆœëŒ€ ë³¶ìŒ',
+      'ë¨¹ì–´ë³´ì§„ ì•Šì•˜ìŠµë‹ˆë‹¤',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       9900,
       CURRENT_DATE,
@@ -835,17 +835,17 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9006,
       'f387499a-f427-489e-84b1-ab2f8512ab64.jpg',
-      '¼ø´ë 1',
+      'ìˆœëŒ€ 1',
       TRUE ),
     ( NEXTVAL('seq_product_image_no'),
       9006,
       'ba6fcf07-5397-4cbd-8c9d-a0bde656742d.jpg',
-      '¼ø´ë 2',
+      'ìˆœëŒ€ 2',
       FALSE ),
     ( NEXTVAL('seq_product_image_no'),
       9006,
       '2443930293053975-12c051eb-ea9c-41f4-b560-78711b958de5.jpg',
-      '¼ø´ë 3',
+      'ìˆœëŒ€ 3',
       FALSE );
 
 INSERT INTO product
@@ -861,8 +861,8 @@ INSERT INTO product
 VALUES
     ( 9007,
       'seller3',
-      'ºù±×·¹ ¹Ù³ª³ª¸À¿ìÀ¯, 240ml, 8°³',
-      '¾ÈÁ¤ÀûÀÎ ±× ¸À',
+      'ë¹™ê·¸ë ˆ ë°”ë‚˜ë‚˜ë§›ìš°ìœ , 240ml, 8ê°œ',
+      'ì•ˆì •ì ì¸ ê·¸ ë§›',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       11560,
       CURRENT_DATE,
@@ -879,17 +879,17 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9007,
       '4431293182250513-c72fb5fe-da6c-4428-b8c9-72e89fbfc7d5.jpg',
-      'ºù±×·¹ 1',
+      'ë¹™ê·¸ë ˆ 1',
       TRUE ),
     ( NEXTVAL('seq_product_image_no'),
       9007,
       '170795247045845-842f4aa2-63ad-4699-ba1d-1c6a7649e751.jpg',
-      'ºù±×·¹ 2',
+      'ë¹™ê·¸ë ˆ 2',
       FALSE ),
     ( NEXTVAL('seq_product_image_no'),
       9007,
       '1607026185826778-743a76ba-a3e6-4133-ac55-5db79c0f202f.jpg',
-      'ºù±×·¹ 3',
+      'ë¹™ê·¸ë ˆ 3',
       FALSE );
 
 INSERT INTO product
@@ -905,8 +905,8 @@ INSERT INTO product
 VALUES
     ( 9008,
       'seller3',
-      '¼­¿ï¿ìÀ¯ ´õ ÁøÇÑ ¼ø¼ö ÇÃ·¹ÀÎ ¿ä°ÅÆ®, 1.8L',
-      '¿ä°ÅÆ®',
+      'ì„œìš¸ìš°ìœ  ë” ì§„í•œ ìˆœìˆ˜ í”Œë ˆì¸ ìš”ê±°íŠ¸, 1.8L',
+      'ìš”ê±°íŠ¸',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       7360,
       CURRENT_DATE,
@@ -923,17 +923,17 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9008,
       '31375867088970-25e70aff-6e34-4a86-93ef-2ea4f5fbb686.jpg',
-      'ºù±×·¹ 1',
+      'ë¹™ê·¸ë ˆ 1',
       TRUE ),
     ( NEXTVAL('seq_product_image_no'),
       9008,
       '8873325750034811-69dd71a2-9e61-48ad-88eb-21f5d756124f.jpg',
-      'ºù±×·¹ 2',
+      'ë¹™ê·¸ë ˆ 2',
       FALSE ),
     ( NEXTVAL('seq_product_image_no'),
       9008,
       '8873325763174999-6a5eccbc-4609-48fc-af00-f8d86a11362d.jpg',
-      'ºù±×·¹ 3',
+      'ë¹™ê·¸ë ˆ 3',
       FALSE );
 
 INSERT INTO product
@@ -949,8 +949,8 @@ INSERT INTO product
 VALUES
     ( 9009,
       'seller3',
-      'ÆÛ½ÃÇÈ ¸ðÂ¥·¼¶ó ½ºÆ®¸µ Ä¡Áî',
-      'Ä¡Áî',
+      'í¼ì‹œí”½ ëª¨ì§œë ë¼ ìŠ¤íŠ¸ë§ ì¹˜ì¦ˆ',
+      'ì¹˜ì¦ˆ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       7360,
       CURRENT_DATE,
@@ -967,7 +967,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9009,
       '57600316737672-9372e828-3252-443d-bfa5-b35031ecd019.jpg',
-      'Ä¡ÀÌÁî',
+      'ì¹˜ì´ì¦ˆ',
       TRUE );
 
 INSERT INTO product
@@ -984,7 +984,7 @@ VALUES
     ( 9010,
       'seller3',
       'C Programming: A Modern Approach, 2nd Edition',
-      'C °³¹ßÀÚ ÇÊµ¶¼­',
+      'C ê°œë°œìž í•„ë…ì„œ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       101000,
       CURRENT_DATE,
@@ -1001,12 +1001,12 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9010,
       '71YNXYuwPGL._SL1454_.jpg',
-      'Ä¡ÀÌÁî',
+      'ì¹˜ì´ì¦ˆ',
       TRUE ),
     ( NEXTVAL('seq_product_image_no'),
       9010,
       '81Jj5l7IMsL._SL1456_.jpg',
-      'Ä¡ÀÌÁî',
+      'ì¹˜ì´ì¦ˆ',
       FALSE );
 
 INSERT INTO product
@@ -1023,7 +1023,7 @@ VALUES
     ( 9011,
       'seller3',
       'Computer Systems: A Programmers Perspective',
-      '½Ã½ºÅÛ ÇÁ·Î±×·¡¹ÖÀ» À§ÇÑ ±³°ú¼­',
+      'ì‹œìŠ¤í…œ í”„ë¡œê·¸ëž˜ë°ì„ ìœ„í•œ êµê³¼ì„œ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       46540,
       CURRENT_DATE,
@@ -1040,7 +1040,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9011,
       '81ZugrP5S3L._SL1500_.jpg',
-      'Ä¡ÀÌÁî',
+      'ì¹˜ì´ì¦ˆ',
       TRUE ),
     ( NEXTVAL('seq_product_image_no'),
       9011,
@@ -1050,7 +1050,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9011,
       '71QAOrNnpPL._SL1500_.jpg',
-      'Ä¡ÀÌÁî',
+      'ì¹˜ì´ì¦ˆ',
       FALSE );
 
 INSERT INTO product
@@ -1067,7 +1067,7 @@ VALUES
     ( 9012,
       'seller3',
       'Computer Organization and Design MIPS Edition: The Hardware/Software Interface',
-      'ÄÄÇ»ÅÍ ±¸Á¶. Æ¯Â¡: ±¸±Û¿¡ PDF ±¼·¯´Ù´Ô',
+      'ì»´í“¨í„° êµ¬ì¡°. íŠ¹ì§•: êµ¬ê¸€ì— PDF êµ´ëŸ¬ë‹¤ë‹˜',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       46540,
       CURRENT_DATE,
@@ -1084,7 +1084,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9012,
       '71UfLO8-cqS._SL1459_.jpg',
-      'Ä¡ÀÌÁî',
+      'ì¹˜ì´ì¦ˆ',
       TRUE );
 
 INSERT INTO product
@@ -1101,7 +1101,7 @@ VALUES
     ( 9013,
       'seller3',
       'Design Patterns: Elements of Reusable Object-Oriented Software',
-      'GoF µðÀÚÀÎ ÆÐÅÏ',
+      'GoF ë””ìžì¸ íŒ¨í„´',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       46540,
       CURRENT_DATE,
@@ -1140,7 +1140,7 @@ VALUES
     ( 9014,
       'seller3',
       'Core Java Volume I--Fundamentals',
-      'ÀÚ¹Ù ÇÁ·Î±×·¡¹Ö',
+      'ìžë°” í”„ë¡œê·¸ëž˜ë°',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       46540,
       CURRENT_DATE,
@@ -1184,7 +1184,7 @@ VALUES
     ( 9030,
       'seller3',
       'Effective Java',
-      'ÀÚ¹Ù¸¦ È¿À²ÀûÀ¸·Î »ç¿ëÇÏ´Â ¹æ¹ýÀ» ±â¼úÇÑ °í±Þ ÀÚ¹Ù °³¹ßÀÚ¸¦ À§ÇÑ Ã¥',
+      'ìžë°”ë¥¼ íš¨ìœ¨ì ìœ¼ë¡œ ì‚¬ìš©í•˜ëŠ” ë°©ë²•ì„ ê¸°ìˆ í•œ ê³ ê¸‰ ìžë°” ê°œë°œìžë¥¼ ìœ„í•œ ì±…',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       40000,
       CURRENT_DATE,
@@ -1201,7 +1201,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9030,
       '7167aaVxs3L._SL1500_.jpg',
-      'ÀÌ°É ¾Ë¸é ÁÁ½À´Ï´Ù',
+      'ì´ê±¸ ì•Œë©´ ì¢‹ìŠµë‹ˆë‹¤',
       TRUE );
 
 INSERT INTO product
@@ -1218,7 +1218,7 @@ VALUES
     ( 9015,
       'seller3',
       'C++ Primer',
-      'C++ÀÇ ±³°ú¼­',
+      'C++ì˜ êµê³¼ì„œ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       45000,
       CURRENT_DATE,
@@ -1252,7 +1252,7 @@ VALUES
     ( 9016,
       'seller3',
       'Java Concurrency in Practice',
-      'ÀÚ¹Ù º´·Ä ÇÁ·Î±×·¡¹ÖÀÇ ±³°ú¼­',
+      'ìžë°” ë³‘ë ¬ í”„ë¡œê·¸ëž˜ë°ì˜ êµê³¼ì„œ',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       33680,
       CURRENT_DATE,
@@ -1286,7 +1286,7 @@ VALUES
     ( 9017,
       'seller3',
       'Test Driven: TDD and Acceptance TDD for Java Developers',
-      'TDD¸¦ ½Ç¹«¿¡¼­ »ç¿ëÇÒ ÀÏÀÌ ¸¹ÀÌ ÀÖÀ»Áö´Â Àß ¸ð¸£°ÚÁö¸¸ TDD¸¦ ¾Ë¾Æ¾ß °Ç°­ÇÑ ÄÚµùÀ» ÇÒ ¼ö ÀÖ½À´Ï´Ù.',
+      'TDDë¥¼ ì‹¤ë¬´ì—ì„œ ì‚¬ìš©í•  ì¼ì´ ë§Žì´ ìžˆì„ì§€ëŠ” ìž˜ ëª¨ë¥´ê² ì§€ë§Œ TDDë¥¼ ì•Œì•„ì•¼ ê±´ê°•í•œ ì½”ë”©ì„ í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       33680,
       CURRENT_DATE,
@@ -1320,7 +1320,7 @@ VALUES
     ( 9018,
       'seller3',
       'Clean Code',
-      '±ò²ûÇÑ ÄÚµå¸¦ ÀÛ¼ºÇÏ±â À§ÇÑ ±³°ú¼­.',
+      'ê¹”ë”í•œ ì½”ë“œë¥¼ ìž‘ì„±í•˜ê¸° ìœ„í•œ êµê³¼ì„œ.',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       41130,
       CURRENT_DATE,
@@ -1354,7 +1354,7 @@ VALUES
     ( 9019,
       'seller3',
       'Pro Git',
-      'GITÀ» ¾Ë¾Æ¾ß Ãë¾÷ÀÌ µË´Ï´Ù.',
+      'GITì„ ì•Œì•„ì•¼ ì·¨ì—…ì´ ë©ë‹ˆë‹¤.',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       43850,
       CURRENT_DATE,
@@ -1371,7 +1371,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9019,
       '61ueFgwHyIL._SL1020_.jpg',
-      'Pro GitÀº »ì ÀÎÅÍ³Ý¿¡ ¹«·á·Î °ø°³µÅ ÀÖ½À´Ï´Ù.',
+      'Pro Gitì€ ì‚´ ì¸í„°ë„·ì— ë¬´ë£Œë¡œ ê³µê°œë¼ ìžˆìŠµë‹ˆë‹¤.',
       TRUE );
 
 INSERT INTO product
@@ -1388,7 +1388,7 @@ VALUES
     ( 9020,
       'seller3',
       'TCP/IP Illustrated, Vol. 1: The Protocols',
-      'TCP/IPÀÇ ¹ÙÀÌºí',
+      'TCP/IPì˜ ë°”ì´ë¸”',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       58510,
       CURRENT_DATE,
@@ -1405,7 +1405,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9020,
       '91Ok5AaCC-L._SL1500_.jpg',
-      'ÀÌ°É ÀÐÀ¸¸é TCP/IP¿¡ ´ëÇØ¼­ ¸¹ÀÌ ¾Ë°Ô µÈ´Ù°í ÇÏ³×¿ä',
+      'ì´ê±¸ ì½ìœ¼ë©´ TCP/IPì— ëŒ€í•´ì„œ ë§Žì´ ì•Œê²Œ ëœë‹¤ê³  í•˜ë„¤ìš”',
       TRUE );
 
 INSERT INTO product
@@ -1422,7 +1422,7 @@ VALUES
     ( 9021,
       'seller3',
       'Modern Java in Action: Lambdas, streams, functional and reactive programming',
-      '¸ð´ø ÀÚ¹Ù',
+      'ëª¨ë˜ ìžë°”',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       54990,
       CURRENT_DATE,
@@ -1439,7 +1439,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9021,
       '71qoANDJu+L._SL1500_.jpg',
-      'Æ÷½ºÆ®¸ð´ø ÀÚ¹Ù',
+      'í¬ìŠ¤íŠ¸ëª¨ë˜ ìžë°”',
       TRUE );
 
 INSERT INTO product
@@ -1456,7 +1456,7 @@ VALUES
     ( 9022,
       'seller3',
       'Operating System Concepts',
-      '¿î¿µÃ¼Á¦ Ã¥Àº Ç¥Áö¿¡ °ø·æ ÀÖ´Â Ã¥ »ç¶ó°í ±×·¨¾î¿ä',
+      'ìš´ì˜ì²´ì œ ì±…ì€ í‘œì§€ì— ê³µë£¡ ìžˆëŠ” ì±… ì‚¬ë¼ê³  ê·¸ëž¬ì–´ìš”',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       89950,
       CURRENT_DATE,
@@ -1473,7 +1473,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9022,
       '81SwKCia7VL._SL1500_.jpg',
-      '°ø·æÃ¥',
+      'ê³µë£¡ì±…',
       TRUE );
 
 INSERT INTO product
@@ -1490,7 +1490,7 @@ VALUES
     ( 9023,
       'seller3',
       'HTTP: The Definitive Guide',
-      '¿äÁò ³×Æ®¿öÅ© Åë½ÅÀº HTTP ±â¹ÝÀÌ Á¦ÀÏ ¸¹´Ù°í ÇÏ³×¿ä.',
+      'ìš”ì¦˜ ë„¤íŠ¸ì›Œí¬ í†µì‹ ì€ HTTP ê¸°ë°˜ì´ ì œì¼ ë§Žë‹¤ê³  í•˜ë„¤ìš”.',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       89950,
       CURRENT_DATE,
@@ -1507,12 +1507,12 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9023,
       '91CZ5e4UeHL._SL1500_.jpg',
-      '´Ù¶÷Áã',
+      'ë‹¤ëžŒì¥',
       TRUE ),
     ( NEXTVAL('seq_product_image_no'),
       9023,
       '71s9AMZ9UlL._SL1360_.jpg',
-      '´Ù¶÷Áã ÀÛÀ½',
+      'ë‹¤ëžŒì¥ ìž‘ìŒ',
       FALSE );
 
 INSERT INTO product
@@ -1529,7 +1529,7 @@ VALUES
     ( 9024,
       'seller3',
       'Database Design and Implementation',
-      'ÀÚ¹Ù¸¦ »ç¿ëÇØ¼­ DBMS¸¦ ¹Ù´ÚºÎÅÍ ±øÀ¸·Î ±¸ÇöÇØ º¸´Â Ã¥ÀÌ¶ó°í ÇÕ´Ï´Ù. Àúµµ ¾ðÁ¨°£ ÀÐ°í ½Í³×¿ä.',
+      'ìžë°”ë¥¼ ì‚¬ìš©í•´ì„œ DBMSë¥¼ ë°”ë‹¥ë¶€í„° ê¹¡ìœ¼ë¡œ êµ¬í˜„í•´ ë³´ëŠ” ì±…ì´ë¼ê³  í•©ë‹ˆë‹¤. ì €ë„ ì–¸ì  ê°„ ì½ê³  ì‹¶ë„¤ìš”.',
       TO_DATE('2023-03-23', 'YYYY-MM-DD'),
       100000,
       CURRENT_DATE,
@@ -1546,7 +1546,7 @@ VALUES
     ( NEXTVAL('seq_product_image_no'),
       9024,
       '61FyhGfuL5L._AC_UF1000,1000_QL80_.jpg',
-      'Áý °¡°í ½Í´Ù.',
+      'ì§‘ ê°€ê³  ì‹¶ë‹¤.',
       TRUE );
 
 INSERT INTO transaction

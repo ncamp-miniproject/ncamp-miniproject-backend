@@ -4,20 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum PaymentOption {
-    CASH("0", "Çö±Ý"),
-    CREDIT_CARD("1", "½Å¿ëÄ«µå");
+    CASH("0", "í˜„ê¸ˆ"),
+    CREDIT_CARD("1", "ì‹ ìš©ì¹´ë“œ");
 
     private static final Map<String, PaymentOption> paymentOptionTable = new HashMap<>();
 
     static {
-        paymentOptionTable.put("0", CASH);
-        paymentOptionTable.put("1", CREDIT_CARD);
+        for (PaymentOption paymentOption : PaymentOption.values()) {
+            paymentOptionTable.put(paymentOption.code, paymentOption);
+        }
     }
 
     private final String code;
     private final String paymentName;
 
-    private PaymentOption(String code, String paymentName) {
+    PaymentOption(String code, String paymentName) {
         this.code = code;
         this.paymentName = paymentName;
     }

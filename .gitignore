@@ -127,3 +127,6 @@ buildNumber.properties
 
 # secret
 src/main/resources/secret/*
+
+# resource
+src/main/webapp/images/

@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
                                           : requestDto.getSearchCondition();
         String searchKeyword = StringUtil.null2nullStr(requestDto.getSearchKeyword());
         switch (searchCondition) {
-        case BY_NAME:
+        case NO_CONDITION, BY_NAME -> {
             List<User> listResult = this.userRepository.findByUserName(searchKeyword, false, page, pageSize);
             int countResult = this.userRepository.countByUserName(searchKeyword, false);
             return ListUserResponseDto.builder()
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
                     .list(listResult.stream().map(UserResponseDto::from).toList())
                     .paginationInfo(Pagination.of(page, countResult, pageSize, defaultPageDisplay))
                     .build();
-        default:
-            throw new IllegalArgumentException();
+        }
+        default -> throw new IllegalArgumentException();
         }
     }
 

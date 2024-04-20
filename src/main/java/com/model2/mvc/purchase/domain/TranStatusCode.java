@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TranStatusCode {
-    PURCHASEABLE("∆«∏≈¡ﬂ", "0"),
-    PURCHASE_DONE("±∏∏≈ øœ∑·", "1"),
-    IN_DELIVERY("πËº€¡ﬂ", "2"),
-    DELIVERY_DONE("πËº€ øœ∑·", "3");
+    PURCHASEABLE("ÌåêÎß§Ï§ë", "0"),
+    PURCHASE_DONE("Íµ¨Îß§ ÏôÑÎ£å", "1"),
+    IN_DELIVERY("Î∞∞ÏÜ°Ï§ë", "2"),
+    DELIVERY_DONE("Î∞∞ÏÜ° ÏôÑÎ£å", "3");
 
     private static final Map<String, TranStatusCode> CODE_TABLE;
 
