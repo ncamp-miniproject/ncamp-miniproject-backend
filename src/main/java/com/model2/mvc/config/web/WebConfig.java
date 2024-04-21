@@ -39,7 +39,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // TODO: Should set CORS configuration sophisticated
-        registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "DELETE", "PATCH", "PUT")
+                .allowCredentials(true);
     }
 
     private final TokenRefreshInterceptor tokenRefreshInterceptor;

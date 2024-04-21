@@ -1,6 +1,7 @@
 package com.model2.mvc.cart.service.impl;
 
 import com.model2.mvc.cart.dto.request.AddItemRequestDto;
+import com.model2.mvc.cart.dto.request.NewItemRequestDto;
 import com.model2.mvc.cart.dto.response.ListCartItemResponseDto;
 import com.model2.mvc.cart.service.CartService;
 import com.model2.mvc.product.domain.Product;
@@ -66,6 +67,13 @@ public class CartServiceImpl implements CartService {
                                        .map(k -> k + cookieKeyValueDelimiter + map.get(k))
                                        .collect(Collectors.toList()));
         }
+    }
+
+    @Override
+    public String addItem(NewItemRequestDto requestDto, String cartValue) {
+        return addItem(new AddItemRequestDto(requestDto.getProdNo().toString(),
+                                             requestDto.getQuantity().toString(),
+                                             cartValue));
     }
 
     @Override

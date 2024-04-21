@@ -47,7 +47,7 @@ public class BeanUtil {
         return newInstance;
     }
 
-    private static String toOgnl(String methodName) {
+    public static String toOgnl(String methodName) {
         if (methodName == null || methodName.isEmpty()) {
             return methodName;
         }
