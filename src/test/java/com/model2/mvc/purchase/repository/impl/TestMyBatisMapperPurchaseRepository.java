@@ -2,7 +2,6 @@ package com.model2.mvc.purchase.repository.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.config.context.ContextConfig;
 import com.model2.mvc.config.context.MyBatisConfig;
 import com.model2.mvc.config.context.PropertyConfig;

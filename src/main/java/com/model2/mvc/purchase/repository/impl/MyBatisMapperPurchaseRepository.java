@@ -1,6 +1,5 @@
 package com.model2.mvc.purchase.repository.impl;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 import com.model2.mvc.purchase.repository.PurchaseRepository;
@@ -20,7 +19,7 @@ import java.util.Optional;
 @Repository("myBatisMapperPurchaseDAO")
 @Primary
 public class MyBatisMapperPurchaseRepository implements PurchaseRepository {
-    private SqlSession sqlSession;
+    private final SqlSession sqlSession;
 
     @Autowired
     public MyBatisMapperPurchaseRepository(@Qualifier("sqlSessionTemplate") SqlSession sqlSession) {

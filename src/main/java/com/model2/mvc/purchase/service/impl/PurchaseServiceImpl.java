@@ -1,10 +1,7 @@
 package com.model2.mvc.purchase.service.impl;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.common.Pagination;
-import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.exception.RecordNotFoundException;
-import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.purchase.domain.Purchase;
@@ -26,9 +23,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

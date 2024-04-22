@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Deprecated
 @NoArgsConstructor
 @Getter
 @Setter

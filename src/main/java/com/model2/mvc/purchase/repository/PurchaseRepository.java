@@ -1,11 +1,9 @@
 package com.model2.mvc.purchase.repository;
 
-import com.model2.mvc.common.ListData;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface PurchaseRepository {
