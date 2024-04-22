@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +80,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public ListCartItemResponseDto getCartItemList(String cartValue) {
         if (cartValue == null || cartValue.isEmpty()) {
-            return new ListCartItemResponseDto(0, 0, new HashMap<>());
+            return new ListCartItemResponseDto(0, 0, new ArrayList<>());
         }
 
         Map<Integer, Integer> parsed = new HashMap<>();
@@ -89,18 +90,17 @@ public class CartServiceImpl implements CartService {
                 .map(d -> new int[] { Integer.parseInt(d[0]), Integer.parseInt(d[1]) })
                 .forEach(i -> parsed.put(i[0], i[1]));
 
-        List<Integer> keyList = parsed.keySet().stream().collect(Collectors.toList());
+        List<Integer> keyList = new ArrayList<>(parsed.keySet());
         Map<Integer, Product> queryResult = productRepository.findProductsByIds(keyList);
 
-        Map<Product, Integer> resultMap = new HashMap<>();
-        for (Integer key : keyList) {
-            resultMap.put(queryResult.get(key), parsed.get(key));
-        }
-
-        int priceSum = resultMap.keySet()
+        List<ListCartItemResponseDto.ProductsInCartResponseDto> productsInCart = queryResult.keySet()
                 .stream()
-                .reduce(0, (i, p) -> i + p.getPrice() * resultMap.get(p), Integer::sum);
+                .map((k) -> new ListCartItemResponseDto.ProductsInCartResponseDto(queryResult.get(k), parsed.get(k)))
+                .toList();
+
+        int priceSum = productsInCart.stream()
+                .reduce(0, (i, p) -> i + p.getProduct().getPrice() * p.getQuantity(), Integer::sum);
         int itemCount = keyList.size();
-        return new ListCartItemResponseDto(priceSum, itemCount, resultMap);
+        return new ListCartItemResponseDto(priceSum, itemCount, productsInCart);
     }
 }
