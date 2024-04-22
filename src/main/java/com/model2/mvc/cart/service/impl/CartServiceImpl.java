@@ -100,7 +100,7 @@ public class CartServiceImpl implements CartService {
 
         int priceSum = productsInCart.stream()
                 .reduce(0, (i, p) -> i + p.getProduct().getPrice() * p.getQuantity(), Integer::sum);
-        int itemCount = keyList.size();
+        int itemCount = productsInCart.stream().reduce(0, (i, p) -> i + p.getQuantity(), Integer::sum);
         return new ListCartItemResponseDto(priceSum, itemCount, productsInCart);
     }
 }
