@@ -130,3 +130,5 @@ src/main/resources/secret/*
 
 # resource
 src/main/webapp/images/
+SQL(script)/initialize-with-sample-data.sql
+SQL(script)/temp.sql

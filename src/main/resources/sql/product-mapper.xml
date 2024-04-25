@@ -42,6 +42,7 @@
 
     <resultMap id="product" type="Product">
         <id column="prod_no" property="prodNo" jdbcType="NUMERIC"/>
+        <result column="register" property="register" jdbcType="VARCHAR"/>
         <result column="prod_name" property="prodName" jdbcType="VARCHAR"/>
         <result column="prod_detail" property="prodDetail" jdbcType="VARCHAR"/>
         <result column="manufacture_day" property="manuDate" jdbcType="DATE"/>
@@ -55,6 +56,7 @@
     <select id="findById" parameterType="int" resultMap="product">
         SELECT
             p.prod_no         AS prod_no,
+            p.register        AS register,
             p.prod_name       AS prod_name,
             p.prod_detail     AS prod_detail,
             p.manufacture_day AS manufacture_day,
@@ -76,6 +78,7 @@
     <select id="findProductsByIds" parameterType="java.util.List" resultMap="product">
         SELECT
             p.prod_no,
+            p.register,
             p.prod_name,
             p.prod_detail,
             p.manufacture_day,
@@ -104,6 +107,7 @@
     <select id="findList" parameterType="map" resultMap="product">
         SELECT
             v.prod_no         AS prod_no,
+            v.register        AS register,
             v.prod_name       AS prod_name,
             v.prod_detail     AS prod_detail,
             v.manufacture_day AS manufacture_day,
@@ -144,6 +148,7 @@
                 </if>
                 )  AS row_num,
                 p.prod_no         AS prod_no,
+                p.register        AS register,
                 p.prod_name       AS prod_name,
                 p.prod_detail     AS prod_detail,
                 p.manufacture_day AS manufacture_day,
@@ -235,6 +240,9 @@
         <set>
             <if test="prodName != null">
                 prod_name = #{prodName},
+            </if>
+            <if test="register != null">
+                register = #{register},
             </if>
             <if test="prodDetail != null">
                 prod_detail = #{prodDetail},
