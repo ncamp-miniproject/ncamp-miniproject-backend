@@ -9,6 +9,7 @@
         INSERT INTO product
         (
         prod_no,
+        register,
         prod_name,
         prod_detail,
         manufacture_day,
@@ -24,6 +25,7 @@
         <if test="prodNo == 0">
             nextval('seq_product_prod_no')
         </if>,
+        #{register: VARCHAR},
         #{prodName: VARCHAR},
         #{prodDetail: VARCHAR},
         #{manuDate: DATE},
@@ -178,6 +180,9 @@
                 <if test="categoryNo != null">
                     AND c.category_no = #{categoryNo}
                 </if>
+                <if test="register != null">
+                    AND p.register = #{register}
+                </if>
             </where>
         ) v
         LEFT OUTER JOIN product_image pi ON pi.prod_no = v.prod_no
@@ -231,6 +236,9 @@
             </if>
             <if test="categoryNo != null">
                 AND c.category_no = #{categoryNo}
+            </if>
+            <if test="register != null">
+                AND p.register = register
             </if>
         </where>
     </select>

@@ -14,6 +14,7 @@ import lombok.ToString;
 public class ListProductRequestDto {
     private Integer page;
     private Integer pageSize;
+    private String register;
     private String searchKeyword;
     private SearchCondition searchCondition;
     private String menu;

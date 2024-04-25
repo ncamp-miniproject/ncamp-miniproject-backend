@@ -21,6 +21,7 @@ import java.util.List;
 @Setter
 @ToString
 public class CreateProductRequestDto {
+    private String register;
     private String prodName;
     private String prodDetail;
     private int price;

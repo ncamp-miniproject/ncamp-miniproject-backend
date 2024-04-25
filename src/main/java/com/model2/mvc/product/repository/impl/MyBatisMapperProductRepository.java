@@ -34,6 +34,13 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
+    public int countAll(Integer categoryNo, String register) {
+        Map<String, Object> search = generateCommonOptionSearch(SearchCondition.NO_CONDITION, categoryNo);
+        search.put("register", register);
+        return this.sqlSession.selectOne("ProductMapper.count", search);
+    }
+
+    @Override
     public int countByProdName(String prodName, boolean match, Integer categoryNo) {
         Map<String, Object> search = generateCommonOptionSearch(SearchCondition.BY_NAME, categoryNo);
         search.put("prodName", match ? prodName : "%" + prodName + "%");
@@ -170,12 +177,31 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, String register) {
+        Map<String, Object> search = generateCommonOptionSearch(page, pageSize, null, categoryNo);
+        search.put("register", register);
+        return findList(search);
+    }
+
+    @Override
     public List<Product> findAllInCategory(int page,
                                            int pageSize,
                                            Integer categoryNo,
                                            OrderBy orderBy,
                                            Boolean ascend) {
         return findList(generateCommonOptionSearch(page, pageSize, null, categoryNo, orderBy, ascend));
+    }
+
+    @Override
+    public List<Product> findAllInCategory(int page,
+                                           int pageSize,
+                                           Integer categoryNo,
+                                           OrderBy orderBy,
+                                           Boolean ascend,
+                                           String register) {
+        Map<String, Object> search = generateCommonOptionSearch(page, pageSize, null, categoryNo, orderBy, ascend);
+        search.put("register", register);
+        return findList(search);
     }
 
     @Override

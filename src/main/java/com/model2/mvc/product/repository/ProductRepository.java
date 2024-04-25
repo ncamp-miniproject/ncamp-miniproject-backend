@@ -17,6 +17,8 @@ public interface ProductRepository {
 
     public int countAll(Integer categoryNo);
 
+    public int countAll(Integer categoryNo, String register);
+
     public int countByProdName(String prodName, boolean match, Integer categoryNo);
 
     public int countByPriceRange(Integer lowerBound, Integer upperBound, Integer categoryNo);
@@ -47,7 +49,13 @@ public interface ProductRepository {
                                               OrderBy orderBy,
                                               Boolean ascend);
 
+    @Deprecated
     public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo);
 
+    @Deprecated
     public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, OrderBy orderBy, Boolean ascend);
+
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, String register);
+
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, OrderBy orderBy, Boolean ascend, String register);
 }

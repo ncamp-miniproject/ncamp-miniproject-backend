@@ -30,7 +30,8 @@ public class ListQueryHelperImpl implements ListQueryHelper {
                                                                              IntegerUtil.getOneIfNull(dto.getPageSize()),
                                                                              dto.getCategoryNo(),
                                                                              dto.getOrderBy(),
-                                                                             dto.getAscend()));
+                                                                             dto.getAscend(),
+                                                                             dto.getRegister()));
         listTaskMapper.put(SearchCondition.BY_NAME,
                            (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
                                                                               false,
