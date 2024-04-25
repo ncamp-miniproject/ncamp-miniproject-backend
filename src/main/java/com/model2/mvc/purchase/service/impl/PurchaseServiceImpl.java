@@ -6,6 +6,7 @@ import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.purchase.domain.Purchase;
 import com.model2.mvc.purchase.domain.TranStatusCode;
+import com.model2.mvc.purchase.domain.TransactionProduction;
 import com.model2.mvc.purchase.dto.request.AddPurchaseRequestDTO;
 import com.model2.mvc.purchase.dto.request.ListPurchaseRequestDto;
 import com.model2.mvc.purchase.dto.request.UpdatePurchaseRequestDto;
@@ -57,7 +58,11 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTranStatusCode(TranStatusCode.PURCHASE_DONE);
         purchase.setOrderDate(LocalDate.now());
         purchase.setDivyDate(requestDTO.getDivyDate());
-        purchase.setTransactionProductions(requestDTO.getTranProds());
+        purchase.setTransactionProductions(requestDTO.getTranProds()
+                                                   .stream()
+                                                   .map((tp) -> new TransactionProduction(new Product(tp.getProdNo()),
+                                                                                          tp.getQuantity()))
+                                                   .toList());
         this.purchaseRepository.insertPurchase(purchase);
         purchase.getTransactionProductions().forEach(tp -> {
             Product product = this.productRepository.findById(tp.getProduct().getProdNo())
