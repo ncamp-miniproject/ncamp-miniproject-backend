@@ -34,9 +34,9 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
-    public int countAll(Integer categoryNo, String register) {
+    public int countAll(Integer categoryNo, String seller) {
         Map<String, Object> search = generateCommonOptionSearch(SearchCondition.NO_CONDITION, categoryNo);
-        search.put("register", register);
+        search.put("seller", seller);
         return this.sqlSession.selectOne("ProductMapper.count", search);
     }
 
@@ -177,9 +177,9 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
-    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, String register) {
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, String seller) {
         Map<String, Object> search = generateCommonOptionSearch(page, pageSize, null, categoryNo);
-        search.put("register", register);
+        search.put("seller", seller);
         return findList(search);
     }
 
@@ -198,9 +198,9 @@ public class MyBatisMapperProductRepository implements ProductRepository {
                                            Integer categoryNo,
                                            OrderBy orderBy,
                                            Boolean ascend,
-                                           String register) {
+                                           String seller) {
         Map<String, Object> search = generateCommonOptionSearch(page, pageSize, null, categoryNo, orderBy, ascend);
-        search.put("register", register);
+        search.put("seller", seller);
         return findList(search);
     }
 

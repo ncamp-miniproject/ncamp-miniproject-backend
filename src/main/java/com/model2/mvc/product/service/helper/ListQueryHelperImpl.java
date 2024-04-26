@@ -31,7 +31,7 @@ public class ListQueryHelperImpl implements ListQueryHelper {
                                                                              dto.getCategoryNo(),
                                                                              dto.getOrderBy(),
                                                                              dto.getAscend(),
-                                                                             dto.getRegister()));
+                                                                             dto.getSeller()));
         listTaskMapper.put(SearchCondition.BY_NAME,
                            (repository, dto) -> repository.findListByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
                                                                               false,
@@ -52,7 +52,7 @@ public class ListQueryHelperImpl implements ListQueryHelper {
         });
 
         countTaskMapper.put(SearchCondition.NO_CONDITION,
-                            (repository, dto) -> repository.countAll(dto.getCategoryNo()));
+                            (repository, dto) -> repository.countAll(dto.getCategoryNo(), dto.getSeller()));
 
         countTaskMapper.put(SearchCondition.BY_NAME,
                             (repository, dto) -> repository.countByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),

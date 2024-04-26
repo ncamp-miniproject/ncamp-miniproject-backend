@@ -25,7 +25,7 @@ import java.util.Objects;
 @ToString
 public class Product {
     private int prodNo;
-    private String register;
+    private String seller;
     private String prodName;
     private String prodDetail;
     private Integer price;

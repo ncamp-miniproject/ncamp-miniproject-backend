@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS category
 CREATE TABLE IF NOT EXISTS product
 (
     prod_no         INTEGER,
-    register        TEXT,
+    seller          TEXT,
     prod_name       TEXT    NOT NULL,
     prod_detail     TEXT,
     manufacture_day DATE DEFAULT CURRENT_DATE,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS product
     category_no     INTEGER,
     CONSTRAINT product_pk PRIMARY KEY (prod_no),
     CONSTRAINT prod_category_fk FOREIGN KEY (category_no) REFERENCES category (category_no),
-    CONSTRAINT prod_register_fk FOREIGN KEY (register) REFERENCES seller (seller_id)
+    CONSTRAINT prod_seller_fk FOREIGN KEY (seller) REFERENCES seller (seller_id)
 );
 
 CREATE TABLE IF NOT EXISTS product_image

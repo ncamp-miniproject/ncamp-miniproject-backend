@@ -17,7 +17,7 @@ public interface ProductRepository {
 
     public int countAll(Integer categoryNo);
 
-    public int countAll(Integer categoryNo, String register);
+    public int countAll(Integer categoryNo, String seller);
 
     public int countByProdName(String prodName, boolean match, Integer categoryNo);
 
@@ -55,7 +55,7 @@ public interface ProductRepository {
     @Deprecated
     public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, OrderBy orderBy, Boolean ascend);
 
-    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, String register);
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, String seller);
 
-    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, OrderBy orderBy, Boolean ascend, String register);
+    public List<Product> findAllInCategory(int page, int pageSize, Integer categoryNo, OrderBy orderBy, Boolean ascend, String seller);
 }

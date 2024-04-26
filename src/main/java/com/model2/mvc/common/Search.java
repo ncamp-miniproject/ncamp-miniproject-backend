@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Deprecated
 public class Search {
     private String searchCondition;
     private String searchKeyword;
