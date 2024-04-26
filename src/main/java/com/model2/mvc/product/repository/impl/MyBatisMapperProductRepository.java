@@ -48,10 +48,27 @@ public class MyBatisMapperProductRepository implements ProductRepository {
     }
 
     @Override
+    public int countByProdName(String prodName, boolean match, Integer categoryNo, String seller) {
+        Map<String, Object> search = generateCommonOptionSearch(SearchCondition.BY_NAME, categoryNo);
+        search.put("prodName", match ? prodName : "%" + prodName + "%");
+        search.put("seller", seller);
+        return this.sqlSession.selectOne("ProductMapper.count", search);
+    }
+
+    @Override
     public int countByPriceRange(Integer lowerBound, Integer upperBound, Integer categoryNo) {
         Map<String, Object> search = generateCommonOptionSearch(SearchCondition.BY_INTEGER_RANGE, categoryNo);
         search.put("lowerBound", lowerBound);
         search.put("upperBound", upperBound);
+        return this.sqlSession.selectOne("ProductMapper.count", search);
+    }
+
+    @Override
+    public int countByPriceRange(Integer lowerBound, Integer upperBound, Integer categoryNo, String seller) {
+        Map<String, Object> search = generateCommonOptionSearch(SearchCondition.BY_INTEGER_RANGE, categoryNo);
+        search.put("lowerBound", lowerBound);
+        search.put("upperBound", upperBound);
+        search.put("seller", seller);
         return this.sqlSession.selectOne("ProductMapper.count", search);
     }
 
@@ -103,6 +120,26 @@ public class MyBatisMapperProductRepository implements ProductRepository {
         return findList(search);
     }
 
+    @Override
+    public List<Product> findListByProdName(String prodName,
+                                            boolean match,
+                                            int page,
+                                            int pageSize,
+                                            Integer categoryNo,
+                                            OrderBy orderBy,
+                                            Boolean ascend,
+                                            String seller) {
+        Map<String, Object> search = generateCommonOptionSearch(page,
+                                                                pageSize,
+                                                                SearchCondition.BY_NAME,
+                                                                categoryNo,
+                                                                orderBy,
+                                                                ascend,
+                                                                seller);
+        search.put("prodName", match ? prodName : "%" + prodName + "%");
+        return findList(search);
+    }
+
     private Map<String, Object> generateCommonOptionSearch(SearchCondition searchCondition, Integer categoryNo) {
         Map<String, Object> search = new HashMap<>();
         search.put("searchCondition", searchCondition == null ? null : searchCondition.getConditionCode());
@@ -129,6 +166,20 @@ public class MyBatisMapperProductRepository implements ProductRepository {
         Map<String, Object> search = generateCommonOptionSearch(page, pageSize, searchCondition, categoryNo);
         search.put("orderBy", orderBy);
         search.put("ascend", ascend);
+        return search;
+    }
+
+    private Map<String, Object> generateCommonOptionSearch(int page,
+                                                           int pageSize,
+                                                           SearchCondition searchCondition,
+                                                           Integer categoryNo,
+                                                           OrderBy orderBy,
+                                                           Boolean ascend,
+                                                           String seller) {
+        Map<String, Object> search = generateCommonOptionSearch(page, pageSize, searchCondition, categoryNo);
+        search.put("orderBy", orderBy);
+        search.put("ascend", ascend);
+        search.put("seller", seller);
         return search;
     }
 
@@ -166,6 +217,27 @@ public class MyBatisMapperProductRepository implements ProductRepository {
                                                                 categoryNo,
                                                                 orderBy,
                                                                 ascend);
+        search.put("lowerBound", lowerBound);
+        search.put("upperBound", upperBound);
+        return findList(search);
+    }
+
+    @Override
+    public List<Product> findListByPriceRange(Integer lowerBound,
+                                              Integer upperBound,
+                                              int page,
+                                              int pageSize,
+                                              Integer categoryNo,
+                                              OrderBy orderBy,
+                                              Boolean ascend,
+                                              String seller) {
+        Map<String, Object> search = generateCommonOptionSearch(page,
+                                                                pageSize,
+                                                                SearchCondition.BY_INTEGER_RANGE,
+                                                                categoryNo,
+                                                                orderBy,
+                                                                ascend,
+                                                                seller);
         search.put("lowerBound", lowerBound);
         search.put("upperBound", upperBound);
         return findList(search);

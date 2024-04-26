@@ -39,7 +39,8 @@ public class ListQueryHelperImpl implements ListQueryHelper {
                                                                               IntegerUtil.getOneIfNull(dto.getPageSize()),
                                                                               dto.getCategoryNo(),
                                                                               dto.getOrderBy(),
-                                                                              dto.getAscend()));
+                                                                              dto.getAscend(),
+                                                                              dto.getSeller()));
         listTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
             List<Integer> boundPair = generateBoundPair(dto.getSearchKeyword());
             return repository.findListByPriceRange(boundPair.get(0),
@@ -48,7 +49,8 @@ public class ListQueryHelperImpl implements ListQueryHelper {
                                                    IntegerUtil.getOneIfNull(dto.getPageSize()),
                                                    dto.getCategoryNo(),
                                                    dto.getOrderBy(),
-                                                   dto.getAscend());
+                                                   dto.getAscend(),
+                                                   dto.getSeller());
         });
 
         countTaskMapper.put(SearchCondition.NO_CONDITION,
@@ -57,11 +59,15 @@ public class ListQueryHelperImpl implements ListQueryHelper {
         countTaskMapper.put(SearchCondition.BY_NAME,
                             (repository, dto) -> repository.countByProdName(StringUtil.null2nullStr(dto.getSearchKeyword()),
                                                                             false,
-                                                                            dto.getCategoryNo()));
+                                                                            dto.getCategoryNo(),
+                                                                            dto.getSeller()));
 
         countTaskMapper.put(SearchCondition.BY_INTEGER_RANGE, (repository, dto) -> {
             List<Integer> boundPair = generateBoundPair(dto.getSearchKeyword());
-            return repository.countByPriceRange(boundPair.get(0), boundPair.get(1), dto.getCategoryNo());
+            return repository.countByPriceRange(boundPair.get(0),
+                                                boundPair.get(1),
+                                                dto.getCategoryNo(),
+                                                dto.getSeller());
         });
     }
 

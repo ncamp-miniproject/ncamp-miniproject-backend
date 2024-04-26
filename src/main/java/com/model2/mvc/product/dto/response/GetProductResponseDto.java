@@ -17,6 +17,7 @@ import java.util.List;
 @ToString
 public class GetProductResponseDto {
     private int prodNo;
+    private String seller;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -36,6 +37,7 @@ public class GetProductResponseDto {
     public static GetProductResponseDto from(Product product) {
         GetProductResponseDto dto = new GetProductResponseDto();
         dto.prodNo = product.getProdNo();
+        dto.seller = product.getSeller();
         dto.manuDate = product.getManuDate();
         dto.price = product.getPrice();
         dto.prodDetail = product.getProdDetail();
