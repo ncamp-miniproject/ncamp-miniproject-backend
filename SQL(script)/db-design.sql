@@ -32,27 +32,27 @@ CREATE SEQUENCE IF NOT EXISTS seq_product_image_no INCREMENT BY 1 START WITH 100
 
 CREATE TABLE IF NOT EXISTS users
 (
-    user_id    TEXT,
-    name_of_user  TEXT NOT NULL,
-    password   TEXT NOT NULL,
-    role       TEXT DEFAULT 'user',
-    ssn        TEXT,
-    cell_phone TEXT,
-    addr       TEXT,
-    email      TEXT,
-    reg_date   DATE DEFAULT CURRENT_DATE,
+    user_id      TEXT,
+    name_of_user TEXT NOT NULL,
+    password     TEXT NOT NULL,
+    role         TEXT DEFAULT 'user',
+    ssn          TEXT,
+    cell_phone   TEXT,
+    addr         TEXT,
+    email        TEXT,
+    reg_date     DATE DEFAULT CURRENT_DATE,
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
 CREATE TABLE seller
 (
-    seller_id         TEXT,
-    main_image_file TEXT,
-    description     TEXT,
+    seller_id          TEXT,
+    profile_image_file TEXT,
+    profile            TEXT,
+    authorized         BOOLEAN DEFAULT FALSE,
     CONSTRAINT seller_pk PRIMARY KEY (seller_id),
     CONSTRAINT seller_users_fk FOREIGN KEY (seller_id) REFERENCES users (user_id)
 );
-
 
 CREATE TABLE IF NOT EXISTS subscription
 (
@@ -112,8 +112,8 @@ CREATE TABLE IF NOT EXISTS transaction
     dlvy_date        DATE DEFAULT CURRENT_DATE,
     CONSTRAINT transaction_pk PRIMARY KEY (tran_no),
     CONSTRAINT transaction_buyer_id FOREIGN KEY (buyer_id) REFERENCES users (user_id),
-    CONSTRAINT transaction_payment_option CHECK (payment_option IN ('0', '1')),
-    CONSTRAINT transaction_trans_status_code CHECK (tran_status_code IN ('0', '1', '2', '3'))
+    CONSTRAINT transaction_payment_option CHECK ( payment_option IN ('0', '1')),
+    CONSTRAINT transaction_trans_status_code CHECK ( tran_status_code IN ('0', '1', '2', '3'))
 );
 
 CREATE TABLE IF NOT EXISTS transaction_prod
@@ -124,5 +124,5 @@ CREATE TABLE IF NOT EXISTS transaction_prod
     CONSTRAINT tp_pk PRIMARY KEY (tran_no, prod_no),
     CONSTRAINT tp_tran_no_fk FOREIGN KEY (tran_no) REFERENCES transaction (tran_no),
     CONSTRAINT tp_prod_no_fk FOREIGN KEY (prod_no) REFERENCES product (prod_no),
-    CONSTRAINT tp_quantity_num_range CHECK (quantity >= 0)
+    CONSTRAINT tp_quantity_num_range CHECK ( quantity >= 0 )
 );

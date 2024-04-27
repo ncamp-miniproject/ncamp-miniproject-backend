@@ -3,6 +3,7 @@ package com.model2.mvc.product.service;
 import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.Pagination;
+import com.model2.mvc.common.file.FileAccess;
 import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.common.util.IntegerUtil;
 import com.model2.mvc.common.util.RandomSerialGenerator;
@@ -48,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryService categoryService;
     private final UserService userService;
     private final ListQueryHelper listQueryHelper;
+    private final FileAccess fileAccess;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -72,10 +74,10 @@ public class ProductServiceImpl implements ProductService {
         Integer prodNo = product.getProdNo();
 
         List<ProductImage> productImages = toInsert.getProductImageDto().stream().map(pi -> {
-            String fileName = storeFile(pi.getBase64Data(), contextRealPath, pi.getFileExtension());
+            String filename = this.fileAccess.storeFile(pi.getBase64Data(), pi.getFileExtension(), contextRealPath);
             return ProductImage.builder()
                     .prodNo(prodNo)
-                    .fileName(fileName)
+                    .fileName(filename)
                     .description(pi.getDescription())
                     .thumbnail(pi.getThumbnail())
                     .build();

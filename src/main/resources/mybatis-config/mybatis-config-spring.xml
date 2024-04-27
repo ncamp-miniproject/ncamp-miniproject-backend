@@ -17,6 +17,7 @@
         <typeAlias type="com.model2.mvc.purchase.domain.TransactionProduction" alias="TranProd"/>
         <typeAlias type="com.model2.mvc.category.domain.Category" alias="Category"/>
         <typeAlias type="com.model2.mvc.product.domain.ProductImage" alias="ProductImage"/>
+        <typeAlias type="com.model2.mvc.seller.domain.Seller" alias="Seller"/>
     </typeAliases>
 
     <typeHandlers>
@@ -32,5 +33,6 @@
         <mapper resource="sql/product-mapper.xml"/>
         <mapper resource="sql/purchase-mapper.xml"/>
         <mapper resource="sql/category-mapper.xml"/>
+        <mapper resource="sql/seller-mapper.xml"/>
     </mappers>
 </configuration>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//en"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SellerMapper">
+    <insert id="insert" parameterType="Seller">
+        INSERT INTO seller (seller_id, profile_image_file, profile
+        <if test="authorized != null">
+            ,authorized
+        </if>
+        )
+        VALUES (
+                #{seller.userId},
+                #{profileImageFile},
+                #{profile}
+                <if test="authorized != null">
+                    , #{authorized}
+                </if>
+               )
+    </insert>
+
+    <resultMap id="seller" type="Seller">
+        <result column="profile_image_file" property="profileImageFile" jdbcType="VARCHAR"/>
+        <result column="profile" property="profile" jdbcType="VARCHAR"/>
+        <result column="authorized" property="authorized" jdbcType="BOOLEAN"/>
+        <association property="seller" javaType="User" resultMap="UserMapper.user"/>
+    </resultMap>
+
+    <select id="findById" parameterType="string" resultMap="seller">
+        SELECT
+            u.user_id AS "user_id",
+            s.profile_image_file AS "profile_image_file",
+            s.profile AS "profile",
+            s.authorized AS "authorized",
+            u.name_of_user AS "name_of_user",
+            u.role AS "role",
+            u.ssn AS "ssn",
+            u.cell_phone AS "cell_phone",
+            u.addr AS "addr",
+            u.email AS "email",
+            u.reg_date AS "reg_date"
+        FROM seller AS s
+        INNER JOIN users AS u ON u.user_id = s.seller_id
+        WHERE s.seller_id = #{value}
+    </select>
+
+    <update id="updateAuthorized" parameterType="map">
+        UPDATE seller
+        <set>
+            <if test="authorized != null">
+                authorized = #{authorized}
+            </if>
+        </set>
+        WHERE seller_id = #{sellerId}
+    </update>
+
+    <delete id="deleteById" parameterType="string">
+        DELETE FROM seller
+        WHERE seller_id = #{value}
+    </delete>
+</mapper>

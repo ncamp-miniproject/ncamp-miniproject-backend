@@ -87,10 +87,12 @@ public class ProductController {
             String fileExtension = imageName.substring(extensionSeparatorIndex);
 
             String description = descriptions.get(i);
-            productImages.add(new ProductImageDto(fileExtension,
-                                                  Base64.getEncoder().encodeToString(multipartFile.getBytes()),
-                                                  description,
-                                                  i == 0));
+            ProductImageDto productImageDto = new ProductImageDto();
+            productImageDto.setFileExtension(fileExtension);
+            productImageDto.setBase64Data(Base64.getEncoder().encodeToString(multipartFile.getBytes()));
+            productImageDto.setDescription(description);
+            productImageDto.setThumbnail(i == 0);
+            productImages.add(productImageDto);
         }
 
         requestEntityForApi.setProductImageDto(productImages);
