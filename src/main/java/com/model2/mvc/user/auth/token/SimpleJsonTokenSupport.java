@@ -60,7 +60,8 @@ public class SimpleJsonTokenSupport implements TokenSupport {
         return !isTokenExpired(token) && isTokenForRightUser(token, subjectName);
     }
 
-    private boolean isTokenExpired(String token) {
+    @Override
+    public boolean isTokenExpired(String token) {
         String value = extractValue(token, "expiration");
         if (value == null) {
             return true;
@@ -74,7 +75,8 @@ public class SimpleJsonTokenSupport implements TokenSupport {
         return subject.equals(subjectName);
     }
 
-    private boolean isValidRefreshToken(String token) {
+    @Override
+    public boolean isValidRefreshToken(String token) {
         return this.refreshTokenRepository.retrieve(token);
     }
 

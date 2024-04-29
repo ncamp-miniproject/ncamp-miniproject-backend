@@ -3,8 +3,10 @@ package com.model2.mvc.config.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model2.mvc.cart.interceptor.CookieSetter;
 import com.model2.mvc.common.aspect.ControllerDebugLoggingAspect;
+import com.model2.mvc.common.filter.LoggingFilter;
 import com.model2.mvc.common.interceptor.TokenRefreshInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public FilterRegistrationBean<LoggingFilter> filterRegistration() {
+        FilterRegistrationBean<LoggingFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new LoggingFilter());
+        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.setName("loggingFilter");
+        registrationBean.setOrder(1);
+        return registrationBean;
     }
 
     @Override

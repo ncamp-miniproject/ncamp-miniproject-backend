@@ -2,6 +2,7 @@ package com.model2.mvc.user.auth.controller;
 
 import com.model2.mvc.user.auth.dto.request.AuthRequestDto;
 import com.model2.mvc.user.auth.dto.response.AuthenticatedResponseDto;
+import com.model2.mvc.user.auth.dto.response.LoginUserResponseDto;
 import com.model2.mvc.user.auth.exception.AuthRequestFailException;
 import com.model2.mvc.user.auth.service.AuthService;
 import com.model2.mvc.user.auth.service.RegisterAuthenticationService;
@@ -14,14 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -59,6 +53,16 @@ public class AuthApi {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/token/{token}")
+    public ResponseEntity<LoginUserResponseDto> verifyToken(@PathVariable("token") String token) {
+        try {
+            LoginUserResponseDto result = this.authService.verifyToken(token);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }

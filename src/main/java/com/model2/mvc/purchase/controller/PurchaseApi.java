@@ -61,7 +61,7 @@ public class PurchaseApi {
         return new ResponseEntity<>(this.purchaseService.getPurchaseList(requestDto), HttpStatus.OK);
     }
 
-    @GetMapping("/sale")
+    @GetMapping("/sale/list")
     public ResponseEntity<ListPurchaseResponseDto> getSales(
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "pageSize", required = false) Integer pageSize) {

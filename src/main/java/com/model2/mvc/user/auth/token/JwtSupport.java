@@ -73,8 +73,16 @@ public class JwtSupport implements TokenSupport {
         return claims.getSubject().equals(subjectName);
     }
 
-    private boolean isValidRefreshToken(String token) {
+    @Override
+    public boolean isValidRefreshToken(String token) {
         return this.refreshTokenRepository.retrieve(token);
+    }
+
+    @Override
+    public boolean isTokenExpired(String token) {
+        Claims claims = jwtParser.parseClaimsJws(token).getBody();
+        Date expiration = claims.getExpiration();
+        return expiration == null || expiration.before(new Date());
     }
 
     @Override

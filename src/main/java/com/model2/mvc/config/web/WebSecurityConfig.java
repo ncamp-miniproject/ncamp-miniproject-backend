@@ -21,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,14 +33,51 @@ public class WebSecurityConfig {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String NEW_ACCESS_TOKEN_HEADER = "New-Access-Token";
     public static final String NEW_REFRESH_TOKEN_HEADER = "New-Refresh-Token";
-    public static final List<String> WHITE_LIST = List.of("/api/auth/**");
-    public static final Map<Role, Map<HttpMethod, List<String>>> ALLOWED_REQUESTS = Map.of(
-            Role.USER, Map.of(
-                    HttpMethod.GET, List.of(),
-                    HttpMethod.POST, List.of(),
-                    HttpMethod.PUT, List.of(),
-                    HttpMethod.PATCH, List.of(),
-                    HttpMethod.DELETE, List.of()
+    public static final Map<String, List<HttpMethod>> WHITE_LIST = Map.of(
+            "/api/auth/**", List.of(HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH, HttpMethod.PUT),
+            "/api/categories", List.of(HttpMethod.GET),
+            "/api/products/**", List.of(HttpMethod.GET)
+    );
+
+    private static final List<Role> ALL_ROLES = Arrays.asList(Role.values());
+
+    public static final Map<String, Map<HttpMethod, List<Role>>> ALLOWED_REQUESTS = Map.of(
+            "/api/users", Map.of(
+                    HttpMethod.GET, List.of(Role.ADMIN)
+            ),
+            "/api/users/*", Map.of(
+                    HttpMethod.GET, ALL_ROLES,
+                    HttpMethod.DELETE, ALL_ROLES
+            ),
+            "/api/cart", Map.of(
+                    HttpMethod.GET, List.of(Role.USER),
+                    HttpMethod.DELETE, List.of(Role.USER),
+                    HttpMethod.POST, List.of(Role.USER)
+            ),
+            "/api/categories/**", Map.of(
+                    HttpMethod.POST, List.of(Role.ADMIN),
+                    HttpMethod.PATCH, List.of(Role.ADMIN)
+            ),
+            "/api/products", Map.of(
+                    HttpMethod.POST, List.of(Role.SELLER),
+                    HttpMethod.PATCH, List.of(Role.SELLER, Role.ADMIN)
+            ),
+            "/api/purchases/*", Map.of(
+                    HttpMethod.POST, List.of(Role.USER),
+                    HttpMethod.GET, ALL_ROLES
+            ),
+            "/api/purchases/sale/list", Map.of(
+                    HttpMethod.GET, List.of(Role.ADMIN)
+            ),
+            "/api/purchases/*/tran-code", Map.of(
+                    HttpMethod.GET, ALL_ROLES,
+                    HttpMethod.PATCH, List.of(Role.ADMIN)
+            ),
+            "/api/seller/**", Map.of(
+                    HttpMethod.POST, List.of(Role.USER),
+                    HttpMethod.PATCH, List.of(Role.ADMIN),
+                    HttpMethod.GET, ALL_ROLES,
+                    HttpMethod.DELETE, List.of(Role.ADMIN)
             )
     );
 
@@ -47,7 +85,19 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+//        return new BCryptPasswordEncoder();
+        // TODO: replace with BCryptPasswordEncoder after testing
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return String.valueOf(rawPassword);
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return String.valueOf(rawPassword).equals(encodedPassword);
+            }
+        };
     }
 
     @Bean
@@ -70,14 +120,15 @@ public class WebSecurityConfig {
                                          AuthenticationManager authManager) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((req) -> {
-//                    req.requestMatchers(WHITE_LIST.stream()
-//                                                .map(AntPathRequestMatcher::new)
-//                                                .toList()
-//                                                .toArray(new AntPathRequestMatcher[0]))
-//                            .permitAll()
-//                            .anyRequest()
-//                            .authenticated();
-                    req.anyRequest().permitAll(); // TODO: just for development
+                    WHITE_LIST.forEach((url, met) -> {
+                        met.forEach((m) -> req.requestMatchers(new AntPathRequestMatcher(url, m.name())).permitAll());
+                    });
+                    ALLOWED_REQUESTS.forEach((k, v) -> {
+                        v.forEach((m, r) -> {
+                            req.requestMatchers(new AntPathRequestMatcher(k, m.name())).hasAnyAuthority(r.stream().map(Role::name).toArray(String[]::new));
+                        });
+                    });
+//                    req.anyRequest().permitAll(); // TODO: just for development
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationManager(authManager)

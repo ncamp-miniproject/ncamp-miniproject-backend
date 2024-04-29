@@ -13,7 +13,11 @@ public interface TokenSupport {
 
     public boolean isTokenValid(String token, String subjectName);
 
+    public boolean isTokenExpired(String token);
+
     public boolean isRefreshToken(String token);
+
+    public boolean isValidRefreshToken(String token);
 
     public void removeToken(String token);
 }
