@@ -23,6 +23,7 @@ import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
+import com.model2.mvc.user.dto.response.UserResponseDto;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -112,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
                 = GetProductResponseDto.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
         try {
-            User user = this.userService.getUser(userId);
+            UserResponseDto user = this.userService.getUser(userId);
             responseDTO.setPurchasable(user != null && user.getRole() == Role.USER && responseDTO.getStock() > 0);
         } catch (IllegalArgumentException e) {
             responseDTO.setPurchasable(false);

@@ -5,12 +5,15 @@ import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.request.SignInRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
+import com.model2.mvc.user.dto.response.UserResponseDto;
 
 public interface UserService {
 
     public User signIn(SignInRequestDto userVO) throws Exception;
 
-    public User getUser(String userId);
+    public UserResponseDto getUser(String userId);
+
+    public UserResponseDto getUserFromToken(String token);
 
     public ListUserResponseDto getUserList(ListUserRequestDto requestDTO) throws Exception;
 

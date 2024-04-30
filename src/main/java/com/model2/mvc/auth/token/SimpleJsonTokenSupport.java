@@ -53,20 +53,29 @@ public class SimpleJsonTokenSupport implements TokenSupport {
             return false;
         }
 
-        if (this.isRefreshToken(token) && !this.isValidRefreshToken(token)) {
+        if (this.isRefreshToken(token)) {
             return false;
         }
 
-        return !isTokenExpired(token) && isTokenForRightUser(token, subjectName);
+        boolean tokenNotExpired = !isTokenExpired(token);
+        boolean tokenForRightUser = isTokenForRightUser(token, subjectName);
+
+        System.out.println(tokenNotExpired);
+        System.out.println(tokenForRightUser);
+
+        return tokenNotExpired && tokenForRightUser;
     }
 
     @Override
     public boolean isTokenExpired(String token) {
         String value = extractValue(token, "expiration");
         if (value == null) {
+            System.out.println("Expiration is null");
             return true;
         }
         LocalDateTime expiration = LocalDateTime.parse(value);
+        System.out.println(expiration);
+        System.out.println(LocalDateTime.now());
         return expiration.isBefore(LocalDateTime.now());
     }
 

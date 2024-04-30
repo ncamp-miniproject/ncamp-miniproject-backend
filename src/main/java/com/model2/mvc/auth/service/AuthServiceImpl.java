@@ -72,6 +72,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private boolean isInvalidRefreshToken(String token) {
-        return !this.tokenSupport.isRefreshToken(token) || !this.tokenSupport.isValidRefreshToken(token) || !this.tokenSupport.isTokenExpired(token);
+        return !this.tokenSupport.isRefreshToken(token) || !this.tokenSupport.isValidRefreshToken(token) || this.tokenSupport.isTokenExpired(token);
     }
 }

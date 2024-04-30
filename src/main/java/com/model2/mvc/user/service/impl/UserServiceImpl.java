@@ -1,5 +1,6 @@
 package com.model2.mvc.user.service.impl;
 
+import com.model2.mvc.auth.token.TokenSupport;
 import com.model2.mvc.common.Pagination;
 import com.model2.mvc.common.SearchCondition;
 import com.model2.mvc.common.util.StringUtil;
@@ -23,8 +24,8 @@ import java.util.Optional;
 @Service
 @Primary
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
+    private final TokenSupport tokenSupport;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -46,8 +47,14 @@ public class UserServiceImpl implements UserService {
         return dbUser.orElseThrow(() -> new Exception("No such user"));
     }
 
-    public User getUser(String userId) {
-        return userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new);
+    public UserResponseDto getUser(String userId) {
+        return UserResponseDto.from(userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new));
+    }
+
+    @Override
+    public UserResponseDto getUserFromToken(String token) {
+        String subject = this.tokenSupport.extractSubject(token);
+        return this.getUser(subject);
     }
 
     public ListUserResponseDto getUserList(ListUserRequestDto requestDto) throws Exception {

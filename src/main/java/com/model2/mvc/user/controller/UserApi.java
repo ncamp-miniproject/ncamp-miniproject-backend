@@ -55,8 +55,18 @@ public class UserApi {
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable("userId") String userId) {
         try {
-            User user = this.userService.getUser(userId);
-            return new ResponseEntity<>(UserResponseDto.from(user), HttpStatus.OK);
+            UserResponseDto userDto = this.userService.getUser(userId);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/self/token")
+    public ResponseEntity<UserResponseDto> getMyInfo(@RequestParam("token") String token) {
+        try {
+            UserResponseDto userDto = this.userService.getUserFromToken(token);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

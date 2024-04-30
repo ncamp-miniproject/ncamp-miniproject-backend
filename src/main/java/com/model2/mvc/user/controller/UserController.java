@@ -7,6 +7,7 @@ import com.model2.mvc.user.dto.request.ListUserRequestDto;
 import com.model2.mvc.user.dto.response.CheckDuplicateResponseDto;
 import com.model2.mvc.user.dto.response.ListUserResponseDto;
 import com.model2.mvc.user.dto.response.SignInResponseDto;
+import com.model2.mvc.user.dto.response.UserResponseDto;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
@@ -242,7 +243,7 @@ public class UserController {
 
     @GetMapping("/{userId}/update-form")
     public String updateUserView(@PathVariable("userId") String userId, Model model) throws Exception {
-        User user = this.userService.getUser(userId);
+        UserResponseDto user = this.userService.getUser(userId);
         model.addAttribute("user", user);
         return "user/update-form";
     }

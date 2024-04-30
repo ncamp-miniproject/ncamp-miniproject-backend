@@ -46,6 +46,9 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         if (!this.tokenSupport.isTokenValid(token, userDetails.getUsername())) {
+            System.out.println("-------------------------");
+            System.out.println("Token not valid");
+            System.out.println("---------------------------");
             filterChain.doFilter(request, response);
             return;
         }

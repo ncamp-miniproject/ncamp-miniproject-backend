@@ -48,6 +48,9 @@ public class WebSecurityConfig {
                     HttpMethod.GET, ALL_ROLES,
                     HttpMethod.DELETE, ALL_ROLES
             ),
+            "/api/users/self/token", Map.of(
+                    HttpMethod.GET, ALL_ROLES
+            ),
             "/api/cart", Map.of(
                     HttpMethod.GET, List.of(Role.USER),
                     HttpMethod.DELETE, List.of(Role.USER),
