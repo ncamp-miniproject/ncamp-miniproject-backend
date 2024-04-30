@@ -1,6 +1,6 @@
 package com.model2.mvc.mail;
 
-import com.model2.mvc.user.auth.exception.AuthRequestFailException;
+import com.model2.mvc.auth.exception.AuthRequestFailException;
 
 public class MailTransferException extends AuthRequestFailException {
 

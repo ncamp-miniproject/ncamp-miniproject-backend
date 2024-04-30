@@ -1,4 +1,4 @@
-package com.model2.mvc.user.auth.repository;
+package com.model2.mvc.auth.repository;
 
 import com.model2.mvc.user.domain.MailAuthenticationInfo;
 

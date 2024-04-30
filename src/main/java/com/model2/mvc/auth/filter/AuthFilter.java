@@ -1,7 +1,7 @@
-package com.model2.mvc.user.auth.filter;
+package com.model2.mvc.auth.filter;
 
 import com.model2.mvc.config.web.WebSecurityConfig;
-import com.model2.mvc.user.auth.token.TokenSupport;
+import com.model2.mvc.auth.token.TokenSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package com.model2.mvc.user.auth.dto.response;
+package com.model2.mvc.auth.dto.response;
 
 import com.model2.mvc.user.domain.Role;
 import lombok.AllArgsConstructor;

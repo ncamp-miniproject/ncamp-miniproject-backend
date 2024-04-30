@@ -2,8 +2,7 @@ package com.model2.mvc.auth.token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.user.auth.repository.MemoryRefreshTokenRepository;
-import com.model2.mvc.user.auth.token.JwtSupport;
+import com.model2.mvc.auth.repository.MemoryRefreshTokenRepository;
 import org.junit.jupiter.api.Test;
 
 class TestJwtSupport {

@@ -1,4 +1,4 @@
-package com.model2.mvc.user.auth.exception;
+package com.model2.mvc.auth.exception;
 
 public class AuthRequestFailException extends Exception {
 

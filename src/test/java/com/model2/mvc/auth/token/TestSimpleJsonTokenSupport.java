@@ -2,8 +2,7 @@ package com.model2.mvc.auth.token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.model2.mvc.user.auth.repository.MemoryRefreshTokenRepository;
-import com.model2.mvc.user.auth.token.SimpleJsonTokenSupport;
+import com.model2.mvc.auth.repository.MemoryRefreshTokenRepository;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;
 import org.junit.jupiter.api.Test;

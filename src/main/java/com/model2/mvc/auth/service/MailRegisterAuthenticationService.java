@@ -1,9 +1,9 @@
-package com.model2.mvc.user.auth.service;
+package com.model2.mvc.auth.service;
 
 import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.mail.MailAgent;
 import com.model2.mvc.mail.MailTransferException;
-import com.model2.mvc.user.auth.repository.RegisterAuthenticationRepository;
+import com.model2.mvc.auth.repository.RegisterAuthenticationRepository;
 import com.model2.mvc.user.domain.MailAuthenticationInfo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;

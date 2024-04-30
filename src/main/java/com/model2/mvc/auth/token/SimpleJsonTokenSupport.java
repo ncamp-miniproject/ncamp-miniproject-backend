@@ -1,6 +1,6 @@
-package com.model2.mvc.user.auth.token;
+package com.model2.mvc.auth.token;
 
-import com.model2.mvc.user.auth.repository.RefreshTokenRepository;
+import com.model2.mvc.auth.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -24,9 +24,9 @@ public class SimpleJsonTokenSupport implements TokenSupport {
         jsonObj.put("subject", subjectName);
         jsonObj.put("issuedAt", now.toString());
         jsonObj.put("expiration",
-                    now.plus(refreshToken ? TokenSupport.REFRESH_TOKEN_VALIDITY : TokenSupport.ACCESS_TOKEN_VALIDITY, ChronoUnit.MILLIS)
+                    now.plus(refreshToken ? REFRESH_TOKEN_VALIDITY : ACCESS_TOKEN_VALIDITY, ChronoUnit.MILLIS)
                             .toString());
-        jsonObj.put(TokenSupport.REFRESH_KEY, refreshToken);
+        jsonObj.put(REFRESH_KEY, refreshToken);
 
         String token = jsonObj.toJSONString();
 
@@ -82,7 +82,7 @@ public class SimpleJsonTokenSupport implements TokenSupport {
 
     @Override
     public boolean isRefreshToken(String token) {
-        return Boolean.parseBoolean(extractValue(token, TokenSupport.REFRESH_KEY));
+        return Boolean.parseBoolean(extractValue(token, REFRESH_KEY));
     }
 
     @Override

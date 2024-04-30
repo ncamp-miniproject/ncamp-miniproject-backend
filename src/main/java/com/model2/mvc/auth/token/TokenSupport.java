@@ -1,4 +1,4 @@
-package com.model2.mvc.user.auth.token;
+package com.model2.mvc.auth.token;
 
 public interface TokenSupport {
 

@@ -1,4 +1,4 @@
-package com.model2.mvc.user.auth.dto.request;
+package com.model2.mvc.auth.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

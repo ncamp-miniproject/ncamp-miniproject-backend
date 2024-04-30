@@ -1,7 +1,7 @@
 package com.model2.mvc.common.interceptor;
 
 import com.model2.mvc.config.web.WebSecurityConfig;
-import com.model2.mvc.user.auth.token.TokenSupport;
+import com.model2.mvc.auth.token.TokenSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,11 +1,11 @@
-package com.model2.mvc.user.auth.controller;
+package com.model2.mvc.auth.controller;
 
-import com.model2.mvc.user.auth.dto.request.AuthRequestDto;
-import com.model2.mvc.user.auth.dto.response.AuthenticatedResponseDto;
-import com.model2.mvc.user.auth.dto.response.LoginUserResponseDto;
-import com.model2.mvc.user.auth.exception.AuthRequestFailException;
-import com.model2.mvc.user.auth.service.AuthService;
-import com.model2.mvc.user.auth.service.RegisterAuthenticationService;
+import com.model2.mvc.auth.dto.request.AuthRequestDto;
+import com.model2.mvc.auth.dto.response.LoginUserResponseDto;
+import com.model2.mvc.auth.exception.AuthRequestFailException;
+import com.model2.mvc.auth.service.AuthService;
+import com.model2.mvc.auth.service.RegisterAuthenticationService;
+import com.model2.mvc.auth.dto.response.AuthenticatedResponseDto;
 import com.model2.mvc.user.controller.editor.RoleEditor;
 import com.model2.mvc.user.domain.Role;
 import com.model2.mvc.user.domain.User;

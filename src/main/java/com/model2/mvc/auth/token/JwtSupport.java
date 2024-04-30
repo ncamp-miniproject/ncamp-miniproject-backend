@@ -1,6 +1,6 @@
-package com.model2.mvc.user.auth.token;
+package com.model2.mvc.auth.token;
 
-import com.model2.mvc.user.auth.repository.RefreshTokenRepository;
+import com.model2.mvc.auth.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
