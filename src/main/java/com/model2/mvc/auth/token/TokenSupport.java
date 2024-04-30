@@ -9,7 +9,7 @@ public interface TokenSupport {
 
     public String createToken(String subjectName, boolean refreshToken);
 
-    public String extractUsername(String token);
+    public String extractSubject(String token);
 
     public boolean isTokenValid(String token, String subjectName);
 
@@ -19,5 +19,5 @@ public interface TokenSupport {
 
     public boolean isValidRefreshToken(String token);
 
-    public void removeToken(String token);
+    public void removeRefreshToken(String token);
 }

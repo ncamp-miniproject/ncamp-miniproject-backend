@@ -19,7 +19,7 @@ class TestJwtSupport {
         JwtSupport jwtSupport = new JwtSupport(new MemoryRefreshTokenRepository());
         String token = jwtSupport.createToken("sample-user", false);
 
-        assertThat(jwtSupport.extractUsername(token)).isEqualTo("sample-user");
+        assertThat(jwtSupport.extractSubject(token)).isEqualTo("sample-user");
     }
 
     @Test

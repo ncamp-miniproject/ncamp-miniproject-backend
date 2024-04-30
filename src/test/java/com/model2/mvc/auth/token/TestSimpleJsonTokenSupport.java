@@ -21,7 +21,7 @@ class TestSimpleJsonTokenSupport {
         SimpleJsonTokenSupport simpleJsonTokenSupport = new SimpleJsonTokenSupport(new MemoryRefreshTokenRepository());
         String token = simpleJsonTokenSupport.createToken("sample-user", false);
 
-        assertThat(simpleJsonTokenSupport.extractUsername(token)).isEqualTo("sample-user");
+        assertThat(simpleJsonTokenSupport.extractSubject(token)).isEqualTo("sample-user");
     }
 
     @Test

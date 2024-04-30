@@ -11,5 +11,5 @@ public interface AuthService {
 
     public AuthenticatedResponseDto authenticate(AuthRequestDto requestDto);
 
-    public LoginUserResponseDto verifyToken(String token);
+    public AuthenticatedResponseDto refreshToken(String refreshToken);
 }

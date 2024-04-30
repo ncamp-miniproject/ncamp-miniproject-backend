@@ -34,7 +34,7 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         String token = authorization.substring(WebSecurityConfig.TOKEN_PREFIX.length());
-        String username = this.tokenSupport.extractUsername(token);
+        String username = this.tokenSupport.extractSubject(token);
 
         UserDetails userDetails;
 

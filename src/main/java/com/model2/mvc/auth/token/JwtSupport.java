@@ -21,19 +21,7 @@ public class JwtSupport implements TokenSupport {
 
     @Override
     public String createToken(String subjectName, boolean refreshToken) {
-        Map<String, Object> extraClaims = Map.of(REFRESH_KEY,
-                                                 String.valueOf(refreshToken));
-
-        Date now = new Date(System.currentTimeMillis());
-
-        Claims claims = Jwts.claims();
-        claims.setSubject(subjectName);
-        claims.setIssuedAt(now);
-        claims.setExpiration(new Date(now.getTime() +
-                                      (refreshToken
-                                      ? REFRESH_TOKEN_VALIDITY
-                                      : ACCESS_TOKEN_VALIDITY)));
-        claims.putAll(extraClaims);
+        Claims claims = getCommonClaims(subjectName, refreshToken);
 
         final String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 
@@ -44,8 +32,21 @@ public class JwtSupport implements TokenSupport {
         return token;
     }
 
+    private Claims getCommonClaims(String subjectName, boolean refreshToken) {
+        Date now = new Date(System.currentTimeMillis());
+        Claims claims = Jwts.claims();
+        claims.setIssuedAt(now);
+        claims.setExpiration(new Date(now.getTime() +
+                (refreshToken
+                        ? REFRESH_TOKEN_VALIDITY
+                        : ACCESS_TOKEN_VALIDITY)));
+        claims.setSubject(subjectName);
+        claims.put(REFRESH_KEY, String.valueOf(refreshToken));
+        return claims;
+    }
+
     @Override
-    public String extractUsername(String token) {
+    public String extractSubject(String token) {
         try {
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
             return claims.getSubject();
@@ -88,11 +89,11 @@ public class JwtSupport implements TokenSupport {
     @Override
     public boolean isRefreshToken(String token) {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
-        return Boolean.parseBoolean((String)claims.get(REFRESH_KEY));
+        return Boolean.parseBoolean((String) claims.get(REFRESH_KEY));
     }
 
     @Override
-    public void removeToken(String token) {
+    public void removeRefreshToken(String token) {
         this.refreshTokenRepository.remove(token);
     }
 }

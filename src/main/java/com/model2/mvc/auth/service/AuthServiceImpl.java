@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
         String username = user.getUsername();
         String accessToken = this.tokenSupport.createToken(username, false);
         String refreshToken = this.tokenSupport.createToken(username, true);
-        return new AuthenticatedResponseDto(accessToken, refreshToken, user.getUserId(), user.getRole());
+        return new AuthenticatedResponseDto(accessToken, refreshToken);
     }
 
     public AuthenticatedResponseDto registerUser(RegisterRequestDto requestDto) throws IllegalStateException {
@@ -55,21 +55,23 @@ public class AuthServiceImpl implements AuthService {
             String username = newUser.getUsername();
             String accessToken = this.tokenSupport.createToken(username, false);
             String refreshToken = this.tokenSupport.createToken(username, true);
-            return new AuthenticatedResponseDto(accessToken, refreshToken, newUser.getUserId(), newUser.getRole());
+            return new AuthenticatedResponseDto(accessToken, refreshToken);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public LoginUserResponseDto verifyToken(String token) {
-        if (this.tokenSupport.isTokenExpired(token) || (this.tokenSupport.isRefreshToken(token) && !this.tokenSupport.isValidRefreshToken(token))) {
-            throw new IllegalArgumentException();
+    public AuthenticatedResponseDto refreshToken(String refreshToken) {
+        if (isInvalidRefreshToken(refreshToken)) {
+            throw new IllegalArgumentException("Not valid refresh token");
         }
-        String username = this.tokenSupport.extractUsername(token);
-        Optional<User> userOp = this.userRepository.findByUserId(username);
-        User user = userOp.orElseThrow(IllegalArgumentException::new);
-        this.tokenSupport.removeToken(token);
-        return new LoginUserResponseDto(user.getUserId(), user.getRole().name(), this.tokenSupport.createToken(username, false), this.tokenSupport.createToken(username, true));
+        String subject = this.tokenSupport.extractSubject(refreshToken);
+        this.tokenSupport.removeRefreshToken(refreshToken);
+        return new AuthenticatedResponseDto(this.tokenSupport.createToken(subject, false), this.tokenSupport.createToken(subject, true));
+    }
+
+    private boolean isInvalidRefreshToken(String token) {
+        return !this.tokenSupport.isRefreshToken(token) || !this.tokenSupport.isValidRefreshToken(token) || !this.tokenSupport.isTokenExpired(token);
     }
 }

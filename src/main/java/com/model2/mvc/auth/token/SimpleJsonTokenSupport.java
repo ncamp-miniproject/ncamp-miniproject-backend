@@ -24,8 +24,8 @@ public class SimpleJsonTokenSupport implements TokenSupport {
         jsonObj.put("subject", subjectName);
         jsonObj.put("issuedAt", now.toString());
         jsonObj.put("expiration",
-                    now.plus(refreshToken ? REFRESH_TOKEN_VALIDITY : ACCESS_TOKEN_VALIDITY, ChronoUnit.MILLIS)
-                            .toString());
+                now.plus(refreshToken ? REFRESH_TOKEN_VALIDITY : ACCESS_TOKEN_VALIDITY, ChronoUnit.MILLIS)
+                        .toString());
         jsonObj.put(REFRESH_KEY, refreshToken);
 
         String token = jsonObj.toJSONString();
@@ -38,12 +38,12 @@ public class SimpleJsonTokenSupport implements TokenSupport {
     }
 
     @Override
-    public String extractUsername(String token) {
+    public String extractSubject(String token) {
         return extractValue(token, "subject");
     }
 
     private String extractValue(String token, String key) {
-        JSONObject jsonObject = (JSONObject)JSONValue.parse(token);
+        JSONObject jsonObject = (JSONObject) JSONValue.parse(token);
         return jsonObject == null ? null : jsonObject.get(key).toString();
     }
 
@@ -71,7 +71,7 @@ public class SimpleJsonTokenSupport implements TokenSupport {
     }
 
     private boolean isTokenForRightUser(String token, String subjectName) {
-        String subject = extractUsername(token);
+        String subject = extractSubject(token);
         return subject.equals(subjectName);
     }
 
@@ -86,7 +86,7 @@ public class SimpleJsonTokenSupport implements TokenSupport {
     }
 
     @Override
-    public void removeToken(String token) {
+    public void removeRefreshToken(String token) {
         this.refreshTokenRepository.remove(token);
     }
 }

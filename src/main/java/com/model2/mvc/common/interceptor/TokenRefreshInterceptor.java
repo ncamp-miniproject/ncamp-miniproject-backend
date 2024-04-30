@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Deprecated
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -30,13 +31,13 @@ public class TokenRefreshInterceptor implements HandlerInterceptor {
         }
 
         String token = authorization.substring(WebSecurityConfig.TOKEN_PREFIX.length());
-        String username = this.tokenSupport.extractUsername(token);
+        String username = this.tokenSupport.extractSubject(token);
         try {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             response.addHeader(WebSecurityConfig.NEW_ACCESS_TOKEN_HEADER, this.tokenSupport.createToken(userDetails.getUsername(), false));
             if (this.tokenSupport.isRefreshToken(token)) {
                 response.addHeader(WebSecurityConfig.NEW_REFRESH_TOKEN_HEADER, this.tokenSupport.createToken(userDetails.getUsername(), true));
-                this.tokenSupport.removeToken(token);
+                this.tokenSupport.removeRefreshToken(token);
             }
             return true;
         } catch (UsernameNotFoundException e) {

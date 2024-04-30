@@ -57,10 +57,10 @@ public class AuthApi {
         }
     }
 
-    @PostMapping("/token/{token}")
-    public ResponseEntity<LoginUserResponseDto> verifyToken(@PathVariable("token") String token) {
+    @PostMapping("/refresh-token/{token}")
+    public ResponseEntity<AuthenticatedResponseDto> verifyToken(@PathVariable("token") String token) {
         try {
-            LoginUserResponseDto result = this.authService.verifyToken(token);
+            AuthenticatedResponseDto result = this.authService.refreshToken(token);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
