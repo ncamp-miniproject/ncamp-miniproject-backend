@@ -1,22 +1,19 @@
 package com.model2.mvc.common.aspect;
 
-import static com.model2.mvc.common.aspect.ConsoleColorCode.CYAN;
-import static com.model2.mvc.common.aspect.ConsoleColorCode.RESET;
-import static com.model2.mvc.common.aspect.ConsoleColorCode.YELLOW;
-
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+import static com.model2.mvc.common.aspect.ConsoleColorCode.*;
+
 @Component
 @Aspect
+@Slf4j
 public class DebugLoggingAspect {
-    Logger log = LoggerFactory.getLogger(DebugLoggingAspect.class);
 
     public DebugLoggingAspect() {
         System.out.println("============================");

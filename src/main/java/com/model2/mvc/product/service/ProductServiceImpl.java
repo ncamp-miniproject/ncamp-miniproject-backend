@@ -4,25 +4,20 @@ import com.model2.mvc.category.domain.Category;
 import com.model2.mvc.category.service.CategoryService;
 import com.model2.mvc.common.Pagination;
 import com.model2.mvc.common.file.FileAccess;
+import com.model2.mvc.common.file.FilePathResolver;
 import com.model2.mvc.common.util.BeanUtil;
 import com.model2.mvc.common.util.IntegerUtil;
-import com.model2.mvc.common.util.RandomSerialGenerator;
 import com.model2.mvc.common.util.StringUtil;
 import com.model2.mvc.product.domain.Product;
 import com.model2.mvc.product.domain.ProductImage;
 import com.model2.mvc.product.dto.request.CreateProductRequestDto;
 import com.model2.mvc.product.dto.request.ListProductRequestDto;
 import com.model2.mvc.product.dto.request.UpdateProductRequestDto;
-import com.model2.mvc.product.dto.response.AddProductResponseDto;
-import com.model2.mvc.product.dto.response.GetProductResponseDto;
-import com.model2.mvc.product.dto.response.ListProductResponseDto;
-import com.model2.mvc.product.dto.response.ProductDto;
-import com.model2.mvc.product.dto.response.UpdateProductResponseDto;
+import com.model2.mvc.product.dto.response.*;
 import com.model2.mvc.product.repository.ProductImageRepository;
 import com.model2.mvc.product.repository.ProductRepository;
 import com.model2.mvc.product.service.helper.ListQueryHelper;
 import com.model2.mvc.user.domain.Role;
-import com.model2.mvc.user.domain.User;
 import com.model2.mvc.user.dto.response.UserResponseDto;
 import com.model2.mvc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.sql.Date;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final ListQueryHelper listQueryHelper;
     private final FileAccess fileAccess;
+    private final FilePathResolver filePathResolver;
 
     @Value("#{constantProperties['defaultPageSize']}")
     private int defaultPageSize;
@@ -89,29 +80,13 @@ public class ProductServiceImpl implements ProductService {
         return AddProductResponseDto.from(product);
     }
 
-    private String storeFile(String base64ImageData, String contextRealPath, String fileExtension) {
-        if (base64ImageData == null || fileExtension == null) {
-            return null;
-        }
-        String filename = RandomSerialGenerator.generate(30) + fileExtension;
-        String uploadPath = contextRealPath + File.separator + filename;
-
-        byte[] encodedData = Base64.getDecoder().decode(base64ImageData);
-        try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(new File(uploadPath).toPath()))) {
-            bos.write(encodedData);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(); // TODO
-        }
-        return filename;
-    }
-
     @Override
     public GetProductResponseDto getProduct(int prodNo, String userId) {
         Optional<Product> result = productRepository.findById(prodNo);
         GetProductResponseDto responseDTO
                 = GetProductResponseDto.from(result.orElseThrow(() -> new IllegalArgumentException(
                 "No record for the given prodNo: " + prodNo)));
+        responseDTO.getProductImages().forEach((pi) -> pi.setFileName(this.filePathResolver.resolve(pi.getFileName())));
         try {
             UserResponseDto user = this.userService.getUser(userId);
             responseDTO.setPurchasable(user != null && user.getRole() == Role.USER && responseDTO.getStock() > 0);
@@ -125,6 +100,7 @@ public class ProductServiceImpl implements ProductService {
     public ListProductResponseDto getProductList(ListProductRequestDto requestDto) {
         requestDto.setPageSize(requestDto.getPageSize() == null ? defaultPageSize : requestDto.getPageSize());
         List<Product> result = this.listQueryHelper.findProductList(this.productRepository, requestDto);
+        result.forEach((p) -> p.getProductImages().forEach((pi) -> pi.setFileName(this.filePathResolver.resolve(pi.getFileName()))));
         int count = this.listQueryHelper.count(this.productRepository, requestDto);
 
         int page = IntegerUtil.getOneIfNull(requestDto.getPage());
@@ -138,6 +114,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getProductList(List<Integer> prodNos) {
         Map<Integer, Product> prodNoProductMap = this.productRepository.findProductsByIds(prodNos);
+        prodNoProductMap.values().forEach((p) -> p.getProductImages().forEach((pi) -> pi.setFileName(this.filePathResolver.resolve(pi.getFileName()))));
         return prodNoProductMap.keySet()
                 .stream()
                 .map(prodNoProductMap::get)

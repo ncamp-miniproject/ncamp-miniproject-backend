@@ -2,6 +2,7 @@ package com.model2.mvc.seller.service;
 
 import com.model2.mvc.common.dto.Base64ImageDto;
 import com.model2.mvc.common.file.FileAccess;
+import com.model2.mvc.common.file.FilePathResolver;
 import com.model2.mvc.seller.domain.Seller;
 import com.model2.mvc.seller.dto.request.SellerApplicationRequestDto;
 import com.model2.mvc.seller.dto.response.SellerInfoResponseDto;
@@ -10,7 +11,6 @@ import com.model2.mvc.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Service
@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 public class SellerServiceImpl implements SellerService {
     private final SellerRepository sellerRepository;
     private final FileAccess fileAccess;
+    private final FilePathResolver filePathResolver;
 
     @Override
     public void submitApplication(SellerApplicationRequestDto requestDto, String filePath) {
@@ -43,7 +44,7 @@ public class SellerServiceImpl implements SellerService {
                 .addr(sellerInfo.getAddr())
                 .email(sellerInfo.getEmail())
                 .regDate(sellerInfo.getRegDate())
-                .profileImageFile(seller.getProfileImageFile())
+                .profileImageFile(this.filePathResolver.resolve(seller.getProfileImageFile()))
                 .profile(seller.getProfile())
                 .build();
     }
