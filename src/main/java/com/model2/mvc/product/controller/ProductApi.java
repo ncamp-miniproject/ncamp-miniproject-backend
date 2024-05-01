@@ -61,7 +61,7 @@ public class ProductApi {
 
     @GetMapping("/{prodNo}")
     public ResponseEntity<GetProductResponseDto> getProduct(@PathVariable("prodNo") int prodNo,
-                                                            @RequestParam("userId") String userId,
+                                                            @RequestParam(value = "userId", required = false) String userId,
                                                             @CookieValue(value = "history",
                                                                          required = false) String history) {
         String updatedHistory = StringUtil.addValueWithoutDuplicate(history, String.valueOf(prodNo), "-");
