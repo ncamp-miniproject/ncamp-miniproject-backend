@@ -52,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         // TODO: Should set CORS configuration sophisticated
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("https://www.novemberalpha.shop")
                 .allowedMethods("GET", "POST", "DELETE", "PATCH", "PUT")
                 .allowCredentials(true);
     }
