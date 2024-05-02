@@ -34,5 +34,6 @@
         <mapper resource="sql/purchase-mapper.xml"/>
         <mapper resource="sql/category-mapper.xml"/>
         <mapper resource="sql/seller-mapper.xml"/>
+        <mapper resource="sql/metadata-mapper.xml"/>
     </mappers>
 </configuration>

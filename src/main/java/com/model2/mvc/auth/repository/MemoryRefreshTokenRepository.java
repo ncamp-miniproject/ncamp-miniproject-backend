@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
+@Deprecated
 public class MemoryRefreshTokenRepository implements RefreshTokenRepository {
     private static final Set<String> store = ConcurrentHashMap.newKeySet();
 

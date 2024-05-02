@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MetadataMapper">
+    <insert id="saveRefreshToken" parameterType="string">
+        INSERT INTO refresh_token VALUES (#{value})
+    </insert>
+
+    <select id="findRefreshToken" parameterType="string" resultType="string">
+        SELECT token
+        FROM refresh_token
+        WHERE token = #{value}
+    </select>
+
+    <delete id="removeRefreshToken" parameterType="string">
+        DELETE FROM refresh_token
+        WHERE token = #{value}
+    </delete>
+
+    <insert id="saveMailAuthInfo" parameterType="com.model2.mvc.user.domain.MailAuthenticationInfo">
+        INSERT INTO email_auth_key (email, authentication_code, authenticated)
+        VALUES (#{email}, #{authenticationCode}, #{authenticated})
+    </insert>
+
+    <resultMap id="mailAuthInfo" type="com.model2.mvc.user.domain.MailAuthenticationInfo">
+        <id column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="authentication_code" property="authenticationCode" jdbcType="VARCHAR"/>
+        <result column="authenticated" property="authenticated" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <select id="findMailAuthInfo" parameterType="string" resultMap="mailAuthInfo">
+        SELECT email, authentication_code, authenticated
+        FROM email_auth_key
+        WHERE email = #{value}
+    </select>
+
+    <update id="updateMailAuthInfo" parameterType="map">
+        UPDATE email_auth_key
+        <set>
+            <if test="auth.email != null">
+                email = #{auth.email},
+            </if>
+            <if test="auth.authenticationCode != null">
+                authentication_code = #{authenticationCode},
+            </if>
+            authenticated = #{auth.authenticated}
+        </set>
+        WHERE email = #{email}
+    </update>
+
+    <delete id="deleteMailAuthInfo" parameterType="string">
+        DELETE FROM email_auth_key
+        WHERE email = #{value}
+    </delete>
+
+    <delete id="clearMailAuthInfo">
+        DELETE FROM email_auth_key
+    </delete>
+
+    <delete id="clearRefreshToken">
+        DELETE FROM refresh_token
+    </delete>
+</mapper>

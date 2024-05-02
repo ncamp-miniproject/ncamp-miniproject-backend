@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
+@Deprecated
 public class MemoryRegisterAuthenticationRepository implements RegisterAuthenticationRepository {
     private static final Map<String, MailAuthenticationInfo> storage = new ConcurrentHashMap<>();
 
