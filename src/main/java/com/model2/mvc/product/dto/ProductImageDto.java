@@ -1,6 +1,5 @@
 package com.model2.mvc.product.dto;
 
-import com.model2.mvc.common.dto.Base64ImageDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProductImageDto extends Base64ImageDto {
+public class ProductImageDto {
+    private String fileExtension;
+    private String base64Data;
     private String description;
     private Boolean thumbnail;
 }
