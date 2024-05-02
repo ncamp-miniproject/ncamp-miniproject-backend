@@ -14,32 +14,6 @@ import javax.sql.DataSource;
 @Configuration
 public class MyBatisConfig {
 
-    @Value("${jdbc.driverClassName}")
-    private String driverClassName;
-
-    @Value("${jdbc.url}")
-    private String url;
-
-    @Value("${jdbc.username}")
-    private String username;
-
-    @Value("${jdbc.password}")
-    private String password;
-
-    @Bean
-    public DataSource dataSource() {
-        DataSource dataSource = DataSourceBuilder.create()
-                .driverClassName(driverClassName)
-                .url(url)
-                .username(username)
-                .password(password)
-                .build();
-        System.out.println("==========DataSource=================");
-        System.out.println(dataSource);
-        System.out.println("====================================");
-        return dataSource;
-    }
-
     @Bean
     public SqlSessionFactory sqlSessionFactoryBean(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();

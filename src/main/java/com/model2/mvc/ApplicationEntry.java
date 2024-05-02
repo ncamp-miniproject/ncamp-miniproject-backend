@@ -7,12 +7,10 @@ import com.model2.mvc.config.web.WebConfig;
 import com.model2.mvc.config.web.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication(
-        exclude = { DataSourceAutoConfiguration.class },
         scanBasePackageClasses = {
                 ContextConfig.class,
                 MyBatisConfig.class,
