@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Component
-@Primary
 @RequiredArgsConstructor
+@Deprecated
 public class SimpleJsonTokenSupport implements TokenSupport {
     private final RefreshTokenRepository refreshTokenRepository;
 
